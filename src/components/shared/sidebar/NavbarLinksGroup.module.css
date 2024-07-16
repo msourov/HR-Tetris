@@ -1,0 +1,109 @@
+/* Define hover styles */
+.control:hover {
+  background-color: var(--mantine-color-dark-0);
+  /* border-radius: 0.5rem; */
+}
+.control:focus,
+.control:active {
+  background-color: var(--mantine-color-dark-7);
+  color: #ffffff;
+  /* border-radius: 0.5rem; */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.control.active {
+  background-color: var(--mantine-color-green-1);
+  color: var(--mantine-color-green-9);
+  /* border-radius: 0.75rem; */
+}
+
+.link:hover,
+.link:focus,
+.link:active {
+  background-color: light-dark(
+    var(--mantine-color-gray-0),
+    var(--mantine-color-dark-7)
+  );
+  /* color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0)); */
+}
+
+/* Your existing CSS styles */
+.control {
+  font-weight: 700;
+  display: block;
+  width: 100%;
+  padding-block: 0.75rem;
+  /* outline: auto; */
+  padding-inline: var(--mantine-spacing-lg);
+  margin-block: 0.1rem;
+  transition: color 0.3s ease;
+  color: var(--mantine-color-gray-6);
+  font-size: var(--mantine-font-size-sm);
+  /* margin-inline: 0; */
+}
+
+.link {
+  font-weight: 500;
+  display: block;
+  text-decoration: none;
+  padding-block: var(--mantine-spacing-xs);
+  padding-inline: var(--mantine-spacing-md);
+  padding-left: var(--mantine-spacing-md);
+  margin-block: var(--mantine-spacing-xs, 4px);
+  /* margin-left: var(--mantine-spacing-xl); */
+  font-size: var(--mantine-font-size-sm);
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
+  border-left: 1px solid
+    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.chevron {
+  transition: transform 200ms ease;
+}
+
+.groupTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin-block: 0.75rem;
+  color: #161616;
+}
+
+.customAccordionItem {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.submenuItem {
+  position: relative;
+  /* padding-left: 1.5rem; */
+}
+
+.submenuItem::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #ccc;
+}
+
+.submenuItem::after {
+  content: "";
+  position: absolute;
+  left: 0; /* Adjust this value to align the horizontal line with your layout */
+  top: 50%;
+  width: 1.5rem; /* Adjust the length of the horizontal line */
+  height: 1px;
+  background-color: #ccc; /* Horizontal line */
+}
+
+.customAccordionControl.activeGroup {
+  background-color: var(--mantine-color-green-1);
+  color: var(--mantine-color-green-9);
+  border-radius: 0.75rem;
+}
+
+.submenuItem .activeSubmenu {
+  background-color: var(--mantine-color-gray-0);
+  color: var(--mantine-color-dark-7);
+}
