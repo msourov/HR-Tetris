@@ -1,0 +1,25 @@
+/* styles.css */
+.pill-active {
+  background-color: rgb(
+    30,
+    151,
+    30
+  ); /* Change this to your desired active color */
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+  padding: 0;
+  padding-inline: 0.5rem;
+}
+
+.pill-inactive {
+  background-color: rgb(
+    145,
+    145,
+    145
+  ); /* Change this to your desired inactive color */
+  color: white;
+  padding-block: 0;
+  border-radius: 4px;
+}

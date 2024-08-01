@@ -1,7 +1,7 @@
 import { Group, Box, UnstyledButton, Accordion, Divider } from "@mantine/core";
 import { GrUserManager } from "react-icons/gr";
 import { IconHome2 } from "@tabler/icons-react";
-import classes from "./NavbarLinksGroup.module.css";
+
 // import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ import { TfiAnnouncement } from "react-icons/tfi";
 import { PiCertificate } from "react-icons/pi";
 import { LuMailbox } from "react-icons/lu";
 // import { ProfileSection } from "../../../pages/ProfileSection";
+import classes from "./NavbarLinksGroup.module.css";
 
 interface IconProps {
   // Add specific prop types here based on the Icon component's documentation
@@ -79,13 +80,16 @@ const sidebarData = [
     icon: <HiOutlineOfficeBuilding />,
     items: [
       {
+        label: "Company",
+        link: "/company",
+      },
+      {
         label: "Department",
-
-        link: "/department",
+        link: "/departments",
       },
       {
         label: "Designation",
-        link: "/designation",
+        link: "/designations",
       },
       {
         label: "Policy",
@@ -151,7 +155,7 @@ const sidebarData = [
     ],
   },
   {
-    title: "Account",
+    title: "Accounts",
     icon: <MdOutlineAccountBalance />,
     items: [
       {
@@ -189,8 +193,8 @@ const sidebarData = [
     icon: <LuMailbox />,
     items: [
       {
-        label: "Candidate",
-        link: "/candidate",
+        label: "Candidates",
+        link: "/candidates",
       },
     ],
   },
@@ -228,8 +232,6 @@ export function Sidebar() {
 
   //   setActiveLink(currentPath);
   // }, [location]);
-  console.log(activeLink);
-
   const handleLinkClick = (link: string) => {
     setActiveLink(link);
     navigate(link);
@@ -237,7 +239,6 @@ export function Sidebar() {
 
   const isGroupActive = (groupItems: Item[]) =>
     groupItems.some((item: Item) => item.link === activeLink);
-  console.log(isGroupActive);
 
   return (
     <Box m="0" p="0" className="overflow-y-auto h-full flex flex-col w-[15vw]">
@@ -251,7 +252,7 @@ export function Sidebar() {
             activeLink === "/"
               ? "var(--mantine-color-green-9)"
               : "var(--mantine-color-gray-6)",
-          fontSize: "1rem",
+          fontSize: "0.8rem",
           fontWeight: 600,
           paddingBlock: "0.75rem",
           borderRadius: "1rem",
@@ -283,7 +284,7 @@ export function Sidebar() {
           >
             <Accordion.Control
               style={{
-                fontSize: 16,
+                fontSize: "0.85rem",
                 transform: "translateY(-2px)",
                 color: isGroupActive(group.items)
                   ? "var(--mantine-color-green-9) "

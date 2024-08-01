@@ -1,4 +1,6 @@
-import { Box, Text } from "@mantine/core";
+import { Box, Button, Text } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
 
 type PageHeaderProps = {
   Heading?: string;
@@ -9,17 +11,38 @@ type PageHeaderProps = {
 };
 
 const PageHeader: React.FC<PageHeaderProps> = ({ Heading, Breadcrumb }) => {
+  const navigate = useNavigate();
+  const route = Heading?.toLocaleLowerCase();
   return (
-    <Box w={"100%"} bg={"#ddeaf5"} px={"2.75rem"} py={"1rem"}>
-      <Text component="h1" size="xl" className="drop-shadow-2xl font-bold">
-        {Heading}
-      </Text>
-      {Breadcrumb && (
-        <Text component="p" size="md" className="drop-shadow-2xl">
-          {Breadcrumb.module} <span className="font-extrabold"> . </span>{" "}
-          {Breadcrumb.page}
+    <Box
+      w={"100%"}
+      bg={"#E6F7FF"}
+      px={"2.75rem"}
+      py={"1rem"}
+      className="flex justify-between"
+    >
+      <div>
+        <Text component="h1" size="xl" className="drop-shadow-2xl font-bold">
+          {Heading}
         </Text>
-      )}
+        {Breadcrumb && (
+          <Text component="p" size="md" className="drop-shadow-2xl">
+            {Breadcrumb.module} <span className="font-extrabold"> . </span>{" "}
+            {Breadcrumb.page}
+          </Text>
+        )}
+      </div>
+
+      <Button
+        leftSection={<IconPlus />}
+        style={{
+          backgroundColor: "#2b266e",
+          marginBlock: "auto",
+          paddingInline: "0.65rem",
+          borderRadius: "10px",
+        }}
+        onClick={() => navigate(`add-${route}`)}
+      >{`Add ${Heading}`}</Button>
     </Box>
   );
 };

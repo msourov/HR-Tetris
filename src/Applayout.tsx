@@ -21,7 +21,7 @@ const AppLayout: React.FC = () => {
         </div>
 
         <div className="flex-1">
-          <div className="content h-full overflow-auto bg-gray-200">
+          <div className="content h-full overflow-auto bg-white">
             <Outlet />
           </div>
         </div>
