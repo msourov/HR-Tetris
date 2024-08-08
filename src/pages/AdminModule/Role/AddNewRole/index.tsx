@@ -67,6 +67,42 @@ const initialValues = [
     checked: false,
     key: randomId(),
   },
+  {
+    label: "Certification and License Management",
+    name: "clm_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Ticket Management",
+    name: "ticket_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Employee Management",
+    name: "employee_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Inventory Management",
+    name: "inventory_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Announcement Management",
+    name: "anouncement_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Recruitment Management",
+    name: "recruitment_management",
+    checked: false,
+    key: randomId(),
+  },
 ];
 
 const AddNewRole = () => {
@@ -107,10 +143,15 @@ const AddNewRole = () => {
       name: data.name,
       active: data.status,
       ...(preparedData as {
-        office_management: "a" | "i";
+        app_user_management: "a" | "i";
         employee_management: "a" | "i";
         user_management: "a" | "i";
-        app_user_management: "a" | "i";
+        office_management: "a" | "i";
+        clm_management: "a" | "i";
+        ticket_management: "a" | "i";
+        inventory_management: "a" | "i";
+        anouncement_management: "a" | "i";
+        recruitment_management: "a" | "i";
       }),
     };
     console.log("createData", JSON.stringify(createData, undefined, 2));

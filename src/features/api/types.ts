@@ -48,6 +48,11 @@ export interface LoginResponse {
     office_management: string;
     app_user_management: string;
     employee_management: string;
+    clm_management: string;
+    ticket_management: string;
+    inventory_management: string;
+    anouncement_management: string;
+    recruitment_management: string;
   };
   mobile: string;
   name: string;
@@ -65,6 +70,11 @@ export interface Role {
     office_management: string;
     app_user_management: string;
     employee_management: string;
+    clm_management: string;
+    ticket_management: string;
+    inventory_management: string;
+    anouncement_management: string;
+    recruitment_management: string;
   };
   logs: {
     admin: string;
@@ -90,6 +100,11 @@ export interface CreateRoleRequest {
   employee_management: "a" | "i";
   user_management: "a" | "i";
   office_management: "a" | "i";
+  clm_management: "a" | "i";
+  ticket_management: "a" | "i";
+  inventory_management: "a" | "i";
+  anouncement_management: "a" | "i";
+  recruitment_management: "a" | "i";
 }
 
 export interface Response {
@@ -106,6 +121,11 @@ export interface EditRoleRequest {
   employee_management: "a" | "i";
   user_management: "a" | "i";
   office_management: "a" | "i";
+  clm_management: "a" | "i";
+  ticket_management: "a" | "i";
+  inventory_management: "a" | "i";
+  anouncement_management: "a" | "i";
+  recruitment_management: "a" | "i";
 }
 
 interface Logs {
@@ -188,9 +208,7 @@ interface DepartmentData {
   logs: Logs[];
 }
 
-export interface DesignationDetail {
-
-}
+export interface DesignationDetail {}
 
 export interface DepartmentResponse {
   status_code: number;
@@ -229,4 +247,14 @@ export interface CandidatesResponse {
   status_code: number;
   success: boolean;
   data: CandidateData[];
+}
+
+interface Departments {
+  uid: string;
+  name: string;
+}
+export interface DepartmentHelper {
+  status_code: number;
+  success: boolean;
+  data: Departments[];
 }

@@ -18,7 +18,12 @@ type Permissions = {
     | "user_management"
     | "office_management"
     | "app_user_management"
-    | "employee_management";
+    | "employee_management"
+    | "clm_management"
+    | "ticket_management"
+    | "inventory_management"
+    | "anouncement_management"
+    | "recruitment_management";
   checked: boolean;
   key: string;
 };
@@ -41,6 +46,11 @@ const schema = z.object({
         z.literal("office_management"),
         z.literal("app_user_management"),
         z.literal("employee_management"),
+        z.literal("clm_management"),
+        z.literal("ticket_management"),
+        z.literal("inventory_management"),
+        z.literal("anouncement_management"),
+        z.literal("recruitment_management"),
       ]),
       checked: z.boolean(),
       key: z.string(),
@@ -70,6 +80,42 @@ const initialValues: Permissions[] = [
   {
     label: "App User Management",
     name: "app_user_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Certification and License Management",
+    name: "clm_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Ticket Management",
+    name: "ticket_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Employee Management",
+    name: "employee_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Inventory Management",
+    name: "inventory_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Announcement Management",
+    name: "anouncement_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Recruitment Management",
+    name: "recruitment_management",
     checked: false,
     key: randomId(),
   },
@@ -133,10 +179,15 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
       name,
       active: data.status,
       ...(preparedData as {
-        office_management: "a" | "i";
+        app_user_management: "a" | "i";
         employee_management: "a" | "i";
         user_management: "a" | "i";
-        app_user_management: "a" | "i";
+        office_management: "a" | "i";
+        clm_management: "a" | "i";
+        ticket_management: "a" | "i";
+        inventory_management: "a" | "i";
+        anouncement_management: "a" | "i";
+        recruitment_management: "a" | "i";
       }),
     };
     console.log("editData", JSON.stringify(editData, undefined, 2));

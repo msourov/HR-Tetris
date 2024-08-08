@@ -1,11 +1,4 @@
-import {
-  useEffect,
-  useState,
-  FC,
-  createContext,
-  useContext,
-  useMemo,
-} from "react";
+import { useEffect, useState, FC, createContext, useMemo } from "react";
 import Cookies from "js-cookie";
 import { AuthProviderProps } from "./authTypes";
 import { AuthContextProps } from "./authTypes";
@@ -13,14 +6,6 @@ import { AuthContextProps } from "./authTypes";
 export const AuthContext = createContext<AuthContextProps | undefined>(
   undefined
 );
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

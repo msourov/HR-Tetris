@@ -11,53 +11,51 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { LuPlusCircle } from "react-icons/lu";
-import AddNewDepartment from "../AddNewDepartment";
-import {
-  useDeleteDepartmentMutation,
-  useEditDepartmentMutation,
-  useGetDepartmentsQuery,
-} from "../../../../features/api/departmentSlice";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import {
+  useDeleteDesignationMutation,
+  useEditDesignationMutation,
+  useGetDesignationsQuery,
+} from "../../../../features/api/designationSlice";
+import AddNewDesignation from "../AddNewDesignation";
 
 const schema = z.object({
   active: z.boolean(),
   name: z.string().min(2),
 });
 
-type EditDepartmentType = z.infer<typeof schema>;
+type EditDesignationType = z.infer<typeof schema>;
 
-const EditDepartment = () => {
-  const [dept, setDept] = useState<string>("");
+const EditDesignation = () => {
+  const [des, setDes] = useState<string>("");
   const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
-  const { data: departments } = useGetDepartmentsQuery({ page: 1, limit: 10 });
-  const [editDepartment, { isLoading: editDeptLoading }] =
-    useEditDepartmentMutation();
-  const [deleteDepartment, { isLoading: deleteDeptLoading }] =
-    useDeleteDepartmentMutation();
-  // const {
-  //   data: departmentDetail,
-  //   isLoading: deptDetailLoading,
-  //   error: deptDetailError,
-  // } = useGetDepartmentDetailQuery({
-  //   uid: dept,
-  // });
+  const { data: designations } = useGetDesignationsQuery({
+    page: 1,
+    limit: 10,
+  });
+  const [editDesignation, { isLoading: editDesLoading }] =
+    useEditDesignationMutation();
+  const [deleteDesignation, { isLoading: deleteDesLoading }] =
+    useDeleteDesignationMutation();
   const toggleModal = () => {
     addClose();
   };
 
-  const deptOptions = departments?.data.map((item) => ({
+  const designationOptions = designations?.data.map((item) => ({
     value: item?.uid,
     label: item?.name,
   }));
 
-  const departmentDetail = departments?.data.find((item) => item?.uid === dept);
+  const designationDetail = designations?.data.find(
+    (item) => item?.uid === des
+  );
 
   const {
     register,
@@ -65,34 +63,34 @@ const EditDepartment = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<EditDepartmentType>({
+  } = useForm<EditDesignationType>({
     resolver: zodResolver(schema),
   });
 
   useEffect(() => {
-    if (departmentDetail) {
+    if (designationDetail) {
       reset({
-        name: departmentDetail?.name,
-        active: departmentDetail?.active,
+        name: designationDetail?.name,
+        active: designationDetail?.active,
       });
     }
-  }, [departmentDetail, reset]);
+  }, [designationDetail, reset]);
 
   const activeStatus = watch("active");
 
-  const text = <Text fw={500}>Select Department</Text>;
+  const text = <Text fw={500}>Select Designation</Text>;
 
-  const onSubmit = async (data: EditDepartmentType) => {
+  const onSubmit = async (data: EditDesignationType) => {
     console.log("submitted data", data);
     const obj = {
       ...data,
-      uid: dept,
+      uid: des,
     };
     try {
-      await editDepartment(obj).unwrap();
+      await editDesignation(obj).unwrap();
       notifications.show({
         title: "Success!",
-        message: "Succesfully updated department",
+        message: "Succesfully updated designation",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
@@ -100,7 +98,7 @@ const EditDepartment = () => {
     } catch (error) {
       notifications.show({
         title: "Error!",
-        message: "Couldn't update department",
+        message: "Couldn't update designation",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
@@ -110,10 +108,11 @@ const EditDepartment = () => {
 
   const handleDelete = async () => {
     try {
-      await deleteDepartment({ id: dept }).unwrap();
+      await deleteDesignation({ id: des }).unwrap();
+      setDes("");
       notifications.show({
         title: "Success!",
-        message: "Department deleted",
+        message: "Designation deleted",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
@@ -121,11 +120,13 @@ const EditDepartment = () => {
     } catch (error) {
       notifications.show({
         title: "Error!",
-        message: "Couldn't delete department",
+        message: "Couldn't delete designation",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
       });
+    } finally {
+      closeDelete();
     }
   };
 
@@ -142,23 +143,25 @@ const EditDepartment = () => {
           Add
         </Button>
       </Box>
-      <Modal opened={addOpened} onClose={addClose} title="Add Department">
-        <AddNewDepartment toggleModal={toggleModal} />
+      <Modal opened={addOpened} onClose={addClose} title="Add Designation">
+        <AddNewDesignation toggleModal={toggleModal} />
       </Modal>
       <Select
         label={text}
-        data={deptOptions}
-        value={dept}
+        data={designationOptions}
+        value={des || ""}
         onChange={(value) => {
           if (value) {
-            setDept(value);
+            setDes(value);
+          } else {
+            setDes("");
           }
         }}
         mt={8}
       />
-      {dept && (
+      {des && (
         <Paper shadow="sm" p="md" my={16}>
-          {departmentDetail ? (
+          {designationDetail ? (
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextInput
                 label="Name"
@@ -179,9 +182,9 @@ const EditDepartment = () => {
               <Button
                 type="submit"
                 className="rounded-lg mt-6 bg-black"
-                disabled={editDeptLoading}
+                disabled={editDesLoading}
               >
-                {editDeptLoading ? <Loader type="dots" size="sm" /> : "Save"}
+                {editDesLoading ? <Loader type="dots" size="sm" /> : "Save"}
               </Button>
             </form>
           ) : (
@@ -189,7 +192,7 @@ const EditDepartment = () => {
           )}
         </Paper>
       )}
-      {departmentDetail && (
+      {designationDetail && (
         <>
           <Box className="flex justify-end mt-10">
             <Button variant="light" color="red" onClick={openDelete}>
@@ -207,11 +210,15 @@ const EditDepartment = () => {
               <Button
                 color="red"
                 onClick={handleDelete}
-                disabled={deleteDeptLoading}
+                disabled={deleteDesLoading}
               >
                 Confirm
               </Button>
-              <Button color="gray" onClick={close} disabled={deleteDeptLoading}>
+              <Button
+                color="gray"
+                onClick={closeDelete}
+                disabled={deleteDesLoading}
+              >
                 Cancel
               </Button>
             </Box>
@@ -222,4 +229,4 @@ const EditDepartment = () => {
   );
 };
 
-export default EditDepartment;
+export default EditDesignation;

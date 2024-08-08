@@ -6,9 +6,7 @@ import User from "./pages/AdminModule/User";
 import EditUser from "./pages/AdminModule/User/EditUser";
 import AddNewUser from "./pages/AdminModule/User/AddNewUser";
 import Role from "./pages/AdminModule/Role";
-import Department from "./pages/OfficeModule/Department";
 import EditDepartment from "./pages/OfficeModule/Department/EditDepartment";
-import Designation from "./pages/OfficeModule/Designation";
 import Login from "./pages/Login";
 import OtpPage from "./pages/Login/OtpPage";
 import PublicRoute from "./services/auth/PublicRoute";
@@ -22,8 +20,12 @@ import CandidateDetail from "./pages/RecruitmentModule/Candidates/CandidateDetai
 import Recruitment from "./pages/RecruitmentModule";
 import Candidates from "./pages/RecruitmentModule/Candidates";
 import DepartmentDetail from "./pages/OfficeModule/Department/DepartmentDetail";
-import DepartmentList from "./pages/OfficeModule/Department/DepartmentList";
 import DesignationList from "./pages/OfficeModule/Designation/DesignationList";
+import DepartmentLayout from "./pages/OfficeModule/Department";
+import DepartmentList from "./pages/OfficeModule/Department/DepartmentList";
+import DesignationLayout from "./pages/OfficeModule/Designation";
+import EditDesignation from "./pages/OfficeModule/Designation/EditDesignation";
+import DesignationDetail from "./pages/OfficeModule/Designation/DesignationDetail";
 
 export const router = createBrowserRouter([
   {
@@ -81,11 +83,15 @@ export const router = createBrowserRouter([
           },
           {
             path: "departments",
-            element: <Department />,
+            element: <DepartmentLayout />,
             children: [
               {
                 index: true,
                 element: <DepartmentList />,
+              },
+              {
+                path: "edit",
+                element: <EditDepartment />,
               },
               // {
               //   path: "add-department",
@@ -101,24 +107,23 @@ export const router = createBrowserRouter([
                 path: ":departmentName/detail",
                 element: <DepartmentDetail />,
               },
-              {
-                path: ":departmentId/edit",
-                element: <EditDepartment />,
-              },
             ],
           },
           {
             path: "designations",
-            element: <Designation />,
+            element: <DesignationLayout />,
             children: [
               {
                 index: true,
                 element: <DesignationList />,
               },
-
               {
-                path: ":designationsId/edit",
-                element: <EditDepartment />,
+                path: "edit",
+                element: <EditDesignation />,
+              },
+              {
+                path: ":designationName/detail",
+                element: <DesignationDetail />,
               },
             ],
           },

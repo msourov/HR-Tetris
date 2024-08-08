@@ -1,6 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
-import { DepartmentDetail, DepartmentResponse, Response } from "./types";
+import {
+  DepartmentDetail,
+  DepartmentHelper,
+  DepartmentResponse,
+  Response,
+} from "./types";
 import { tagTypes } from "./tags";
 
 export const departmentApi = createApi({
@@ -72,6 +77,12 @@ export const departmentApi = createApi({
         { type: "Department", id },
       ],
     }),
+    departmentHelper: builder.query<DepartmentHelper, void>({
+      query: () => ({
+        url: "department/helper",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -81,4 +92,5 @@ export const {
   useAddDepartmentMutation,
   useEditDepartmentMutation,
   useDeleteDepartmentMutation,
+  useDepartmentHelperQuery,
 } = departmentApi;

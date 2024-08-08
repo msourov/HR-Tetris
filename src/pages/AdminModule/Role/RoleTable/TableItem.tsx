@@ -13,7 +13,13 @@ type ColorMap = {
   UM: string;
   OM: string;
   AUM: string;
+  CM: string;
+  TM: string;
+  AM: string;
   EM: string;
+  IM: string;
+  RM: string;
+  ATM: string;
 };
 
 const TableItem: React.FC<TableItemProps> = ({ data }) => {
@@ -21,19 +27,38 @@ const TableItem: React.FC<TableItemProps> = ({ data }) => {
     UM: "#f44336",
     OM: "#2196f3",
     AUM: "#4caf50",
-    EM: "#b57a05",
+    CM: "#ff9800",
+    TM: "#9c27b0",
+    AM: "#00bcd4",
+    EM: "#ffc107",
+    IM: "#607d8b",
+    RM: "#795548",
+    ATM: "#3f51b5",
   };
 
   const transformAccess = (access: Access): string[] => {
     const dataArr: [string, string][] = Object.entries(access);
+    const seenKeys = new Set<string>();
     return dataArr
       .filter(([, value]) => value === "a")
-      .map(([key]) =>
-        key
-          .split("_")
-          .map((subword) => subword.charAt(0).toUpperCase())
-          .join("")
-      );
+      .map(([key]) => {
+        const subwords = key.split("_");
+        let processedKey = subwords
+        .map((subword) => subword.charAt(0).toUpperCase())
+        .join("");
+
+        if (seenKeys.has(processedKey)) {
+          // If the key has been seen, use the first and last letter of the first subword and the first letter of the second subword
+          processedKey = `${subwords[0].charAt(0).toUpperCase()}${subwords[0]
+            .charAt(subwords[0].length - 1)
+            .toUpperCase()}${subwords[1].charAt(0).toUpperCase()}`;
+        } else {
+          // Add the key to the set of seen keys
+          seenKeys.add(processedKey);
+        }
+
+        return processedKey;
+      });
   };
 
   //   console.log(accesses);
@@ -64,7 +89,11 @@ const TableItem: React.FC<TableItemProps> = ({ data }) => {
             </Pill>
           </Table.Td>
           <Table.Td style={{ width: "5%" }}>
-            <RoleActions id={item?.uid} name={item?.name} disabled={item?.super_admin} />
+            <RoleActions
+              id={item?.uid}
+              name={item?.name}
+              disabled={item?.super_admin}
+            />
           </Table.Td>
         </Table.Tr>
       ))}

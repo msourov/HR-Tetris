@@ -1,32 +1,15 @@
-import {
-  Box,
-  Button,
-  Card,
-  Loader,
-  Modal,
-  Pill,
-  SimpleGrid,
-  Text,
-} from "@mantine/core";
-import { LuPlusCircle } from "react-icons/lu";
-import { useDisclosure } from "@mantine/hooks";
+import { Box, Card, Loader, Pill, SimpleGrid, Text } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useGetDepartmentsQuery } from "../../../../features/api/departmentSlice";
-import AddNewDepartment from "../AddNewDepartment";
 
 const DepartmentList = () => {
-  const [opened, { open, close }] = useDisclosure(false);
-  const navigate = useNavigate();
   const {
     data: departmentData,
     isLoading,
     error,
   } = useGetDepartmentsQuery({ page: 1, limit: 10 });
-  console.log("departmentData", departmentData);
-
-  const toggleModal = () => {
-    close();
-  };
+  //   console.log("departmentData", departmentData);
+  const navigate = useNavigate();
 
   if (isLoading) {
     <Loader type="dots" />;
@@ -34,21 +17,9 @@ const DepartmentList = () => {
   if (error) {
     <p>Something went wrong.</p>;
   }
+
   return (
-    <Box>
-      <Box className="flex justify-end">
-        <Button
-          leftSection={<LuPlusCircle />}
-          // size="compact-sm"
-          color="black"
-          variant="light"
-          mt={-24}
-          mb={16}
-          onClick={open}
-        >
-          Add
-        </Button>
-      </Box>
+    <Box className="mt-6">
       <SimpleGrid
         cols={{ sm: 3, md: 5, xl: 6 }}
         spacing={{ base: 10, sm: "xl" }}
@@ -80,9 +51,6 @@ const DepartmentList = () => {
           </Card>
         ))}
       </SimpleGrid>
-      <Modal opened={opened} onClose={close} title="Add Department">
-        <AddNewDepartment toggleModal={toggleModal} />
-      </Modal>
     </Box>
   );
 };
