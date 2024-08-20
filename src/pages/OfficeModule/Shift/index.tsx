@@ -3,7 +3,7 @@ import { IconList, IconSettings } from "@tabler/icons-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const PolicyLayout = () => {
+const ShiftLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>("list");
@@ -51,4 +51,4 @@ const PolicyLayout = () => {
   );
 };
 
-export default PolicyLayout;
+export default ShiftLayout;

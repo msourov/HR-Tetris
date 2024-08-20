@@ -1,19 +1,16 @@
 /* Define hover styles */
 .control:hover {
   background-color: var(--mantine-color-dark-0);
-  /* border-radius: 0.5rem; */
 }
 .control:focus,
 .control:active {
   background-color: var(--mantine-color-dark-7);
   color: #ffffff;
-  /* border-radius: 0.5rem; */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 .control.active {
   background-color: var(--mantine-color-green-1);
   color: var(--mantine-color-green-9);
-  /* border-radius: 0.75rem; */
 }
 
 .link:hover,
@@ -23,10 +20,8 @@
     var(--mantine-color-gray-0),
     var(--mantine-color-dark-7)
   );
-  /* color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0)); */
 }
 
-/* Your existing CSS styles */
 .control {
   font-weight: 700;
   display: block;
@@ -36,33 +31,29 @@
   padding-inline: var(--mantine-spacing-lg);
   margin-block: 0.1rem;
   transition: color 0.3s ease;
-  color: var(--mantine-color-gray-6);
-  font-size: 0.8rem;
+  color: var(--mantine-color-gray-7);
+  font-size: 0.85rem;
   /* margin-inline: 0; */
 }
 
-.link {
-  font-weight: 500;
+/* .link {
   display: block;
   text-decoration: none;
   padding-block: var(--mantine-spacing-xs);
   padding-inline: var(--mantine-spacing-md);
   padding-left: var(--mantine-spacing-md);
   margin-block: var(--mantine-spacing-xs, 4px);
-  /* margin-left: var(--mantine-spacing-xl); */
-  font-size: 0.8rem;
+  font-size: 0.1rem;
   color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
   border-left: 1px solid
     light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-}
+} */
 
 .chevron {
   transition: transform 200ms ease;
 }
 
 .groupTitle {
-  /* font-size: 10px; */
-  font-weight: bold;
   margin-block: 0.75rem;
   color: #161616;
 }
@@ -71,10 +62,13 @@
   position: relative;
   padding-left: 1rem;
 }
+.label {
+  font-weight: 700;
+  color: #58616e;
+}
 
 .submenuItem {
   position: relative;
-  /* padding-left: 1.5rem; */
 }
 
 .submenuItem::before {

@@ -5,6 +5,8 @@ import { companyApi } from "./features/api/companySlice";
 import { recruitmentApi } from "./features/api/recruitmentSlice";
 import { departmentApi } from "./features/api/departmentSlice";
 import { designationApi } from "./features/api/designationSlice";
+import { shiftApi } from "./features/api/shift_schedule";
+import { policyApi } from "./features/api/policySlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +16,8 @@ const store = configureStore({
     [designationApi.reducerPath]: designationApi.reducer,
     [companyApi.reducerPath]: companyApi.reducer,
     [recruitmentApi.reducerPath]: recruitmentApi.reducer,
+    [shiftApi.reducerPath]: shiftApi.reducer,
+    [policyApi.reducerPath]: policyApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -22,7 +26,9 @@ const store = configureStore({
       departmentApi.middleware,
       designationApi.middleware,
       companyApi.middleware,
-      recruitmentApi.middleware
+      recruitmentApi.middleware,
+      shiftApi.middleware,
+      policyApi.middleware
     ),
 });
 

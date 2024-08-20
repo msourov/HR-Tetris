@@ -19,6 +19,7 @@ import { notifications } from "@mantine/notifications";
 import { useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../../../../features/api/userSlice";
 import { useGetRolesQuery } from "../../../../features/api/roleSlice";
+import ErrorAlert from "../../../../components/shared/ErrorAlert";
 
 const schema = z.object({
   active: z.boolean(),
@@ -36,7 +37,8 @@ const schema = z.object({
 type AddUserRequest = z.infer<typeof schema>;
 
 const AddNewUser = () => {
-  const [addUser, { isLoading }] = useCreateUserMutation();
+  const [addUser, { isLoading, error: createUserError }] =
+    useCreateUserMutation();
   const navigate = useNavigate();
   const {
     data: roles,
@@ -95,8 +97,12 @@ const AddNewUser = () => {
     return <div>Loading...</div>;
   }
 
-  if (rolesError) {
-    return <div>Error loading roles</div>;
+  if (rolesError || createUserError) {
+    return (
+      <ErrorAlert
+        message={rolesError ? "Error fetching roles" : "Error creating user"}
+      />
+    );
   }
 
   return (

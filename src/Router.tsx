@@ -26,6 +26,11 @@ import DepartmentList from "./pages/OfficeModule/Department/DepartmentList";
 import DesignationLayout from "./pages/OfficeModule/Designation";
 import EditDesignation from "./pages/OfficeModule/Designation/EditDesignation";
 import DesignationDetail from "./pages/OfficeModule/Designation/DesignationDetail";
+import ShiftLayout from "./pages/OfficeModule/Shift";
+import ShiftList from "./pages/OfficeModule/Shift/ShiftList";
+import PolicyLayout from "./pages/OfficeModule/Policy";
+import PolicyList from "./pages/OfficeModule/Policy/PolicyList";
+import ManagePolicy from "./pages/OfficeModule/Policy/EditPolicy";
 
 export const router = createBrowserRouter([
   {
@@ -125,6 +130,42 @@ export const router = createBrowserRouter([
                 path: ":designationName/detail",
                 element: <DesignationDetail />,
               },
+            ],
+          },
+          {
+            path: "shift",
+            element: <ShiftLayout />,
+            children: [
+              {
+                index: true,
+                element: <ShiftList />,
+              },
+              // {
+              //   path: "edit",
+              //   element: <EditDesignation />,
+              // },
+              // {
+              //   path: ":designationName/detail",
+              //   element: <DesignationDetail />,
+              // },
+            ],
+          },
+          {
+            path: "policies",
+            element: <PolicyLayout />,
+            children: [
+              {
+                index: true,
+                element: <PolicyList />,
+              },
+              {
+                path: "edit",
+                element: <ManagePolicy />,
+              },
+              // {
+              //   path: ":policyName/detail",
+              //   element: <DesignationDetail />,
+              // },
             ],
           },
           {

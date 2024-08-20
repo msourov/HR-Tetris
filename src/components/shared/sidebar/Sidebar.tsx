@@ -25,37 +25,37 @@ interface LinksGroupProps {
   isActive: boolean;
   link?: string;
   onClick: () => void;
+  isSingleGroup?: boolean;
+  icon?: React.ReactNode;
 }
 
 export function LinksGroup({
   label,
   isActive,
   onClick,
+  isSingleGroup = false,
+  icon,
 }: // link,
 LinksGroupProps & { isActive: boolean; onClick: () => void }) {
-  // const navigate = useNavigate();
   const handleClick: () => void = () => {
-    // if (link) {
-    //   navigate(link);
-    // }
     onClick();
   };
-  // console.log(activeLink);
   return (
-    <>
-      <UnstyledButton
-        className={`${classes.control} ${isActive ? classes.active : ""}`}
-        onClick={handleClick}
-      >
-        <Group justify="space-between" gap={0}>
-          <Box style={{ display: "flex", alignItems: "center" }}>
-            {/* <ThemeIcon size={30} className="bg-white text-black" /> */}
-            {/* <Icon style={{ width: rem(18), height: rem(18) }} /> */}
-            <Box ml="md">{label}</Box>
-          </Box>
-        </Group>
-      </UnstyledButton>
-    </>
+    <UnstyledButton
+      className={`${classes.control} ${isActive ? classes.active : ""} ${
+        isSingleGroup ? classes.singleGroup : ""
+      }`}
+      onClick={handleClick}
+    >
+      <Group justify="space-between" gap={0} ml={10}>
+        <Box style={{ display: "flex", alignItems: "center" }}>
+          {/* <ThemeIcon size={30} className="bg-white text-black" /> */}
+          {/* <Icon style={{ width: rem(18), height: rem(18) }} /> */}
+          {icon && <Box className="font-bold">{icon}</Box>}
+          <Box ml="sm">{label}</Box>
+        </Box>
+      </Group>
+    </UnstyledButton>
   );
 }
 
@@ -93,7 +93,7 @@ const sidebarData = [
       },
       {
         label: "Policy",
-        link: "/policy",
+        link: "/policies",
       },
       {
         label: "Holiday",
@@ -101,7 +101,7 @@ const sidebarData = [
       },
       {
         label: "Shift & Schedule",
-        link: "/shift_schedule",
+        link: "/shift",
       },
     ],
   },
@@ -249,11 +249,9 @@ export function Sidebar() {
           // backgroundColor:
           //   activeLink === "/" ? "var(--mantine-color-green-1)" : "white",
           color:
-            activeLink === "/"
-              ? "var(--mantine-color-green-9)"
-              : "var(--mantine-color-gray-6)",
+            activeLink === "/" ? "var(--mantine-color-green-9)" : "#58616E",
           fontSize: "0.8rem",
-          fontWeight: 600,
+          fontWeight: 700,
           paddingBlock: "0.75rem",
           borderRadius: "1rem",
           display: "flex",
@@ -271,13 +269,69 @@ export function Sidebar() {
           },
         }}
       >
-        <IconHome2 style={{ marginRight: "8px" }} />
+        <IconHome2 style={{ marginRight: "8px", width: "16px" }} />
         <span>Dashboard</span>
       </UnstyledButton>
       <Divider />
-      <Accordion transitionDuration={500}>
+      <Accordion
+        transitionDuration={500}
+        variant="filled"
+        classNames={{ label: classes.label }}
+      >
         {sidebarData.map((group, index) => (
-          <Accordion.Item
+          <Box key={index}>
+            {group.items.length === 1 ? (
+              <LinksGroup
+                key={group.items[0].label}
+                label={group.items[0].label}
+                isActive={activeLink === group.items[0].link}
+                onClick={() => handleLinkClick(group.items[0].link)}
+                icon={group.icon}
+              />
+            ) : (
+              <Accordion.Item
+                value={group?.title}
+                className={classes.customAccordionItem}
+              >
+                <Accordion.Control
+                  style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    transform: "translateY(-2px)",
+                    color: isGroupActive(group.items)
+                      ? "var(--mantine-color-green-9) "
+                      : "",
+                  }}
+                  icon={group?.icon}
+                  className={`${
+                    isGroupActive(group.items) ? "activeGroup" : ""
+                  }`}
+                >
+                  {group?.title}
+                </Accordion.Control>
+                <Accordion.Panel key={`sub${index}`}>
+                  {group.items.map((item) => (
+                    <Box key={item.label} className={classes.submenuItem}>
+                      <LinksGroup
+                        key={item.label}
+                        label={item.label}
+                        isActive={activeLink === item.link}
+                        onClick={() => handleLinkClick(item.link)}
+                      />
+                    </Box>
+                  ))}
+                </Accordion.Panel>
+              </Accordion.Item>
+            )}
+          </Box>
+        ))}
+      </Accordion>
+    </Box>
+  );
+}
+
+{
+  /* <Accordion.Item
             key={index}
             value={group?.title}
             className={classes.customAccordionItem}
@@ -285,27 +339,28 @@ export function Sidebar() {
             <Accordion.Control
               style={{
                 fontSize: "0.85rem",
+                fontWeight: "700 !important",
                 transform: "translateY(-2px)",
                 color: isGroupActive(group.items)
                   ? "var(--mantine-color-green-9) "
                   : "",
               }}
               icon={group?.icon}
-              className={`${classes.customAccordionControl} ${
-                isGroupActive(group.items) ? "activeGroup" : ""
-              }`}
+              className={`${isGroupActive(group.items) ? "activeGroup" : ""}`}
             >
               {group?.title}
             </Accordion.Control>
             <Accordion.Panel key={`sub${index}`}>
-              {/* {group?.items.map((item) => (
+            [comment start]
+              {group?.items.map((item) => ( 
                 <LinksGroup
                   key={item?.label}
                   label={item?.label}
                   isActive={activeLink === item?.link}
                   onClick={() => handleLinkClick(item?.link)}
                 />
-              ))} */}
+              ))}
+              [comment end]
               {group.items.map((item) => (
                 <Box key={item.label} className={classes.submenuItem}>
                   <LinksGroup
@@ -317,9 +372,5 @@ export function Sidebar() {
                 </Box>
               ))}
             </Accordion.Panel>
-          </Accordion.Item>
-        ))}
-      </Accordion>
-    </Box>
-  );
+          </Accordion.Item> */
 }

@@ -18,11 +18,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import {
-  useDeleteDesignationMutation,
-  useEditDesignationMutation,
-  useGetDesignationsQuery,
-} from "../../../../features/api/designationSlice";
-import AddNewDesignation from "../AddNewDesignation";
+  useDeletePolicyMutation,
+  useEditPolicyMutation,
+  useGetPoliciesQuery,
+} from "../../../../features/api/policySlice";
+import AddPolicy from "../AddPolicy";
 
 const schema = z.object({
   active: z.boolean(),
@@ -31,31 +31,28 @@ const schema = z.object({
 
 type EditDesignationType = z.infer<typeof schema>;
 
-const EditDesignation = () => {
+const ManagePolicy = () => {
   const [des, setDes] = useState<string>("");
   const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
-  const { data: designations } = useGetDesignationsQuery({
+  const { data: policies } = useGetPoliciesQuery({
     page: 1,
     limit: 10,
   });
-  const [editDesignation, { isLoading: editDesLoading }] =
-    useEditDesignationMutation();
+  const [editPolicy, { isLoading: editDesLoading }] = useEditPolicyMutation();
   const [deleteDesignation, { isLoading: deleteDesLoading }] =
-    useDeleteDesignationMutation();
+    useDeletePolicyMutation();
   const toggleModal = () => {
     addClose();
   };
 
-  const designationOptions = designations?.data.map((item) => ({
+  const policyOptions = policies?.data.map((item) => ({
     value: item?.uid,
     label: item?.name,
   }));
 
-  const designationDetail = designations?.data.find(
-    (item) => item?.uid === des
-  );
+  const policyDetail = policies?.data.find((item) => item?.uid === des);
 
   const {
     register,
@@ -68,26 +65,26 @@ const EditDesignation = () => {
   });
 
   useEffect(() => {
-    if (designationDetail) {
+    if (policyDetail) {
       reset({
-        name: designationDetail?.name,
-        active: designationDetail?.active,
+        name: policyDetail?.name,
+        active: policyDetail?.active,
       });
     }
-  }, [designationDetail, reset]);
+  }, [policyDetail, reset]);
 
   const activeStatus = watch("active");
 
-  const text = <Text fw={500}>Select Designation</Text>;
+  const text = <Text fw={500}>Select Policy</Text>;
 
   const onSubmit = async (data: EditDesignationType) => {
     console.log("submitted data", data);
-    const obj = {
-      ...data,
-      uid: des,
-    };
+    // const obj = {
+    //   ...data,
+    //   uid: des,
+    // };
     try {
-      await editDesignation(obj).unwrap();
+      //   await editPolicy(obj).unwrap();
       notifications.show({
         title: "Success!",
         message: "Succesfully updated designation",
@@ -143,12 +140,17 @@ const EditDesignation = () => {
           Add
         </Button>
       </Box>
-      <Modal opened={addOpened} onClose={addClose} title="Add Designation">
-        <AddNewDesignation toggleModal={toggleModal} />
+      <Modal
+        opened={addOpened}
+        onClose={addClose}
+        title="Add Policy"
+        size={"80%"}
+      >
+        <AddPolicy toggleModal={toggleModal} />
       </Modal>
       <Select
         label={text}
-        data={designationOptions}
+        data={policyOptions}
         value={des || ""}
         onChange={(value) => {
           if (value) {
@@ -161,7 +163,7 @@ const EditDesignation = () => {
       />
       {des && (
         <Paper shadow="sm" p="md" my={16}>
-          {designationDetail ? (
+          {policyDetail ? (
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextInput
                 label="Name"
@@ -192,7 +194,7 @@ const EditDesignation = () => {
           )}
         </Paper>
       )}
-      {designationDetail && (
+      {policyDetail && (
         <>
           <Box className="flex justify-end mt-10">
             <Button variant="light" color="red" onClick={openDelete}>
@@ -229,4 +231,4 @@ const EditDesignation = () => {
   );
 };
 
-export default EditDesignation;
+export default ManagePolicy;

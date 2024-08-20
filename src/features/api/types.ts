@@ -258,3 +258,74 @@ export interface DepartmentHelper {
   success: boolean;
   data: Departments[];
 }
+
+interface ShiftBase {
+  name: string;
+  active: boolean;
+  regular: boolean;
+  descriptions: string;
+  day_start_time: string;
+  day_end_time: string;
+  off_day: string;
+  start_time: string;
+  end_time: string;
+}
+
+export interface Shift extends ShiftBase {
+  id: number;
+  uid: string;
+  logs: Logs[];
+  create_at: string;
+  update_at: string;
+}
+
+export interface AllShiftResponse {
+  status_code: number;
+  success: boolean;
+  data: Shift[];
+  page: number;
+  limit: number;
+  total_items: number;
+}
+
+export interface ShiftDetailResponse {
+  status_code: number;
+  success: boolean;
+  data: Shift;
+}
+
+export interface ShiftCreateRequest extends ShiftBase {}
+
+export interface ShiftUpdateRequest extends ShiftBase {
+  uid: string;
+}
+
+export interface AllPolicy {
+  name: string;
+  uid: string;
+  id: number;
+  active: boolean;
+  descriptions: string;
+  is_approve: boolean | null;
+  logs: Logs[];
+  create_at: string;
+  update_at: string | null;
+}
+
+export interface Policy {
+  status_code: number;
+  success: boolean;
+  data: AllPolicy[];
+  page: number;
+  limit: number;
+  total_items: number;
+}
+
+export interface SinglePolicy {
+  status_code: number;
+  success: boolean;
+  data: AllPolicy;
+  page: number;
+  limit: number;
+  total_items: number;
+}

@@ -51,7 +51,11 @@ const OtpPage: React.FC = () => {
         console.error("Missing mobile or password");
       }
     } catch (err) {
-      setError("An error occurred during OTP verification");
+      const errorResponse = err as {
+        data?: { detail?: string };
+        status?: number;
+      };
+      setError(errorResponse?.data?.detail ?? null);
       console.error("OTP verification error:", err);
     }
   };

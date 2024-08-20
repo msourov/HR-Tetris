@@ -4,4 +4,6 @@ export const tagTypes = {
   COMPANY: "Company",
   DEPARTMENT: "Department",
   RECRUITMENT: "Recruitment",
+  SHIFT_SCHEDULE: "Shift_schedule",
+  POLICY: "Policy",
 };

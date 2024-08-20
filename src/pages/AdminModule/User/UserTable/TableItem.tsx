@@ -1,9 +1,10 @@
-import { Loader, Pill, Table, Text } from "@mantine/core";
+import { Loader, Pill, Table } from "@mantine/core";
 import "../../../../styles.css";
 import { User } from "../../../../features/api/types";
 import UserActions from "./UserActions";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
+import ErrorAlert from "../../../../components/shared/ErrorAlert";
 
 interface TableItemProps {
   data: User[];
@@ -22,7 +23,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
     <Loader type="dots" className="self-center" />;
   }
   if (error) {
-    <Text className="text-center">Error loading data</Text>;
+    <ErrorAlert message="Error fetching users" />;
   }
   return (
     <Table.Tbody>

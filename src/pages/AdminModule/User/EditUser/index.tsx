@@ -21,6 +21,7 @@ import {
   useGetUserDetailQuery,
 } from "../../../../features/api/userSlice";
 import { useGetRolesQuery } from "../../../../features/api/roleSlice";
+import ErrorAlert from "../../../../components/shared/ErrorAlert";
 
 const schema = z.object({
   active: z.boolean(),
@@ -107,7 +108,13 @@ const EditUser = () => {
   }
 
   if (detailError || rolesError) {
-    return <div>Error loading data</div>;
+    return (
+      <ErrorAlert
+        message={
+          rolesError ? "Error fetching roles" : "Error fetching user detail"
+        }
+      />
+    );
   }
 
   return (

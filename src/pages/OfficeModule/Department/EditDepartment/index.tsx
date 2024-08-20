@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import ErrorAlert from "../../../../components/shared/ErrorAlert";
 
 const schema = z.object({
   active: z.boolean(),
@@ -185,7 +186,7 @@ const EditDepartment = () => {
               </Button>
             </form>
           ) : (
-            <Text>Error Loading Data</Text>
+            <ErrorAlert message="Error updating department" />
           )}
         </Paper>
       )}
