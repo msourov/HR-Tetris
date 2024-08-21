@@ -10,11 +10,18 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { useGetPoliciesQuery } from "../../../../features/api/policySlice";
+import { useAuth } from "../../../../services/auth/useAuth";
 
 const PolicyList = () => {
   const [opened, setOpened] = useState(false);
-  const { data: policies } = useGetPoliciesQuery({ page: 1, limit: 100 });
-  console.log(policies);
+  const { logout } = useAuth();
+  const { data: policies, error } = useGetPoliciesQuery({
+    page: 1,
+    limit: 100,
+  });
+  if (error && "status" in error && error.status === 401) {
+    logout();
+  }
   return (
     <Box className="mt-6">
       <SimpleGrid
@@ -23,7 +30,14 @@ const PolicyList = () => {
         verticalSpacing={{ base: "md", sm: "xl" }}
       >
         {policies?.data.map((item) => (
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Card
+            shadow="sm"
+            padding="lg"
+            radius="md"
+            withBorder
+            style={{ display: "flex", flexDirection: "column", height: "100%" }}
+            key={item?.id}
+          >
             <Group justify="space-between" style={{ marginBottom: 5 }}>
               <Text fw={500}>{item?.name}</Text>
               <Badge color={item?.active ? "green" : "red"}>
@@ -32,19 +46,27 @@ const PolicyList = () => {
             </Group>
 
             <Text size="sm" style={{ lineHeight: 1.5 }}>
-              {item?.descriptions?.length > 100
-                ? `${item?.descriptions.substring(0, 100)}...`
-                : item?.descriptions}
+              {item?.descriptions?.length > 200 ? (
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: `${item?.descriptions.substring(0, 100)}...`,
+                  }}
+                />
+              ) : (
+                <span
+                  dangerouslySetInnerHTML={{ __html: item?.descriptions }}
+                />
+              )}
             </Text>
 
-            <Text size="xs" color="dimmed">
-              Created on: {new Date(item?.create_at).toLocaleDateString()}
+            <Text size="xs" color="dimmed" mb={10}>
+              Created: {new Date(item?.create_at).toLocaleDateString()}
             </Text>
 
             <Button
               size="xs"
               onClick={() => setOpened(true)}
-              style={{ marginTop: 10 }}
+              style={{ marginTop: "auto", width: "50%", marginInline: "auto" }}
               bg="orange"
             >
               See More

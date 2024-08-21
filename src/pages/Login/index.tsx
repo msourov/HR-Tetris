@@ -5,6 +5,7 @@ import {
   Paper,
   Container,
   Button,
+  Loader,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useForm } from "react-hook-form";
@@ -146,7 +147,11 @@ const Login = () => {
               className="rounded-lg"
               disabled={loading}
             >
-              Login
+              {!loading ? (
+                "Login"
+              ) : (
+                <Loader color="rgba(255, 255, 255, 1)" size={20} />
+              )}
             </Button>
           </form>
         </Paper>

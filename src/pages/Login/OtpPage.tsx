@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { TextInput, Button, Paper, Container } from "@mantine/core";
+import { TextInput, Button, Paper, Container, Loader } from "@mantine/core";
 import Cookies from "js-cookie";
 import { useLoginMutation } from "../../features/api/userSlice";
 
@@ -80,7 +80,11 @@ const OtpPage: React.FC = () => {
             className="rounded-lg"
             disabled={isLoading}
           >
-            Submit OTP
+            {!isLoading ? (
+              "Submit OTP"
+            ) : (
+              <Loader color="rgba(255, 255, 255, 1)" size={20} />
+            )}
           </Button>
         </form>
       </Paper>
