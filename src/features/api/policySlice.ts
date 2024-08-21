@@ -44,14 +44,19 @@ export const policyApi = createApi({
     }),
     uploadPolicy: builder.mutation<
       Response,
-      { upload_file: FormData; name: string }
+      { name: string; upload_file: File }
     >({
-      query: ({ name, upload_file }) => ({
-        url: `policy/create-file?${name}`,
-        method: "POST",
-        body: upload_file,
-      }),
+      query: ({ name, upload_file }) => {
+        const formData = new FormData();
+        formData.append("upload_file", upload_file);
+        return {
+          url: `policy/create-file?name=${encodeURIComponent(name)}`,
+          method: "POST",
+          body: formData,
+        };
+      },
     }),
+
     editPolicy: builder.mutation<
       Response,
       { uid: string; name: string; written_policy: string; active: boolean }

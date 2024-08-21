@@ -5,13 +5,14 @@ import { Provider } from "react-redux";
 import store from "./store.ts";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
-import "./index.css";
-import "@mantine/tiptap/styles.css";
-import "@mantine/notifications/styles.css";
 import { ModalsProvider } from "@mantine/modals";
 import AddPolicy from "./pages/OfficeModule/Policy/AddPolicy/index.tsx";
 import CreatePolicy from "./pages/OfficeModule/Policy/AddPolicy/CreatePolicy.tsx";
 import UploadPolicyFile from "./pages/OfficeModule/Policy/AddPolicy/UploadFileForm.tsx";
+import "./index.css";
+import "@mantine/tiptap/styles.css";
+import "@mantine/notifications/styles.css";
+import "@mantine/dropzone/styles.css";
 
 const theme = createTheme({
   fontFamily: "Open Sans, sans-serif",
