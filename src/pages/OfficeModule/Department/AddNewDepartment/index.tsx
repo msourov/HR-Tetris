@@ -76,8 +76,9 @@ const AddNewDepartment: React.FC<AddNewDepartmentProps> = ({ toggleModal }) => {
 
           <Button
             type="submit"
-            className="rounded-lg mt-6 bg-black"
+            className="rounded-lg mt-6"
             disabled={isLoading}
+            bg="black"
           >
             {isLoading ? <Loader type="dots" size="sm" /> : "Save"}
           </Button>

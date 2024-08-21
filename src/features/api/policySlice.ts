@@ -2,7 +2,6 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
 import { Policy, SinglePolicy } from "./types";
-import AddPolicy from "../../pages/OfficeModule/Policy/AddPolicy";
 
 export const policyApi = createApi({
   reducerPath: "policyApi",
@@ -32,20 +31,30 @@ export const policyApi = createApi({
       }),
       providesTags: (_result, _error, { uid }) => [{ type: "Policy", id: uid }],
     }),
-    addPolicy: builder.mutation<
+    createPolicy: builder.mutation<
       Response,
-      { jsonData: AddPolicy; formData: FormData }
+      { name: string; written_policy: string }
     >({
       query: (data) => ({
-        url: "policy/create",
+        url: "policy/create-text",
         method: "POST",
         body: data,
       }),
       invalidatesTags: [{ type: "Policy", id: "LIST" }],
     }),
+    uploadPolicy: builder.mutation<
+      Response,
+      { upload_file: FormData; name: string }
+    >({
+      query: ({ name, upload_file }) => ({
+        url: `policy/create-file?${name}`,
+        method: "POST",
+        body: upload_file,
+      }),
+    }),
     editPolicy: builder.mutation<
       Response,
-      { uid: string; name: string; descriptions: string; active: boolean }
+      { uid: string; name: string; written_policy: string; active: boolean }
     >({
       query: (data) => ({
         url: "policy/update",
@@ -75,7 +84,8 @@ export const policyApi = createApi({
 export const {
   useGetPoliciesQuery,
   useGetPolicyDetailQuery,
-  useAddPolicyMutation,
+  useCreatePolicyMutation,
+  useUploadPolicyMutation,
   useEditPolicyMutation,
   useDeletePolicyMutation,
   useShowPolicyFileQuery,

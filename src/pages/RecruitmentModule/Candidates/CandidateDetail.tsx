@@ -88,6 +88,7 @@ const CandidateDetail = () => {
               maw={"160px"}
               onClick={downloadCV}
               c="black"
+              bg="orange"
               variant="outline"
             >
               Download CV

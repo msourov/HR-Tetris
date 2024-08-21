@@ -41,6 +41,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ Heading, Breadcrumb }) => {
           paddingInline: "0.65rem",
           borderRadius: "10px",
         }}
+        bg="orange"
         onClick={() => navigate(`add-${route}`)}
       >{`Add ${Heading}`}</Button>
     </Box>

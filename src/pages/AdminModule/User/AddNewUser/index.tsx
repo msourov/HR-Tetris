@@ -152,8 +152,9 @@ const AddNewUser = () => {
 
         <Button
           type="submit"
-          className="rounded-lg mt-6 bg-black"
+          className="rounded-lg mt-6"
           disabled={isLoading}
+          bg="black"
         >
           {!isLoading ? (
             "Save"

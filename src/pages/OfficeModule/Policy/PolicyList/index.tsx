@@ -25,26 +25,27 @@ const PolicyList = () => {
         {policies?.data.map((item) => (
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Group justify="space-between" style={{ marginBottom: 5 }}>
-              <Text fw={500}>{item.name}</Text>
-              <Badge color={item.active ? "green" : "red"}>
-                {item.active ? "Active" : "Inactive"}
+              <Text fw={500}>{item?.name}</Text>
+              <Badge color={item?.active ? "green" : "red"}>
+                {item?.active ? "Active" : "Inactive"}
               </Badge>
             </Group>
 
             <Text size="sm" style={{ lineHeight: 1.5 }}>
-              {item.descriptions.length > 100
-                ? `${item.descriptions.substring(0, 100)}...`
-                : item.descriptions}
+              {item?.descriptions?.length > 100
+                ? `${item?.descriptions.substring(0, 100)}...`
+                : item?.descriptions}
             </Text>
 
             <Text size="xs" color="dimmed">
-              Created on: {new Date(item.create_at).toLocaleDateString()}
+              Created on: {new Date(item?.create_at).toLocaleDateString()}
             </Text>
 
             <Button
               size="xs"
               onClick={() => setOpened(true)}
               style={{ marginTop: 10 }}
+              bg="orange"
             >
               See More
             </Button>

@@ -136,6 +136,7 @@ const EditDepartment = () => {
         <Button
           leftSection={<LuPlusCircle />}
           color="black"
+          bg="orange"
           variant="filled"
           // mt={-24}
           onClick={addOpen}
@@ -179,7 +180,8 @@ const EditDepartment = () => {
 
               <Button
                 type="submit"
-                className="rounded-lg mt-6 bg-black"
+                className="rounded-lg mt-6"
+                bg="black"
                 disabled={editDeptLoading}
               >
                 {editDeptLoading ? <Loader type="dots" size="sm" /> : "Save"}

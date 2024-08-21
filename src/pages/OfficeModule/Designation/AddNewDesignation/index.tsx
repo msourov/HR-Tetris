@@ -78,7 +78,8 @@ const AddNewDesignation: React.FC<AddNewDesignationProps> = ({
 
           <Button
             type="submit"
-            className="rounded-lg mt-6 bg-black"
+            className="rounded-lg mt-6"
+            bg="black"
             disabled={isLoading}
           >
             {isLoading ? <Loader type="dots" size="sm" /> : "Save"}

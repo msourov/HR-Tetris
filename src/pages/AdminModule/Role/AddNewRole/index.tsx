@@ -227,7 +227,7 @@ const AddNewRole = () => {
           />
         </Box>
 
-        <Button type="submit" className="rounded-lg mt-6 bg-black">
+        <Button type="submit" className="rounded-lg mt-6" bg="orange">
           Create
         </Button>
       </form>

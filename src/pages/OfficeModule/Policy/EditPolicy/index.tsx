@@ -22,18 +22,18 @@ import {
   useEditPolicyMutation,
   useGetPoliciesQuery,
 } from "../../../../features/api/policySlice";
-import AddPolicy from "../AddPolicy";
+import { modals } from "@mantine/modals";
 
 const schema = z.object({
   active: z.boolean(),
   name: z.string().min(2),
+  description: z.string().min(1, { message: "Description is required" }),
 });
 
 type EditDesignationType = z.infer<typeof schema>;
 
 const ManagePolicy = () => {
   const [des, setDes] = useState<string>("");
-  const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
   const { data: policies } = useGetPoliciesQuery({
@@ -43,9 +43,9 @@ const ManagePolicy = () => {
   const [editPolicy, { isLoading: editDesLoading }] = useEditPolicyMutation();
   const [deleteDesignation, { isLoading: deleteDesLoading }] =
     useDeletePolicyMutation();
-  const toggleModal = () => {
-    addClose();
-  };
+  // const toggleModal = () => {
+  //   addClose();
+  // };
 
   const policyOptions = policies?.data.map((item) => ({
     value: item?.uid,
@@ -79,12 +79,13 @@ const ManagePolicy = () => {
 
   const onSubmit = async (data: EditDesignationType) => {
     console.log("submitted data", data);
-    // const obj = {
-    //   ...data,
-    //   uid: des,
-    // };
+    const obj = {
+      ...data,
+      written_policy: data.description,
+      uid: des,
+    };
     try {
-      //   await editPolicy(obj).unwrap();
+      await editPolicy(obj).unwrap();
       notifications.show({
         title: "Success!",
         message: "Succesfully updated designation",
@@ -127,10 +128,36 @@ const ManagePolicy = () => {
     }
   };
 
+  // const handleFirstModalConfirm = () => {
+  //   console.log("modal clicked");
+  //   modals.openConfirmModal({
+  //     title: "This is the second modal",
+  //     labels: { confirm: "Close modal", cancel: "Back" },
+  //     closeOnConfirm: false,
+  //     children: (
+  //       <Text size="sm">
+  //         When this modal is closed, the state will revert to the first modal.
+  //       </Text>
+  //     ),
+  //     onConfirm: () => modals.closeAll(),
+  //   });
+  // };
+
+  const handleAddButtonClick = () => {
+    modals.openContextModal({
+      modal: "demonstration",
+      centered: true,
+      innerProps: {
+        // modalBody:
+        //   "This modal was defined in ModalsProvider, you can open it anywhere in you app with useModals hook",
+      },
+    });
+  };
+
   return (
     <Box className="my-6">
       <Box className="flex justify-end">
-        <Button
+        {/* <Button
           leftSection={<LuPlusCircle />}
           color="black"
           variant="filled"
@@ -138,16 +165,25 @@ const ManagePolicy = () => {
           onClick={addOpen}
         >
           Add
+        </Button> */}
+        <Button
+          leftSection={<LuPlusCircle />}
+          color="black"
+          variant="filled"
+          onClick={handleAddButtonClick}
+          bg="orange"
+        >
+          Add
         </Button>
       </Box>
-      <Modal
+      {/* <Modal
         opened={addOpened}
         onClose={addClose}
         title="Add Policy"
         size={"80%"}
       >
         <AddPolicy toggleModal={toggleModal} />
-      </Modal>
+      </Modal> */}
       <Select
         label={text}
         data={policyOptions}
@@ -183,7 +219,8 @@ const ManagePolicy = () => {
 
               <Button
                 type="submit"
-                className="rounded-lg mt-6 bg-black"
+                className="rounded-lg mt-6"
+                bg="black"
                 disabled={editDesLoading}
               >
                 {editDesLoading ? <Loader type="dots" size="sm" /> : "Save"}

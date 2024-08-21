@@ -259,7 +259,7 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
           />
         </Box>
 
-        <Button type="submit" className="rounded-lg mt-6 bg-black">
+        <Button type="submit" className="rounded-lg mt-6" bg="black">
           Save
         </Button>
       </form>

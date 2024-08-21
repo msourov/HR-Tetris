@@ -137,7 +137,7 @@ const EditDesignation = () => {
           leftSection={<LuPlusCircle />}
           color="black"
           variant="filled"
-          // mt={-24}
+          bg="orange"
           onClick={addOpen}
         >
           Add
@@ -181,8 +181,9 @@ const EditDesignation = () => {
 
               <Button
                 type="submit"
-                className="rounded-lg mt-6 bg-black"
+                className="rounded-lg mt-6"
                 disabled={editDesLoading}
+                bg="black"
               >
                 {editDesLoading ? <Loader type="dots" size="sm" /> : "Save"}
               </Button>
