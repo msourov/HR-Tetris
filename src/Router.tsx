@@ -31,6 +31,9 @@ import ShiftList from "./pages/OfficeModule/Shift/ShiftList";
 import PolicyLayout from "./pages/OfficeModule/Policy";
 import PolicyList from "./pages/OfficeModule/Policy/PolicyList";
 import ManagePolicy from "./pages/OfficeModule/Policy/EditPolicy";
+import PolicyDetail from "./pages/OfficeModule/Policy/PolicyDetail";
+import EditShift from "./pages/OfficeModule/Shift/EditShift";
+import HolidayLayout from "./pages/OfficeModule/Holiday";
 
 export const router = createBrowserRouter([
   {
@@ -140,10 +143,10 @@ export const router = createBrowserRouter([
                 index: true,
                 element: <ShiftList />,
               },
-              // {
-              //   path: "edit",
-              //   element: <EditDesignation />,
-              // },
+              {
+                path: "edit",
+                element: <EditShift />,
+              },
               // {
               //   path: ":designationName/detail",
               //   element: <DesignationDetail />,
@@ -162,10 +165,28 @@ export const router = createBrowserRouter([
                 path: "edit",
                 element: <ManagePolicy />,
               },
-              // {
-              //   path: ":policyName/detail",
-              //   element: <DesignationDetail />,
-              // },
+              {
+                path: ":policyName/detail",
+                element: <PolicyDetail />,
+              },
+            ],
+          },
+          {
+            path: "holidays",
+            element: <HolidayLayout />,
+            children: [
+              {
+                index: true,
+                element: <PolicyList />,
+              },
+              {
+                path: "edit",
+                element: <ManagePolicy />,
+              },
+              {
+                path: ":policyName/detail",
+                element: <PolicyDetail />,
+              },
             ],
           },
           {

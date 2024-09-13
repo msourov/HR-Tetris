@@ -5,7 +5,6 @@ import {
   Modal,
   Paper,
   Select,
-  Switch,
   Text,
   TextInput,
 } from "@mantine/core";
@@ -56,7 +55,6 @@ const ManagePolicy = () => {
 
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
     reset,
@@ -73,7 +71,7 @@ const ManagePolicy = () => {
     }
   }, [policyDetail, reset]);
 
-  const activeStatus = watch("active");
+  // const activeStatus = watch("active");
 
   const text = <Text fw={500}>Select Policy</Text>;
 
@@ -206,7 +204,7 @@ const ManagePolicy = () => {
                 {...register("name")}
                 error={errors.name?.message as React.ReactNode}
               />
-              <Box className="max-w-20 mt-4">
+              {/* <Box className="max-w-20 mt-4">
                 <Switch
                   size="lg"
                   onLabel="Disable"
@@ -215,7 +213,7 @@ const ManagePolicy = () => {
                   checked={activeStatus}
                   {...register("active")}
                 />
-              </Box>
+              </Box> */}
 
               <Button
                 type="submit"

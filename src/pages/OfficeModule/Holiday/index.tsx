@@ -1,5 +1,5 @@
-const Holiday = () => {
+const HolidayLayout = () => {
   return <div>Holiday</div>;
 };
 
-export default Holiday;
+export default HolidayLayout;

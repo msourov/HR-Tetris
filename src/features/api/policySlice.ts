@@ -24,9 +24,16 @@ export const policyApi = createApi({
             ]
           : [{ type: "Policy", id: "LIST" }],
     }),
-    getPolicyDetail: builder.query<SinglePolicy, { uid: string | undefined }>({
+    getPolicyDetail: builder.query<SinglePolicy, { uid: string }>({
       query: ({ uid }) => ({
         url: `policy/${uid}`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, { uid }) => [{ type: "Policy", id: uid }],
+    }),
+    getPolicyFile: builder.query<File, { uid: string }>({
+      query: ({ uid }) => ({
+        url: `policy/show/file/${uid}`,
         method: "GET",
       }),
       providesTags: (_result, _error, { uid }) => [{ type: "Policy", id: uid }],
@@ -89,6 +96,7 @@ export const policyApi = createApi({
 export const {
   useGetPoliciesQuery,
   useGetPolicyDetailQuery,
+  useGetPolicyFileQuery,
   useCreatePolicyMutation,
   useUploadPolicyMutation,
   useEditPolicyMutation,

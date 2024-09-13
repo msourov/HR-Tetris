@@ -97,7 +97,7 @@ const sidebarData = [
       },
       {
         label: "Holiday",
-        link: "/holiday",
+        link: "/holidays",
       },
       {
         label: "Shift & Schedule",
@@ -241,7 +241,11 @@ export function Sidebar() {
     groupItems.some((item: Item) => item.link === activeLink);
 
   return (
-    <Box m="0" p="0" className="overflow-y-auto h-full flex flex-col w-[15vw]">
+    <Box
+      m="0"
+      p="0"
+      className="overflow-y-auto h-full flex flex-col w-[15vw] bg-[#F3F4F6]"
+    >
       <UnstyledButton
         onClick={() => handleLinkClick("/")}
         classNames={classes}

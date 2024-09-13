@@ -307,7 +307,7 @@ export interface AllPolicy {
   active: boolean;
   descriptions: string;
   is_approve: boolean | null;
-  logs: Logs[];
+  logs: Logs;
   create_at: string;
   update_at: string | null;
 }
@@ -325,6 +325,28 @@ export interface SinglePolicy {
   status_code: number;
   success: boolean;
   data: AllPolicy;
+  page: number;
+  limit: number;
+  total_items: number;
+}
+
+export interface Holiday {
+  id: number;
+  uid: string;
+  name: string;
+  active: boolean;
+  is_approve: boolean;
+  holiday_at: string; // Date in ISO string format
+  descriptions: string;
+  logs: Logs[] | Logs; // Can be an array or a single object
+  create_at: string;
+  update_at: string | null; // Nullable field
+}
+
+export interface HolidayResponse {
+  status_code: number;
+  success: boolean;
+  data: Holiday[] | Holiday;
   page: number;
   limit: number;
   total_items: number;
