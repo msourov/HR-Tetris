@@ -58,7 +58,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ uid }) => {
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={onDocumentLoadError}
         >
-          {Array.from(new Array(numPages), (el, index) => (
+          {Array.from(new Array(numPages), (_, index) => (
             <Page key={`page_${index + 1}`} pageNumber={index + 1} />
           ))}
         </Document>
