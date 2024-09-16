@@ -1,5 +1,5 @@
 import { Box, Loader } from "@mantine/core";
-import { useGetShiftsQuery } from "../../../../features/api/shift_schedule";
+import { useGetShiftsQuery } from "../../../../features/api/shiftSlice";
 import ShiftCard from "./ShiftCard";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
 

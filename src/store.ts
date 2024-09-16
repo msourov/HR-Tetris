@@ -5,7 +5,7 @@ import { companyApi } from "./features/api/companySlice";
 import { recruitmentApi } from "./features/api/recruitmentSlice";
 import { departmentApi } from "./features/api/departmentSlice";
 import { designationApi } from "./features/api/designationSlice";
-import { shiftApi } from "./features/api/shift_schedule";
+import { shiftApi } from "./features/api/shiftSlice";
 import { policyApi } from "./features/api/policySlice";
 
 const store = configureStore({

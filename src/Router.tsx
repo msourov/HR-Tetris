@@ -26,13 +26,13 @@ import DepartmentList from "./pages/OfficeModule/Department/DepartmentList";
 import DesignationLayout from "./pages/OfficeModule/Designation";
 import EditDesignation from "./pages/OfficeModule/Designation/EditDesignation";
 import DesignationDetail from "./pages/OfficeModule/Designation/DesignationDetail";
-// import ShiftLayout from "./pages/OfficeModule/Shift";
-// import ShiftList from "./pages/OfficeModule/Shift/ShiftList";
+import ShiftLayout from "./pages/OfficeModule/Shift";
+import ShiftList from "./pages/OfficeModule/Shift/ShiftList";
 import PolicyLayout from "./pages/OfficeModule/Policy";
 import PolicyList from "./pages/OfficeModule/Policy/PolicyList";
 import ManagePolicy from "./pages/OfficeModule/Policy/EditPolicy";
 import PolicyDetail from "./pages/OfficeModule/Policy/PolicyDetail";
-// import EditShift from "./pages/OfficeModule/Shift/EditShift";
+import EditShift from "./pages/OfficeModule/Shift/EditShift";
 import HolidayLayout from "./pages/OfficeModule/Holiday";
 
 export const router = createBrowserRouter([
@@ -135,24 +135,24 @@ export const router = createBrowserRouter([
               },
             ],
           },
-          // {
-          //   path: "shift",
-          //   element: <ShiftLayout />,
-          //   children: [
-          //     {
-          //       index: true,
-          //       element: <ShiftList />,
-          //     },
-          //     {
-          //       path: "edit",
-          //       element: <EditShift />,
-          //     },
-          //     // {
-          //     //   path: ":designationName/detail",
-          //     //   element: <DesignationDetail />,
-          //     // },
-          //   ],
-          // },
+          {
+            path: "shift",
+            element: <ShiftLayout />,
+            children: [
+              {
+                index: true,
+                element: <ShiftList />,
+              },
+              {
+                path: "edit",
+                element: <EditShift />,
+              },
+              // {
+              //   path: ":designationName/detail",
+              //   element: <DesignationDetail />,
+              // },
+            ],
+          },
           {
             path: "policies",
             element: <PolicyLayout />,

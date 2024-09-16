@@ -23,9 +23,9 @@ const ShiftCard: React.FC<ShiftCardProps> = ({ shift }) => {
         <Text size="xs">End: {shift.end_time}</Text>
       </Group>
 
-      <Text size="xs" style={{ marginTop: 10 }}>
+      {/* <Text size="xs" style={{ marginTop: 10 }}>
         Logs: {shift.logs.length}
-      </Text>
+      </Text> */}
     </Card>
   );
 };

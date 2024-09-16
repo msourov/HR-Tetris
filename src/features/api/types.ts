@@ -263,10 +263,10 @@ interface ShiftBase {
   name: string;
   active: boolean;
   regular: boolean;
-  descriptions: string;
+  descriptions?: string;
   day_start_time: string;
   day_end_time: string;
-  off_day: string;
+  off_day?: string;
   start_time: string;
   end_time: string;
 }
