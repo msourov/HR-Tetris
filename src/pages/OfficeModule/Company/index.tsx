@@ -1,4 +1,4 @@
-import { Box, Image, Text } from "@mantine/core";
+import { Box, Text } from "@mantine/core";
 import { useGetCompanyQuery } from "../../../features/api/companySlice";
 import { IconMapPin, IconPhone } from "@tabler/icons-react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -28,14 +28,15 @@ const Company = () => {
   return (
     <Box className="relative w-[95%] my-8 mx-auto bg-white rounded-lg drop-shadow-lg border-2 border-[#d4af37] p-10 mt-[5rem]">
       <Box className="top-8 left-4 flex z-10 justify-between">
-        <Image
+        {/* <Image
           radius="md"
           fit="contain"
           src="./assets/logo.jpg"
           className=" w-[250px] z-10 -top-10 mx-1 fixed"
-        />
+        /> */}
         <Text className="ml-auto text-gray-500 absolute -top-3.5 right-4 px-1 bg-white  z-10">
-          www.infozillionbd.com
+          {/* www.infozillionbd.com */}
+          www.xyzbd.com
         </Text>
       </Box>
       <Box className="flex justify-between items-start pt-10">

@@ -34,6 +34,9 @@ import ManagePolicy from "./pages/OfficeModule/Policy/EditPolicy";
 import PolicyDetail from "./pages/OfficeModule/Policy/PolicyDetail";
 import EditShift from "./pages/OfficeModule/Shift/EditShift";
 import HolidayLayout from "./pages/OfficeModule/Holiday";
+import EmployeeLayout from "./pages/EmployeeModule";
+import EmplyeeTable from "./pages/EmployeeModule/EmployeeTable";
+import AddEmployee from "./pages/EmployeeModule/AddEmployee";
 
 export const router = createBrowserRouter([
   {
@@ -50,7 +53,7 @@ export const router = createBrowserRouter([
             element: <Dashboard />,
           },
           {
-            path: "role",
+            path: "roles",
             element: <Role />,
             children: [
               {
@@ -64,7 +67,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "user",
+            path: "users",
             element: <User />,
             children: [
               {
@@ -187,6 +190,28 @@ export const router = createBrowserRouter([
                 path: ":policyName/detail",
                 element: <PolicyDetail />,
               },
+            ],
+          },
+          {
+            path: "employees",
+            element: <EmployeeLayout />,
+            children: [
+              {
+                index: true,
+                element: <EmplyeeTable />,
+              },
+              {
+                path: "add-employee",
+                element: <AddEmployee />,
+              },
+              // {
+              //   path: ":uid/detail",
+              //   element: <EmplyeeDetail />,
+              // },
+              // {
+              //   path: ":uid/edit",
+              //   element: <EditUser />,
+              // },
             ],
           },
           {

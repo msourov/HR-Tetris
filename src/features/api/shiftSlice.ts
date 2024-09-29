@@ -7,6 +7,7 @@ import {
   Response,
   ShiftCreateRequest,
   ShiftDetailResponse,
+  ShiftHelper,
   ShiftUpdateRequest,
 } from "./types";
 
@@ -97,6 +98,12 @@ export const shiftApi = createApi({
         ],
       }
     ),
+    shiftHelper: builder.query<ShiftHelper, void>({
+      query: () => ({
+        url: "shifts/helper",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -108,4 +115,5 @@ export const {
   useDeleteShiftMutation,
   useUpdateShiftStatusMutation,
   useRegularShiftMutation,
+  useShiftHelperQuery,
 } = shiftApi;

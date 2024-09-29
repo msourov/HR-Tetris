@@ -1,30 +1,37 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
-import { Policy, SinglePolicy } from "./types";
+import { PolicyResponse } from "./types";
 
 export const policyApi = createApi({
   reducerPath: "policyApi",
   baseQuery: baseQuery,
   tagTypes: [tagTypes.POLICY],
   endpoints: (builder) => ({
-    getPolicies: builder.query<Policy, { page: number; limit: number }>({
-      query: ({ page, limit }) => ({
-        url: `policy/all?page=${page}&limit=${limit}`,
-        method: "GET",
-      }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.data.map(({ uid }) => ({
-                type: "Policy" as const,
-                id: uid,
-              })),
-              { type: "Policy", id: "LIST" },
-            ]
-          : [{ type: "Policy", id: "LIST" }],
-    }),
-    getPolicyDetail: builder.query<SinglePolicy, { uid: string }>({
+    getPolicies: builder.query<PolicyResponse, { page: number; limit: number }>(
+      {
+        query: ({ page, limit }) => ({
+          url: `policy/all?page=${page}&limit=${limit}`,
+          method: "GET",
+        }),
+        providesTags: (result) =>
+          result
+            ? Array.isArray(result.data)
+              ? [
+                  ...result.data.map(({ uid }) => ({
+                    type: "Policy" as const,
+                    id: uid,
+                  })),
+                  { type: "Policy", id: "LIST" },
+                ]
+              : [
+                  { type: "Policy", id: result.data.uid },
+                  { type: "Policy", id: "LIST" },
+                ]
+            : [{ type: "Policy", id: "LIST" }],
+      }
+    ),
+    getPolicyDetail: builder.query<PolicyResponse, { uid: string }>({
       query: ({ uid }) => ({
         url: `policy/${uid}`,
         method: "GET",
@@ -62,6 +69,7 @@ export const policyApi = createApi({
           body: formData,
         };
       },
+      invalidatesTags: [{ type: "Policy", id: "LIST" }],
     }),
 
     editPolicy: builder.mutation<

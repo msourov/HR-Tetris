@@ -18,11 +18,11 @@ const UserDetail: React.FC = () => {
 
   const user = data?.data;
 
-  const formatDate = (date: Date | null | undefined) => {
+  const formatDate = (date: string | null | undefined) => {
     if (!date) return "N/A";
-    return date.toLocaleString();
+    return new Date(date).toLocaleString();
   };
-
+  console.log(data);
   return (
     <Box p="md">
       <Title order={2} mb="md">
@@ -49,12 +49,12 @@ const UserDetail: React.FC = () => {
         <Text w={500}>Active: {user?.active ? "Yes" : "No"}</Text>
       </Box>
       <Divider my="sm" />
-      <Box mb="sm">
+      {/* <Box mb="sm">
         <Text w={500}>Logs:</Text>
         <Text>{user?.logs.admin}</Text>
         <Text>{user?.logs.message}</Text>
         <Text>Created At: {formatDate(user?.logs?.create_at)}</Text>
-      </Box>
+      </Box> */}
       <Divider my="sm" />
       <Box mb="sm">
         <Text w={500}>Created At:</Text>

@@ -5,7 +5,6 @@ import { useAuth } from "./useAuth";
 const ProtectedRoute = () => {
   const { isAuthenticated } = useAuth();
   const token = getToken();
-  console.log("token from getToken", token);
   if (token) {
     return <Outlet />;
   }

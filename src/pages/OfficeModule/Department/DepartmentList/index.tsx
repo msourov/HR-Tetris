@@ -16,9 +16,6 @@ const DepartmentList = () => {
   if (isLoading) {
     <Loader type="dots" />;
   }
-  if (error) {
-    <p>Something went wrong.</p>;
-  }
 
   if (error) {
     if ((error as FetchBaseQueryError).status === 401) {

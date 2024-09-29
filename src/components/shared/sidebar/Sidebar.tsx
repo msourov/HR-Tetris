@@ -67,11 +67,11 @@ const sidebarData = [
       {
         label: "Role",
 
-        link: "/role",
+        link: "/roles",
       },
       {
         label: "User",
-        link: "/user",
+        link: "/users",
       },
     ],
   },
@@ -112,7 +112,7 @@ const sidebarData = [
       {
         label: "Employee List",
 
-        link: "/employee-list",
+        link: "/employees",
       },
       {
         label: "Attendance",
@@ -244,7 +244,7 @@ export function Sidebar() {
     <Box
       m="0"
       p="0"
-      className="overflow-y-auto h-full flex flex-col w-[15vw] bg-[#F3F4F6] min-w-10"
+      className="overflow-y-auto h-[100vh] flex flex-col w-[15vw] bg-[#F3F4F6] min-w-10"
       style={{ minWidth: "150px" }}
     >
       <UnstyledButton

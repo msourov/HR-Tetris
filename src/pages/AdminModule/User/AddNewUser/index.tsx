@@ -14,7 +14,6 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconX, IconCheck } from "@tabler/icons-react";
-
 import { notifications } from "@mantine/notifications";
 import { useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../../../../features/api/userSlice";

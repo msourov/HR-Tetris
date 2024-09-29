@@ -1,6 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
-import { DepartmentDetail, DepartmentResponse, Response } from "./types";
+import {
+  DepartmentDetail,
+  DepartmentResponse,
+  DesignationHelper,
+  Response,
+} from "./types";
 import { tagTypes } from "./tags";
 
 export const designationApi = createApi({
@@ -72,6 +77,12 @@ export const designationApi = createApi({
         { type: "Designation", id },
       ],
     }),
+    designationHelper: builder.query<DesignationHelper, void>({
+      query: () => ({
+        url: "designation/helper",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -80,4 +91,5 @@ export const {
   useAddDesignationMutation,
   useEditDesignationMutation,
   useDeleteDesignationMutation,
+  useDesignationHelperQuery,
 } = designationApi;
