@@ -3,8 +3,8 @@ import { GrUserManager } from "react-icons/gr";
 import { IconHome2 } from "@tabler/icons-react";
 
 // import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { IoPeopleOutline, IoTicketOutline } from "react-icons/io5";
 import { MdOutlineAccountBalance, MdOutlineInventory2 } from "react-icons/md";
@@ -223,15 +223,14 @@ interface Group {
 
 export function Sidebar() {
   const [activeLink, setActiveLink] = useState<string | null>(null);
-
+  const location = useLocation();
   const navigate = useNavigate();
-  // const location = useLocation();
 
-  // useEffect(() => {
-  //   const currentPath = location.pathname;
+  useEffect(() => {
+    const currentPath = location.pathname;
 
-  //   setActiveLink(currentPath);
-  // }, [location]);
+    setActiveLink(currentPath);
+  }, [location]);
   const handleLinkClick = (link: string) => {
     setActiveLink(link);
     navigate(link);
@@ -244,7 +243,7 @@ export function Sidebar() {
     <Box
       m="0"
       p="0"
-      className="overflow-y-auto h-[100vh] flex flex-col w-[15vw] bg-[#F3F4F6] min-w-10"
+      className="overflow-y-auto h-[100vh] flex flex-col w-[15vw] bg-[#102041] min-w-10"
       style={{ minWidth: "150px" }}
     >
       <UnstyledButton
@@ -253,8 +252,7 @@ export function Sidebar() {
         style={{
           // backgroundColor:
           //   activeLink === "/" ? "var(--mantine-color-green-1)" : "white",
-          color:
-            activeLink === "/" ? "var(--mantine-color-green-9)" : "#58616E",
+          color: activeLink === "/" ? "var(--mantine-color-green-5)" : "white",
           fontSize: "0.8rem",
           fontWeight: 700,
           paddingBlock: "0.75rem",
@@ -264,7 +262,7 @@ export function Sidebar() {
           marginInline: "1rem",
           alignItems: "center",
           ":hover": {
-            backgroundColor: "var(--mantine-color-dark-6)",
+            backgroundColor: "var(--mantine-color-dark-0)",
           },
           ":active": {
             backgroundColor: "var(--mantine-color-dark-7)",
@@ -282,6 +280,7 @@ export function Sidebar() {
         transitionDuration={500}
         variant="filled"
         classNames={{ label: classes.label }}
+        style={{}}
       >
         {sidebarData.map((group, index) => (
           <Box key={index}>
@@ -304,8 +303,8 @@ export function Sidebar() {
                     fontWeight: 700,
                     transform: "translateY(-2px)",
                     color: isGroupActive(group.items)
-                      ? "var(--mantine-color-green-9) "
-                      : "",
+                      ? "var(--mantine-color-green-9)"
+                      : "white",
                   }}
                   icon={group?.icon}
                   className={`${

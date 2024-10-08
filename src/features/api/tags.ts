@@ -8,4 +8,5 @@ export const tagTypes = {
   POLICY: "Policy",
   HOLIDAY: "Holiday",
   EMPLOYEE: "Employee",
+  OVERTIME: "Overtime",
 };

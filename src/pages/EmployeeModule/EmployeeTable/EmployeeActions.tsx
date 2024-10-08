@@ -1,4 +1,4 @@
-import { Box, Button, Loader, Menu, Modal, Text } from "@mantine/core";
+import { Box, Button, Drawer, Loader, Menu, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CiEdit } from "react-icons/ci";
@@ -15,18 +15,21 @@ interface EmplyeeActionProp {
 }
 
 const EmployeeActions: React.FC<EmplyeeActionProp> = ({ id }) => {
-  const [opened, { open, close }] = useDisclosure(false);
+  const [editOpened, { open: openEdit, close: closeEdit }] =
+    useDisclosure(false);
+  const [deleteModalOpened, { open: openDelete, close: closeDelete }] =
+    useDisclosure(false);
   const [deleteEmployee, { isLoading, error }] = useDeleteEmployeeMutation();
   const navigate = useNavigate();
 
-  const DeleteUser = async () => {
+  const DeleteEmployee = async () => {
+    console.log(id);
     try {
       const response = await deleteEmployee({ id }).unwrap();
       console.log(response);
-      close();
       notifications.show({
         title: "Success!",
-        message: "User Deleted Successfully",
+        message: "Employee Deleted Successfully",
         icon: <IconCheck />,
         color: "red",
         autoClose: 3000,
@@ -35,11 +38,13 @@ const EmployeeActions: React.FC<EmplyeeActionProp> = ({ id }) => {
       console.error(error);
       notifications.show({
         title: "Error!",
-        message: "Couldn't Delete user",
+        message: "Couldn't delete employee",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
       });
+    } finally {
+      closeDelete();
     }
   };
 
@@ -69,32 +74,40 @@ const EmployeeActions: React.FC<EmplyeeActionProp> = ({ id }) => {
           >
             View
           </Menu.Item>
-          <Menu.Item
-            leftSection={<CiEdit />}
-            onClick={() => navigate(`${id}/edit`)}
-          >
+          <Menu.Item leftSection={<CiEdit />} onClick={openEdit}>
             Edit
           </Menu.Item>
           <Menu.Item
             leftSection={<MdDeleteOutline />}
             className="text-red-600"
-            onClick={open}
+            onClick={openDelete}
           >
             Delete
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
-      <Modal opened={opened} onClose={close} centered className="text-center">
+      <Modal
+        opened={deleteModalOpened}
+        onClose={closeDelete}
+        centered
+        className="text-center"
+      >
         <Text>Are you sure you want to delete?</Text>
         <Box className="flex gap-2 justify-center mt-4">
-          <Button color="red" onClick={DeleteUser}>
+          <Button color="red" onClick={DeleteEmployee}>
             Confirm
           </Button>
-          <Button color="gray" onClick={close}>
+          <Button color="gray" onClick={closeDelete}>
             Cancel
           </Button>
         </Box>
       </Modal>
+      <Drawer
+        position="right"
+        opened={editOpened}
+        onClose={closeEdit}
+        title="Edit employee"
+      ></Drawer>
     </Box>
   );
 };

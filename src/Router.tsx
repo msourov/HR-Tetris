@@ -37,6 +37,8 @@ import HolidayLayout from "./pages/OfficeModule/Holiday";
 import EmployeeLayout from "./pages/EmployeeModule";
 import EmplyeeTable from "./pages/EmployeeModule/EmployeeTable";
 import AddEmployee from "./pages/EmployeeModule/AddEmployee";
+import EmployeeDetail from "./pages/EmployeeModule/EmplyeeDetail";
+import Overtime from "./pages/EmployeeModule/Overtime";
 
 export const router = createBrowserRouter([
   {
@@ -204,15 +206,15 @@ export const router = createBrowserRouter([
                 path: "add-employee",
                 element: <AddEmployee />,
               },
-              // {
-              //   path: ":uid/detail",
-              //   element: <EmplyeeDetail />,
-              // },
-              // {
-              //   path: ":uid/edit",
-              //   element: <EditUser />,
-              // },
+              {
+                path: ":uid/detail",
+                element: <EmployeeDetail />,
+              },
             ],
+          },
+          {
+            path: "overtime",
+            element: <Overtime />,
           },
           {
             path: "candidates",

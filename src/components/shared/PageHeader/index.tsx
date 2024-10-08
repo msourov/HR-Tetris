@@ -16,10 +16,12 @@ const PageHeader: React.FC<PageHeaderProps> = ({ Heading, Breadcrumb }) => {
   return (
     <Box
       w={"100%"}
-      bg={"#E6F7FF"}
       px={"2.75rem"}
       py={"1rem"}
       className="flex justify-between"
+      style={{
+        background: "linear-gradient(to right, #e0f7ff, #c3e8f9)",
+      }}
     >
       <div>
         <Text component="h1" size="xl" className="drop-shadow-2xl font-bold">

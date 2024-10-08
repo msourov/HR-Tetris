@@ -1,7 +1,7 @@
 // companyApi.ts
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
-import { CompanyResponse } from "./types";
+import { CompanyResponse, DashboardResponse } from "./types";
 
 export const companyApi = createApi({
   reducerPath: "companyApi",
@@ -15,7 +15,13 @@ export const companyApi = createApi({
         }),
       }
     ),
+    getDashboardResponse: builder.query<DashboardResponse, void>({
+      query: () => ({
+        url: "employee/dashboard",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetCompanyQuery } = companyApi;
+export const { useGetCompanyQuery, useGetDashboardResponseQuery } = companyApi;

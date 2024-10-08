@@ -1,16 +1,16 @@
 /* Define hover styles */
 .control:hover {
-  background-color: var(--mantine-color-dark-0);
+  background-color: var(--mantine-color-blue-9);
 }
 .control:focus,
 .control:active {
-  background-color: var(--mantine-color-dark-7);
-  color: #ffffff;
+  /* background-color: var(--mantine-color-dark-7); */
+  color: #102041;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 .control.active {
-  background-color: var(--mantine-color-green-1);
-  color: var(--mantine-color-green-9);
+  /* background-color: var(--mantine-color-dark-7); */
+  color: var(--mantine-color-green-5);
 }
 
 .link:hover,
@@ -31,7 +31,8 @@
   padding-inline: var(--mantine-spacing-lg);
   margin-block: 0.1rem;
   transition: color 0.3s ease;
-  color: var(--mantine-color-gray-7);
+  /* color: var(--mantine-color-gray-7); */
+  color: white;
   font-size: 0.85rem;
   /* margin-inline: 0; */
 }
@@ -61,10 +62,11 @@
 .customAccordionItem {
   position: relative;
   padding-left: 1rem;
+  background-color: #102041;
 }
 .label {
   font-weight: 700;
-  color: #58616e;
+  color: #ffffff;
 }
 
 .submenuItem {
@@ -93,7 +95,7 @@
 
 .customAccordionControl.activeGroup {
   background-color: var(--mantine-color-green-1);
-  color: var(--mantine-color-green-9);
+  color: var(--mantine-color-blue-9);
   border-radius: 0.75rem;
 }
 

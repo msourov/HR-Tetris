@@ -1,14 +1,12 @@
 import React from "react";
 import { Pill, Table } from "@mantine/core";
-import { Role } from "../../../../features/api/types";
+import { AccessPermissions, Role } from "../../../../features/api/types";
 import RoleActions from "./RoleActions";
 
 interface TableItemProps {
   data: Role[];
 }
-interface Access {
-  [key: string]: string;
-}
+
 type ColorMap = {
   UM: string;
   OM: string;
@@ -36,7 +34,8 @@ const TableItem: React.FC<TableItemProps> = ({ data }) => {
     ATM: "#3f51b5",
   };
 
-  const transformAccess = (access: Access): string[] => {
+  const transformAccess = (access: AccessPermissions): string[] => {
+    console.log("in transformacccess", access);
     const dataArr: [string, string][] = Object.entries(access);
     const seenKeys = new Set<string>();
     return dataArr
@@ -44,8 +43,8 @@ const TableItem: React.FC<TableItemProps> = ({ data }) => {
       .map(([key]) => {
         const subwords = key.split("_");
         let processedKey = subwords
-        .map((subword) => subword.charAt(0).toUpperCase())
-        .join("");
+          .map((subword) => subword.charAt(0).toUpperCase())
+          .join("");
 
         if (seenKeys.has(processedKey)) {
           // If the key has been seen, use the first and last letter of the first subword and the first letter of the second subword

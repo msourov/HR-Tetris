@@ -15,13 +15,15 @@ import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { randomId, useListState } from "@mantine/hooks";
-// import { notifications } from "@mantine/notifications";
-// import { IconCheck, IconX } from "@tabler/icons-react";
-// import { useNavigate } from "react-router-dom";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
 import { useDepartmentHelperQuery } from "../../../features/api/departmentSlice";
 import { useDesignationHelperQuery } from "../../../features/api/designationSlice";
-import { useMemo } from "react";
 import { useShiftHelperQuery } from "../../../features/api/shiftSlice";
+import { useMemo } from "react";
+import { useCreateEmployeeMutation } from "../../../features/api/employeeSlice";
+import { CreateEmployeePayload } from "../../../features/api/types";
 
 type Permissions = {
   label: string;
@@ -29,9 +31,9 @@ type Permissions = {
   checked: boolean;
   key: string;
 };
-type CreateRoleData = {
+type CreateEmployeeProps = {
   name: string;
-  mobile: string;
+  phone: string;
   email: string;
   password: string;
   joining_date: Date;
@@ -41,8 +43,8 @@ type CreateRoleData = {
   salary: number;
   department: string;
   designation: string;
-  shift: string;
-  permissions: Permissions[];
+  shift_and_schedule: string;
+  permissions?: Permissions[];
 };
 
 type EmployeeFormProps = {
@@ -52,7 +54,7 @@ type EmployeeFormProps = {
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
-  mobile: z
+  phone: z
     .string()
     .min(10, "Phone number must be at least 10 digits")
     .max(15, "Phone number must be at most 15 digits")
@@ -68,7 +70,7 @@ const schema = z.object({
     .min(6, "Employee ID must be at least 6 characters long"),
   department: z.string().min(1, "Department is required"),
   designation: z.string().min(1, "Designation is required"),
-  // shift: z.string().min(1, "Shift and schedule is required").optional(),
+  shift_and_schedule: z.string().min(1, "Shift and schedule is required"),
   permissions: z.array(
     z.object({
       label: z.string(),
@@ -219,8 +221,8 @@ const initialValues = [
 
 const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
   const [values, handlers] = useListState(initialValues);
-  // const navigate = useNavigate();
-
+  const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
+  const navigate = useNavigate();
   const { data: departments } = useDepartmentHelperQuery();
   const { data: designations } = useDesignationHelperQuery();
   const { data: shifts } = useShiftHelperQuery();
@@ -252,6 +254,15 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
     [shifts]
   );
 
+  const draftValues = JSON.parse(
+    sessionStorage.getItem("employeeDraftForm") || "{}"
+  );
+
+  const parseDate = (value: string) => {
+    const date = new Date(value);
+    return isNaN(date.getTime()) ? new Date() : date;
+  };
+
   const {
     register,
     handleSubmit,
@@ -262,27 +273,32 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: "",
-      mobile: "",
-      email: "",
-      password: "",
-      joining_date: new Date(),
-      employee_id: "",
-      marital_status: "Single",
-      bod: new Date(),
-      salary: 0,
-      department: "",
-      designation: "",
-      permissions: initialValues,
+      name: draftValues?.name || "",
+      phone: draftValues?.phone || "",
+      email: draftValues?.email || "",
+      password: draftValues?.password || "",
+      joining_date: draftValues?.joining_date
+        ? parseDate(draftValues?.joining_date)
+        : new Date(),
+      employee_id: draftValues?.employee_id || "",
+      marital_status: draftValues?.marital_status || "Single",
+      bod: draftValues?.bod ? parseDate(draftValues?.bod) : null,
+      salary: draftValues?.salary || 0,
+      department: draftValues?.department || "",
+      designation: draftValues?.designation || "",
+      shift_and_schedule: draftValues?.shift_and_schedule || "",
+      permissions: draftValues?.permissions || initialValues,
     },
   });
 
   const marital_status = watch("marital_status");
   const bod = watch("bod");
-  const department = watch("department");
-  const designation = watch("designation");
   const joining_date = watch("joining_date");
-  // const shift = watch("shift");
+
+  const saveDraft = () => {
+    const formValues = watch();
+    sessionStorage.setItem("employeeDraftForm", JSON.stringify(formValues));
+  };
 
   const prepareRoleData = (
     permissions: Permissions[]
@@ -293,53 +309,56 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
     }, {} as { [key: string]: string });
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: CreateEmployeeProps) => {
     console.log(data);
-    const preparedData = prepareRoleData(data.permissions);
-    // const createData: CreateRoleRequest = {
-    //   name: data.name,
-    //   active: data.status,
-    //   ...(preparedData as {
-    //     app_user_management: "a" | "i";
-    //     employee_management: "a" | "i";
-    //     user_management: "a" | "i";
-    //     office_management: "a" | "i";
-    //     clm_management: "a" | "i";
-    //     ticket_management: "a" | "i";
-    //     inventory_management: "a" | "i";
-    //     anouncement_management: "a" | "i";
-    //     recruitment_management: "a" | "i";
-    //   }),
-    // };
-    // console.log("createData", JSON.stringify(createData, undefined, 2));
-    // try {
-    //   const response = await createRole(createData).unwrap();
-    //   notifications.show({
-    //     title: "Success!",
-    //     message: "Role Created Successfully",
-    //     icon: <IconCheck />,
-    //     color: "green",
-    //     autoClose: 3000,
-    //   });
-    //   console.log(response);
-    //   navigate(-1);
-    // } catch (error) {
-    //   console.error("Failed to create role", error);
-    //   notifications.show({
-    //     title: "Error!",
-    //     message: "Couldn't create role",
-    //     icon: <IconX />,
-    //     color: "red",
-    //     autoClose: 3000,
-    //   });
-    // }
+    const preparedData = data.permissions
+      ? prepareRoleData(data.permissions)
+      : {};
+
+    const formattedData = {
+      ...data,
+      active: true,
+      is_probation: true,
+      company: "112233445566778899",
+      bod: data.bod?.toISOString(),
+      joining_date: data.joining_date?.toISOString(),
+    };
+    const payload = { ...formattedData, ...preparedData };
+    delete payload.permissions;
+    console.log(JSON.stringify(payload, undefined, 2));
+    try {
+      const response = await createEmployee(
+        payload as CreateEmployeePayload
+      ).unwrap();
+      sessionStorage.removeItem("employeeDraftForm");
+      console.log(response);
+      notifications.show({
+        title: "Success!",
+        message: "Employee Created Successfully",
+        icon: <IconCheck />,
+        color: "green",
+        autoClose: 3000,
+      });
+      console.log(response);
+      navigate(-1);
+    } catch (error) {
+      console.error("Failed to create employee", error);
+      notifications.show({
+        title: "Error!",
+        message: "Couldn't create employee",
+        icon: <IconX />,
+        color: "red",
+        autoClose: 3000,
+      });
+    }
   };
 
   const handleCheckboxChange = (index: number, checked: boolean) => {
     console.log(index, checked);
     handlers.setItemProp(index, "checked", checked);
-    const updatedPermissions = getValues("permissions").map((permission, i) =>
-      i === index ? { ...permission, checked } : permission
+    const updatedPermissions = getValues("permissions").map(
+      (permission: Permissions, i: number) =>
+        i === index ? { ...permission, checked } : permission
     );
     setValue("permissions", updatedPermissions);
   };
@@ -381,7 +400,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
                   autoComplete="no"
                   required
                   {...register("name")}
-                  error={errors.name?.message}
+                  error={errors.name?.message as string}
                 />
                 <TextInput
                   variant="filled"
@@ -390,8 +409,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
                   autoComplete="no"
                   required
                   radius="md"
-                  {...register("mobile")}
-                  error={errors.mobile?.message}
+                  {...register("phone")}
+                  error={errors.phone?.message as string}
                 />
                 <TextInput
                   variant="filled"
@@ -401,7 +420,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
                   required
                   radius="md"
                   {...register("email")}
-                  error={errors.email?.message}
+                  error={errors.email?.message as string}
                 />
                 <TextInput
                   variant="filled"
@@ -409,7 +428,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
                   placeholder="******"
                   type="password"
                   {...register("password")}
-                  error={errors.password?.message}
+                  error={errors.password?.message as string}
                 />
                 <DatePickerInput
                   variant="filled"
@@ -426,7 +445,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
                   label="Employee ID"
                   placeholder="EMP12345"
                   {...register("employee_id")}
-                  error={errors.employee_id?.message}
+                  error={errors.employee_id?.message as string}
                 />
                 <Select
                   variant="filled"
@@ -437,7 +456,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
                   onChange={(value) =>
                     setValue("marital_status", value as "Married" | "Single")
                   }
-                  error={errors.marital_status?.message}
+                  error={errors.marital_status?.message as string}
                 />
               </>
             )}
@@ -458,39 +477,53 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
                   variant="filled"
                   label="Select department"
                   data={departmentOptions}
-                  value={department}
+                  value={watch("department")}
                   onChange={(value) => {
                     if (value) setValue("department", value);
                   }}
-                  error={errors.department ? errors.department.message : null}
+                  error={
+                    errors.department
+                      ? (errors.department.message as string)
+                      : null
+                  }
                 />
                 <Select
                   variant="filled"
                   label="Select Designation"
                   data={designationOptions}
-                  value={designation}
+                  value={watch("designation")}
                   onChange={(value) => {
                     if (value) setValue("designation", value);
                   }}
-                  error={errors.designation ? errors.designation.message : null}
+                  error={
+                    errors.designation
+                      ? (errors.designation.message as string)
+                      : null
+                  }
                 />
-                {/* <Select
+                <Select
                   variant="filled"
                   label="Select Shift"
                   data={shiftOptions}
-                  value={shift}
+                  value={watch("shift_and_schedule")}
                   onChange={(value) => {
-                    if (value) setValue("shift", value);
+                    if (value) setValue("shift_and_schedule", value);
                   }}
-                  error={errors.shift ? errors.shift.message : null}
-                /> */}
+                  error={
+                    errors.shift_and_schedule
+                      ? (errors.shift_and_schedule.message as string)
+                      : null
+                  }
+                />
                 <NumberInput
                   variant="filled"
                   label="Salary"
                   placeholder="Enter salary"
                   value={watch("salary")}
                   onChange={(value) => setValue("salary", Number(value) || 0)}
-                  error={errors.salary ? errors.salary.message : null}
+                  error={
+                    errors.salary ? (errors.salary.message as string) : null
+                  }
                   min={0}
                 />
               </>
@@ -518,7 +551,9 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
             <Button
               className="rounded-lg"
               bg="orange"
+              disabled={isLoading}
               onClick={() => {
+                saveDraft();
                 if (tab === "3") {
                   handleSubmit(onSubmit)();
                 } else {

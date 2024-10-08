@@ -10,7 +10,7 @@ interface getDataResponse<T> {
   data: T;
 }
 
-interface AccessPermissions {
+export interface AccessPermissions {
   user_management: string;
   office_management: string;
   app_user_management: string;
@@ -317,11 +317,16 @@ export interface Employee {
   active: boolean;
   phone: string;
   email: string;
+  address: string;
   bod: string;
+  marital_status: "string";
   salary: number;
   joining_date: string;
   employee_id: string;
+  spouse_name: "string";
   emergency_contact: EmergencyContact;
+  work_location: string;
+  work_email: string;
   is_probation: boolean;
   probation_end_time: string;
   supervisor: boolean;
@@ -329,7 +334,7 @@ export interface Employee {
   is_admin: boolean;
   department: { uid: string; name: string };
   designation: { uid: string; name: string };
-  company: string;
+  company: { uid: string; name: string };
   shift_and_schedule: { uid: string; name: string };
   leave_manage: null;
   temp_shift_and_schedule: boolean;
@@ -357,38 +362,118 @@ export interface AllEmployeesResponse {
 
 export interface CreateEmployeePayload {
   name: string;
-  active: boolean;
-  address: string;
-  home_phone: string;
   phone: string;
   email: string;
-  nid_bid: string;
   bod: string;
   marital_status: string;
-  spouse_name: string;
   salary: number;
-  joining_date: string;
   password: string;
+  joining_date: string;
   employee_id: string;
-  dependent_info: Record<string, unknown>;
-  em_name: string;
-  em_address: string;
-  em_relationship: string;
-  em_phone: string;
-  is_probation: boolean;
-  probation_end_time: string;
   department: string;
   designation: string;
   shift_and_schedule: string;
+  active: boolean;
+  is_probation: boolean;
   company: string;
-  work_location: string;
-  work_email: string;
-  supervisor: boolean;
-  executives: string[];
-  is_admin: boolean;
-  temp_shift_and_schedule: boolean;
-  temp_sas_start_time: string;
-  temp_sas_end_time: string;
-  documents: Documents;
-  employee_access: EmployeeAccess;
+
+  attendance_management: AccessLevel;
+  overtime_management: AccessLevel;
+  home_office_management: AccessLevel;
+  accounts_management: AccessLevel;
+  leave_management: AccessLevel;
+  announcement_management: AccessLevel;
+  certification_management: AccessLevel;
+  loan_equipment_management: AccessLevel;
+  reports_management: AccessLevel;
+  ticket_management: AccessLevel;
+  recruitment_management: AccessLevel;
+  employee_admin_management: AccessLevel;
+  overtime_approve_management: AccessLevel;
+  home_office_approve_management: AccessLevel;
+  accounts_admin_management: AccessLevel;
+  leave_approve_management: AccessLevel;
+  announcement_approve_management: AccessLevel;
+  certification_approve_management: AccessLevel;
+  loan_equipment_approve_management: AccessLevel;
+  reports_admin_management: AccessLevel;
+  ticket_admin_management: AccessLevel;
+  consumable_management: AccessLevel;
+}
+
+export type AccessLevel = "a" | "i";
+
+export interface DashboardResponse {
+  status_code: number;
+  success: boolean;
+  data: {
+    employee: {
+      total_employee: number;
+      active_employee: number;
+      inactive_employee: number;
+    };
+    leave: {
+      accept_leaves: number;
+      total_leaves: number;
+      pending_leaves: number;
+    };
+    shift_schedule: {
+      total: number;
+      active: number;
+      inactive: number;
+    };
+    designation: {
+      total: number;
+      active: number;
+      inactive: number;
+    };
+    department: {
+      total: number;
+      active: number;
+      inactive: number;
+    };
+    current_date: string;
+  };
+}
+
+export interface OvertimeLog {
+  admin: string;
+  message: string;
+  create_at: string;
+}
+
+export enum ApprovalStatus {
+  PENDING = "pending",
+  APPROVE = "approve",
+  REJECT = "reject",
+}
+
+export interface OvertimeData {
+  id: number;
+  uid: string;
+  employee_id: string;
+  purpose: string;
+  start_time: string;
+  end_time: string;
+  is_active: boolean;
+  is_approved: ApprovalStatus;
+  amount: number | null;
+  logs: OvertimeLog[] | OvertimeLog;
+  create_at: string;
+  update_at: string;
+}
+
+export interface OvertimeResponse {
+  status_code: number;
+  success: boolean;
+  data: OvertimeData[];
+  page: number;
+  limit: number;
+  total_items: number;
+}
+
+export interface ApproveOvertimeRequest {
+  uid: string;
+  is_approved: string;
+  reject_purpose?: string;
 }

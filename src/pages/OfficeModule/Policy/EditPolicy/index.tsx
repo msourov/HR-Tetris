@@ -22,6 +22,7 @@ import {
   useGetPoliciesQuery,
 } from "../../../../features/api/policySlice";
 import { modals } from "@mantine/modals";
+import { AllPolicy } from "../../../../features/api/types";
 
 const schema = z.object({
   active: z.boolean(),
@@ -46,12 +47,16 @@ const ManagePolicy = () => {
   //   addClose();
   // };
 
-  const policyOptions = policies?.data.map((item) => ({
-    value: item?.uid,
-    label: item?.name,
-  }));
+  const policyOptions = Array.isArray(policies?.data)
+    ? policies.data.map((item: AllPolicy) => ({
+        value: item?.uid,
+        label: item?.name,
+      }))
+    : [];
 
-  const policyDetail = policies?.data.find((item) => item?.uid === des);
+  const policyDetail = Array.isArray(policies?.data)
+    ? policies.data.find((item) => item?.uid === des)
+    : undefined;
 
   const {
     register,

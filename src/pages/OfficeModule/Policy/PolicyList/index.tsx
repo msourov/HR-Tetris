@@ -70,7 +70,7 @@ const PolicyList = () => {
   const policyTexts: AllPolicy[] = [];
 
   if (policies) {
-    policies?.data.map((policy) =>
+    Array.isArray(policies.data) && policies.data?.map((policy) =>
       policy.descriptions ? policyTexts.push(policy) : policyFiles.push(policy)
     );
   }
@@ -125,7 +125,9 @@ const PolicyList = () => {
         <PolicyModal
           opened={opened}
           onClose={() => setOpened(false)}
-          policyDetail={policyDetail || null}
+          policyDetail={policyDetail && 'data' in policyDetail
+            ? { data: Array.isArray(policyDetail.data) ? policyDetail.data[0] : policyDetail.data }
+            : null}
           policyDetailLoading={policyDetailLoading}
         />
       </SimpleGrid>
