@@ -444,7 +444,7 @@ export interface OvertimeLog {
 
 export enum ApprovalStatus {
   PENDING = "pending",
-  APPROVE = "approve",
+  APPROVE = "approved",
   REJECT = "reject",
 }
 

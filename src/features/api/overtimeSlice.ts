@@ -10,12 +10,24 @@ export const overtimeApi = createApi({
   endpoints: (builder) => ({
     allOvertime: builder.query<
       OvertimeResponse,
-      { page: number; limit: number }
+      {
+        page: number;
+        limit: number;
+        is_approved?: "pending" | "approved" | "rejected" | null;
+        start_time?: string;
+        end_time?: string;
+      }
     >({
-      query: ({ page, limit }) => ({
+      query: ({ page, limit, is_approved, start_time, end_time }) => ({
         url: "overtime/all",
         method: "GET",
-        params: { page, limit },
+        params: {
+          page,
+          limit,
+          ...(is_approved && { is_approved }),
+          ...(start_time && { start_time }),
+          ...(end_time && { end_time }),
+        },
       }),
       providesTags: (result) =>
         result
@@ -31,7 +43,7 @@ export const overtimeApi = createApi({
     approveOvertime: builder.mutation<void, ApproveOvertimeRequest>({
       query: (data) => ({
         url: "overtime/approval",
-        method: "POST",
+        method: "PUT",
         body: data,
       }),
       invalidatesTags: (_result, _error, { uid }) => [
