@@ -1,11 +1,11 @@
 import { Box, Loader, Popover, Select, Button, Text } from "@mantine/core";
-import { useAllOvertimeQuery } from "../../../features/api/overtimeSlice";
 import ErrorAlert from "../../../components/shared/ErrorAlert";
-// import OvertimeTable from "./OvertimeTable";
-import OvertimeList from "./OvertimeList";
+
 import { useState } from "react";
 import { IoFilter } from "react-icons/io5";
 import { DateTimePicker } from "@mantine/dates";
+import LeaveList from "./LeaveList";
+import { useAllLeaveQuery } from "../../../features/api/leaveSlice";
 
 const Overtime = () => {
   const [opened, setOpened] = useState(false);
@@ -19,7 +19,7 @@ const Overtime = () => {
     start_time: undefined as string | undefined,
     end_time: undefined as string | undefined,
   });
-  const { data, isLoading, error, refetch } = useAllOvertimeQuery(searchParams);
+  const { data, isLoading, error, refetch } = useAllLeaveQuery(searchParams);
 
   if (isLoading)
     return (
@@ -132,7 +132,7 @@ const Overtime = () => {
       </Box>
       <Box>
         {data && Array.isArray(data?.data) && data?.data.length > 0 ? (
-          <OvertimeList data={data?.data ?? []} />
+          <LeaveList data={data?.data ?? []} />
         ) : (
           <Text ta="center">No data found</Text>
         )}

@@ -244,7 +244,7 @@ export function Sidebar() {
       m="0"
       p="0"
       className="overflow-y-auto h-[100vh] flex flex-col w-[15vw] bg-[#102041] min-w-10"
-      style={{ minWidth: "150px" }}
+      style={{ minWidth: "240px" }}
     >
       <UnstyledButton
         onClick={() => handleLinkClick("/")}
@@ -280,7 +280,6 @@ export function Sidebar() {
         transitionDuration={500}
         variant="filled"
         classNames={{ label: classes.label }}
-        style={{}}
       >
         {sidebarData.map((group, index) => (
           <Box key={index}>

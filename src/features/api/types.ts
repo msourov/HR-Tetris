@@ -90,6 +90,21 @@ export interface PolicyResponse
   extends PaginatedApiResponse<AllPolicy | AllPolicy[]> {}
 export interface HolidayResponse
   extends PaginatedApiResponse<Holiday[] | Holiday> {}
+export interface OvertimeResponse
+  extends PaginatedApiResponse<Overtime[] | Overtime> {
+  start_time?: string;
+  end_time?: string;
+  is_approved?: string;
+  employee_id?: string;
+  is_active?: boolean;
+}
+export interface LeaveResponse extends PaginatedApiResponse<Leave[] | Leave> {
+  start_time?: string;
+  end_time?: string;
+  is_approved?: string;
+  employee_id?: string;
+  is_active?: boolean;
+}
 
 export interface LoginRequest {
   mobile: string;
@@ -436,19 +451,13 @@ export interface DashboardResponse {
   };
 }
 
-export interface OvertimeLog {
-  admin: string;
-  message: string;
-  create_at: string;
-}
-
 export enum ApprovalStatus {
   PENDING = "pending",
   APPROVE = "approved",
   REJECT = "reject",
 }
 
-export interface OvertimeData {
+export interface Overtime {
   id: number;
   uid: string;
   employee_id: string;
@@ -458,22 +467,47 @@ export interface OvertimeData {
   is_active: boolean;
   is_approved: ApprovalStatus;
   amount: number | null;
-  logs: OvertimeLog[] | OvertimeLog;
+  logs: Log[] | Log;
   create_at: string;
   update_at: string;
-}
-
-export interface OvertimeResponse {
-  status_code: number;
-  success: boolean;
-  data: OvertimeData[];
-  page: number;
-  limit: number;
-  total_items: number;
 }
 
 export interface ApproveOvertimeRequest {
   uid: string;
   is_approved: string;
   reject_purpose?: string;
+}
+
+export interface Leave {
+  id: number;
+  uid: string;
+  employee_id: string;
+  purpose: string;
+  leave_type: string;
+  leave_start_date: string;
+  leave_end_date: string;
+  is_active: boolean;
+  is_approved: "pending" | "approved" | "rejected" | null;
+  logs: Log;
+  create_at: string;
+  update_at: string;
+}
+
+export interface CreateLeaveRequest {
+  purpose: string;
+  employee_id: string;
+  leave_type: string;
+  leave_start_date: string;
+  leave_end_date: string;
+}
+
+export interface UpdateLeaveRequest extends CreateLeaveRequest {
+  uid: string;
+  amount: number;
+}
+
+export interface ApproveLeaveRequest {
+  uid: string;
+  is_approved: string;
+  reject_purpose: string;
 }

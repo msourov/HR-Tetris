@@ -10,19 +10,20 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconBan, IconX } from "@tabler/icons-react";
-import { useApproveOvertimeMutation } from "../../../../features/api/overtimeSlice";
 import { useState } from "react";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import { useDisclosure } from "@mantine/hooks";
+import { useApproveLeaveMutation } from "../../../../features/api/leaveSlice";
 
-interface OvertimeData {
+interface LeaveData {
   employee_id: string;
   uid: string;
   purpose: string;
-  start_time: string;
-  end_time: string;
+  leave_type: string;
+  leave_start_date: string;
+  leave_end_date: string;
   is_approved: string;
   error?:
     | {
@@ -33,21 +34,22 @@ interface OvertimeData {
     | SerializedError;
 }
 
-const CustomCard: React.FC<OvertimeData> = ({
+const CustomCard: React.FC<LeaveData> = ({
   employee_id,
   uid,
   purpose,
-  start_time,
-  end_time,
+  leave_type,
+  leave_start_date,
+  leave_end_date,
   is_approved,
-}: OvertimeData) => {
+}: LeaveData) => {
   const [value, setValue] = useState("");
   const [opened, { open, close }] = useDisclosure(false);
-  const [approveOvertime, { isLoading, error }] = useApproveOvertimeMutation();
+  const [approveLeave, { isLoading, error }] = useApproveLeaveMutation();
 
   const handleApprove = async () => {
     try {
-      await approveOvertime({ uid, is_approved: "approved" });
+      await approveLeave({ uid, is_approved: "approved", reject_purpose: "" });
       notifications.show({
         title: "Success!",
         message: "Overtime Approved Successfully",
@@ -70,7 +72,7 @@ const CustomCard: React.FC<OvertimeData> = ({
 
   const handleReject = async () => {
     try {
-      await approveOvertime({
+      await approveLeave({
         uid,
         is_approved: "rejected",
         reject_purpose: value,
@@ -119,40 +121,41 @@ const CustomCard: React.FC<OvertimeData> = ({
       {/* Left section (80%) */}
       <div className="w-5/6 pr-4">
         <Text className="text-lg font-semibold">{employee_id}</Text>
-        <Text className="mt-2 text-gray-700">{purpose}</Text>
-        {new Date(start_time).toLocaleDateString() ===
-        new Date(end_time).toLocaleDateString() ? (
+        <Text className="mt-1 text-gray-700">{purpose}</Text>
+        <Text className="mt-1 text-gray-500 italic">{leave_type}</Text> {/* Added leave type */}
+        {new Date(leave_start_date).toLocaleDateString() ===
+        new Date(leave_end_date).toLocaleDateString() ? (
           <div className="flex flex-col text-gray-600 mt-2">
             <Text className="text-sm">
               <Pill className="font-bold text-sm mb-2 text-blue-500">
-                {new Date(start_time).toLocaleDateString()}
+                {new Date(leave_start_date).toLocaleDateString()}
               </Pill>
             </Text>
             <Text className="text-sm">
               <Pill className="font-bold text-sm">
-                {new Date(start_time).toLocaleTimeString()}
+                {new Date(leave_start_date).toLocaleTimeString()}
               </Pill>
               <Text span c="blue">
                 {" "}
                 to{" "}
               </Text>
               <Pill className="font-bold text-sm">
-                {new Date(end_time).toLocaleTimeString()}
+                {new Date(leave_end_date).toLocaleTimeString()}
               </Pill>
             </Text>
           </div>
         ) : (
           <div className="flex flex-col text-gray-600 mt-2">
             <Text className="text-sm">
-              {new Date(start_time).toLocaleDateString()} -{" "}
-              {new Date(start_time).toLocaleTimeString()}
+              {new Date(leave_start_date).toLocaleDateString()} -{" "}
+              {new Date(leave_start_date).toLocaleTimeString()}
             </Text>
             <Text className="text-sm">
               <Text span c="blue" className="font-bold ">
                 To:{" "}
               </Text>
-              {new Date(end_time).toLocaleDateString()} -{" "}
-              {new Date(end_time).toLocaleTimeString()}
+              {new Date(leave_end_date).toLocaleDateString()} -{" "}
+              {new Date(leave_end_date).toLocaleTimeString()}
             </Text>
           </div>
         )}

@@ -1,10 +1,10 @@
 import { Box, ScrollArea } from "@mantine/core";
-import CustomCard from "./CustomCard";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Overtime } from "../../../../features/api/types";
+import { Leave } from "../../../../features/api/types";
+import CustomCard from "./CustomCard";
 
-const OvertimeList = ({ data }: { data: Overtime[] }) => {
+const OvertimeList = ({ data }: { data: Leave[] }) => {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
   return (

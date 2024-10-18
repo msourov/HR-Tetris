@@ -30,7 +30,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex gap-4 m-10 justify-around md:flex-col lg:flex-row md:gap-10">
+    <div className="flex gap-4 m-10 justify-center md:flex-col lg:flex-row md:gap-10">
       <motion.div
         className="lg:w-[45%] md:w-[80%] my-auto mx-auto"
         initial={{ opacity: 0, y: 50 }}
@@ -41,7 +41,7 @@ const Dashboard = () => {
         <Card
           shadow="sm"
           className="bg-gradient-to-r from-blue-500 to-blue-300 \
-          flex xl:flex-row justify-between gap-6 py-10 \
+          flex xl:flex-row justify-center gap-6 py-10 \
           rounded-lg hover:shadow-xl transition-shadow"
         >
           <Box

@@ -39,6 +39,7 @@ import EmplyeeTable from "./pages/EmployeeModule/EmployeeTable";
 import AddEmployee from "./pages/EmployeeModule/AddEmployee";
 import EmployeeDetail from "./pages/EmployeeModule/EmplyeeDetail";
 import Overtime from "./pages/EmployeeModule/Overtime";
+import Leave from "./pages/EmployeeModule/Leave";
 
 export const router = createBrowserRouter([
   {
@@ -215,6 +216,10 @@ export const router = createBrowserRouter([
           {
             path: "overtime",
             element: <Overtime />,
+          },
+          {
+            path: "leave",
+            element: <Leave />,
           },
           {
             path: "candidates",
