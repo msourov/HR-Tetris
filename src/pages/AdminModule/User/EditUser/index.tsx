@@ -54,7 +54,6 @@ const EditUser = () => {
       })),
     [roles]
   );
-  console.log("edituser");
 
   const {
     register,

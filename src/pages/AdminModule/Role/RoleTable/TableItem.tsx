@@ -35,7 +35,6 @@ const TableItem: React.FC<TableItemProps> = ({ data }) => {
   };
 
   const transformAccess = (access: AccessPermissions): string[] => {
-    console.log("in transformacccess", access);
     const dataArr: [string, string][] = Object.entries(access);
     const seenKeys = new Set<string>();
     return dataArr
@@ -60,7 +59,6 @@ const TableItem: React.FC<TableItemProps> = ({ data }) => {
       });
   };
 
-  //   console.log(accesses);
   return (
     <Table.Tbody>
       {data.map((item, index) => (

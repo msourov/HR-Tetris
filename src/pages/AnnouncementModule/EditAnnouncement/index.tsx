@@ -5,8 +5,8 @@ import {
   Modal,
   Paper,
   Select,
-  Switch,
   Text,
+  Textarea,
   TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -18,86 +18,92 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import {
-  useDeleteDesignationMutation,
-  useEditDesignationMutation,
-  useGetDesignationsQuery,
-} from "../../../../features/api/designationSlice";
-import AddNewDesignation from "../AddNewDesignation";
+  useDeleteAnnouncementMutation,
+  useGetAllAnnouncementsQuery,
+  useUpdateAnnouncementMutation,
+} from "../../../features/api/announcementSlice";
+import ErrorAlert from "../../../components/shared/ErrorAlert";
+import AddNewAnnouncement from "../AddNewAnnouncement";
 
+// Define the schema with z.object() and correct fields
 const schema = z.object({
-  active: z.boolean(),
-  name: z.string().min(2),
+  name: z
+    .string()
+    .min(4, { message: "Title must be at least 4 characters long" }),
+  descriptions: z
+    .string()
+    .min(10, { message: "Descriptions must be at least 10 characters long" }),
 });
 
-type EditDesignationType = z.infer<typeof schema>;
+type EditAnnouncementType = z.infer<typeof schema>;
 
-const EditDesignation = () => {
-  const [des, setDes] = useState<string>("");
+const EditAnnouncement = () => {
+  const [anmt, setAnmt] = useState<string>("");
   const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
-  const { data: designations } = useGetDesignationsQuery({
-    page: 1,
-    limit: 10,
-  });
-  const [editDesignation, { isLoading: editDesLoading }] =
-    useEditDesignationMutation();
-  const [deleteDesignation, { isLoading: deleteDesLoading }] =
-    useDeleteDesignationMutation();
+  const { data: announcements } = useGetAllAnnouncementsQuery();
+  const [updateAnnouncement, { isLoading: editAnmtLoading }] =
+    useUpdateAnnouncementMutation();
+  const [deleteAnnouncement, { isLoading: deleteAnmtLoading }] =
+    useDeleteAnnouncementMutation();
+
   const toggleModal = () => {
     addClose();
   };
 
-  const designationOptions = designations?.data.map((item) => ({
+  const announcementOptions = announcements?.data.map((item) => ({
     value: item?.uid,
     label: item?.name,
   }));
 
-  const designationDetail = designations?.data.find(
-    (item) => item?.uid === des
+  const announcementDetail = announcements?.data.find(
+    (item) => item?.uid === anmt
   );
 
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<EditDesignationType>({
+  } = useForm<EditAnnouncementType>({
     resolver: zodResolver(schema),
   });
 
   useEffect(() => {
-    if (designationDetail) {
+    if (announcementDetail) {
       reset({
-        name: designationDetail?.name,
-        active: designationDetail?.active,
+        name: announcementDetail?.name,
+        descriptions: announcementDetail?.descriptions,
       });
     }
-  }, [designationDetail, reset]);
+  }, [announcementDetail, reset]);
 
-  const activeStatus = watch("active");
+  const text = <Text fw={500}>Select Announcement</Text>;
 
-  const text = <Text fw={500}>Select Designation</Text>;
-
-  const onSubmit = async (data: EditDesignationType) => {
+  const onSubmit = async (data: EditAnnouncementType) => {
     const obj = {
       ...data,
-      uid: des,
+      uid: anmt,
     };
     try {
-      await editDesignation(obj).unwrap();
+      const response = await updateAnnouncement(obj).unwrap();
       notifications.show({
         title: "Success!",
-        message: "Succesfully updated designation",
+        message: response.message,
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
       });
+      reset({ name: "", descriptions: "" });
+      setAnmt("");
     } catch (error) {
       notifications.show({
         title: "Error!",
-        message: "Couldn't update designation",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Couldn't update announcement",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
@@ -107,11 +113,10 @@ const EditDesignation = () => {
 
   const handleDelete = async () => {
     try {
-      await deleteDesignation({ id: des }).unwrap();
-      setDes("");
+      const response = await deleteAnnouncement({ uid: anmt }).unwrap();
       notifications.show({
         title: "Success!",
-        message: "Designation deleted",
+        message: response.message,
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
@@ -119,13 +124,14 @@ const EditDesignation = () => {
     } catch (error) {
       notifications.show({
         title: "Error!",
-        message: "Couldn't delete designation",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Couldn't delete announcement",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
       });
-    } finally {
-      closeDelete();
     }
   };
 
@@ -135,64 +141,62 @@ const EditDesignation = () => {
         <Button
           leftSection={<LuPlusCircle />}
           color="black"
-          variant="filled"
           bg="orange"
+          variant="filled"
           onClick={addOpen}
         >
           Add
         </Button>
       </Box>
-      <Modal opened={addOpened} onClose={addClose} title="Add Designation">
-        <AddNewDesignation toggleModal={toggleModal} />
+      <Modal
+        opened={addOpened}
+        onClose={addClose}
+        size="xl"
+        title="Create Announcement"
+      >
+        <AddNewAnnouncement toggleModal={toggleModal} />
       </Modal>
       <Select
         label={text}
-        data={designationOptions}
-        value={des || ""}
-        onChange={(value) => {
-          if (value) {
-            setDes(value);
-          } else {
-            setDes("");
-          }
-        }}
+        data={announcementOptions}
+        value={anmt}
+        onChange={(value) => value && setAnmt(value)}
         mt={8}
       />
-      {des && (
+      {anmt && (
         <Paper shadow="sm" p="md" my={16}>
-          {designationDetail ? (
+          {announcementDetail ? (
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextInput
-                label="Name"
+                label="Title"
                 {...register("name")}
                 error={errors.name?.message as React.ReactNode}
               />
-              <Box className="max-w-20 mt-4">
-                <Switch
-                  size="lg"
-                  onLabel="Disable"
-                  offLabel="Activate"
-                  color="black"
-                  checked={activeStatus}
-                  {...register("active")}
-                />
-              </Box>
-
+              <Textarea
+                autosize
+                maxRows={15}
+                variant="filled"
+                placeholder="Enter description"
+                label="Descriptions"
+                mt={10}
+                {...register("descriptions")}
+                error={errors.descriptions?.message as React.ReactNode}
+              />
               <Button
                 type="submit"
                 className="rounded-lg mt-6"
-                disabled={editDesLoading}
                 bg="black"
+                disabled={editAnmtLoading}
               >
-                {editDesLoading ? <Loader type="dots" size="sm" /> : "Save"}
+                {editAnmtLoading ? <Loader type="dots" size="sm" /> : "Save"}
               </Button>
             </form>
           ) : (
-            <Text className="text-center">Error loading data</Text>
+            <ErrorAlert message="Error updating announcement" />
           )}
         </Paper>
       )}
-      {designationDetail && (
+      {announcementDetail && (
         <>
           <Box className="flex justify-end mt-10">
             <Button variant="light" color="red" onClick={openDelete}>
@@ -210,14 +214,14 @@ const EditDesignation = () => {
               <Button
                 color="red"
                 onClick={handleDelete}
-                disabled={deleteDesLoading}
+                disabled={deleteAnmtLoading}
               >
                 Confirm
               </Button>
               <Button
                 color="gray"
                 onClick={closeDelete}
-                disabled={deleteDesLoading}
+                disabled={deleteAnmtLoading}
               >
                 Cancel
               </Button>
@@ -229,4 +233,4 @@ const EditDesignation = () => {
   );
 };
 
-export default EditDesignation;
+export default EditAnnouncement;

@@ -10,7 +10,6 @@ import {
   Loader,
   ScrollArea,
   Text,
-  Title,
 } from "@mantine/core";
 import axios from "axios";
 
@@ -59,11 +58,7 @@ const CandidateDetail = () => {
   }
 
   return (
-    <Box p="md">
-      <Title order={3} mb="md">
-        Candidate Details
-      </Title>
-
+    <Box>
       <Grid>
         <Grid.Col span={12}>
           <Card shadow="sm" padding="lg" radius="md" withBorder>

@@ -10,6 +10,8 @@ import { policyApi } from "./features/api/policySlice";
 import { employeeApi } from "./features/api/employeeSlice";
 import { overtimeApi } from "./features/api/overtimeSlice";
 import { leaveApi } from "./features/api/leaveSlice";
+import { ticketApi } from "./features/api/ticketSlice";
+import { announcementApi } from "./features/api/announcementSlice";
 
 const store = configureStore({
   reducer: {
@@ -24,6 +26,8 @@ const store = configureStore({
     [employeeApi.reducerPath]: employeeApi.reducer,
     [overtimeApi.reducerPath]: overtimeApi.reducer,
     [leaveApi.reducerPath]: leaveApi.reducer,
+    [ticketApi.reducerPath]: ticketApi.reducer,
+    [announcementApi.reducerPath]: announcementApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -37,7 +41,9 @@ const store = configureStore({
       policyApi.middleware,
       employeeApi.middleware,
       overtimeApi.middleware,
-      leaveApi.middleware
+      leaveApi.middleware,
+      ticketApi.middleware,
+      announcementApi.middleware
     ),
 });
 

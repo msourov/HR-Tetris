@@ -28,7 +28,6 @@ ContextModalProps<{ modalBody: string }>) => {
       },
     });
   };
-  console.log("context", context);
   return (
     <>
       {/* <Text size="sm">{innerProps.modalBody}</Text> */}

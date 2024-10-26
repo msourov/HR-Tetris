@@ -81,7 +81,6 @@ const ManagePolicy = () => {
   const text = <Text fw={500}>Select Policy</Text>;
 
   const onSubmit = async (data: EditDesignationType) => {
-    console.log("submitted data", data);
     const obj = {
       ...data,
       written_policy: data.description,

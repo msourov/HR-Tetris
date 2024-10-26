@@ -2,10 +2,10 @@ import { Loader, Table } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
-import { OvertimeData } from "../../../../features/api/types";
+import { Overtime } from "../../../../features/api/types";
 
 interface TableItemProps {
-  data: OvertimeData[];
+  data: Overtime[];
   isLoading: boolean;
   error?:
     | {

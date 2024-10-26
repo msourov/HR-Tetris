@@ -14,11 +14,13 @@ const OvertimeList = ({ data }: { data: Leave[] }) => {
       transition={{ duration: 0.5 }}
       className="py-4 sm:max-h-[80vh] md:max-h-[80vh] lg:max-h-[80vh]"
     >
-      <ScrollArea offsetScrollbars h={"90vh"} style={{ overflowY: "hidden" }}>
-        <Box
-          className="mb-24 gap-4 flex flex-col"
-          style={{ minHeight: "90vh" }}
-        >
+      <ScrollArea
+        type="scroll"
+        offsetScrollbars
+        h={"90vh"}
+        style={{ overflowY: "hidden" }}
+      >
+        <Box className="mb-24 gap-4 flex flex-col">
           {data.map((item, index) => (
             <motion.div
               initial={{ opacity: 0, x: -100 * index }}
@@ -31,7 +33,10 @@ const OvertimeList = ({ data }: { data: Leave[] }) => {
               }}
               viewport={{ once: true }}
             >
-              <CustomCard key={item.id} {...item} />
+              <CustomCard
+                key={item.id}
+                {...{ ...item, is_approved: item.is_approved || "pending" }}
+              />
             </motion.div>
           ))}
         </Box>

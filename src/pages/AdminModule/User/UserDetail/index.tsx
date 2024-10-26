@@ -22,7 +22,6 @@ const UserDetail: React.FC = () => {
     if (!date) return "N/A";
     return new Date(date).toLocaleString();
   };
-  console.log(data);
   return (
     <Box p="md">
       <Title order={2} mb="md">

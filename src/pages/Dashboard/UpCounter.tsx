@@ -29,7 +29,7 @@ const UpCounter = ({ upperRange }: { upperRange: number }) => {
   );
 
   return (
-    <span className="text-blue-600 text-2xl font-bold float-right" ref={ref} />
+    <span className="text-blue-600 text-xl font-bold float-right" ref={ref} />
   );
 };
 

@@ -310,7 +310,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
   };
 
   const onSubmit = async (data: CreateEmployeeProps) => {
-    console.log(data);
     const preparedData = data.permissions
       ? prepareRoleData(data.permissions)
       : {};
@@ -325,7 +324,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
     };
     const payload = { ...formattedData, ...preparedData };
     delete payload.permissions;
-    console.log(JSON.stringify(payload, undefined, 2));
     try {
       const response = await createEmployee(
         payload as CreateEmployeePayload
@@ -339,7 +337,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
         color: "green",
         autoClose: 3000,
       });
-      console.log(response);
       navigate(-1);
     } catch (error) {
       console.error("Failed to create employee", error);
@@ -354,7 +351,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
   };
 
   const handleCheckboxChange = (index: number, checked: boolean) => {
-    console.log(index, checked);
     handlers.setItemProp(index, "checked", checked);
     const updatedPermissions = getValues("permissions").map(
       (permission: Permissions, i: number) =>

@@ -19,6 +19,7 @@ import { useDisclosure } from "@mantine/hooks";
 
 interface OvertimeData {
   employee_id: string;
+  employee_name: string;
   uid: string;
   purpose: string;
   start_time: string;
@@ -35,6 +36,7 @@ interface OvertimeData {
 
 const CustomCard: React.FC<OvertimeData> = ({
   employee_id,
+  employee_name,
   uid,
   purpose,
   start_time,
@@ -118,25 +120,25 @@ const CustomCard: React.FC<OvertimeData> = ({
     <Card className="w-full py-4 px-6 border border-gray-200 rounded-lg shadow-lg flex flex-row">
       {/* Left section (80%) */}
       <div className="w-5/6 pr-4">
-        <Text className="text-lg font-semibold">{employee_id}</Text>
+        <Text className="text-lg font-semibold">{employee_name}</Text>
         <Text className="mt-2 text-gray-700">{purpose}</Text>
         {new Date(start_time).toLocaleDateString() ===
         new Date(end_time).toLocaleDateString() ? (
           <div className="flex flex-col text-gray-600 mt-2">
-            <Text className="text-sm">
-              <Pill className="font-bold text-sm mb-2 text-blue-500">
+            <Text className="text-sm font-semibold">
+              <Pill className=" text-sm mb-2 text-blue-500">
                 {new Date(start_time).toLocaleDateString()}
               </Pill>
             </Text>
-            <Text className="text-sm">
-              <Pill className="font-bold text-sm">
+            <Text className="text-sm font-medium">
+              <Pill className="text-sm text-gray-600">
                 {new Date(start_time).toLocaleTimeString()}
               </Pill>
-              <Text span c="blue">
+              <Text span c="blue" className="font-bold w-10">
                 {" "}
-                to{" "}
+                -{" "}
               </Text>
-              <Pill className="font-bold text-sm">
+              <Pill className="text-sm text-gray-600">
                 {new Date(end_time).toLocaleTimeString()}
               </Pill>
             </Text>
@@ -161,15 +163,14 @@ const CustomCard: React.FC<OvertimeData> = ({
       {/* Right section (20%) */}
       <div className="w-1/6 flex flex-col items-end justify-start gap-4">
         <Badge
-          color={
+          className={`px-3 py-1 text-xs font-semibold w-[100px] ${
             is_approved === "approved"
-              ? "green"
+              ? "bg-green-100 text-green-700"
               : is_approved === "reject" || is_approved === "rejected"
-              ? "red"
-              : "yellow"
-          }
+              ? "bg-red-100 text-red-700"
+              : "bg-yellow-100 text-yellow-500"
+          }`}
           size="lg"
-          className="px-3 py-1"
         >
           {is_approved === "pending"
             ? is_approved.toUpperCase()

@@ -23,7 +23,6 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
   const closeModal = () => {
     closeEdit();
   };
-  // console.log("id", id);
   const DeleteRole = async () => {
     try {
       const response = await deleteRole({ id }).unwrap();

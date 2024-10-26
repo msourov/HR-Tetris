@@ -30,7 +30,6 @@ const AddNewDepartment: React.FC<AddNewDepartmentProps> = ({ toggleModal }) => {
   const activeStatus = watch("active");
 
   const onSubmit = async (data: AddDepartment) => {
-    console.log(data);
     try {
       const response = await addDepartment(data).unwrap();
       notifications.show({

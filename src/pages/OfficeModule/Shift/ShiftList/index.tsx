@@ -17,7 +17,6 @@ const ShiftList = () => {
     <ErrorAlert message="Error fetching shifts" />;
   }
 
-  console.log(shifts?.data);
   return (
     <Box
       mt={20}

@@ -134,10 +134,7 @@ const AddNewRole = () => {
     }, {} as { [key: string]: string });
   };
 
-  console.log("errors in formstate", errors);
-
   const onSubmit = async (data: CreateRoleData) => {
-    console.log(data);
     const preparedData = prepareRoleData(data.permissions);
     const createData: CreateRoleRequest = {
       name: data.name,
@@ -154,7 +151,6 @@ const AddNewRole = () => {
         recruitment_management: "a" | "i";
       }),
     };
-    console.log("createData", JSON.stringify(createData, undefined, 2));
     try {
       const response = await createRole(createData).unwrap();
       notifications.show({
@@ -179,7 +175,6 @@ const AddNewRole = () => {
   };
 
   const handleCheckboxChange = (index: number, checked: boolean) => {
-    console.log(index, checked);
     handlers.setItemProp(index, "checked", checked);
     const updatedPermissions = getValues("permissions").map((permission, i) =>
       i === index ? { ...permission, checked } : permission

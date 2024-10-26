@@ -18,7 +18,6 @@ const UserTable = () => {
       console.error("Error fetching roles:", error);
     }
   }
-  console.log("error in usertable", typeof error, error);
   return (
     <Box>
       <Table>

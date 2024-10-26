@@ -70,6 +70,9 @@ export interface DepartmentHelper extends getDataResponse<Departments[]> {}
 export interface DesignationHelper extends getDataResponse<Departments[]> {}
 export interface ShiftHelper extends getDataResponse<Departments[]> {}
 export interface ShiftDetailResponse extends getDataResponse<Shift> {}
+export interface AnnouncementResponse extends getDataResponse<Announcement[]> {}
+export interface SingleAnnouncementResponse
+  extends getDataResponse<Announcement> {}
 
 export interface PaginatedApiResponse<T> {
   status_code: number;
@@ -105,6 +108,8 @@ export interface LeaveResponse extends PaginatedApiResponse<Leave[] | Leave> {
   employee_id?: string;
   is_active?: boolean;
 }
+export interface TicketResponse
+  extends PaginatedApiResponse<Ticket[] | Ticket> {}
 
 export interface LoginRequest {
   mobile: string;
@@ -461,6 +466,7 @@ export interface Overtime {
   id: number;
   uid: string;
   employee_id: string;
+  employee_name: string;
   purpose: string;
   start_time: string;
   end_time: string;
@@ -482,6 +488,7 @@ export interface Leave {
   id: number;
   uid: string;
   employee_id: string;
+  employee_name: string;
   purpose: string;
   leave_type: string;
   leave_start_date: string;
@@ -510,4 +517,71 @@ export interface ApproveLeaveRequest {
   uid: string;
   is_approved: string;
   reject_purpose: string;
+}
+
+export interface Upload {
+  file_name: string;
+  file_path: string;
+  file_type: string;
+}
+
+export interface Chat {
+  message: string;
+  uploads: Upload[];
+  user_id: string;
+  create_at: string;
+  user_name: string;
+}
+
+export interface Ticket {
+  id: number;
+  uid: string;
+  employee_id: string;
+  name: string;
+  priority: string | null;
+  status: string;
+  descriptions: string | null;
+  active: boolean;
+  category: string | null;
+  logs: Log;
+  assignee: string | null;
+  create_at: string;
+  chat: Chat[];
+  update_at: string;
+}
+
+export interface CreateTicketRequest {
+  employee_id: string;
+  name?: string;
+  type: string;
+  message: string;
+  files?: File[];
+}
+
+export interface Announcement {
+  id: number;
+  uid: string;
+  name: string;
+  descriptions: string;
+  active: boolean;
+  is_approve: "pending" | "approved" | "rejected";
+  assignee: string | null;
+  creator_name: string;
+  department_name: string;
+  logs: Log[];
+  create_at: string;
+  update_at: string;
+}
+
+export interface Consumable {
+  uid: string;
+  name: string;
+  descriptions: string;
+  active: boolean;
+  quantity: number;
+  price: number;
+  buyer_name: string;
+  buyer_at: string;
+  created_at: string;
+  updated_at: string;
 }

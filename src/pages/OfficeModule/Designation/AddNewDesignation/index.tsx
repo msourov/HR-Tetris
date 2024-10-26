@@ -32,7 +32,6 @@ const AddNewDesignation: React.FC<AddNewDesignationProps> = ({
   const activeStatus = watch("active");
 
   const onSubmit = async (data: AddDesignation) => {
-    console.log(data);
     try {
       const response = await addDesignation(data).unwrap();
       notifications.show({

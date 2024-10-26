@@ -19,6 +19,7 @@ import { useApproveLeaveMutation } from "../../../../features/api/leaveSlice";
 
 interface LeaveData {
   employee_id: string;
+  employee_name: string;
   uid: string;
   purpose: string;
   leave_type: string;
@@ -36,6 +37,7 @@ interface LeaveData {
 
 const CustomCard: React.FC<LeaveData> = ({
   employee_id,
+  employee_name,
   uid,
   purpose,
   leave_type,
@@ -120,9 +122,10 @@ const CustomCard: React.FC<LeaveData> = ({
     <Card className="w-full py-4 px-6 border border-gray-200 rounded-lg shadow-lg flex flex-row">
       {/* Left section (80%) */}
       <div className="w-5/6 pr-4">
-        <Text className="text-lg font-semibold">{employee_id}</Text>
+        <Text className="text-lg font-semibold">{employee_name}</Text>
         <Text className="mt-1 text-gray-700">{purpose}</Text>
-        <Text className="mt-1 text-gray-500 italic">{leave_type}</Text> {/* Added leave type */}
+        <Text className="mt-1 text-gray-500 italic">{leave_type}</Text>{" "}
+        {/* Added leave type */}
         {new Date(leave_start_date).toLocaleDateString() ===
         new Date(leave_end_date).toLocaleDateString() ? (
           <div className="flex flex-col text-gray-600 mt-2">

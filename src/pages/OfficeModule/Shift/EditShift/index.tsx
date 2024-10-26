@@ -116,7 +116,6 @@ const EditShift = () => {
   }, [shiftDetail, reset]);
 
   const onSubmit = async (data: EditShiftType) => {
-    console.log(data);
     if (!shiftDetail || !shiftDetail.uid) {
       notifications.show({
         title: "Error!",
@@ -140,7 +139,6 @@ const EditShift = () => {
       start_time: data.start_date ? data.start_date.toISOString() : "",
       end_time: data.end_date ? data.end_date.toISOString() : "",
     };
-    console.log(JSON.stringify(formattedData, undefined, 2));
 
     try {
       const response = await editShift(formattedData).unwrap();
@@ -167,7 +165,6 @@ const EditShift = () => {
         setShiftUid("");
       }
     } catch (error) {
-      // console.log(JSON.stringify(error.data.detail));
       notifications.show({
         title: "Error!",
         message: "Couldn't update shift",

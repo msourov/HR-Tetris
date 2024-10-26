@@ -32,10 +32,12 @@ export const overtimeApi = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ uid }) => ({
-                type: "Overtime" as const,
-                id: uid,
-              })),
+              ...(Array.isArray(result.data)
+                ? result.data.map(({ uid }) => ({
+                    type: "Overtime" as const,
+                    id: uid,
+                  }))
+                : []),
               { type: "Overtime", id: "LIST" },
             ]
           : [{ type: "Overtime", id: "LIST" }],

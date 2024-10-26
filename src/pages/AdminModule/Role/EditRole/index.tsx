@@ -125,14 +125,13 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
   const [values, handlers] = useListState(initialValues);
   const { data: getRoleDetail, isLoading } = useGetRoleDetailQuery({ uid });
   const [editRole] = useEditRoleMutation();
-  console.log("id", uid);
   const {
     register,
     handleSubmit,
     watch,
     setValue,
     getValues,
-    formState: { errors },
+    // formState: { errors },
   } = useForm<EditRoleFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -140,7 +139,6 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
       permissions: initialValues,
     },
   });
-  console.log(JSON.stringify(getRoleDetail, undefined, 2));
 
   const activeStatus = watch("status");
 
@@ -169,10 +167,7 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
     }, {} as { [key: string]: string });
   };
 
-  console.log("errors in formstate", errors);
-
   const onSubmit = async (data: EditRoleFormData) => {
-    console.log(data);
     const preparedData = prepareEditRoleData(data.permissions);
     const editData: EditRoleRequest = {
       uid,
@@ -190,7 +185,6 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
         recruitment_management: "a" | "i";
       }),
     };
-    console.log("editData", JSON.stringify(editData, undefined, 2));
     try {
       await editRole(editData).unwrap();
       notifications.show({
@@ -214,7 +208,6 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
   };
 
   const handleCheckboxChange = (index: number, checked: boolean) => {
-    console.log(index, checked);
     handlers.setItemProp(index, "checked", checked);
     const updatedPermissions = getValues("permissions").map((permission, i) =>
       i === index ? { ...permission, checked } : permission

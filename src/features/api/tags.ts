@@ -10,4 +10,7 @@ export const tagTypes = {
   EMPLOYEE: "Employee",
   OVERTIME: "Overtime",
   LEAVE: "Leave",
+  TICKET: "Ticket",
+  ANNOUNCEMENT: "Announcement",
+  CONSUMABLE: "Consumable",
 };

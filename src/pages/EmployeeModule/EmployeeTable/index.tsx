@@ -13,8 +13,6 @@ const EmplyeeTable = () => {
     limit: 10,
   });
 
-  console.log(employees);
-
   return (
     <Box>
       <Table>

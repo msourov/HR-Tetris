@@ -23,7 +23,6 @@ const EmployeeActions: React.FC<EmplyeeActionProp> = ({ id }) => {
   const navigate = useNavigate();
 
   const DeleteEmployee = async () => {
-    console.log(id);
     try {
       const response = await deleteEmployee({ id }).unwrap();
       console.log(response);

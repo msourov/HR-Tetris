@@ -52,7 +52,6 @@ const CreatePolicy = ({ context, id }: AddPolicyProps) => {
   });
 
   const onSubmit = async (data: AddPolicy) => {
-    console.log(data);
     const obj = {
       name: data?.name,
       written_policy: data?.description,

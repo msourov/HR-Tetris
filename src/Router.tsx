@@ -40,6 +40,11 @@ import AddEmployee from "./pages/EmployeeModule/AddEmployee";
 import EmployeeDetail from "./pages/EmployeeModule/EmplyeeDetail";
 import Overtime from "./pages/EmployeeModule/Overtime";
 import Leave from "./pages/EmployeeModule/Leave";
+import TicketLayout from "./pages/TicketModule";
+import TicketList from "./pages/TicketModule/TicketList";
+import AnnouncementLayout from "./pages/AnnouncementModule";
+import AnnouncementList from "./pages/AnnouncementModule/AnnouncementList";
+import EditAnnnouncement from "./pages/AnnouncementModule/EditAnnouncement";
 
 export const router = createBrowserRouter([
   {
@@ -220,6 +225,52 @@ export const router = createBrowserRouter([
           {
             path: "leave",
             element: <Leave />,
+          },
+          {
+            path: "announcement",
+            element: <AnnouncementLayout />,
+            children: [
+              {
+                index: true,
+                element: <AnnouncementList />,
+              },
+              {
+                path: "edit",
+                element: <EditAnnnouncement />,
+              },
+              // {
+              //   path: "add-department",
+              //   element: (
+              //     <AddNewDepartment
+              //       toggleModal={function (): void {
+              //         throw new Error("Function not implemented.");
+              //       }}
+              //     />
+              //   ),
+              // },
+              {
+                path: ":departmentName/detail",
+                element: <DepartmentDetail />,
+              },
+            ],
+          },
+          {
+            path: "ticket",
+            element: <TicketLayout />,
+            children: [
+              {
+                index: true,
+                element: <TicketList />,
+              },
+              // {
+              //   path: "add-employee",
+              //   element: <AddEmployee />,
+              // },
+              // {
+              //   path: ":uid/detail",
+              //   element: <EmployeeDetail />,
+              // },
+            ],
           },
           {
             path: "candidates",

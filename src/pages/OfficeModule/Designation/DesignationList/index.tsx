@@ -7,7 +7,6 @@ const DesignationList = () => {
     isLoading,
     error,
   } = useGetDesignationsQuery({ page: 1, limit: 10 });
-  console.log("designationData", designationData);
 
   if (isLoading) {
     <Loader type="dots" />;

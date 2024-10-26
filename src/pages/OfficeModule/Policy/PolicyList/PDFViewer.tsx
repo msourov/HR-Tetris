@@ -23,7 +23,6 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ uid }) => {
 
         if (response.status === 200 && response.data) {
           setPdfFile(response.data);
-          console.log("PDF file fetched successfully:", response.data);
         } else {
           setError("Failed to load PDF.");
           console.error("Failed to load PDF. Status code:", response.status);
@@ -38,7 +37,6 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ uid }) => {
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
-    console.log("PDF loaded successfully with", numPages, "pages.");
   };
 
   const onDocumentLoadError = (error: Error) => {

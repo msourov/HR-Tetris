@@ -23,15 +23,10 @@ const Candidates = () => {
   );
 
   const navigate = useNavigate();
-  console.log("allCandidates", allCandidates?.data);
-
   const allDepartments = allCandidates?.data.map((item) => item.department);
   const uniqueDepartments = [...new Set(allDepartments)];
 
-  console.log(uniqueDepartments);
-
   const setDepartment = (value: string | null) => {
-    console.log("value", value);
     if (value) {
       sessionStorage.setItem("filtered_department", value);
       setValue(sessionStorage.getItem("filtered_department") ?? null);

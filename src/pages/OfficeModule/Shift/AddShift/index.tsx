@@ -65,8 +65,6 @@ const AddShift: React.FC<AddShiftProps> = ({ toggleModal }) => {
   });
 
   const onSubmit = async (data: AddShiftType) => {
-    console.log(JSON.stringify(data, undefined, 2));
-    // Convert date and time to ISO strings
     const formattedData = {
       ...data,
       day_start_time: `${data.day_start_time}:00`,
@@ -74,8 +72,6 @@ const AddShift: React.FC<AddShiftProps> = ({ toggleModal }) => {
       start_time: data.start_time.toISOString(),
       end_time: data.end_time.toISOString(),
     };
-
-    console.log(formattedData);
 
     try {
       const response = await createShift(formattedData).unwrap();
@@ -88,7 +84,6 @@ const AddShift: React.FC<AddShiftProps> = ({ toggleModal }) => {
           autoClose: 3000,
         });
       }
-      console.log(response);
       toggleModal();
       reset();
     } catch (error) {

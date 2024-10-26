@@ -6,6 +6,7 @@ import {
   Container,
   Button,
   Loader,
+  Image,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useForm } from "react-hook-form";
@@ -36,7 +37,6 @@ const Login = () => {
   } = useForm<FromFields>({ resolver: zodResolver(schema) });
 
   const onSubmit = async (data: FromFields) => {
-    console.log(data);
     setLoading(true);
     try {
       const loginCheckRes = await fetch(
@@ -49,7 +49,6 @@ const Login = () => {
           body: JSON.stringify(data),
         }
       );
-      console.log("loginCheckRes", loginCheckRes);
 
       if (loginCheckRes.ok) {
         const sendOtpRes = await fetch(
@@ -102,11 +101,19 @@ const Login = () => {
     <div className=" bg-[url('./assets/loginpage.png')] w-[100vw] h-[100vh] bg-cover fixed top-0 left-0 -z-10 flex items-center justify-center min-h-screen">
       <Container
         // my={120}
-        className="text-sm drop-shadow-lg sm:w-full md:w-2/3 lg:w-1/2 xl:w-1/3 -mt-32"
+        className="text-sm drop-shadow-lg w-full sm:w-[540px] -mt-32"
       >
-        {/* <Image radius="xs" src="/static/glue.png" w={100} className="mx-auto" /> */}
         <Paper withBorder shadow="md" radius="md">
-          <form onSubmit={handleSubmit(onSubmit)} className="p-20">
+          <Image
+            radius="xs"
+            src="/assets/logo.jpg"
+            w={220}
+            className="mx-auto pt-4"
+          />
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="p-4 sm:px-16 sm:py-10"
+          >
             <TextInput
               label="Phone Number"
               placeholder="0123-456-7890"
