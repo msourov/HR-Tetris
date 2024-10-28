@@ -3,6 +3,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
 type PageHeaderProps = {
+  Operation?: string;
   Heading?: string;
   Breadcrumb?: {
     module: string;
@@ -10,7 +11,11 @@ type PageHeaderProps = {
   };
 };
 
-const PageHeader: React.FC<PageHeaderProps> = ({ Heading, Breadcrumb }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({
+  Operation = "Add",
+  Heading,
+  Breadcrumb,
+}) => {
   const navigate = useNavigate();
   const route = Heading?.toLocaleLowerCase();
   return (
@@ -20,7 +25,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({ Heading, Breadcrumb }) => {
       py={"1rem"}
       className="flex justify-between"
       style={{
-        background: "linear-gradient(to right, #e0f7ff, #c3e8f9)",
+        background: "#293241",
+        color: "white",
       }}
     >
       <div>
@@ -36,16 +42,16 @@ const PageHeader: React.FC<PageHeaderProps> = ({ Heading, Breadcrumb }) => {
       </div>
 
       <Button
-        leftSection={<IconPlus />}
+        leftSection={Operation === "Add" && <IconPlus />}
         style={{
-          backgroundColor: "#2b266e",
+          backgroundColor: "#ee6c4d",
           marginBlock: "auto",
           paddingInline: "0.65rem",
           borderRadius: "10px",
         }}
-        bg="orange"
+        bg="#EF6F6C"
         onClick={() => navigate(`add-${route}`)}
-      >{`Add ${Heading}`}</Button>
+      >{`${Operation} ${Heading}`}</Button>
     </Box>
   );
 };

@@ -22,6 +22,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   const logout = () => {
     Cookies.remove("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("name");
     setToken(null);
     setIsAuthenticated(false);
   };

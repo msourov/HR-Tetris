@@ -39,10 +39,13 @@ const OtpPage: React.FC = () => {
         const response = await login(loginData).unwrap();
         console.log("response of login", response);
         if (response.access_token) {
-          Cookies.set("token", response.access_token); // set token from response
+          Cookies.set("token", response.access_token);
           localStorage.removeItem("OtpPending");
           localStorage.removeItem("mobile");
           localStorage.removeItem("password");
+          localStorage.setItem("role", JSON.stringify(response?.role));
+          localStorage.setItem("userId", response.mobile);
+          localStorage.setItem("name", response.name);
           navigate("/", { replace: true });
         } else {
           setError("OTP verification failed");

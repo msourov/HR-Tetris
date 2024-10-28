@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
-import { OvertimeResponse, ApproveOvertimeRequest } from "./types";
+import { OvertimeResponse, ApproveOvertimeRequest, Response } from "./types";
 import { tagTypes } from "./tags";
 
 export const overtimeApi = createApi({
@@ -41,6 +41,22 @@ export const overtimeApi = createApi({
               { type: "Overtime", id: "LIST" },
             ]
           : [{ type: "Overtime", id: "LIST" }],
+    }),
+    createOvertime: builder.mutation<
+      Response,
+      {
+        purpose: string;
+        employee_id: string;
+        start_time: string;
+        end_time: string;
+      }
+    >({
+      query: (data) => ({
+        url: "overtime/create",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [{ type: "Overtime", id: "LIST" }],
     }),
     approveOvertime: builder.mutation<void, ApproveOvertimeRequest>({
       query: (data) => ({

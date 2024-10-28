@@ -61,6 +61,14 @@ interface UserResponseData {
   update_at: string;
 }
 
+export interface employeeHelperInterface {
+  uid: string;
+  name: string;
+  employee_id: string;
+  designatio: string;
+  department: string;
+}
+
 export interface CreateUserResponse extends getDataResponse<User> {}
 export interface SingleUserResponse extends getDataResponse<UserResponseData> {}
 export interface RoleDetailResponse extends getDataResponse<Role> {}
@@ -73,6 +81,9 @@ export interface ShiftDetailResponse extends getDataResponse<Shift> {}
 export interface AnnouncementResponse extends getDataResponse<Announcement[]> {}
 export interface SingleAnnouncementResponse
   extends getDataResponse<Announcement> {}
+export interface EmployeeHelperResponse
+  extends getDataResponse<employeeHelperInterface[]> {}
+export interface TicketResolveResponse extends getDataResponse<TicketResolve> {}
 
 export interface PaginatedApiResponse<T> {
   status_code: number;
@@ -556,6 +567,13 @@ export interface CreateTicketRequest {
   type: string;
   message: string;
   files?: File[];
+}
+
+export interface TicketResolve {
+  uid: string;
+  status: string;
+  closed_at: string | null;
+  update_at: string;
 }
 
 export interface Announcement {

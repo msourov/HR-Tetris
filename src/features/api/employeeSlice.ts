@@ -4,6 +4,7 @@ import { tagTypes } from "./tags";
 import {
   AllEmployeesResponse,
   CreateEmployeePayload,
+  EmployeeHelperResponse,
   Response,
   SingleEmployeeResponse,
 } from "./types";
@@ -76,6 +77,12 @@ export const employeeApi = createApi({
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: "Employee", id }],
     }),
+    getEmplyeeHelper: builder.query<EmployeeHelperResponse, void>({
+      query: () => ({
+        url: "employee/helper",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -85,4 +92,5 @@ export const {
   useCreateEmployeeMutation,
   useEditEmployeeMutation,
   useDeleteEmployeeMutation,
+  useGetEmplyeeHelperQuery,
 } = employeeApi;

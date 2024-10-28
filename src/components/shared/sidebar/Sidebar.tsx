@@ -59,10 +59,18 @@ LinksGroupProps & { isActive: boolean; onClick: () => void }) {
   );
 }
 
+console.log(JSON.parse(localStorage.getItem("role") || ""));
+
+const getVisibilityStatus = (title: string) => {
+  const role = JSON.parse(localStorage.getItem("role") || "");
+  return role ? title in role : false;
+};
+
 const sidebarData = [
   {
     title: "Admin",
     icon: <GrUserManager />,
+    visible: getVisibilityStatus("user_management"),
     items: [
       {
         label: "Role",
@@ -78,6 +86,7 @@ const sidebarData = [
   {
     title: "Office",
     icon: <HiOutlineOfficeBuilding />,
+    visible: getVisibilityStatus("office_management"),
     items: [
       {
         label: "Company",
@@ -108,6 +117,7 @@ const sidebarData = [
   {
     title: "Employee",
     icon: <IoPeopleOutline />,
+    visible: getVisibilityStatus("employee_management"),
     items: [
       {
         label: "Employee List",
@@ -139,6 +149,7 @@ const sidebarData = [
   {
     title: "Inventory",
     icon: <MdOutlineInventory2 />,
+    visible: getVisibilityStatus("inventory_management"),
     items: [
       {
         label: "Issued Equipment",
@@ -157,6 +168,7 @@ const sidebarData = [
   {
     title: "Accounts",
     icon: <MdOutlineAccountBalance />,
+    visible: getVisibilityStatus("accounts_management"),
     items: [
       {
         label: "Accounts",
@@ -171,6 +183,7 @@ const sidebarData = [
   {
     title: "Announcement",
     icon: <TfiAnnouncement />,
+    visible: getVisibilityStatus("anouncement_management"),
     items: [
       {
         label: "Announcement Portal",
@@ -181,6 +194,7 @@ const sidebarData = [
   {
     title: "Ticket",
     icon: <IoTicketOutline />,
+    visible: getVisibilityStatus("ticket_management"),
     items: [
       {
         label: "Ticket Portal",
@@ -191,6 +205,7 @@ const sidebarData = [
   {
     title: "Recruitment",
     icon: <LuMailbox />,
+    visible: getVisibilityStatus("recruitment_management"),
     items: [
       {
         label: "Candidates",
@@ -201,6 +216,7 @@ const sidebarData = [
   {
     title: "Certification and License Management",
     icon: <PiCertificate />,
+    visible: getVisibilityStatus("clm_management"),
     items: [
       {
         label: "Certification and License",
@@ -281,53 +297,56 @@ export function Sidebar() {
         variant="filled"
         classNames={{ label: classes.label }}
       >
-        {sidebarData.map((group, index) => (
-          <Box key={index}>
-            {group.items.length === 1 ? (
-              <LinksGroup
-                key={group.items[0].label}
-                label={group.items[0].label}
-                isActive={activeLink === group.items[0].link}
-                onClick={() => handleLinkClick(group.items[0].link)}
-                icon={group.icon}
-              />
-            ) : (
-              <Accordion.Item
-                value={group?.title}
-                className={classes.customAccordionItem}
-              >
-                <Accordion.Control
-                  style={{
-                    fontSize: "0.85rem",
-                    fontWeight: 700,
-                    transform: "translateY(-2px)",
-                    color: isGroupActive(group.items)
-                      ? "var(--mantine-color-green-9)"
-                      : "white",
-                  }}
-                  icon={group?.icon}
-                  className={`${
-                    isGroupActive(group.items) ? "activeGroup" : ""
-                  }`}
-                >
-                  {group?.title}
-                </Accordion.Control>
-                <Accordion.Panel key={`sub${index}`}>
-                  {group.items.map((item) => (
-                    <Box key={item.label} className={classes.submenuItem}>
-                      <LinksGroup
-                        key={item.label}
-                        label={item.label}
-                        isActive={activeLink === item.link}
-                        onClick={() => handleLinkClick(item.link)}
-                      />
-                    </Box>
-                  ))}
-                </Accordion.Panel>
-              </Accordion.Item>
-            )}
-          </Box>
-        ))}
+        {sidebarData.map(
+          (group, index) =>
+            group.visible && (
+              <Box key={index}>
+                {group.items.length === 1 ? (
+                  <LinksGroup
+                    key={group.items[0].label}
+                    label={group.items[0].label}
+                    isActive={activeLink === group.items[0].link}
+                    onClick={() => handleLinkClick(group.items[0].link)}
+                    icon={group.icon}
+                  />
+                ) : (
+                  <Accordion.Item
+                    value={group?.title}
+                    className={classes.customAccordionItem}
+                  >
+                    <Accordion.Control
+                      style={{
+                        fontSize: "0.85rem",
+                        fontWeight: 700,
+                        transform: "translateY(-2px)",
+                        color: isGroupActive(group.items)
+                          ? "var(--mantine-color-green-9)"
+                          : "white",
+                      }}
+                      icon={group?.icon}
+                      className={`${
+                        isGroupActive(group.items) ? "activeGroup" : ""
+                      }`}
+                    >
+                      {group?.title}
+                    </Accordion.Control>
+                    <Accordion.Panel key={`sub${index}`}>
+                      {group.items.map((item) => (
+                        <Box key={item.label} className={classes.submenuItem}>
+                          <LinksGroup
+                            key={item.label}
+                            label={item.label}
+                            isActive={activeLink === item.link}
+                            onClick={() => handleLinkClick(item.link)}
+                          />
+                        </Box>
+                      ))}
+                    </Accordion.Panel>
+                  </Accordion.Item>
+                )}
+              </Box>
+            )
+        )}
       </Accordion>
     </Box>
   );

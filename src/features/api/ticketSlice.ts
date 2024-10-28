@@ -1,6 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
-import { TicketResponse, CreateTicketRequest } from "./types";
+import {
+  TicketResponse,
+  CreateTicketRequest,
+  TicketResolveResponse,
+} from "./types";
 import { tagTypes } from "./tags";
 
 export const ticketApi = createApi({
@@ -66,14 +70,13 @@ export const ticketApi = createApi({
     }),
 
     createTicket: builder.mutation<void, CreateTicketRequest>({
-      query: (data) => ({
-        url: "tickets/create",
-        method: "POST",
-        body: data,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }),
+      query: (data) => {
+        return {
+          url: "tickets/create",
+          method: "POST",
+          body: data,
+        };
+      },
       invalidatesTags: [{ type: "Ticket", id: "LIST" }],
     }),
     fetchChatFiles: builder.mutation<void, { uid: string; file_name: string }>({
@@ -83,6 +86,14 @@ export const ticketApi = createApi({
         responseHandler: (response) => response.blob(),
       }),
     }),
+    resolveTicket: builder.mutation<TicketResolveResponse, { uid: string }>({
+      query: ({ uid }) => ({
+        url: "tickets/update-status",
+        method: "POST",
+        body: { uid, status: "resolved", closed_at: new Date() },
+      }),
+      invalidatesTags: [{ type: "Ticket", id: "LIST" }],
+    }),
   }),
 });
 
@@ -90,4 +101,5 @@ export const {
   useGetAllTicketsQuery,
   useCreateTicketMutation,
   useGetTicketByIdQuery,
+  useResolveTicketMutation,
 } = ticketApi;

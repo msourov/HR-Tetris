@@ -35,7 +35,6 @@ interface OvertimeData {
 }
 
 const CustomCard: React.FC<OvertimeData> = ({
-  employee_id,
   employee_name,
   uid,
   purpose,
@@ -192,7 +191,7 @@ const CustomCard: React.FC<OvertimeData> = ({
         title={
           <Text c="dimmed">
             Reviewing Overtime Approval Request of employee{" "}
-            <span className="text-blue-500 font-bold">{employee_id}</span>
+            <span className="text-blue-500 font-bold">{employee_name}</span>
           </Text>
         }
       >
