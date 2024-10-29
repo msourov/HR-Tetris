@@ -11,7 +11,11 @@ const OvertimeTable: React.FC = () => {
     limit: 10,
   });
   const { logout } = useAuth();
-  const overtimeData = data?.data || [];
+  const overtimeData = Array.isArray(data?.data)
+    ? data.data
+    : data
+    ? [data.data]
+    : [];
 
   if (error) {
     if ((error as FetchBaseQueryError).status === 401) {

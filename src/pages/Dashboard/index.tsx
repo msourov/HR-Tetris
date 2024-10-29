@@ -30,8 +30,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex gap-4 m-10 flex-col md:gap-10">
-      <Box className="flex flex-col xl:flex-row justify-evenly my-10">
+    <div className="flex gap-4 m-10 flex-col md:gap-6">
+      <Box className="flex flex-col justify-evenly py-8 gap-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -39,9 +39,9 @@ const Dashboard = () => {
           whileHover={{ scale: 1.05 }}
         >
           <Card
-            shadow="sm"
+            shadow="xs"
             className="
-          flex flex-col md:flex-row justify-center gap-2 lg:py-10 \
+           flex flex-col md:flex-row justify-center gap-2 \
           rounded-lg hover:shadow-md transition-shadow"
           >
             <Box
@@ -100,7 +100,7 @@ const Dashboard = () => {
               <Box className="flex flex-col text-center">
                 <Title className="flex flex-row gap-4 items-center text-gray-700">
                   <span className="font-semibold text-[1rem]">
-                    Inctive Employees
+                    Inactive Employees
                   </span>
                 </Title>
                 <UpCounter upperRange={10} />
@@ -115,8 +115,8 @@ const Dashboard = () => {
           whileHover={{ scale: 1.05 }}
         >
           <Card
-            shadow="sm"
-            className="flex flex-col md:flex-row justify-center gap-2 lg:py-10 rounded-lg hover:shadow-md transition-shadow"
+            shadow="xs"
+            className="flex flex-col md:flex-row justify-center gap-2 rounded-lg hover:shadow-md transition-shadow"
           >
             <Box
               p="lg"

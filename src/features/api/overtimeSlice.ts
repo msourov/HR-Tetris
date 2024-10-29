@@ -71,4 +71,4 @@ export const overtimeApi = createApi({
   }),
 });
 
-export const { useAllOvertimeQuery, useApproveOvertimeMutation } = overtimeApi;
+export const { useAllOvertimeQuery, useCreateOvertimeMutation, useApproveOvertimeMutation } = overtimeApi;

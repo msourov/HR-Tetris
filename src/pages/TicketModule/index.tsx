@@ -51,8 +51,6 @@ const TicketLayout = () => {
       }))
     : [];
 
-  console.log(employeeOptions);
-
   const onSubmit = async (data: TicketFormType) => {
     const formData = new FormData();
     formData.append("employee_id", data.employee_id);

@@ -36,11 +36,12 @@ export const announcementApi = createApi({
           url: `announcements/${uid}`,
           method: "GET",
         }),
-        providesTags: (result, _error, { uid }) => [
+        providesTags: (_result, _error, { uid }) => [
           { type: "Announcement", id: uid },
         ],
       }
     ),
+
     createAnnouncement: builder.mutation<
       Response,
       { name: string; descriptions: string }

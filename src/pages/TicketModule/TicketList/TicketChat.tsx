@@ -22,6 +22,7 @@ import { PiArchiveDuotone } from "react-icons/pi";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import ErrorAlert from "../../../components/shared/ErrorAlert";
+import { useDisclosure } from "@mantine/hooks";
 
 interface TicketTypeProp {
   ticket: Ticket;
@@ -29,7 +30,7 @@ interface TicketTypeProp {
 }
 
 const TicketChat: React.FC<TicketTypeProp> = ({ ticket, open }) => {
-  const [, setOpened] = useState(false);
+  const [opened, { close, open: openPopover }] = useDisclosure(false);
   const { refetch } = useGetAllTicketsQuery({ page: 1, limit: 10 });
   const [resolveTicket, { isLoading, error }] = useResolveTicketMutation();
   const [value, setValue] = useState("");
@@ -108,6 +109,8 @@ const TicketChat: React.FC<TicketTypeProp> = ({ ticket, open }) => {
         color: "red",
         autoClose: 3000,
       });
+    } finally {
+      close();
     }
   };
   return (
@@ -115,14 +118,21 @@ const TicketChat: React.FC<TicketTypeProp> = ({ ticket, open }) => {
       <Box className="px-4 pb-2 h-full overflow-y-auto">
         {open && (
           <div className="flex justify-end pt-2 pb-4">
-            <Popover width={200} trapFocus position="top" withArrow shadow="md">
+            <Popover
+              width={200}
+              trapFocus
+              position="top"
+              withArrow
+              shadow="md"
+              opened={opened}
+            >
               <Popover.Target>
                 <Button
                   variant="filled"
                   color="green"
                   size="xs"
                   leftSection={<PiArchiveDuotone />}
-                  onClick={() => setOpened((o) => !o)}
+                  onClick={() => openPopover()}
                 >
                   Mark as resolved
                 </Button>
@@ -143,7 +153,7 @@ const TicketChat: React.FC<TicketTypeProp> = ({ ticket, open }) => {
                     size="compact-sm"
                     variant="subtle"
                     color="red"
-                    onClick={() => setOpened((o) => !o)}
+                    onClick={() => close()}
                   >
                     No
                   </Button>

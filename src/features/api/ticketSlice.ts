@@ -89,7 +89,7 @@ export const ticketApi = createApi({
     resolveTicket: builder.mutation<TicketResolveResponse, { uid: string }>({
       query: ({ uid }) => ({
         url: "tickets/update-status",
-        method: "POST",
+        method: "PUT",
         body: { uid, status: "resolved", closed_at: new Date() },
       }),
       invalidatesTags: [{ type: "Ticket", id: "LIST" }],

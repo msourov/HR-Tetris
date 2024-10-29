@@ -20,7 +20,9 @@ const TicketList = () => {
     const savedChatId = localStorage.getItem("activeChat");
     return savedChatId ? Number(savedChatId) : null;
   });
-  const [, setActiveArchivedTicket] = useState<number | null>(null);
+  const [activeArchivedTicket, setActiveArchivedTicket] = useState<
+    number | null
+  >(null);
   const { data, isLoading } = useGetAllTicketsQuery({
     page: 1,
     limit: 10,
@@ -47,6 +49,10 @@ const TicketList = () => {
     );
   const activeTicket = Array.isArray(tickets)
     ? tickets.find((ticket: Ticket) => ticket.id === activeChat)
+    : null;
+
+  const archivedTicket = Array.isArray(tickets)
+    ? tickets.find((ticket: Ticket) => ticket.id === activeArchivedTicket)
     : null;
 
   const openTickets = Array.isArray(tickets)
@@ -105,11 +111,11 @@ const TicketList = () => {
           )}
         </Box>
       </Container>
-      <Box className="w-[30%]">
+      <Box className="w-[25%] border-l-1 border bg-slate-300 py-4 px-2">
         <Divider
           label={
             <>
-              <Text ta="center" fw="bold" color="blue">
+              <Text ta="center" fw="bold" color="blue" mb={10}>
                 Archived Tickets
               </Text>
             </>
@@ -147,7 +153,9 @@ const TicketList = () => {
         <Text ta="center" fw="bold" color="dimmed" mb={30}>
           Archived Ticket
         </Text>
-        {activeTicket && <TicketChat ticket={activeTicket} open={false} />}
+        {activeArchivedTicket && archivedTicket && (
+          <TicketChat ticket={archivedTicket} open={false} />
+        )}
       </Drawer>
     </Box>
   );

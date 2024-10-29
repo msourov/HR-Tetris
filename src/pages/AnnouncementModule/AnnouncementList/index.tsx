@@ -237,7 +237,7 @@ const AnnouncementList = () => {
             <Box className="flex justify-end gap-4">
               <Button
                 variant="filled"
-                bg="orange"
+                bg="blue"
                 onClick={() =>
                   handleApproveAnnouncement(selectedAnnouncement?.uid)
                 }
