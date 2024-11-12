@@ -506,7 +506,7 @@ export interface Leave {
   leave_end_date: string;
   is_active: boolean;
   is_approved: "pending" | "approved" | "rejected" | null;
-  logs: Log;
+  logs: Log | Log[];
   create_at: string;
   update_at: string;
 }

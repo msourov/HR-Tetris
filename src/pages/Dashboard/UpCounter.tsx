@@ -1,7 +1,15 @@
-import { useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import { useInView, useMotionValue, useSpring } from "framer-motion";
 
-const UpCounter = ({ upperRange }: { upperRange: number }) => {
+type UpCounterProps = {
+  upperRange: number;
+  style: {
+    color: string;
+    size: string;
+  };
+};
+
+const UpCounter: FC<UpCounterProps> = ({ upperRange, style }) => {
   const ref = useRef<HTMLSpanElement>(null);
   const lowerRange: number = 0;
   const motionValue = useMotionValue(lowerRange);
@@ -29,7 +37,10 @@ const UpCounter = ({ upperRange }: { upperRange: number }) => {
   );
 
   return (
-    <span className="text-blue-600 text-xl font-bold float-right" ref={ref} />
+    <span
+      className={`text-${style.color}-600 text-${style.size} font-bold`}
+      ref={ref}
+    />
   );
 };
 

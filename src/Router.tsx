@@ -1,55 +1,97 @@
 import { createBrowserRouter } from "react-router-dom";
-import AppLayout from "./Applayout";
-import ErrorPage from "./pages/ErrorPage";
-import Dashboard from "./pages/Dashboard";
-import User from "./pages/AdminModule/User";
-import EditUser from "./pages/AdminModule/User/EditUser";
-import AddNewUser from "./pages/AdminModule/User/AddNewUser";
-import Role from "./pages/AdminModule/Role";
-import EditDepartment from "./pages/OfficeModule/Department/EditDepartment";
-import Login from "./pages/Login";
-import OtpPage from "./pages/Login/OtpPage";
-import PublicRoute from "./services/auth/PublicRoute";
-import ProtectedRoute from "./services/auth/ProtectedRoutes";
-import UserDetail from "./pages/AdminModule/User/UserDetail";
-import UserTable from "./pages/AdminModule/User/UserTable";
-import AddNewRole from "./pages/AdminModule/Role/AddNewRole";
-import RoleTable from "./pages/AdminModule/Role/RoleTable";
-import Company from "./pages/OfficeModule/Company";
-import CandidateDetail from "./pages/RecruitmentModule/Candidates/CandidateDetail";
-import Recruitment from "./pages/RecruitmentModule";
-import Candidates from "./pages/RecruitmentModule/Candidates";
-import DepartmentDetail from "./pages/OfficeModule/Department/DepartmentDetail";
-import DesignationList from "./pages/OfficeModule/Designation/DesignationList";
-import DepartmentLayout from "./pages/OfficeModule/Department";
-import DepartmentList from "./pages/OfficeModule/Department/DepartmentList";
-import DesignationLayout from "./pages/OfficeModule/Designation";
-import EditDesignation from "./pages/OfficeModule/Designation/EditDesignation";
-import DesignationDetail from "./pages/OfficeModule/Designation/DesignationDetail";
-import ShiftLayout from "./pages/OfficeModule/Shift";
-import ShiftList from "./pages/OfficeModule/Shift/ShiftList";
-import PolicyLayout from "./pages/OfficeModule/Policy";
-import PolicyList from "./pages/OfficeModule/Policy/PolicyList";
-import ManagePolicy from "./pages/OfficeModule/Policy/EditPolicy";
-import PolicyDetail from "./pages/OfficeModule/Policy/PolicyDetail";
-import EditShift from "./pages/OfficeModule/Shift/EditShift";
-import HolidayLayout from "./pages/OfficeModule/Holiday";
-import EmployeeLayout from "./pages/EmployeeModule";
-import EmplyeeTable from "./pages/EmployeeModule/EmployeeTable";
-import AddEmployee from "./pages/EmployeeModule/AddEmployee";
-import EmployeeDetail from "./pages/EmployeeModule/EmplyeeDetail";
-import Overtime from "./pages/EmployeeModule/Overtime";
-import Leave from "./pages/EmployeeModule/Leave";
-import TicketLayout from "./pages/TicketModule";
-import TicketList from "./pages/TicketModule/TicketList";
-import AnnouncementLayout from "./pages/AnnouncementModule";
-import AnnouncementList from "./pages/AnnouncementModule/AnnouncementList";
-import EditAnnnouncement from "./pages/AnnouncementModule/EditAnnouncement";
+import { lazy, Suspense } from "react";
+import { Text } from "@mantine/core";
+
+const AppLayout = lazy(() => import("./Applayout"));
+const ErrorPage = lazy(() => import("./pages/ErrorPage"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const User = lazy(() => import("./pages/AdminModule/User"));
+const EditUser = lazy(() => import("./pages/AdminModule/User/EditUser"));
+const AddNewUser = lazy(() => import("./pages/AdminModule/User/AddNewUser"));
+const Role = lazy(() => import("./pages/AdminModule/Role"));
+const EditDepartment = lazy(
+  () => import("./pages/OfficeModule/Department/EditDepartment")
+);
+const Login = lazy(() => import("./pages/Login"));
+const OtpPage = lazy(() => import("./pages/Login/OtpPage"));
+const PublicRoute = lazy(() => import("./services/auth/PublicRoute"));
+const ProtectedRoute = lazy(() => import("./services/auth/ProtectedRoutes"));
+const UserDetail = lazy(() => import("./pages/AdminModule/User/UserDetail"));
+const UserTable = lazy(() => import("./pages/AdminModule/User/UserTable"));
+const AddNewRole = lazy(() => import("./pages/AdminModule/Role/AddNewRole"));
+const RoleTable = lazy(() => import("./pages/AdminModule/Role/RoleTable"));
+const Company = lazy(() => import("./pages/OfficeModule/Company"));
+const CandidateDetail = lazy(
+  () => import("./pages/RecruitmentModule/Candidates/CandidateDetail")
+);
+const Recruitment = lazy(() => import("./pages/RecruitmentModule"));
+const Candidates = lazy(() => import("./pages/RecruitmentModule/Candidates"));
+const DepartmentDetail = lazy(
+  () => import("./pages/OfficeModule/Department/DepartmentDetail")
+);
+const DesignationList = lazy(
+  () => import("./pages/OfficeModule/Designation/DesignationList")
+);
+const DepartmentLayout = lazy(() => import("./pages/OfficeModule/Department"));
+const DepartmentList = lazy(
+  () => import("./pages/OfficeModule/Department/DepartmentList")
+);
+const DesignationLayout = lazy(
+  () => import("./pages/OfficeModule/Designation")
+);
+const EditDesignation = lazy(
+  () => import("./pages/OfficeModule/Designation/EditDesignation")
+);
+const DesignationDetail = lazy(
+  () => import("./pages/OfficeModule/Designation/DesignationDetail")
+);
+const ShiftLayout = lazy(() => import("./pages/OfficeModule/Shift"));
+const ShiftList = lazy(() => import("./pages/OfficeModule/Shift/ShiftList"));
+const PolicyLayout = lazy(() => import("./pages/OfficeModule/Policy"));
+const PolicyList = lazy(() => import("./pages/OfficeModule/Policy/PolicyList"));
+const ManagePolicy = lazy(
+  () => import("./pages/OfficeModule/Policy/EditPolicy")
+);
+const PolicyDetail = lazy(
+  () => import("./pages/OfficeModule/Policy/PolicyDetail")
+);
+const EditShift = lazy(() => import("./pages/OfficeModule/Shift/EditShift"));
+const HolidayLayout = lazy(() => import("./pages/OfficeModule/Holiday"));
+const EmployeeLayout = lazy(() => import("./pages/EmployeeModule"));
+const EmplyeeTable = lazy(() => import("./pages/EmployeeModule/EmployeeTable"));
+const AddEmployee = lazy(() => import("./pages/EmployeeModule/AddEmployee"));
+const EmployeeDetail = lazy(
+  () => import("./pages/EmployeeModule/EmplyeeDetail")
+);
+const Overtime = lazy(() => import("./pages/EmployeeModule/Overtime"));
+const Leave = lazy(() => import("./pages/EmployeeModule/Leave"));
+const TicketLayout = lazy(() => import("./pages/TicketModule"));
+const TicketList = lazy(() => import("./pages/TicketModule/TicketList"));
+const AnnouncementLayout = lazy(() => import("./pages/AnnouncementModule"));
+const AnnouncementList = lazy(
+  () => import("./pages/AnnouncementModule/AnnouncementList")
+);
+const EditAnnnouncement = lazy(
+  () => import("./pages/AnnouncementModule/EditAnnouncement")
+);
+
+const loader = (
+  <div className="flex justify-center items-center">
+    {/* <Loader type="dots" color="red" size="sm" my={30} /> */}
+    <Text className="text-center" my={40}>
+      Loading...
+    </Text>
+  </div>
+);
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <AppLayout />,
+    element: (
+      <Suspense fallback={loader}>
+        <AppLayout />
+      </Suspense>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
@@ -58,11 +100,19 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Dashboard />,
+            element: (
+              <Suspense fallback={loader}>
+                <Dashboard />
+              </Suspense>
+            ),
           },
           {
             path: "roles",
-            element: <Role />,
+            element: (
+              <Suspense fallback={loader}>
+                <Role />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -76,7 +126,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "users",
-            element: <User />,
+            element: (
+              <Suspense fallback={loader}>
+                <User />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -98,11 +152,19 @@ export const router = createBrowserRouter([
           },
           {
             path: "company",
-            element: <Company />,
+            element: (
+              <Suspense fallback={loader}>
+                <Company />
+              </Suspense>
+            ),
           },
           {
             path: "departments",
-            element: <DepartmentLayout />,
+            element: (
+              <Suspense fallback={loader}>
+                <DepartmentLayout />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -130,7 +192,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "designations",
-            element: <DesignationLayout />,
+            element: (
+              <Suspense fallback={loader}>
+                <DesignationLayout />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -148,7 +214,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "shift",
-            element: <ShiftLayout />,
+            element: (
+              <Suspense fallback={loader}>
+                <ShiftLayout />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -166,7 +236,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "policies",
-            element: <PolicyLayout />,
+            element: (
+              <Suspense fallback={loader}>
+                <PolicyLayout />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -184,7 +258,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "holidays",
-            element: <HolidayLayout />,
+            element: (
+              <Suspense fallback={loader}>
+                <HolidayLayout />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -202,7 +280,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "employees",
-            element: <EmployeeLayout />,
+            element: (
+              <Suspense fallback={loader}>
+                <EmployeeLayout />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -220,15 +302,27 @@ export const router = createBrowserRouter([
           },
           {
             path: "overtime",
-            element: <Overtime />,
+            element: (
+              <Suspense fallback={loader}>
+                <Overtime />
+              </Suspense>
+            ),
           },
           {
             path: "leave",
-            element: <Leave />,
+            element: (
+              <Suspense fallback={loader}>
+                <Leave />
+              </Suspense>
+            ),
           },
           {
             path: "announcement",
-            element: <AnnouncementLayout />,
+            element: (
+              <Suspense fallback={loader}>
+                <AnnouncementLayout />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -256,7 +350,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "ticket",
-            element: <TicketLayout />,
+            element: (
+              <Suspense fallback={loader}>
+                <TicketLayout />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -274,7 +372,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "candidates",
-            element: <Recruitment />,
+            element: (
+              <Suspense fallback={loader}>
+                <Recruitment />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,

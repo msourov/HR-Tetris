@@ -21,6 +21,7 @@ const Overtime = () => {
   });
   const { data, isLoading, error, refetch } = useAllLeaveQuery(searchParams);
 
+  console.log(data);
   if (isLoading)
     return (
       <div className="w-full h-full flex items-center justify-center">

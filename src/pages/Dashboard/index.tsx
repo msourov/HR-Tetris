@@ -1,219 +1,180 @@
 import { useGetDashboardResponseQuery } from "../../features/api/companySlice";
-import { motion } from "framer-motion";
-import { Loader, Alert, Title, Card, Box, Image } from "@mantine/core";
-import { BarChart, LineChart } from "@mantine/charts";
-import { biaxialData, employeeData } from "./DummyData";
-import UpCounter from "./UpCounter";
+import {
+  Alert,
+  Title,
+  Card,
+  Box,
+  Image,
+  Divider,
+  Loader,
+  Text,
+} from "@mantine/core";
+import { LineChart } from "@mantine/charts";
+import { biaxialData } from "./DummyData";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useAuth } from "../../services/auth/useAuth";
+import { lazy, Suspense } from "react";
+import { Leave } from "../../features/api/types";
+import { useAllLeaveQuery } from "../../features/api/leaveSlice";
+import LeaveSection from "./LeaveSection";
+
+const UpCounter = lazy(() => import("./UpCounter"));
 
 const Dashboard = () => {
   const { data, isLoading, error } = useGetDashboardResponseQuery();
+  const {
+    data: leaves,
+    // isLoading: leavesLoading,
+    // error: leavesError,
+    // refetch,
+  } = useAllLeaveQuery({
+    page: 1,
+    limit: 10,
+  });
 
+  const pendingLeaves = Array.isArray(leaves?.data)
+    ? leaves.data.filter((item: Leave) => item.is_approved === "pending")
+    : leaves?.data.is_approved === "pending"
+    ? leaves?.data
+    : null;
+
+
+  const { logout } = useAuth();
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center">
-        <Loader size="md" variant="bars" />
-      </div>
-    );
+    return <div className="flex justify-center items-center">loading...</div>;
   }
-  console.log(data?.data);
   if (error) {
-    return <Alert color="red">Error loading dashboard data</Alert>;
+    if ((error as FetchBaseQueryError).status === 401) {
+      console.error("Unauthorized access - logging out");
+      logout();
+    } else {
+      console.error("Error fetching dashboard data:", error);
+      <Alert color="red">Error loading dashboard data</Alert>;
+    }
   }
 
-  // const { employee, leave, shift_schedule, designation, department } =
-  //   data?.data || {};
+  const { employee, leave, designation, department } = data?.data || {};
 
-  // Framer Motion animation variants
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
+  console.log(employee, leave, designation, department);
 
   return (
-    <div className="flex gap-4 m-10 flex-col md:gap-6">
-      <Box className="flex flex-col justify-evenly py-8 gap-8">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          whileHover={{ scale: 1.05 }}
-        >
+    <div className="flex gap-4 my-10 md:gap-6">
+      <Box className="w-5/12 border-r-2 px-6">
+        <Box className="flex flex-col justify-evenly py-8 gap-8">
           <Card
-            shadow="xs"
-            className="
-           flex flex-col md:flex-row justify-center gap-2 \
-          rounded-lg hover:shadow-md transition-shadow"
+            withBorder
+            className=" bg-gray-200
+           flex flex-col md:flex-row justify-center gap-2 rounded-lg hover:shadow-md transition-shadow"
           >
+            {/* Employee Info */}
             <Box
-              p="lg"
-              className="bg-white border border-blue-300 rounded-lg flex flex-col xl:flex-row items-center sm:justify-around gap-2"
+              p="sm"
+              className="border border-blue-300 rounded-lg flex flex-col items-center sm:justify-around gap-2 w-[260px]"
             >
-              <Image
-                src="/assets/team.png"
-                fit="contain"
-                className="min-w-10 w-12 h-12"
-                alt="Employee Icon"
-              />
+              <Box className="flex justify-between gap-4">
+                <Image
+                  src="/assets/team.png"
+                  fit="contain"
+                  className="min-w-10 w-8 h-8"
+                  alt="Employee Icon"
+                />
+                <Title className="flex flex-row gap-2 items-center text-gray-500 text-lg">
+                  {/* <span className="font-semibold text-[1rem]"> */}
+                  Employee
+                  {/* </span> */}
+                </Title>
+              </Box>
+              <Divider size="xs" w="100%" color="blue" />
 
-              <Box className="flex flex-col text-center">
-                <Title className="flex flex-row gap-2 items-center text-gray-700">
-                  <span className="font-semibold text-[1rem]">
-                    Total Employees
-                  </span>
-                </Title>
-                <UpCounter upperRange={100} />
+              <Box className="flex items-center justify-between gap-6">
+                <Box className="flex gap-4 items-center text-center">
+                  <Suspense fallback={<Loader size="md" type="bars" />}>
+                    <Text c="dimmed">Total</Text>
+                    <UpCounter
+                      upperRange={employee?.total_employee || 0}
+                      style={{ color: "black", size: "lg" }}
+                    />
+                  </Suspense>
+                  <Suspense fallback={<Loader size="md" type="bars" />}>
+                    <Text c="dimmed">Active</Text>
+                    <UpCounter
+                      upperRange={employee?.active_employee || 0}
+                      style={{ color: "green", size: "md" }}
+                    />
+                  </Suspense>
+                  {employee?.inactive_employee !== 0 && (
+                    <Suspense fallback={<Loader size="md" type="bars" />}>
+                      <Text c="dimmed">Inactive</Text>
+                      <UpCounter
+                        upperRange={employee?.inactive_employee || 0}
+                        style={{ color: "red", size: "md" }}
+                      />
+                    </Suspense>
+                  )}
+                </Box>
               </Box>
             </Box>
+            {/* Department Info */}
             <Box
-              p="lg"
-              className="bg-white border border-blue-300 rounded-lg flex flex-col xl:flex-row items-center sm:justify-around gap-2"
+              p="sm"
+              className="border border-blue-300 rounded-lg flex flex-col items-center sm:justify-around gap-2 w-[260px]"
             >
-              <Image
-                src="/assets/member.png"
-                // h={60}
-                // w="auto"
-                // fit="contain"
-                className="min-w-12 w-12 h-12"
-                alt="Employee Icon"
-              />
-              <Box className="flex flex-col text-center">
-                <Title className="flex flex-row gap-4 items-center text-gray-700">
-                  <span className="font-semibold text-[1rem]">
-                    Active Employees
-                  </span>
+              <Box className="flex justify-between gap-4">
+                <Image
+                  src="/assets/department.png"
+                  fit="contain"
+                  className="min-w-10 w-8 h-8"
+                  alt="Employee Icon"
+                />
+                <Title className="flex flex-row gap-2 items-center text-gray-500 text-lg">
+                  {/* <span className="font-semibold text-[1rem]"> */}
+                  Department
+                  {/* </span> */}
                 </Title>
-                <UpCounter upperRange={90} />
               </Box>
-            </Box>
-            <Box
-              p="lg"
-              className="bg-white border border-blue-300 rounded-lg flex flex-col xl:flex-row items-center sm:justify-around gap-2"
-            >
-              <Image
-                src="/assets/unavailable.png"
-                // h={60}
-                // w="auto"
-                // fit="contain"
-                className="min-w-12 w-12 h-12"
-                alt="Employee Icon"
-              />
-              <Box className="flex flex-col text-center">
-                <Title className="flex flex-row gap-4 items-center text-gray-700">
-                  <span className="font-semibold text-[1rem]">
-                    Inactive Employees
-                  </span>
-                </Title>
-                <UpCounter upperRange={10} />
+              <Divider size="xs" w="100%" color="blue" />
+
+              {/* Department Info */}
+
+              <Box className="flex items-center justify-between gap-6">
+                <Box className="flex gap-4 items-center text-center">
+                  <Suspense fallback={<Loader size="md" type="bars" />}>
+                    <Text c="dimmed">Total</Text>
+                    <UpCounter
+                      upperRange={department?.total || 0}
+                      style={{ color: "black", size: "lg" }}
+                    />
+                  </Suspense>
+                  <Suspense fallback={<Loader size="md" type="bars" />}>
+                    <Text c="dimmed">Active</Text>
+                    <UpCounter
+                      upperRange={department?.active || 0}
+                      style={{ color: "green", size: "md" }}
+                    />
+                  </Suspense>
+                  {department?.inactive !== 0 && (
+                    <Suspense fallback={<Loader size="md" type="bars" />}>
+                      <Text c="dimmed">Inactive</Text>
+                      <UpCounter
+                        upperRange={department?.inactive || 0}
+                        style={{ color: "red", size: "md" }}
+                      />
+                    </Suspense>
+                  )}
+                </Box>
               </Box>
             </Box>
           </Card>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          whileHover={{ scale: 1.05 }}
-        >
+        </Box>
+
+        <Box>
           <Card
-            shadow="xs"
-            className="flex flex-col md:flex-row justify-center gap-2 rounded-lg hover:shadow-md transition-shadow"
+            shadow="sm"
+            padding="lg"
+            mb="lg"
+            className="w-[full] bg-gray-200"
           >
-            <Box
-              p="lg"
-              className="bg-white border border-blue-300 rounded-lg flex flex-col xl:flex-row items-center sm:justify-around gap-2"
-            >
-              <Image
-                src="/assets/project.png"
-                className="min-w-12 w-12 h-12"
-                alt="Projects Icon"
-              />
-
-              <Box className="flex flex-col text-center">
-                <Title className="flex flex-row gap-4 items-center text-gray-700">
-                  <span className="font-semibold text-[1rem]">
-                    Ongoing Projects
-                  </span>
-                </Title>
-                <UpCounter upperRange={12} />
-              </Box>
-            </Box>
-
-            {/* Departments Box */}
-            <Box
-              p="lg"
-              className="bg-white border border-blue-300 rounded-lg flex flex-col xl:flex-row items-center sm:justify-around gap-2"
-            >
-              <Image
-                src="/assets/department.png"
-                className="min-w-12 w-12 h-12"
-                alt="Departments Icon"
-              />
-
-              <Box className="flex flex-col text-center">
-                <Title className="flex flex-row gap-4 items-center text-gray-700">
-                  <span className="font-semibold text-[1rem]">Departments</span>
-                </Title>
-                <UpCounter upperRange={5} />
-              </Box>
-            </Box>
-
-            {/* Open Positions Box */}
-            <Box
-              p="lg"
-              className="bg-white border border-blue-300 rounded-lg flex flex-col xl:flex-row items-center sm:justify-around gap-2"
-            >
-              <Image
-                src="/assets/planing.png"
-                className="min-w-12 w-12 h-12"
-                alt="Open Positions Icon"
-              />
-              <Box className="flex flex-col text-center">
-                <Title className="flex flex-row gap-4 items-center text-gray-700">
-                  <span className="font-semibold text-[1rem]">
-                    Open Positions
-                  </span>
-                </Title>
-                <UpCounter upperRange={8} />
-              </Box>
-            </Box>
-          </Card>
-        </motion.div>
-      </Box>
-
-      <Box className="flex flex-col md:flex-row justify-evenly">
-        <motion.div
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-          transition={{ duration: 0.5 }}
-          className=" w-[40%] mx-auto"
-        >
-          <Card shadow="sm" padding="lg" mb="lg" className="">
-            <Title order={4} ta="center">
-              Last 6 Months Employee Stats
-            </Title>
-            <BarChart
-              h={300}
-              data={employeeData}
-              dataKey="month"
-              withLegend
-              series={[
-                { name: "total", color: "violet.6" },
-                { name: "active", color: "blue.6" },
-                { name: "inactive", color: "teal.6" },
-              ]}
-            />
-          </Card>
-        </motion.div>
-        <motion.div
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-          transition={{ duration: 0.5 }}
-          className=" w-[40%] mx-auto"
-        >
-          <Card shadow="sm" padding="lg" mb="lg" className="">
-            <Title order={4} ta="center">
+            <Title order={4} ta="center" mb={20} c="blue">
               Company growth
             </Title>
             <LineChart
@@ -229,7 +190,19 @@ const Dashboard = () => {
               ]}
             />
           </Card>
-        </motion.div>
+        </Box>
+      </Box>
+      <Box>
+        <Box className="border">
+          <Text c="orange" fw={700} size="lg">
+            Leaves
+          </Text>
+          {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 ? (
+            <LeaveSection data={leaves?.data ?? []} />
+          ) : (
+            <Text ta="center">No data found</Text>
+          )}
+        </Box>
       </Box>
     </div>
   );
