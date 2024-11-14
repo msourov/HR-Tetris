@@ -13,7 +13,6 @@ import {
   useCreateOvertimeMutation,
 } from "../../../features/api/overtimeSlice";
 import ErrorAlert from "../../../components/shared/ErrorAlert";
-// import OvertimeTable from "./OvertimeTable";
 import { useState } from "react";
 import { IoFilter, IoPersonCircle } from "react-icons/io5";
 import { DateTimePicker } from "@mantine/dates";
@@ -75,8 +74,8 @@ const Overtime = () => {
 
   if (isLoading || isCreating)
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <Loader size="lg" />
+      <div className="w-full flex items-center justify-center">
+        <Loader size="sm" />
       </div>
     );
   if (error) return <ErrorAlert message="Error fetching overtime" />;

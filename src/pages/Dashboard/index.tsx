@@ -14,20 +14,30 @@ import { biaxialData } from "./DummyData";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../services/auth/useAuth";
 import { lazy, Suspense } from "react";
-import { Leave } from "../../features/api/types";
+import { Leave, Overtime } from "../../features/api/types";
 import { useAllLeaveQuery } from "../../features/api/leaveSlice";
 import LeaveSection from "./LeaveSection";
+import { useAllOvertimeQuery } from "../../features/api/overtimeSlice";
+import OvertimeSection from "./OvertimeSection";
 
 const UpCounter = lazy(() => import("./UpCounter"));
 
 const Dashboard = () => {
-  const { data, isLoading, error } = useGetDashboardResponseQuery();
+  const {
+    data: dashboardData,
+    // isLoading: dashboardLoading,
+    error: dashboardError,
+  } = useGetDashboardResponseQuery();
   const {
     data: leaves,
     // isLoading: leavesLoading,
     // error: leavesError,
-    // refetch,
+    // refetch: leaveRefetch,
   } = useAllLeaveQuery({
+    page: 1,
+    limit: 10,
+  });
+  const { data: overtimeData } = useAllOvertimeQuery({
     page: 1,
     limit: 10,
   });
@@ -38,38 +48,47 @@ const Dashboard = () => {
     ? leaves?.data
     : null;
 
+  const pendingOvertime = Array.isArray(overtimeData?.data)
+    ? overtimeData.data.filter(
+        (item: Overtime) => item.is_approved === "pending"
+      )
+    : overtimeData?.data.is_approved === "pending"
+    ? overtimeData?.data
+    : null;
+  console.log(pendingLeaves);
 
   const { logout } = useAuth();
-  if (isLoading) {
-    return <div className="flex justify-center items-center">loading...</div>;
-  }
-  if (error) {
-    if ((error as FetchBaseQueryError).status === 401) {
+  // if (isLoading) {
+  //   return <div className="flex justify-center items-center">loading...</div>;
+  // }
+  if (dashboardError) {
+    if ((dashboardError as FetchBaseQueryError).status === 401) {
       console.error("Unauthorized access - logging out");
       logout();
     } else {
-      console.error("Error fetching dashboard data:", error);
+      console.error("Error fetching dashboard data:", dashboardError);
       <Alert color="red">Error loading dashboard data</Alert>;
     }
   }
 
-  const { employee, leave, designation, department } = data?.data || {};
+  const { employee, leave, designation, department } =
+    dashboardData?.data || {};
 
   console.log(employee, leave, designation, department);
 
   return (
-    <div className="flex gap-4 my-10 md:gap-6">
-      <Box className="w-5/12 border-r-2 px-6">
-        <Box className="flex flex-col justify-evenly py-8 gap-8">
+    <div className="flex gap-4 my-6 lg:my-12 md:gap-6 lg:mx-8 mx-4 w-[95%] overflow-x-hidden">
+      <Box className="w-[65%]">
+        <Box className="flex flex-col justify-evenly mb-6 gap-8 rounded-md">
           <Card
             withBorder
-            className=" bg-gray-200
-           flex flex-col md:flex-row justify-center gap-2 rounded-lg hover:shadow-md transition-shadow"
+            className=" bg-blue-200 shadow-lg
+           flex flex-col md:flex-row justify-center gap-2 rounded-md hover:shadow-md transition-shadow"
           >
             {/* Employee Info */}
             <Box
               p="sm"
-              className="border border-blue-300 rounded-lg flex flex-col items-center sm:justify-around gap-2 w-[260px]"
+              className="border bg-white rounded-lg flex flex-col items-center sm:justify-around gap-2 w-[270px]"
             >
               <Box className="flex justify-between gap-4">
                 <Image
@@ -117,7 +136,7 @@ const Dashboard = () => {
             {/* Department Info */}
             <Box
               p="sm"
-              className="border border-blue-300 rounded-lg flex flex-col items-center sm:justify-around gap-2 w-[260px]"
+              className="border bg-white rounded-lg flex flex-col items-center sm:justify-around gap-2 w-[270px]"
             >
               <Box className="flex justify-between gap-4">
                 <Image
@@ -172,9 +191,15 @@ const Dashboard = () => {
             shadow="sm"
             padding="lg"
             mb="lg"
-            className="w-[full] bg-gray-200"
+            className="w-[full] bg-gray-200 rounded-md shadow-lg"
           >
-            <Title order={4} ta="center" mb={20} c="blue">
+            <Title
+              order={4}
+              ta="center"
+              mb={20}
+              c="blue"
+              className="opacity-65"
+            >
               Company growth
             </Title>
             <LineChart
@@ -192,13 +217,17 @@ const Dashboard = () => {
           </Card>
         </Box>
       </Box>
-      <Box>
-        <Box className="border">
-          <Text c="orange" fw={700} size="lg">
-            Leaves
-          </Text>
+      <Box className="w-[35%]">
+        <Box className="mb-6 w-full">
           {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 ? (
             <LeaveSection data={leaves?.data ?? []} />
+          ) : (
+            <Text ta="center">No data found</Text>
+          )}
+        </Box>
+        <Box className="mb-6 w-full">
+          {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 ? (
+            <OvertimeSection data={pendingOvertime ?? []} />
           ) : (
             <Text ta="center">No data found</Text>
           )}

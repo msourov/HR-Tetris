@@ -17,8 +17,8 @@ const AppLayout: React.FC = () => {
         <div className="w-2/8 h-full border-r-2 overflow-hidden">
           <Sidebar />
         </div>
-        <div className="flex-1 h-screen overflow-auto">
-          <div className="content bg-white">
+        <div className="flex-1 h-screen">
+          <div className="content bg-white overflow-x-hidden">
             <Outlet />
           </div>
         </div>
