@@ -2,7 +2,7 @@ import { Menu } from "@mantine/core";
 import { IconUserFilled } from "@tabler/icons-react";
 import { LuLogOut } from "react-icons/lu";
 import { useAuth } from "../../services/auth/useAuth";
-import "../../styles.css";
+// import "../../styles.css";
 // import { useNavigate } from "react-router-dom";
 
 const Topbar = () => {
@@ -13,7 +13,7 @@ const Topbar = () => {
       <div className="relative inline-block border-gradient">
         <div className="logo-container">
           <img src="/assets/logo.jpg" alt="logo" width="140" />
-          <div className="glowing-ball"></div>
+          {/* <div className="glowing-ball"></div> */}
         </div>
       </div>
       <div className="flex gap-4 mr-8">

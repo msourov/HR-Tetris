@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { Leave } from "../../../../features/api/types";
 import CustomCard from "./CustomCard";
 
-const OvertimeList = ({ data }: { data: Leave[] }) => {
+const LeaveList = ({ data }: { data: Leave[] }) => {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
   return (
@@ -45,4 +45,4 @@ const OvertimeList = ({ data }: { data: Leave[] }) => {
   );
 };
 
-export default OvertimeList;
+export default LeaveList;

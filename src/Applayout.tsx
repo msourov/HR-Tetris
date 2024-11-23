@@ -11,14 +11,14 @@ const AppLayout: React.FC = () => {
   // }, []);
 
   return (
-    <div className="flex flex-col  overflow-auto">
+    <div className="flex flex-col bg-gray-200 overflow-auto">
       <Topbar />
       <div className="flex flex-1 max-h-[90vh] overflow-hidden">
         <div className="w-2/8 h-full border-r-2 overflow-hidden">
           <Sidebar />
         </div>
         <div className="flex-1 h-screen">
-          <div className="content bg-white overflow-x-hidden">
+          <div className="content overflow-x-hidden">
             <Outlet />
           </div>
         </div>

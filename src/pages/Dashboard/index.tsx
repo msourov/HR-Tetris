@@ -1,26 +1,14 @@
 import { useGetDashboardResponseQuery } from "../../features/api/companySlice";
-import {
-  Alert,
-  Title,
-  Card,
-  Box,
-  Image,
-  Divider,
-  Loader,
-  Text,
-} from "@mantine/core";
+import { Alert, Title, Card, Box, Image, Divider, Text } from "@mantine/core";
 import { LineChart } from "@mantine/charts";
 import { biaxialData } from "./DummyData";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../services/auth/useAuth";
-import { lazy, Suspense } from "react";
 import { Leave, Overtime } from "../../features/api/types";
 import { useAllLeaveQuery } from "../../features/api/leaveSlice";
 import LeaveSection from "./LeaveSection";
 import { useAllOvertimeQuery } from "../../features/api/overtimeSlice";
 import OvertimeSection from "./OvertimeSection";
-
-const UpCounter = lazy(() => import("./UpCounter"));
 
 const Dashboard = () => {
   const {
@@ -71,10 +59,9 @@ const Dashboard = () => {
     }
   }
 
-  const { employee, leave, designation, department } =
-    dashboardData?.data || {};
+  const { employee, department } = dashboardData?.data || {};
 
-  console.log(employee, leave, designation, department);
+  // console.log(employee, leave, designation, department);
 
   return (
     <div className="flex gap-4 my-6 lg:my-12 md:gap-6 lg:mx-8 mx-4 w-[95%] overflow-x-hidden">
@@ -82,13 +69,13 @@ const Dashboard = () => {
         <Box className="flex flex-col justify-evenly mb-6 gap-8 rounded-md">
           <Card
             withBorder
-            className=" bg-blue-200 shadow-lg
+            className=" shadow-lg 
            flex flex-col md:flex-row justify-center gap-2 rounded-md hover:shadow-md transition-shadow"
           >
             {/* Employee Info */}
             <Box
               p="sm"
-              className="border bg-white rounded-lg flex flex-col items-center sm:justify-around gap-2 w-[270px]"
+              className="border border-blue-300 rounded-lg flex flex-col items-center sm:justify-around gap-2 w-[270px]"
             >
               <Box className="flex justify-between gap-4">
                 <Image
@@ -107,28 +94,21 @@ const Dashboard = () => {
 
               <Box className="flex items-center justify-between gap-6">
                 <Box className="flex gap-4 items-center text-center">
-                  <Suspense fallback={<Loader size="md" type="bars" />}>
+                  <Box className="flex gap-2">
                     <Text c="dimmed">Total</Text>
-                    <UpCounter
-                      upperRange={employee?.total_employee || 0}
-                      style={{ color: "black", size: "lg" }}
-                    />
-                  </Suspense>
-                  <Suspense fallback={<Loader size="md" type="bars" />}>
+                    <Text>{employee?.total_employee || 0}</Text>
+                  </Box>
+                  <Box className="flex gap-2">
                     <Text c="dimmed">Active</Text>
-                    <UpCounter
-                      upperRange={employee?.active_employee || 0}
-                      style={{ color: "green", size: "md" }}
-                    />
-                  </Suspense>
+                    <Text c="blue">{employee?.active_employee || 0}</Text>
+                  </Box>
                   {employee?.inactive_employee !== 0 && (
-                    <Suspense fallback={<Loader size="md" type="bars" />}>
-                      <Text c="dimmed">Inactive</Text>
-                      <UpCounter
-                        upperRange={employee?.inactive_employee || 0}
-                        style={{ color: "red", size: "md" }}
-                      />
-                    </Suspense>
+                    <Box className="flex gap-2">
+                      <Text c="dimmed" mr="3rem">
+                        Inactive
+                      </Text>
+                      <Text c="black">{employee?.inactive_employee || 0}</Text>
+                    </Box>
                   )}
                 </Box>
               </Box>
@@ -136,7 +116,7 @@ const Dashboard = () => {
             {/* Department Info */}
             <Box
               p="sm"
-              className="border bg-white rounded-lg flex flex-col items-center sm:justify-around gap-2 w-[270px]"
+              className="border border-blue-300 rounded-lg flex flex-col items-center sm:justify-around gap-2 w-[270px]"
             >
               <Box className="flex justify-between gap-4">
                 <Image
@@ -157,28 +137,19 @@ const Dashboard = () => {
 
               <Box className="flex items-center justify-between gap-6">
                 <Box className="flex gap-4 items-center text-center">
-                  <Suspense fallback={<Loader size="md" type="bars" />}>
+                  <Box className="flex gap-2">
                     <Text c="dimmed">Total</Text>
-                    <UpCounter
-                      upperRange={department?.total || 0}
-                      style={{ color: "black", size: "lg" }}
-                    />
-                  </Suspense>
-                  <Suspense fallback={<Loader size="md" type="bars" />}>
+                    <Text>{department?.total || 0}</Text>
+                  </Box>
+                  <Box className="flex gap-2">
                     <Text c="dimmed">Active</Text>
-                    <UpCounter
-                      upperRange={department?.active || 0}
-                      style={{ color: "green", size: "md" }}
-                    />
-                  </Suspense>
+                    <Text c="blue">{department?.active || 0}</Text>
+                  </Box>
                   {department?.inactive !== 0 && (
-                    <Suspense fallback={<Loader size="md" type="bars" />}>
+                    <Box className="flex gap-2">
                       <Text c="dimmed">Inactive</Text>
-                      <UpCounter
-                        upperRange={department?.inactive || 0}
-                        style={{ color: "red", size: "md" }}
-                      />
-                    </Suspense>
+                      <Text c="black">{department?.inactive || 0}</Text>
+                    </Box>
                   )}
                 </Box>
               </Box>
@@ -191,17 +162,11 @@ const Dashboard = () => {
             shadow="sm"
             padding="lg"
             mb="lg"
-            className="w-[full] bg-gray-200 rounded-md shadow-lg"
+            className="w-[full] rounded-md shadow-lg"
           >
-            <Title
-              order={4}
-              ta="center"
-              mb={20}
-              c="blue"
-              className="opacity-65"
-            >
+            <Text fw={600} ta="center" mb={30} c="blue" className="opacity-65">
               Company growth
-            </Title>
+            </Text>
             <LineChart
               h={300}
               data={biaxialData}
@@ -218,14 +183,14 @@ const Dashboard = () => {
         </Box>
       </Box>
       <Box className="w-[35%]">
-        <Box className="mb-6 w-full">
+        <Box className="mb-6 w-full bg-white">
           {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 ? (
             <LeaveSection data={leaves?.data ?? []} />
           ) : (
             <Text ta="center">No data found</Text>
           )}
         </Box>
-        <Box className="mb-6 w-full">
+        <Box className="mb-6 w-full bg-white">
           {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 ? (
             <OvertimeSection data={pendingOvertime ?? []} />
           ) : (
