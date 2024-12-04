@@ -7,7 +7,7 @@ import { DateTimePicker } from "@mantine/dates";
 import LeaveList from "./LeaveList";
 import { useAllLeaveQuery } from "../../../features/api/leaveSlice";
 
-const Overtime = () => {
+const Leave = () => {
   const [opened, setOpened] = useState(false);
   const [query, setQuery] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -21,14 +21,13 @@ const Overtime = () => {
   });
   const { data, isLoading, error, refetch } = useAllLeaveQuery(searchParams);
 
-  console.log(data);
   if (isLoading)
     return (
       <div className="w-full h-full flex items-center justify-center">
         <Loader size="lg" />
       </div>
     );
-  if (error) return <ErrorAlert message="Error fetching overtime" />;
+  if (error) return <ErrorAlert message="Error fetching leave" />;
 
   const handleSearch = () => {
     const newParams = {
@@ -43,8 +42,8 @@ const Overtime = () => {
   };
 
   return (
-    <Box className="w-[95%] mx-auto bg-white rounded-lg px-4">
-      <Box className="flex justify-end mt-10 mb-2">
+    <Box className="w-[85%] mx-auto rounded-lg px-4">
+      <Box className="flex justify-end mt-10 mb-2 mr-4">
         <Popover
           opened={opened}
           onChange={setOpened}
@@ -57,8 +56,9 @@ const Overtime = () => {
             <Button
               leftSection={<IoFilter />}
               size="compact-sm"
-              bg="none"
-              c="black"
+              color="white"
+              bg="black"
+              c="white"
               variant="outline"
               mt={-24}
               mb={16}
@@ -142,4 +142,4 @@ const Overtime = () => {
   );
 };
 
-export default Overtime;
+export default Leave;

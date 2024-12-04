@@ -12,15 +12,15 @@ const LeaveList = ({ data }: { data: Leave[] }) => {
       initial={{ opacity: 0, x: -100, scrollBehavior: "smooth" }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="py-4 sm:max-h-[80vh] md:max-h-[80vh] lg:max-h-[80vh]"
+      className="sm:max-h-[80vh] md:max-h-[80vh] lg:max-h-[80vh]"
     >
       <ScrollArea
         type="scroll"
         offsetScrollbars
-        h={"90vh"}
+        // h={"90vh"}
         style={{ overflowY: "hidden" }}
       >
-        <Box className="mb-24 gap-4 flex flex-col">
+        <Box className="mb-10 gap-4 flex flex-col">
           {data.map((item, index) => (
             <motion.div
               initial={{ opacity: 0, x: -100 * index }}

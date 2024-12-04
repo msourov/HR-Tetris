@@ -1,11 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { getToken } from "../utils/getToken";
 import { useAuth } from "./useAuth";
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useAuth();
-  const token = getToken();
-  if (token) {
+  if (isAuthenticated) {
     return <Outlet />;
   }
   console.log("isAuthenticated inside ProtectedRoute", isAuthenticated);

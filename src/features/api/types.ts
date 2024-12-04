@@ -407,7 +407,8 @@ export interface CreateEmployeePayload {
   active: boolean;
   is_probation: boolean;
   company: string;
-
+  supervisor: boolean;
+  executives?: string;
   attendance_management: AccessLevel;
   overtime_management: AccessLevel;
   home_office_management: AccessLevel;

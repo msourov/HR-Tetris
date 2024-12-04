@@ -6,9 +6,11 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../services/auth/useAuth";
 import { Leave, Overtime } from "../../features/api/types";
 import { useAllLeaveQuery } from "../../features/api/leaveSlice";
-import LeaveSection from "./LeaveSection";
 import { useAllOvertimeQuery } from "../../features/api/overtimeSlice";
-import OvertimeSection from "./OvertimeSection";
+import { lazy } from "react";
+
+const LeaveSection = lazy(() => import("./LeaveSection"));
+const OvertimeSection = lazy(() => import("./OvertimeSection"));
 
 const Dashboard = () => {
   const {
@@ -18,14 +20,18 @@ const Dashboard = () => {
   } = useGetDashboardResponseQuery();
   const {
     data: leaves,
-    // isLoading: leavesLoading,
-    // error: leavesError,
+    isLoading: leavesLoading,
+    error: leavesError,
     // refetch: leaveRefetch,
   } = useAllLeaveQuery({
     page: 1,
     limit: 10,
   });
-  const { data: overtimeData } = useAllOvertimeQuery({
+  const {
+    data: overtimeData,
+    isLoading: overtimeLoading,
+    error: overtimeError,
+  } = useAllOvertimeQuery({
     page: 1,
     limit: 10,
   });
@@ -96,18 +102,20 @@ const Dashboard = () => {
                 <Box className="flex gap-4 items-center text-center">
                   <Box className="flex gap-2">
                     <Text c="dimmed">Total</Text>
-                    <Text>{employee?.total_employee || 0}</Text>
+                    <Text fw={700}>{employee?.total_employee || 0}</Text>
                   </Box>
                   <Box className="flex gap-2">
                     <Text c="dimmed">Active</Text>
-                    <Text c="blue">{employee?.active_employee || 0}</Text>
+                    <Text c="blue" fw={700}>
+                      {employee?.active_employee || 0}
+                    </Text>
                   </Box>
                   {employee?.inactive_employee !== 0 && (
                     <Box className="flex gap-2">
-                      <Text c="dimmed" mr="3rem">
-                        Inactive
+                      <Text c="dimmed">Inactive</Text>
+                      <Text c="black" fw={700}>
+                        {employee?.inactive_employee || 0}
                       </Text>
-                      <Text c="black">{employee?.inactive_employee || 0}</Text>
                     </Box>
                   )}
                 </Box>
@@ -139,16 +147,20 @@ const Dashboard = () => {
                 <Box className="flex gap-4 items-center text-center">
                   <Box className="flex gap-2">
                     <Text c="dimmed">Total</Text>
-                    <Text>{department?.total || 0}</Text>
+                    <Text fw={700}>{department?.total || 0}</Text>
                   </Box>
                   <Box className="flex gap-2">
                     <Text c="dimmed">Active</Text>
-                    <Text c="blue">{department?.active || 0}</Text>
+                    <Text c="blue" fw={700}>
+                      {department?.active || 0}
+                    </Text>
                   </Box>
                   {department?.inactive !== 0 && (
                     <Box className="flex gap-2">
                       <Text c="dimmed">Inactive</Text>
-                      <Text c="black">{department?.inactive || 0}</Text>
+                      <Text c="black" fw={700}>
+                        {department?.inactive || 0}
+                      </Text>
                     </Box>
                   )}
                 </Box>
@@ -184,18 +196,24 @@ const Dashboard = () => {
       </Box>
       <Box className="w-[35%]">
         <Box className="mb-6 w-full bg-white">
-          {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 ? (
-            <LeaveSection data={leaves?.data ?? []} />
-          ) : (
-            <Text ta="center">No data found</Text>
+          {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 && (
+            <LeaveSection
+              data={pendingLeaves ?? []}
+              loading={leavesLoading}
+              error={leavesError as FetchBaseQueryError}
+            />
           )}
         </Box>
         <Box className="mb-6 w-full bg-white">
-          {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 ? (
-            <OvertimeSection data={pendingOvertime ?? []} />
-          ) : (
-            <Text ta="center">No data found</Text>
-          )}
+          {leaves &&
+            Array.isArray(overtimeData?.data) &&
+            overtimeData?.data.length > 0 && (
+              <OvertimeSection
+                data={pendingOvertime ?? []}
+                loading={overtimeLoading}
+                error={overtimeError as FetchBaseQueryError}
+              />
+            )}
         </Box>
       </Box>
     </div>

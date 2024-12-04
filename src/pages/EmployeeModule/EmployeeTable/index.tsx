@@ -1,4 +1,4 @@
-import { Box, Table } from "@mantine/core";
+import { Box, Pagination, Table } from "@mantine/core";
 import { useGetEmployeesQuery } from "../../../features/api/employeeSlice";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
@@ -23,6 +23,9 @@ const EmplyeeTable = () => {
           error={error}
         />
       </Table>
+      <Box className="px-4 pt-8 pb-4 float-right">
+        <Pagination total={4} color="rgb(33, 41, 34)" />
+      </Box>
     </Box>
   );
 };

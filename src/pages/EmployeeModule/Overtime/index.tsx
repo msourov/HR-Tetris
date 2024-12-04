@@ -127,13 +127,13 @@ const Overtime = () => {
   const employeeId = watch("employee_id");
 
   return (
-    <Box className="w-[95%] mx-auto bg-white rounded-lg px-4">
-      <Box className="flex justify-end gap-6 items-center mt-10 mb-2">
+    <Box className="w-[85%] mx-auto rounded-lg px-4">
+      <Box className="flex justify-end gap-6 items-center mt-6 mb-2 mr-4">
         <Button
-          variant="light"
-          c="black"
-          size="compact-md"
-          className="w-[100px]"
+          variant="filled"
+          color="orange"
+          size="compact-sm"
+          className="w-[80px]"
           onClick={modalOpen}
         >
           Add
@@ -149,9 +149,10 @@ const Overtime = () => {
           <Popover.Target>
             <Button
               leftSection={<IoFilter />}
-              size="compact-md"
-              bg="none"
-              c="black"
+              size="compact-sm"
+              color="white"
+              bg="black"
+              c="white"
               variant="outline"
               onClick={() => setOpened((o) => !o)}
             >

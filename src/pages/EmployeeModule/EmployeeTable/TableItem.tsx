@@ -26,27 +26,32 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   }
 
   return (
-    <Table.Tbody>
-      {data.map((item) => (
-        <Table.Tr>
-          <Table.Td style={{ width: "15%" }}>{item?.name}</Table.Td>
-          <Table.Td style={{ width: "10%" }}>{item?.employee_id}</Table.Td>
-          <Table.Td style={{ width: "10%" }}>{item?.phone}</Table.Td>
-          <Table.Td style={{ width: "10%" }}>{item?.email}</Table.Td>
-          <Table.Td style={{ width: "10%" }}>
-            {item?.shift_and_schedule?.name}
-          </Table.Td>
-          <Table.Td style={{ width: "10%" }}>{item?.department?.name}</Table.Td>
-          <Table.Td style={{ width: "10%" }}>
-            {item?.designation?.name}
-          </Table.Td>
+    <>
+      <Table.Tbody>
+        {data.map((item, index) => (
+          <Table.Tr>
+            <Table.Td style={{ width: "2%" }}>{index + 1}</Table.Td>
+            <Table.Td style={{ width: "15%" }}>{item?.name}</Table.Td>
+            <Table.Td style={{ width: "10%" }}>{item?.employee_id}</Table.Td>
+            <Table.Td style={{ width: "10%" }}>{item?.phone}</Table.Td>
+            <Table.Td style={{ width: "10%" }}>{item?.email}</Table.Td>
+            <Table.Td style={{ width: "10%" }}>
+              {item?.shift_and_schedule?.name}
+            </Table.Td>
+            <Table.Td style={{ width: "10%" }}>
+              {item?.department?.name}
+            </Table.Td>
+            <Table.Td style={{ width: "10%" }}>
+              {item?.designation?.name}
+            </Table.Td>
 
-          <Table.Td style={{ width: "5%" }}>
-            <EmployeeActions id={item?.uid} />
-          </Table.Td>
-        </Table.Tr>
-      ))}
-    </Table.Tbody>
+            <Table.Td style={{ width: "5%" }}>
+              <EmployeeActions id={item?.uid} />
+            </Table.Td>
+          </Table.Tr>
+        ))}
+      </Table.Tbody>
+    </>
   );
 };
 

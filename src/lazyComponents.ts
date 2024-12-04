@@ -1,0 +1,102 @@
+import { lazy } from "react";
+
+export const AppLayout = lazy(() => import("./Applayout"));
+export const ErrorPage = lazy(() => import("./pages/ErrorPage"));
+export const Dashboard = lazy(() => import("./pages/Dashboard"));
+export const User = lazy(() => import("./pages/AdminModule/User"));
+export const EditUser = lazy(() => import("./pages/AdminModule/User/EditUser"));
+export const AddNewUser = lazy(
+  () => import("./pages/AdminModule/User/AddNewUser")
+);
+export const Role = lazy(() => import("./pages/AdminModule/Role"));
+export const EditDepartment = lazy(
+  () => import("./pages/OfficeModule/Department/EditDepartment")
+);
+export const Login = lazy(() => import("./pages/Login"));
+export const OtpPage = lazy(() => import("./pages/Login/OtpPage"));
+export const PublicRoute = lazy(() => import("./services/auth/PublicRoute"));
+export const ProtectedRoute = lazy(
+  () => import("./services/auth/ProtectedRoutes")
+);
+export const UserDetail = lazy(
+  () => import("./pages/AdminModule/User/UserDetail")
+);
+export const UserTable = lazy(
+  () => import("./pages/AdminModule/User/UserTable")
+);
+export const AddNewRole = lazy(
+  () => import("./pages/AdminModule/Role/AddNewRole")
+);
+export const RoleTable = lazy(
+  () => import("./pages/AdminModule/Role/RoleTable")
+);
+export const Company = lazy(() => import("./pages/OfficeModule/Company"));
+export const CandidateDetail = lazy(
+  () => import("./pages/RecruitmentModule/Candidates/CandidateDetail")
+);
+export const Recruitment = lazy(() => import("./pages/RecruitmentModule"));
+export const Candidates = lazy(
+  () => import("./pages/RecruitmentModule/Candidates")
+);
+export const DepartmentDetail = lazy(
+  () => import("./pages/OfficeModule/Department/DepartmentDetail")
+);
+export const DesignationList = lazy(
+  () => import("./pages/OfficeModule/Designation/DesignationList")
+);
+export const DepartmentLayout = lazy(
+  () => import("./pages/OfficeModule/Department")
+);
+export const DepartmentList = lazy(
+  () => import("./pages/OfficeModule/Department/DepartmentList")
+);
+export const DesignationLayout = lazy(
+  () => import("./pages/OfficeModule/Designation")
+);
+export const EditDesignation = lazy(
+  () => import("./pages/OfficeModule/Designation/EditDesignation")
+);
+export const DesignationDetail = lazy(
+  () => import("./pages/OfficeModule/Designation/DesignationDetail")
+);
+export const ShiftLayout = lazy(() => import("./pages/OfficeModule/Shift"));
+export const ShiftList = lazy(
+  () => import("./pages/OfficeModule/Shift/ShiftList")
+);
+export const PolicyLayout = lazy(() => import("./pages/OfficeModule/Policy"));
+export const PolicyList = lazy(
+  () => import("./pages/OfficeModule/Policy/PolicyList")
+);
+export const ManagePolicy = lazy(
+  () => import("./pages/OfficeModule/Policy/EditPolicy")
+);
+export const PolicyDetail = lazy(
+  () => import("./pages/OfficeModule/Policy/PolicyDetail")
+);
+export const EditShift = lazy(
+  () => import("./pages/OfficeModule/Shift/EditShift")
+);
+export const HolidayLayout = lazy(() => import("./pages/OfficeModule/Holiday"));
+export const EmployeeLayout = lazy(() => import("./pages/EmployeeModule"));
+export const EmplyeeTable = lazy(
+  () => import("./pages/EmployeeModule/EmployeeTable")
+);
+export const AddEmployee = lazy(
+  () => import("./pages/EmployeeModule/AddEmployee")
+);
+export const EmployeeDetail = lazy(
+  () => import("./pages/EmployeeModule/EmplyeeDetail")
+);
+export const Overtime = lazy(() => import("./pages/EmployeeModule/Overtime"));
+export const Leave = lazy(() => import("./pages/EmployeeModule/Leave"));
+export const TicketLayout = lazy(() => import("./pages/TicketModule"));
+export const TicketList = lazy(() => import("./pages/TicketModule/TicketList"));
+export const AnnouncementLayout = lazy(
+  () => import("./pages/AnnouncementModule")
+);
+export const AnnouncementList = lazy(
+  () => import("./pages/AnnouncementModule/AnnouncementList")
+);
+export const EditAnnnouncement = lazy(
+  () => import("./pages/AnnouncementModule/EditAnnouncement")
+);

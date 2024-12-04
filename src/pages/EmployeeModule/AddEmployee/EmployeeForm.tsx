@@ -10,6 +10,7 @@ import {
   Select,
   TextInput,
   NumberInput,
+  Switch,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "react-hook-form";
@@ -22,7 +23,10 @@ import { useDepartmentHelperQuery } from "../../../features/api/departmentSlice"
 import { useDesignationHelperQuery } from "../../../features/api/designationSlice";
 import { useShiftHelperQuery } from "../../../features/api/shiftSlice";
 import { useMemo } from "react";
-import { useCreateEmployeeMutation } from "../../../features/api/employeeSlice";
+import {
+  useCreateEmployeeMutation,
+  useGetEmplyeeHelperQuery,
+} from "../../../features/api/employeeSlice";
 import { CreateEmployeePayload } from "../../../features/api/types";
 
 type Permissions = {
@@ -44,6 +48,8 @@ type CreateEmployeeProps = {
   department: string;
   designation: string;
   shift_and_schedule: string;
+  supervisor: boolean;
+  executives: string;
   permissions?: Permissions[];
 };
 
@@ -71,6 +77,8 @@ const schema = z.object({
   department: z.string().min(1, "Department is required"),
   designation: z.string().min(1, "Designation is required"),
   shift_and_schedule: z.string().min(1, "Shift and schedule is required"),
+  supervisor: z.boolean(),
+  executives: z.string(),
   permissions: z.array(
     z.object({
       label: z.string(),
@@ -226,6 +234,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
   const { data: departments } = useDepartmentHelperQuery();
   const { data: designations } = useDesignationHelperQuery();
   const { data: shifts } = useShiftHelperQuery();
+  const { data: employees } = useGetEmplyeeHelperQuery();
 
   const departmentOptions = useMemo(
     () =>
@@ -253,6 +262,13 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
       })),
     [shifts]
   );
+
+  const employeeOptions = Array.isArray(employees?.data)
+    ? employees?.data.map((item) => ({
+        label: item?.name,
+        value: item?.uid,
+      }))
+    : [];
 
   const draftValues = JSON.parse(
     sessionStorage.getItem("employeeDraftForm") || "{}"
@@ -287,6 +303,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
       department: draftValues?.department || "",
       designation: draftValues?.designation || "",
       shift_and_schedule: draftValues?.shift_and_schedule || "",
+      supervisor: draftValues?.supervisor || false,
+      executives: draftValues?.executives || [],
       permissions: draftValues?.permissions || initialValues,
     },
   });
@@ -321,6 +339,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
       company: "112233445566778899",
       bod: data.bod?.toISOString(),
       joining_date: data.joining_date?.toISOString(),
+      executives: data?.supervisor ? data?.executives : [],
     };
     const payload = { ...formattedData, ...preparedData };
     delete payload.permissions;
@@ -332,7 +351,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
       console.log(response);
       notifications.show({
         title: "Success!",
-        message: "Employee Created Successfully",
+        message: response.message || "Employee Created Successfully",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
@@ -375,6 +394,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
     const tabs = ["Personal Information", "Work Information", "Authority"];
     return tabs[tab - 1];
   };
+
   return (
     <Paper radius="md" px="lg" className="mx-auto flex flex-col">
       <Box className="flex-1 flex flex-col">
@@ -430,7 +450,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
                   variant="filled"
                   label="Date of birth"
                   placeholder="Pick date"
-                  value={bod || new Date()}
+                  value={bod}
                   onChange={(value) => {
                     if (value) setValue("bod", value);
                   }}
@@ -522,6 +542,34 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
                   }
                   min={0}
                 />
+                <Box className="py-8 flex flex-col gap-4">
+                  <Switch
+                    label="Supervisor"
+                    required
+                    checked={watch("supervisor")} // Use `checked` instead of `value`
+                    onChange={(event) =>
+                      setValue("supervisor", event.currentTarget.checked)
+                    } // Update the value properly
+                    error={errors.supervisor?.message as string} // Correct the error key
+                  />
+                </Box>
+                {watch("supervisor") && (
+                  <Select
+                    className="-my-5"
+                    variant="filled"
+                    label="Select Executives"
+                    data={employeeOptions}
+                    value={watch("executives")}
+                    onChange={(value) => {
+                      if (value) setValue("executives", value);
+                    }}
+                    error={
+                      errors.executives
+                        ? (errors.executives.message as string)
+                        : null
+                    }
+                  />
+                )}
               </>
             )}
           </SimpleGrid>
@@ -535,7 +583,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
             </>
           )}
 
-          <Box className="p-4 right-0 max-w-[100%] bg-white fixed bottom-0 sm:mb-[15%] lg:mb-[8%] flex justify-between gap-4 mr-10">
+          <Box className="p-4 w-full bg-white flex justify-end gap-4 mt-6">
             <Button
               bg="blue"
               className="rounded-lg"
