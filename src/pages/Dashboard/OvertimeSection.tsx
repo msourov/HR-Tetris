@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Overtime } from "../../features/api/types";
+import { Overtime } from "../../features/api/typesOld";
 import {
   Accordion,
   Box,
@@ -44,8 +44,8 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
     <div className="rounded-md w-full shadow-lg">
       <ScrollArea type="scroll" style={{ overflowY: "hidden" }}>
         <Box className="flex flex-col items-center">
-          <Box w="100%" className="bg-green-600">
-            <Text fw={600} size="lg" ta="center" my={6} c="white">
+          <Box w="100%" className="bg-green-100 text-green-800">
+            <Text fw={600} size="lg" ta="center" my={6}>
               Overtime Requests
             </Text>
           </Box>

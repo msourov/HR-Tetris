@@ -7,7 +7,7 @@ import {
   EmployeeHelperResponse,
   Response,
   SingleEmployeeResponse,
-} from "./types";
+} from "./typesOld";
 
 export const employeeApi = createApi({
   reducerPath: "employeeApi",

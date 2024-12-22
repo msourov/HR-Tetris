@@ -1,5 +1,5 @@
 import { Button, Card, Text } from "@mantine/core";
-import { AllPolicy } from "../../../../features/api/types";
+import { AllPolicy } from "../../../../features/api/typesOld";
 import { IconDownload } from "@tabler/icons-react";
 
 interface PolicyCardProps {
@@ -8,11 +8,7 @@ interface PolicyCardProps {
   isFile: boolean; // New prop to determine if it's a file or text policy
 }
 
-const PolicyCard: React.FC<PolicyCardProps> = ({
-  item,
-  onClick,
-  isFile,
-}) => {
+const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
   return (
     <Card
       shadow="sm"

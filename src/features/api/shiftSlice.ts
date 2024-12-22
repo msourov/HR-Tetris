@@ -9,7 +9,7 @@ import {
   ShiftDetailResponse,
   ShiftHelper,
   ShiftUpdateRequest,
-} from "./types";
+} from "./typesOld";
 
 export const shiftApi = createApi({
   reducerPath: "shiftScheduleApi",

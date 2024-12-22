@@ -10,7 +10,7 @@ import {
   SingleUserResponse,
   User,
   UserResponse,
-} from "./types";
+} from "./typesOld";
 import Cookies from "js-cookie";
 import { tagTypes } from "./tags";
 

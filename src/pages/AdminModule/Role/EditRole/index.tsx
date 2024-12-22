@@ -3,7 +3,7 @@ import { Paper, Button, Checkbox, Switch, Text, Box } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { randomId, useListState } from "@mantine/hooks";
-import { EditRoleRequest } from "../../../../features/api/types";
+import { EditRoleRequest } from "../../../../features/api/typesOld";
 import { useEffect } from "react";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";

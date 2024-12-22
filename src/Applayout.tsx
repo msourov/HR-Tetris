@@ -15,7 +15,7 @@ const AppLayout: React.FC = () => {
     <div className="flex flex-col h-screen bg-gray-200 overflow-auto">
       <Topbar />
       <div className="flex flex-1">
-        <div className="w-2/8 h-auto border-r-2">
+        <div className="w-2/8 h-auto">
           <Sidebar />
         </div>
         <div className="content flex-1 h-min overflow-x-hidden">

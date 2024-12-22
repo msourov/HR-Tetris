@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Leave } from "../../features/api/types";
+import { Leave } from "../../features/api/typesOld";
 import {
   Accordion,
   Box,
@@ -40,8 +40,8 @@ const LeaveSection: FC<LeaveSectionProps> = ({ data, loading, error }) => {
     <div className="rounded-md w-full shadow-lg">
       <ScrollArea type="scroll" style={{ overflowY: "hidden" }}>
         <Box className="flex flex-col items-center">
-          <Box w="100%" className="bg-red-400 z-10">
-            <Text fw={600} size="lg" ta="center" my={6} c="white">
+          <Box w="100%" className="bg-red-100 text-red-800 z-10">
+            <Text fw={600} size="lg" ta="center" my={6}>
               Leave Requests
             </Text>
           </Box>

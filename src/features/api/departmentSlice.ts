@@ -5,7 +5,7 @@ import {
   DepartmentHelper,
   DepartmentResponse,
   Response,
-} from "./types";
+} from "./typesOld";
 import { tagTypes } from "./tags";
 
 export const departmentApi = createApi({

@@ -1,10 +1,13 @@
 import React from "react";
 import { Pill, Table } from "@mantine/core";
-import { AccessPermissions, Role } from "../../../../features/api/types";
+import { AccessPermissions, Role } from "../../../../features/api/typesOld";
 import RoleActions from "./RoleActions";
+import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
+import "../../../../styles.css";
 
 interface TableItemProps {
   data: Role[];
+  loading: boolean;
 }
 
 type ColorMap = {
@@ -20,7 +23,32 @@ type ColorMap = {
   ATM: string;
 };
 
-const TableItem: React.FC<TableItemProps> = ({ data }) => {
+const transformAccess = (access: AccessPermissions): string[] => {
+  const dataArr: [string, string][] = Object.entries(access);
+  const seenKeys = new Set<string>();
+  return dataArr
+    .filter(([, value]) => value === "a")
+    .map(([key]) => {
+      const subwords = key.split("_");
+      let processedKey = subwords
+        .map((subword) => subword.charAt(0).toUpperCase())
+        .join("");
+
+      if (seenKeys.has(processedKey)) {
+        // If the key has been seen, use the first and last letter of the first subword and the first letter of the second subword
+        processedKey = `${subwords[0].charAt(0).toUpperCase()}${subwords[0]
+          .charAt(subwords[0].length - 1)
+          .toUpperCase()}${subwords[1].charAt(0).toUpperCase()}`;
+      } else {
+        // Add the key to the set of seen keys
+        seenKeys.add(processedKey);
+      }
+
+      return processedKey;
+    });
+};
+
+const TableItem: React.FC<TableItemProps> = ({ data, loading }) => {
   const colors: ColorMap = {
     UM: "#f44336",
     OM: "#2196f3",
@@ -34,30 +62,9 @@ const TableItem: React.FC<TableItemProps> = ({ data }) => {
     ATM: "#3f51b5",
   };
 
-  const transformAccess = (access: AccessPermissions): string[] => {
-    const dataArr: [string, string][] = Object.entries(access);
-    const seenKeys = new Set<string>();
-    return dataArr
-      .filter(([, value]) => value === "a")
-      .map(([key]) => {
-        const subwords = key.split("_");
-        let processedKey = subwords
-          .map((subword) => subword.charAt(0).toUpperCase())
-          .join("");
-
-        if (seenKeys.has(processedKey)) {
-          // If the key has been seen, use the first and last letter of the first subword and the first letter of the second subword
-          processedKey = `${subwords[0].charAt(0).toUpperCase()}${subwords[0]
-            .charAt(subwords[0].length - 1)
-            .toUpperCase()}${subwords[1].charAt(0).toUpperCase()}`;
-        } else {
-          // Add the key to the set of seen keys
-          seenKeys.add(processedKey);
-        }
-
-        return processedKey;
-      });
-  };
+  if (loading) {
+    return <CommonSkeleton cols={5} rows={5} />;
+  }
 
   return (
     <Table.Tbody>

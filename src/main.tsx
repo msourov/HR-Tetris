@@ -16,6 +16,7 @@ import "@mantine/dropzone/styles.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/charts/styles.css";
+import { AuthProvider } from "./services/auth/AuthContext.tsx";
 
 const theme = createTheme({
   fontFamily: "Open Sans, sans-serif",
@@ -25,18 +26,20 @@ const theme = createTheme({
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <MantineProvider theme={theme}>
-      <Provider store={store}>
-        <ModalsProvider
-          modals={{
-            demonstration: AddPolicy,
-            createPolicy: CreatePolicy,
-            uploadPolicy: UploadPolicyFile,
-          }}
-        >
-          <Notifications />
-          <App />
-        </ModalsProvider>
-      </Provider>
+      <AuthProvider>
+        <Provider store={store}>
+          <ModalsProvider
+            modals={{
+              demonstration: AddPolicy,
+              createPolicy: CreatePolicy,
+              uploadPolicy: UploadPolicyFile,
+            }}
+          >
+            <Notifications />
+            <App />
+          </ModalsProvider>
+        </Provider>
+      </AuthProvider>
     </MantineProvider>
   </React.StrictMode>
 );

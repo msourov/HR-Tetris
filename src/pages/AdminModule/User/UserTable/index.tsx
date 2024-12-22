@@ -1,7 +1,7 @@
 import { Box, Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
-import { User } from "../../../../features/api/types";
+import { User } from "../../../../features/api/typesOld";
 import { useGetUsersQuery } from "../../../../features/api/userSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../../../services/auth/useAuth";

@@ -1,11 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
+import { tagTypes } from "./tags";
 import {
   AnnouncementResponse,
-  Response,
   SingleAnnouncementResponse,
-} from "./types";
-import { tagTypes } from "./tags";
+} from "../types/announcement";
+import { Response } from "../types/shared";
 
 export const announcementApi = createApi({
   reducerPath: "announcementApi",

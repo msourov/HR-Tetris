@@ -7,7 +7,7 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { Chat, Ticket } from "../../../features/api/types";
+import { Chat, Ticket } from "../../../features/api/typesOld";
 import { IoMdSend } from "react-icons/io";
 import { RiAttachment2 } from "react-icons/ri";
 import { MessageBox } from "react-chat-elements";

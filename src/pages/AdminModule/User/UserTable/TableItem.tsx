@@ -1,10 +1,11 @@
-import { Loader, Pill, Table } from "@mantine/core";
+import { Pill, Table } from "@mantine/core";
 import "../../../../styles.css";
-import { User } from "../../../../features/api/types";
+import { User } from "../../../../features/api/typesOld";
 import UserActions from "./UserActions";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
+import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
 
 interface TableItemProps {
   data: User[];
@@ -20,8 +21,9 @@ interface TableItemProps {
 
 const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   if (isLoading) {
-    <Loader type="dots" className="self-center" />;
+    return <CommonSkeleton cols={6} rows={5} />;
   }
+
   if (error) {
     <ErrorAlert message="Error fetching users" />;
   }

@@ -1,5 +1,5 @@
 import { Badge, Card, Group, Text } from "@mantine/core";
-import { Shift } from "../../../../features/api/types";
+import { Shift } from "../../../../features/api/typesOld";
 
 interface ShiftCardProps {
   shift: Shift;

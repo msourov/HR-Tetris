@@ -1,4 +1,4 @@
-import { useEffect, useState, FC, createContext, useMemo } from "react";
+import { useEffect, useState, FC, createContext } from "react";
 import Cookies from "js-cookie";
 import { AuthProviderProps } from "./authTypes";
 import { AuthContextProps } from "./authTypes";
@@ -18,6 +18,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     if (token) {
       setToken(token);
       setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
     }
   }, []);
 
@@ -31,14 +33,11 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     setIsAuthenticated(false);
   };
 
-  const value = useMemo(
-    () => ({
-      isAuthenticated,
-      logout,
-      token,
-    }),
-    [isAuthenticated, token]
-  );
+  const value = {
+    isAuthenticated,
+    logout,
+    token,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

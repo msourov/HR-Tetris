@@ -8,7 +8,7 @@ import {
   Text,
 } from "@mantine/core";
 import { useGetAllTicketsQuery } from "../../../features/api/ticketSlice";
-import { Ticket } from "../../../features/api/types";
+import { Ticket } from "../../../features/api/typesOld";
 import TicketChat from "./TicketChat";
 import { ChatList } from "react-chat-elements";
 import { useEffect, useState, useMemo } from "react";

@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
-import { OvertimeResponse, ApproveOvertimeRequest, Response } from "./types";
+import { OvertimeResponse, ApproveOvertimeRequest, Response } from "./typesOld";
 import { tagTypes } from "./tags";
 
 export const overtimeApi = createApi({
@@ -71,4 +71,8 @@ export const overtimeApi = createApi({
   }),
 });
 
-export const { useAllOvertimeQuery, useCreateOvertimeMutation, useApproveOvertimeMutation } = overtimeApi;
+export const {
+  useAllOvertimeQuery,
+  useCreateOvertimeMutation,
+  useApproveOvertimeMutation,
+} = overtimeApi;

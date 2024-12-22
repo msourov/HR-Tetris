@@ -22,7 +22,7 @@ const AddEmployee = () => {
     <Paper radius="md" p="xl" className="max-h-['95%']">
       <Tabs
         color="blue"
-        variant="pills"
+        // variant="pills"
         value={activeTab}
         onChange={handleTabChange}
         orientation="vertical"

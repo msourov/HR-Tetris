@@ -11,7 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { randomId, useListState } from "@mantine/hooks";
-import { CreateRoleRequest } from "../../../../features/api/types";
+import { CreateRoleRequest } from "../../../../features/api/typesOld";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";

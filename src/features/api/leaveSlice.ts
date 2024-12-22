@@ -5,7 +5,7 @@ import {
   CreateLeaveRequest,
   UpdateLeaveRequest,
   ApproveLeaveRequest,
-} from "./types";
+} from "./typesOld";
 import { tagTypes } from "./tags";
 
 export const leaveApi = createApi({

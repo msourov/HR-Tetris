@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
-import { PolicyResponse } from "./types";
+import { PolicyResponse } from "./typesOld";
 
 export const policyApi = createApi({
   reducerPath: "policyApi",

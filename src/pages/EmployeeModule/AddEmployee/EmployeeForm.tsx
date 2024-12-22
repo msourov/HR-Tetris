@@ -27,7 +27,7 @@ import {
   useCreateEmployeeMutation,
   useGetEmplyeeHelperQuery,
 } from "../../../features/api/employeeSlice";
-import { CreateEmployeePayload } from "../../../features/api/types";
+import { CreateEmployeePayload } from "../../../features/api/typesOld";
 
 type Permissions = {
   label: string;

@@ -23,7 +23,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import ErrorAlert from "../../../../components/shared/ErrorAlert";
 
 const schema = z.object({
   active: z.boolean(),
@@ -90,10 +89,10 @@ const EditDepartment = () => {
       uid: dept,
     };
     try {
-      await editDepartment(obj).unwrap();
+      const response = await editDepartment(obj).unwrap();
       notifications.show({
         title: "Success!",
-        message: "Succesfully updated department",
+        message: response.message || "Succesfully updated department",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
@@ -111,10 +110,10 @@ const EditDepartment = () => {
 
   const handleDelete = async () => {
     try {
-      await deleteDepartment({ id: dept }).unwrap();
+      const response = await deleteDepartment({ id: dept }).unwrap();
       notifications.show({
         title: "Success!",
-        message: "Department deleted",
+        message: response.message || "Department deleted",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
@@ -127,6 +126,8 @@ const EditDepartment = () => {
         color: "red",
         autoClose: 3000,
       });
+    } finally {
+      closeDelete();
     }
   };
 
@@ -160,7 +161,7 @@ const EditDepartment = () => {
       />
       {dept && (
         <Paper shadow="sm" p="md" my={16}>
-          {departmentDetail ? (
+          {departmentDetail && (
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextInput
                 label="Name"
@@ -187,8 +188,6 @@ const EditDepartment = () => {
                 {editDeptLoading ? <Loader type="dots" size="sm" /> : "Save"}
               </Button>
             </form>
-          ) : (
-            <ErrorAlert message="Error updating department" />
           )}
         </Paper>
       )}

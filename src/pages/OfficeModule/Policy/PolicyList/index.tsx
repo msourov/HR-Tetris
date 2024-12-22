@@ -15,7 +15,7 @@ import {
 import { useAuth } from "../../../../services/auth/useAuth";
 import "../../../../styles.css";
 import PDFViewer from "./PDFViewer";
-import { AllPolicy } from "../../../../features/api/types";
+import { AllPolicy } from "../../../../features/api/typesOld";
 import PolicyCard from "./PolicyCard";
 import axios from "axios";
 
@@ -70,9 +70,12 @@ const PolicyList = () => {
   const policyTexts: AllPolicy[] = [];
 
   if (policies) {
-    Array.isArray(policies.data) && policies.data?.map((policy) =>
-      policy.descriptions ? policyTexts.push(policy) : policyFiles.push(policy)
-    );
+    Array.isArray(policies.data) &&
+      policies.data?.map((policy) =>
+        policy.descriptions
+          ? policyTexts.push(policy)
+          : policyFiles.push(policy)
+      );
   }
 
   const { data: policyDetail, isLoading: policyDetailLoading } =
@@ -125,9 +128,15 @@ const PolicyList = () => {
         <PolicyModal
           opened={opened}
           onClose={() => setOpened(false)}
-          policyDetail={policyDetail && 'data' in policyDetail
-            ? { data: Array.isArray(policyDetail.data) ? policyDetail.data[0] : policyDetail.data }
-            : null}
+          policyDetail={
+            policyDetail && "data" in policyDetail
+              ? {
+                  data: Array.isArray(policyDetail.data)
+                    ? policyDetail.data[0]
+                    : policyDetail.data,
+                }
+              : null
+          }
           policyDetailLoading={policyDetailLoading}
         />
       </SimpleGrid>

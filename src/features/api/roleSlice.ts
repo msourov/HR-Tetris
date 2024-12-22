@@ -7,7 +7,7 @@ import {
   Response,
   RoleDetailResponse,
   RoleResponse,
-} from "./types";
+} from "./typesOld";
 import { tagTypes } from "./tags";
 
 export const roleApi = createApi({

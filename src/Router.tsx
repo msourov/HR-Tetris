@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Suspense } from "react";
-import { Text } from "@mantine/core";
+import { Loader } from "@mantine/core";
 import {
   AddEmployee,
   AddNewRole,
@@ -52,10 +52,10 @@ import {
 
 const loader = (
   <div className="flex justify-center items-center">
-    {/* <Loader type="dots" color="red" size="sm" my={30} /> */}
-    <Text className="text-center" my={40}>
+    <Loader type="dots" color="blue" size="sm" my={30} />
+    {/* <Text className="text-center" my={40}>
       Loading...
-    </Text>
+    </Text> */}
   </div>
 );
 

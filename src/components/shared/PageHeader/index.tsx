@@ -25,7 +25,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       py={"1rem"}
       className="flex justify-between"
       style={{
-        background: "#293241",
+        background: "#7c93b7",
         color: "white",
       }}
     >

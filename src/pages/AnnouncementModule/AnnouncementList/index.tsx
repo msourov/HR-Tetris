@@ -19,7 +19,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
-import { Response, Announcement } from "../../../features/api/types";
+import { Response, Announcement } from "../../../features/api/typesOld";
 
 const AnnouncementList = () => {
   const [value, setValue] = useState("");

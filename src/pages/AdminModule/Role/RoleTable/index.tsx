@@ -1,13 +1,13 @@
 import { Box, Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
-import { Role } from "../../../../features/api/types";
+import { Role } from "../../../../features/api/typesOld";
 import TableItem from "./TableItem";
 import { useGetRolesQuery } from "../../../../features/api/roleSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../../../services/auth/useAuth";
 
 const RoleTable: React.FC = () => {
-  const { data, error } = useGetRolesQuery({ page: 1, limit: 10 });
+  const { data, isLoading, error } = useGetRolesQuery({ page: 1, limit: 10 });
   const { logout } = useAuth();
   const roles: Role[] = data?.data || [];
 
@@ -24,7 +24,7 @@ const RoleTable: React.FC = () => {
     <Box>
       <Table>
         <TableHeading />
-        <TableItem data={roles} />
+        <TableItem data={roles} loading={isLoading} />
       </Table>
     </Box>
   );

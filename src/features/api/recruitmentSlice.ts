@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { tagTypes } from "./tags";
 import baseQuery from "./baseApi";
-import { CandidatesResponse } from "./types";
+import { CandidatesResponse } from "./typesOld";
 
 export const recruitmentApi = createApi({
   reducerPath: "recruitmentApi",
@@ -20,10 +20,8 @@ export const recruitmentApi = createApi({
         method: "GET",
       }),
     }),
-      }),
+  }),
 });
 
-export const {
-  useGetCandidatesQuery,
-  useGetCandidateDetailQuery,
-} = recruitmentApi;
+export const { useGetCandidatesQuery, useGetCandidateDetailQuery } =
+  recruitmentApi;

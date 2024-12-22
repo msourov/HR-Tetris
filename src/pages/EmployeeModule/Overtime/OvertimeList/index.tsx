@@ -2,7 +2,7 @@ import { Box, ScrollArea } from "@mantine/core";
 import CustomCard from "./CustomCard";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Overtime } from "../../../../features/api/types";
+import { Overtime } from "../../../../features/api/typesOld";
 
 const OvertimeList = ({ data }: { data: Overtime[] }) => {
   const containerRef = useRef(null);

@@ -4,7 +4,7 @@ import {
   TicketResponse,
   CreateTicketRequest,
   TicketResolveResponse,
-} from "./types";
+} from "./typesOld";
 import { tagTypes } from "./tags";
 
 export const ticketApi = createApi({

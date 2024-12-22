@@ -107,11 +107,11 @@ const EditDesignation = () => {
 
   const handleDelete = async () => {
     try {
-      await deleteDesignation({ id: des }).unwrap();
+      const response = await deleteDesignation({ id: des }).unwrap();
       setDes("");
       notifications.show({
         title: "Success!",
-        message: "Designation deleted",
+        message: response.message || "Designation deleted",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,

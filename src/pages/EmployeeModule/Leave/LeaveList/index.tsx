@@ -1,7 +1,7 @@
 import { Box, ScrollArea } from "@mantine/core";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Leave } from "../../../../features/api/types";
+import { Leave } from "../../../../features/api/typesOld";
 import CustomCard from "./CustomCard";
 
 const LeaveList = ({ data }: { data: Leave[] }) => {

@@ -33,9 +33,15 @@ const EmployeeDetail = () => {
         label={log?.admin ?? "N/A"}
         description={log?.message ?? "N/A"}
       >
-        <Text size="xs" color="dimmed">
-          <Text fw="bold">Created:</Text>
-          {log?.create_at ? new Date(log.create_at).toLocaleString() : "N/A"}
+        <Text size="sm" c="dimmed">
+          <Text fw="bold">
+            Created:{" "}
+            <Text span className="text-blue-700">
+              {log?.create_at
+                ? new Date(log.create_at).toLocaleString()
+                : "N/A"}
+            </Text>
+          </Text>
         </Text>
       </Stepper.Step>
     ));
@@ -183,11 +189,19 @@ const EmployeeDetail = () => {
         <Grid.Col span={3} className="flex justify-center mx-auto">
           {" "}
           {/* Added ml-10 for left margin */}
-          <Box className="shadow-xl p-8">
-            <Title order={4} mb="md">
+          <Box className="border px-8 py-4 bg-blue-100">
+            <Title
+              order={4}
+              fw={500}
+              mb="md"
+              c="dimmed"
+              ta="center"
+              className="border-b-2 py-2 border-white"
+            >
               Activity Logs
             </Title>
             <Stepper
+              color="blue"
               orientation="vertical"
               size="sm"
               active={logsSteps.length - 1}

@@ -122,6 +122,8 @@ export interface LeaveResponse extends PaginatedApiResponse<Leave[] | Leave> {
 export interface TicketResponse
   extends PaginatedApiResponse<Ticket[] | Ticket> {}
 
+// export interface Attendance
+
 export interface LoginRequest {
   mobile: string;
   password: string;

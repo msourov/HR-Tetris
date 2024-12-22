@@ -22,7 +22,7 @@ import {
   useGetPoliciesQuery,
 } from "../../../../features/api/policySlice";
 import { modals } from "@mantine/modals";
-import { AllPolicy } from "../../../../features/api/types";
+import { AllPolicy } from "../../../../features/api/typesOld";
 
 const schema = z.object({
   active: z.boolean(),
