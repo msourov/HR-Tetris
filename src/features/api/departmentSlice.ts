@@ -1,12 +1,8 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
-import {
-  DepartmentDetail,
-  DepartmentHelper,
-  DepartmentResponse,
-  Response,
-} from "./typesOld";
 import { tagTypes } from "./tags";
+import { DepartmentDetail, DepartmentHelper, DepartmentResponse } from "../types/department";
+import { Response } from "../types/shared";
 
 export const departmentApi = createApi({
   reducerPath: "departmentApi",

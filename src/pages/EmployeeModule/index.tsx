@@ -1,11 +1,11 @@
 import { Box } from "@mantine/core";
 import { Outlet } from "react-router-dom";
-import PageHeader from "../../components/shared/PageHeader";
+import AppPageHeader from "../../components/core/AppPageHeader";
 
 const EmployeeLayout = () => {
   return (
     <Box className="flex flex-col h-screen">
-      <PageHeader
+      <AppPageHeader
         Heading="Employee"
         Breadcrumb={{ module: "Employee Management", page: "List" }}
       />

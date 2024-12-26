@@ -50,46 +50,122 @@ export interface AllEmployeesResponse {
   data: Employee[];
 }
 
-export interface CreateEmployeePayload {
+// export interface CreateEmployeePayload {
+//   name: string;
+//   phone: string;
+//   email: string;
+//   bod: string;
+//   marital_status: string;
+//   salary: number;
+//   password: string;
+//   joining_date: string;
+//   employee_id: string;
+//   department: string;
+//   designation: string;
+//   shift_and_schedule: string;
+//   active: boolean;
+//   is_probation: boolean;
+//   company: string;
+//   supervisor: boolean;
+//   executives?: string[];
+//   attendance_management: AccessLevel;
+//   overtime_management: AccessLevel;
+//   home_office_management: AccessLevel;
+//   accounts_management: AccessLevel;
+//   leave_management: AccessLevel;
+//   announcement_management: AccessLevel;
+//   certification_management: AccessLevel;
+//   loan_equipment_management: AccessLevel;
+//   reports_management: AccessLevel;
+//   ticket_management: AccessLevel;
+//   recruitment_management: AccessLevel;
+//   employee_admin_management: AccessLevel;
+//   overtime_approve_management: AccessLevel;
+//   home_office_approve_management: AccessLevel;
+//   accounts_admin_management: AccessLevel;
+//   leave_approve_management: AccessLevel;
+//   announcement_approve_management: AccessLevel;
+//   certification_approve_management: AccessLevel;
+//   loan_equipment_approve_management: AccessLevel;
+//   reports_admin_management: AccessLevel;
+//   ticket_admin_management: AccessLevel;
+//   consumable_management: AccessLevel;
+// }
+
+export interface UnifiedEmployeePayload {
+  uid?: string;
   name: string;
+  active: boolean;
+  address: string;
+  home_phone: string;
   phone: string;
   email: string;
+  nid_bid: string;
   bod: string;
   marital_status: string;
+  spouse_name?: string;
+  work_location?: string;
+  work_email?: string;
   salary: number;
-  password: string;
   joining_date: string;
-  employee_id: string;
+  dependent_info: object;
+  em_name: string;
+  em_address: string;
+  em_relationship: string;
+  em_phone: string;
+  is_probation: boolean;
+  probation_end_time?: string;
+  supervisor: boolean;
+  executives?: string[];
+  is_admin: boolean;
   department: string;
   designation: string;
-  shift_and_schedule: string;
-  active: boolean;
-  is_probation: boolean;
   company: string;
-  supervisor: boolean;
-  executives?: string;
+  shift_and_schedule: string;
+  temp_shift_and_schedule?: boolean;
+  temp_sas_start_time?: string;
+  temp_sas_end_time?: string;
+  logs?: object;
+  create_at?: string;
+  update_at?: string;
+  password?: string;
+  employee_id: string;
+  // Documents Flags
+  is_cv?: boolean;
+  is_nid?: boolean;
+  is_tin?: boolean;
+  is_birth_certificate?: boolean;
+  is_academic?: boolean;
+  is_passport?: boolean;
+  is_joining_letter?: boolean;
+  is_noc?: boolean;
+  is_professional?: boolean;
+  is_non_disclosure_agreement?: boolean;
+  is_utility?: boolean;
+  is_image?: boolean;
+  // Access Levels
+  announcement_management: AccessLevel;
+  announcement_approve_management: AccessLevel;
+  certification_management: AccessLevel;
+  certification_approve_management: AccessLevel;
+  leave_management: AccessLevel;
+  leave_approve_management: AccessLevel;
   attendance_management: AccessLevel;
   overtime_management: AccessLevel;
-  home_office_management: AccessLevel;
-  accounts_management: AccessLevel;
-  leave_management: AccessLevel;
-  announcement_management: AccessLevel;
-  certification_management: AccessLevel;
-  loan_equipment_management: AccessLevel;
-  reports_management: AccessLevel;
-  ticket_management: AccessLevel;
-  recruitment_management: AccessLevel;
-  employee_admin_management: AccessLevel;
   overtime_approve_management: AccessLevel;
+  home_office_management: AccessLevel;
   home_office_approve_management: AccessLevel;
-  accounts_admin_management: AccessLevel;
-  leave_approve_management: AccessLevel;
-  announcement_approve_management: AccessLevel;
-  certification_approve_management: AccessLevel;
+  loan_equipment_management: AccessLevel;
   loan_equipment_approve_management: AccessLevel;
-  reports_admin_management: AccessLevel;
+  recruitment_management: AccessLevel;
+  ticket_management: AccessLevel;
   ticket_admin_management: AccessLevel;
   consumable_management: AccessLevel;
+  accounts_management: AccessLevel;
+  accounts_admin_management: AccessLevel;
+  reports_admin_management: AccessLevel;
+  reports_management: AccessLevel;
+  employee_admin_management: AccessLevel;
 }
 
 export interface employeeHelperInterface {
@@ -104,6 +180,7 @@ export interface EmployeeHelperResponse
   extends getDataResponse<employeeHelperInterface[]> {}
 
 export type AccessLevel = "a" | "i";
+
 interface EmployeeAccess {
   announcement_management: string;
   announcement_approve_management: string;

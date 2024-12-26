@@ -1,12 +1,12 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
-import {
-  LeaveResponse,
-  CreateLeaveRequest,
-  UpdateLeaveRequest,
-  ApproveLeaveRequest,
-} from "./typesOld";
 import { tagTypes } from "./tags";
+import {
+  ApproveLeaveRequest,
+  CreateLeaveRequest,
+  LeaveResponse,
+  UpdateLeaveRequest,
+} from "../types/leave";
 
 export const leaveApi = createApi({
   reducerPath: "leaveApi",

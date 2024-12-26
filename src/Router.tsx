@@ -8,6 +8,7 @@ import {
   AnnouncementLayout,
   AnnouncementList,
   AppLayout,
+  AttendanceTable,
   CandidateDetail,
   Candidates,
   Company,
@@ -49,6 +50,7 @@ import {
   UserDetail,
   UserTable,
 } from "./lazyComponents";
+import EditEmployee from "./pages/EmployeeModule/EditEmployee";
 
 const loader = (
   <div className="flex justify-center items-center">
@@ -67,7 +69,11 @@ export const router = createBrowserRouter([
         <AppLayout />
       </Suspense>
     ),
-    errorElement: <ErrorPage />,
+    errorElement: (
+      <Suspense fallback={<Loader type="dots" color="red" size="sm" />}>
+        <ErrorPage />
+      </Suspense>
+    ),
     children: [
       {
         path: "/",
@@ -270,6 +276,36 @@ export const router = createBrowserRouter([
                 element: <AddEmployee />,
               },
               {
+                path: ":uid/edit-employee",
+                element: <EditEmployee />,
+              },
+              {
+                path: ":uid/detail",
+                element: <EmployeeDetail />,
+              },
+            ],
+          },
+          {
+            path: "attendance",
+            element: (
+              <Suspense fallback={loader}>
+                <EmployeeLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: <AttendanceTable />,
+              },
+              {
+                path: "add-employee",
+                element: <AddEmployee />,
+              },
+              {
+                path: ":uid/edit-employee",
+                element: <EditEmployee />,
+              },
+              {
                 path: ":uid/detail",
                 element: <EmployeeDetail />,
               },
@@ -380,5 +416,9 @@ export const router = createBrowserRouter([
         element: <OtpPage />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
   },
 ]);

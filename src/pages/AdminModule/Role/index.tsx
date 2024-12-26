@@ -1,11 +1,11 @@
 import { Box } from "@mantine/core";
-import PageHeader from "../../../components/shared/PageHeader";
 import { Outlet } from "react-router-dom";
+import AppPageHeader from "../../../components/core/AppPageHeader";
 
 const Role = () => {
   return (
     <Box>
-      <PageHeader
+      <AppPageHeader
         Heading="Role"
         Breadcrumb={{ module: "Admin Management", page: "Role" }}
       />

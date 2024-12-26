@@ -87,6 +87,10 @@ export const AddEmployee = lazy(
 export const EmployeeDetail = lazy(
   () => import("./pages/EmployeeModule/EmplyeeDetail")
 );
+
+export const AttendanceTable = lazy(
+  () => import("./pages/EmployeeModule/AttendanceTable")
+);
 export const Overtime = lazy(() => import("./pages/EmployeeModule/Overtime"));
 export const Leave = lazy(() => import("./pages/EmployeeModule/Leave"));
 export const TicketLayout = lazy(() => import("./pages/TicketModule"));

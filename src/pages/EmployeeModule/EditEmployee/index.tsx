@@ -1,8 +1,14 @@
-import { Paper, Box, Tabs } from "@mantine/core";
-import EmployeeForm from "./EmployeeForm";
+import { useParams } from "react-router-dom";
+import { useGetEmployeeDetailQuery } from "../../../features/api/employeeSlice";
+import EmployeeForm from "../AddEmployee/EmployeeForm";
+import { Box, Paper, Tabs } from "@mantine/core";
 import { useState } from "react";
 
-const AddEmployee = () => {
+const EditEmployee = () => {
+  const { uid } = useParams();
+  const { data } = useGetEmployeeDetailQuery({ uid });
+  // console.log(JSON.stringify(data, undefined, 2));
+
   const [activeTab, setActiveTab] = useState<string>("1");
   const handleTab = (operation: string) => {
     const newTabIndex =
@@ -35,7 +41,12 @@ const AddEmployee = () => {
         </Tabs.List>
         <Tabs.Panel value={activeTab} className="ml-4">
           <Box className="flex-1 mx-6">
-            <EmployeeForm tab={activeTab} handleTab={handleTab} type={"add"} />
+            <EmployeeForm
+              tab={activeTab}
+              handleTab={handleTab}
+              type={"edit"}
+              editFormData={data?.data}
+            />
           </Box>
         </Tabs.Panel>
       </Tabs>
@@ -43,4 +54,4 @@ const AddEmployee = () => {
   );
 };
 
-export default AddEmployee;
+export default EditEmployee;

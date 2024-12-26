@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, Loader, Menu, Modal, Text } from "@mantine/core";
+import { Box, Button, Loader, Menu, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CiEdit } from "react-icons/ci";
@@ -15,8 +15,6 @@ interface EmplyeeActionProp {
 }
 
 const EmployeeActions: React.FC<EmplyeeActionProp> = ({ id }) => {
-  const [editOpened, { open: openEdit, close: closeEdit }] =
-    useDisclosure(false);
   const [deleteModalOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
   const [deleteEmployee, { isLoading, error }] = useDeleteEmployeeMutation();
@@ -73,7 +71,10 @@ const EmployeeActions: React.FC<EmplyeeActionProp> = ({ id }) => {
           >
             View
           </Menu.Item>
-          <Menu.Item leftSection={<CiEdit />} onClick={openEdit}>
+          <Menu.Item
+            leftSection={<CiEdit />}
+            onClick={() => navigate(`${id}/edit-employee`)}
+          >
             Edit
           </Menu.Item>
           <Menu.Item
@@ -101,12 +102,6 @@ const EmployeeActions: React.FC<EmplyeeActionProp> = ({ id }) => {
           </Button>
         </Box>
       </Modal>
-      <Drawer
-        position="right"
-        opened={editOpened}
-        onClose={closeEdit}
-        title="Edit employee"
-      ></Drawer>
     </Box>
   );
 };

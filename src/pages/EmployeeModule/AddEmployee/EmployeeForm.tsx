@@ -7,12 +7,7 @@ import {
   Box,
   SimpleGrid,
   Divider,
-  Select,
-  TextInput,
-  NumberInput,
-  Switch,
 } from "@mantine/core";
-import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { randomId, useListState } from "@mantine/hooks";
@@ -22,20 +17,26 @@ import { useNavigate } from "react-router-dom";
 import { useDepartmentHelperQuery } from "../../../features/api/departmentSlice";
 import { useDesignationHelperQuery } from "../../../features/api/designationSlice";
 import { useShiftHelperQuery } from "../../../features/api/shiftSlice";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import {
   useCreateEmployeeMutation,
   useGetEmplyeeHelperQuery,
 } from "../../../features/api/employeeSlice";
-import { CreateEmployeePayload } from "../../../features/api/typesOld";
+// import { CreateEmployeePayload } from "../../../features/api/typesOld";
+import Tab1Fields from "./Tab1Fields";
+import Tab2Fields from "./Tab2Fields";
+import {
+  Employee,
+  UnifiedEmployeePayload,
+} from "../../../features/types/employee";
 
-type Permissions = {
+export type Permissions = {
   label: string;
   name: string;
   checked: boolean;
   key: string;
 };
-type CreateEmployeeProps = {
+export type CreateEmployeeProps = {
   name: string;
   phone: string;
   email: string;
@@ -49,13 +50,15 @@ type CreateEmployeeProps = {
   designation: string;
   shift_and_schedule: string;
   supervisor: boolean;
-  executives: string;
+  executives: string[];
   permissions?: Permissions[];
 };
 
 type EmployeeFormProps = {
   tab: string;
   handleTab: (operation: string) => void;
+  type: string;
+  editFormData?: Employee;
 };
 
 const schema = z.object({
@@ -227,14 +230,22 @@ const initialValues = [
   },
 ];
 
-const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
+const EmployeeForm: React.FC<EmployeeFormProps> = ({
+  tab,
+  handleTab,
+  type,
+  editFormData,
+}) => {
   const [values, handlers] = useListState(initialValues);
   const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
-  const navigate = useNavigate();
   const { data: departments } = useDepartmentHelperQuery();
   const { data: designations } = useDesignationHelperQuery();
   const { data: shifts } = useShiftHelperQuery();
   const { data: employees } = useGetEmplyeeHelperQuery();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {}, []);
 
   const departmentOptions = useMemo(
     () =>
@@ -270,9 +281,19 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
       }))
     : [];
 
-  const draftValues = JSON.parse(
-    sessionStorage.getItem("employeeDraftForm") || "{}"
-  );
+  const draftValues = useMemo(() => {
+    try {
+      return JSON.parse(sessionStorage.getItem("employeeDraftForm") || "{}");
+    } catch {
+      return {};
+    }
+  }, []);
+
+  // console.log(
+  //   "draftValues, editFormData",
+  //   JSON.stringify(draftValues, undefined, 2),
+  //   JSON.stringify(editFormData, undefined, 2)
+  // );
 
   const parseDate = (value: string) => {
     const date = new Date(value);
@@ -309,12 +330,9 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
     },
   });
 
-  const marital_status = watch("marital_status");
-  const bod = watch("bod");
-  const joining_date = watch("joining_date");
-
   const saveDraft = () => {
     const formValues = watch();
+    console.log(formValues);
     sessionStorage.setItem("employeeDraftForm", JSON.stringify(formValues));
   };
 
@@ -339,13 +357,17 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
       company: "112233445566778899",
       bod: data.bod?.toISOString(),
       joining_date: data.joining_date?.toISOString(),
-      executives: data?.supervisor ? data?.executives : [],
+      executives: data?.supervisor
+        ? typeof data?.executives === "string"
+          ? [data?.executives]
+          : data?.executives
+        : [],
     };
     const payload = { ...formattedData, ...preparedData };
     delete payload.permissions;
     try {
       const response = await createEmployee(
-        payload as CreateEmployeePayload
+        payload as UnifiedEmployeePayload
       ).unwrap();
       sessionStorage.removeItem("employeeDraftForm");
       console.log(response);
@@ -408,169 +430,24 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ tab, handleTab }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <SimpleGrid cols={2} spacing="xl" verticalSpacing="xs">
             {tab === "1" && (
-              <>
-                <TextInput
-                  variant="filled"
-                  label="Name"
-                  placeholder="John Doe"
-                  autoComplete="no"
-                  required
-                  {...register("name")}
-                  error={errors.name?.message as string}
-                />
-                <TextInput
-                  variant="filled"
-                  label="Phone Number"
-                  placeholder="0123-456-7890"
-                  autoComplete="no"
-                  required
-                  radius="md"
-                  {...register("phone")}
-                  error={errors.phone?.message as string}
-                />
-                <TextInput
-                  variant="filled"
-                  label="Email"
-                  placeholder="johndoe@gmail.com"
-                  autoComplete="no"
-                  required
-                  radius="md"
-                  {...register("email")}
-                  error={errors.email?.message as string}
-                />
-                <TextInput
-                  variant="filled"
-                  label="Password"
-                  placeholder="******"
-                  type="password"
-                  {...register("password")}
-                  error={errors.password?.message as string}
-                />
-                <DatePickerInput
-                  variant="filled"
-                  label="Date of birth"
-                  placeholder="Pick date"
-                  value={bod}
-                  onChange={(value) => {
-                    if (value) setValue("bod", value);
-                  }}
-                  error={errors.bod?.message}
-                />
-                <TextInput
-                  variant="filled"
-                  label="Employee ID"
-                  placeholder="EMP12345"
-                  {...register("employee_id")}
-                  error={errors.employee_id?.message as string}
-                />
-                <Select
-                  variant="filled"
-                  label="Select marital status"
-                  placeholder="Single / Married"
-                  data={["Married", "Single"]}
-                  value={marital_status}
-                  onChange={(value) =>
-                    setValue("marital_status", value as "Married" | "Single")
-                  }
-                  error={errors.marital_status?.message as string}
-                />
-              </>
+              <Tab1Fields
+                watch={watch}
+                register={register}
+                setValue={setValue}
+                errors={errors}
+              />
             )}
 
             {tab === "2" && (
-              <>
-                <DatePickerInput
-                  variant="filled"
-                  label="Joining date"
-                  placeholder="pick date"
-                  value={joining_date || new Date()}
-                  onChange={(value) => {
-                    if (value) setValue("joining_date", value);
-                  }}
-                  error={errors.joining_date?.message}
-                />
-                <Select
-                  variant="filled"
-                  label="Select department"
-                  data={departmentOptions}
-                  value={watch("department")}
-                  onChange={(value) => {
-                    if (value) setValue("department", value);
-                  }}
-                  error={
-                    errors.department
-                      ? (errors.department.message as string)
-                      : null
-                  }
-                />
-                <Select
-                  variant="filled"
-                  label="Select Designation"
-                  data={designationOptions}
-                  value={watch("designation")}
-                  onChange={(value) => {
-                    if (value) setValue("designation", value);
-                  }}
-                  error={
-                    errors.designation
-                      ? (errors.designation.message as string)
-                      : null
-                  }
-                />
-                <Select
-                  variant="filled"
-                  label="Select Shift"
-                  data={shiftOptions}
-                  value={watch("shift_and_schedule")}
-                  onChange={(value) => {
-                    if (value) setValue("shift_and_schedule", value);
-                  }}
-                  error={
-                    errors.shift_and_schedule
-                      ? (errors.shift_and_schedule.message as string)
-                      : null
-                  }
-                />
-                <NumberInput
-                  variant="filled"
-                  label="Salary"
-                  placeholder="Enter salary"
-                  value={watch("salary")}
-                  onChange={(value) => setValue("salary", Number(value) || 0)}
-                  error={
-                    errors.salary ? (errors.salary.message as string) : null
-                  }
-                  min={0}
-                />
-                <Box className="py-8 flex flex-col gap-4">
-                  <Switch
-                    label="Supervisor"
-                    required
-                    checked={watch("supervisor")} // Use `checked` instead of `value`
-                    onChange={(event) =>
-                      setValue("supervisor", event.currentTarget.checked)
-                    } // Update the value properly
-                    error={errors.supervisor?.message as string} // Correct the error key
-                  />
-                </Box>
-                {watch("supervisor") && (
-                  <Select
-                    className="-my-5"
-                    variant="filled"
-                    label="Select Executives"
-                    data={employeeOptions}
-                    value={watch("executives")}
-                    onChange={(value) => {
-                      if (value) setValue("executives", value);
-                    }}
-                    error={
-                      errors.executives
-                        ? (errors.executives.message as string)
-                        : null
-                    }
-                  />
-                )}
-              </>
+              <Tab2Fields
+                watch={watch}
+                setValue={setValue}
+                errors={errors}
+                departmentOptions={departmentOptions || []}
+                designationOptions={designationOptions || []}
+                shiftOptions={shiftOptions || []}
+                employeeOptions={employeeOptions || []}
+              />
             )}
           </SimpleGrid>
           {tab === "3" && (

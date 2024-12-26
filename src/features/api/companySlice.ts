@@ -1,7 +1,7 @@
 // companyApi.ts
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
-import { CompanyResponse, DashboardResponse } from "./typesOld";
+import { CompanyResponse, DashboardResponse } from "../types/company";
 
 export const companyApi = createApi({
   reducerPath: "companyApi",

@@ -1,7 +1,8 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
-import { Holiday, HolidayResponse } from "./typesOld";
+import { Holiday, HolidayResponse } from "../types/holiday";
+import { Response } from "../types/shared";
 
 export const holidayApi = createApi({
   reducerPath: "holidayApi",

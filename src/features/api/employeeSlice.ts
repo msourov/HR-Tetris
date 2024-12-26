@@ -5,9 +5,9 @@ import {
   AllEmployeesResponse,
   CreateEmployeePayload,
   EmployeeHelperResponse,
-  Response,
   SingleEmployeeResponse,
-} from "./typesOld";
+} from "../types/employee";
+import { Response } from "../types/shared";
 
 export const employeeApi = createApi({
   reducerPath: "employeeApi",

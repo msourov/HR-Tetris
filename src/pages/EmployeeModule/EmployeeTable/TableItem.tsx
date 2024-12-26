@@ -28,7 +28,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
 
   return (
     <>
-      <Table.Tbody>
+      <Table.Tbody className="text-gray-600 font-semibold">
         {data.map((item, index) => (
           <Table.Tr>
             <Table.Td style={{ width: "2%" }}>{index + 1}</Table.Td>
