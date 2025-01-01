@@ -37,7 +37,6 @@ import {
   PolicyDetail,
   PolicyLayout,
   PolicyList,
-  ProtectedRoute,
   PublicRoute,
   Recruitment,
   Role,
@@ -51,24 +50,18 @@ import {
   UserTable,
 } from "./lazyComponents";
 import EditEmployee from "./pages/EmployeeModule/EditEmployee";
+import ProtectedRoute from "./services/auth/ProtectedRoutes";
 
 const loader = (
   <div className="flex justify-center items-center">
     <Loader type="dots" color="blue" size="sm" my={30} />
-    {/* <Text className="text-center" my={40}>
-      Loading...
-    </Text> */}
   </div>
 );
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Suspense fallback={loader}>
-        <AppLayout />
-      </Suspense>
-    ),
+    element: <AppLayout />,
     errorElement: (
       <Suspense fallback={<Loader type="dots" color="red" size="sm" />}>
         <ErrorPage />

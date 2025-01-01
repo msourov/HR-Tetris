@@ -36,7 +36,10 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
     <Table.Tbody className="text-gray-600 font-semibold">
       {data.map((item, index) => (
         <Table.Tr key={item.id}>
-          <Table.Td style={{ width: "2%", padding: "12px" }}>
+          <Table.Td
+            className="w-[2%] pl-[2rem]"
+            // style={{ width: "2%", padding: "12px", paddingLeft: "32px" }}
+          >
             {index + 1}
           </Table.Td>
           <Table.Td style={{ width: "10%", padding: "12px" }}>

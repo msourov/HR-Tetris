@@ -9,7 +9,7 @@ const EmployeeLayout = () => {
         Heading="Employee"
         Breadcrumb={{ module: "Employee Management", page: "List" }}
       />
-      <Box className="w-[95%] my-8 mx-auto max-h-fit bg-white rounded-lg drop-shadow-lg flex-1 overflow-auto">
+      <Box className="w-[95%] mb-8 mx-auto max-h-fit bg-white rounded-lg drop-shadow-lg flex-1 overflow-auto">
         {/* {data && <RoleTable data={data.data} />} */}
         <Outlet />
       </Box>

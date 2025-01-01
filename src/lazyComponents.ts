@@ -15,9 +15,7 @@ export const EditDepartment = lazy(
 export const Login = lazy(() => import("./pages/Login"));
 export const OtpPage = lazy(() => import("./pages/Login/OtpPage"));
 export const PublicRoute = lazy(() => import("./services/auth/PublicRoute"));
-export const ProtectedRoute = lazy(
-  () => import("./services/auth/ProtectedRoutes")
-);
+
 export const UserDetail = lazy(
   () => import("./pages/AdminModule/User/UserDetail")
 );

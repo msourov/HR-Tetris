@@ -1,41 +1,97 @@
 import { getDataResponse, Log } from "./shared";
 
+// export interface Employee {
+//   id: number;
+//   uid: string;
+//   name: string;
+//   active: boolean;
+//   phone: string;
+//   email: string;
+//   address: string;
+//   bod: string;
+//   marital_status: "string";
+//   salary: number;
+//   joining_date: string;
+//   employee_id: string;
+//   spouse_name: "string";
+//   emergency_contact: EmergencyContact;
+//   work_location: string;
+//   work_email: string;
+//   is_probation: boolean;
+//   probation_end_time: string;
+//   supervisor: boolean;
+//   executives: string[];
+//   is_admin: boolean;
+//   department: { uid: string; name: string };
+//   designation: { uid: string; name: string };
+//   company: { uid: string; name: string };
+//   shift_and_schedule: { uid: string; name: string };
+//   leave_manage: null;
+//   temp_shift_and_schedule: boolean;
+//   temp_sas_start_time: string;
+//   temp_sas_end_time: string;
+//   logs: Log | Log[];
+//   created_at: string;
+//   updated_at: string;
+//   documents: Documents;
+//   document_extensions: DocumentExtensions;
+//   employee_access: EmployeeAccess;
+// }
+
 export interface Employee {
   id: number;
   uid: string;
+  personal: PersonalInfo;
+  work: WorkInfo;
+  dependent_info: DependentInfo;
+  emergency_contact: EmergencyContact;
+  is_admin: boolean;
+  leave_manage: null | LeaveManage;
+  temp_shift_and_schedule: boolean;
+  temp_sas_start_time: string;
+  temp_sas_end_time: string;
+  employee_access: EmployeeAccess;
+  logs: Log | Log[];
+  created_at: string;
+  updated_at: string;
+  document_extensions: DocumentExtensions;
+}
+
+export interface PersonalInfo {
   name: string;
   active: boolean;
+  address: string;
+  home_phone: string;
   phone: string;
   email: string;
-  address: string;
+  nid_bid: string;
   bod: string;
-  marital_status: "string";
+  marital_status: string;
+  spouse_name: string;
+}
+
+export interface WorkInfo {
+  work_location: string;
+  work_email: string;
   salary: number;
   joining_date: string;
   employee_id: string;
-  spouse_name: "string";
-  emergency_contact: EmergencyContact;
-  work_location: string;
-  work_email: string;
   is_probation: boolean;
   probation_end_time: string;
   supervisor: boolean;
   executives: string[];
-  is_admin: boolean;
   department: { uid: string; name: string };
   designation: { uid: string; name: string };
-  company: { uid: string; name: string };
   shift_and_schedule: { uid: string; name: string };
-  leave_manage: null;
-  temp_shift_and_schedule: boolean;
-  temp_sas_start_time: string;
-  temp_sas_end_time: string;
-  logs: Log | Log[];
-  created_at: string;
-  updated_at: string;
-  documents: Documents;
-  document_extensions: DocumentExtensions;
-  employee_access: EmployeeAccess;
+  company: { uid: string; name: string };
+}
+
+export interface DependentInfo {
+  // Add specific dependent fields if available in the payload
+}
+
+export interface LeaveManage {
+  // Add specific leave management fields if available in the payload
 }
 
 export interface SingleEmployeeResponse {
@@ -213,20 +269,20 @@ interface EmergencyContact {
   phone: string;
 }
 
-interface Documents {
-  is_cv: boolean;
-  is_nid: boolean;
-  is_tin: boolean;
-  is_birth_certificate: boolean;
-  is_academic: boolean;
-  is_passport: boolean;
-  is_joining_letter: boolean;
-  is_noc: boolean;
-  is_professional: boolean;
-  is_non_disclosure_agreement: boolean;
-  is_utility: boolean;
-  is_image: boolean;
-}
+// interface Documents {
+//   is_cv: boolean;
+//   is_nid: boolean;
+//   is_tin: boolean;
+//   is_birth_certificate: boolean;
+//   is_academic: boolean;
+//   is_passport: boolean;
+//   is_joining_letter: boolean;
+//   is_noc: boolean;
+//   is_professional: boolean;
+//   is_non_disclosure_agreement: boolean;
+//   is_utility: boolean;
+//   is_image: boolean;
+// }
 
 interface DocumentExtensions {
   cv: string | null;

@@ -3,9 +3,9 @@ import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
 import {
   AllEmployeesResponse,
-  CreateEmployeePayload,
   EmployeeHelperResponse,
   SingleEmployeeResponse,
+  UnifiedEmployeePayload,
 } from "../types/employee";
 import { Response } from "../types/shared";
 
@@ -49,7 +49,7 @@ export const employeeApi = createApi({
         { type: "Employee", id: uid },
       ],
     }),
-    createEmployee: builder.mutation<Response, CreateEmployeePayload>({
+    createEmployee: builder.mutation<Response, UnifiedEmployeePayload>({
       query: (data) => ({
         url: "employee/create",
         method: "POST",

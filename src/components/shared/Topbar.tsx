@@ -10,7 +10,7 @@ const Topbar = () => {
   // const navigate = useNavigate();
   return (
     <div className="bg-white text-black px-6 flex justify-between items-center border-b-2 relative">
-      <div className="relative inline-block border-gradient">
+      <div className="relative">
         <div className="logo-container">
           <img src="/assets/logo.jpg" alt="logo" width="140" />
           {/* <div className="glowing-ball"></div> */}
