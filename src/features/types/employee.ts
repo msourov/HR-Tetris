@@ -237,7 +237,7 @@ export interface EmployeeHelperResponse
 
 export type AccessLevel = "a" | "i";
 
-interface EmployeeAccess {
+export interface EmployeeAccess {
   announcement_management: string;
   announcement_approve_management: string;
   certification_management: string;

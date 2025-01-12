@@ -26,7 +26,7 @@ const Footer = () => {
         </Box> */}
         {/* Footer Text */}
         <Text ta="center" className="text-gray-400 text-sm">
-          &copy; 2024 Infozillion. All rights reserved.
+          &copy; 2024-2025 Infozillion. All rights reserved.
         </Text>
       </Box>
     </Box>

@@ -31,7 +31,9 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
     <Table.Tbody>
       {data.map((item, index) => (
         <Table.Tr>
-          <Table.Td style={{ width: "10%" }}>{index + 1}</Table.Td>
+          <Table.Td style={{ width: "10%", paddingLeft: "32px" }}>
+            {index + 1}
+          </Table.Td>
           <Table.Td style={{ width: "25%" }}>{item.name}</Table.Td>
           <Table.Td style={{ width: "25%" }}>{item.mobile}</Table.Td>
           <Table.Td style={{ width: "20%" }}>{item.role_name}</Table.Td>
@@ -43,7 +45,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
               {item.active ? "Active" : "Inactive"}
             </Pill>
           </Table.Td>
-          <Table.Td style={{ width: "10%" }}>
+          <Table.Td style={{ width: "10%", paddingRight: "32px" }}>
             <UserActions id={item?.uid} />
           </Table.Td>
         </Table.Tr>

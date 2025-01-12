@@ -12,6 +12,7 @@ import { overtimeApi } from "./features/api/overtimeSlice";
 import { leaveApi } from "./features/api/leaveSlice";
 import { ticketApi } from "./features/api/ticketSlice";
 import { announcementApi } from "./features/api/announcementSlice";
+import { certificationApi } from "./features/api/certificationSlice";
 
 const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ const store = configureStore({
     [leaveApi.reducerPath]: leaveApi.reducer,
     [ticketApi.reducerPath]: ticketApi.reducer,
     [announcementApi.reducerPath]: announcementApi.reducer,
+    [certificationApi.reducerPath]: certificationApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -43,7 +45,8 @@ const store = configureStore({
       overtimeApi.middleware,
       leaveApi.middleware,
       ticketApi.middleware,
-      announcementApi.middleware
+      announcementApi.middleware,
+      certificationApi.middleware
     ),
 });
 

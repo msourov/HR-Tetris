@@ -6,7 +6,7 @@ interface ShiftCardProps {
 }
 const ShiftCard: React.FC<ShiftCardProps> = ({ shift }) => {
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
+    <Card padding="lg" radius="md" withBorder>
       <Group style={{ marginBottom: 5 }}>
         <Text fw={500}>{shift.name}</Text>
         <Badge color={shift.active ? "green" : "red"}>

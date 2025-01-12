@@ -25,8 +25,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     <Box
       w={"100%"}
       px={"2.25rem"}
-      my={20}
-      className="flex justify-between items-center"
+      className="flex justify-between items-center my-6"
     >
       <div className="space-y-4">
         {Breadcrumb && (

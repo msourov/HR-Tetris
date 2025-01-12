@@ -26,28 +26,15 @@ const AppPageHeader: React.FC<PageHeaderProps> = ({
 
   if (pageType)
     return (
-      // <Button
-      //   variant="outline"
-      //   size="compact-md"
-      //   leftSection={<BiArrowBack />}
-      //   my={20}
-      //   w={100}
-      //   ml={30}
-      //   color="blue"
-      //   className="shadow-md"
-      //   onClick={() => navigate(-1)}
-      // >
-      //   Back
-      // </Button>
       <Button
         variant="outline"
         color="black"
         size="compact-sm"
-        mt={20}
         ml={30}
+        w={"80px"}
         leftSection={<IoMdReturnLeft size={16} color="gray" />}
         onClick={() => navigate(-1)}
-        className="text-gray-600 hover:bg-gray-200"
+        className="text-gray-600 hover:bg-gray-200 my-8"
       >
         Back
       </Button>

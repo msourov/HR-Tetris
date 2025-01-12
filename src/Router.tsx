@@ -11,6 +11,9 @@ import {
   AttendanceTable,
   CandidateDetail,
   Candidates,
+  CertificationDetail,
+  CertificationLayout,
+  CertificationTable,
   Company,
   Dashboard,
   DepartmentDetail,
@@ -22,6 +25,7 @@ import {
   EditAnnnouncement,
   EditDepartment,
   EditDesignation,
+  EditEmployee,
   EditShift,
   EditUser,
   EmployeeDetail,
@@ -49,7 +53,6 @@ import {
   UserDetail,
   UserTable,
 } from "./lazyComponents";
-import EditEmployee from "./pages/EmployeeModule/EditEmployee";
 import ProtectedRoute from "./services/auth/ProtectedRoutes";
 
 const loader = (
@@ -349,6 +352,28 @@ export const router = createBrowserRouter([
               {
                 path: ":departmentName/detail",
                 element: <DepartmentDetail />,
+              },
+            ],
+          },
+          {
+            path: "certifications",
+            element: (
+              <Suspense fallback={loader}>
+                <CertificationLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: <CertificationTable />,
+              },
+              {
+                path: ":id",
+                element: (
+                  <Suspense fallback={loader}>
+                    <CertificationDetail />
+                  </Suspense>
+                ),
               },
             ],
           },

@@ -28,9 +28,13 @@ const Tab2Fields: React.FC<Tab2FieldsProps> = ({
         variant="filled"
         label="Joining date"
         placeholder="pick date"
-        value={watch("joining_date") || new Date()}
+        value={
+          isNaN(new Date(watch("joining_date")).getTime())
+            ? new Date()
+            : new Date(watch("joining_date"))
+        }
         onChange={(value) => {
-          if (value) setValue("joining_date", value);
+          if (value) setValue("joining_date", value.toISOString());
         }}
         error={
           errors?.joining_date
@@ -87,6 +91,7 @@ const Tab2Fields: React.FC<Tab2FieldsProps> = ({
       />
       <Box className="py-8 flex flex-col gap-4">
         <Switch
+          color="blue"
           label="Supervisor"
           required
           checked={watch("supervisor")}
@@ -102,9 +107,12 @@ const Tab2Fields: React.FC<Tab2FieldsProps> = ({
           variant="filled"
           label="Select Executives"
           data={employeeOptions}
-          value={watch("executives")}
+          value={watch("executives") || ""}
+          multiple
           onChange={(value) => {
-            if (value) setValue("executives", value);
+            if (value) {
+              setValue("executives", value);
+            }
           }}
           error={
             errors?.executives ? (errors.executives.message as string) : null

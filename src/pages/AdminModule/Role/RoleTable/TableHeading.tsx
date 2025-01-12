@@ -2,12 +2,12 @@ import { Table } from "@mantine/core";
 
 const TableHeading = () => {
   return (
-    <Table.Thead className="bg-[#212922] text-white">
-      <Table.Th style={{ width: "10%" }}>Serial</Table.Th>
-      <Table.Th style={{ width: "20%" }}>Name</Table.Th>
-      <Table.Th style={{ width: "30%" }}>Access</Table.Th>
+    <Table.Thead className="bg-[#2274A5] text-white">
+      <Table.Th style={{ width: "10%", paddingLeft: "32px" }}>Serial</Table.Th>
+      <Table.Th style={{ width: "10%" }}>Name</Table.Th>
+      <Table.Th style={{ width: "40%" }}>Access</Table.Th>
       <Table.Th style={{ width: "10%" }}>Status</Table.Th>
-      <Table.Th style={{ width: "5%" }}>Action</Table.Th>
+      <Table.Th style={{ width: "5%", paddingRight: "32px" }}>Action</Table.Th>
     </Table.Thead>
   );
 };

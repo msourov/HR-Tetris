@@ -35,8 +35,6 @@ const DepartmentList = () => {
       >
         {departmentData?.data?.map((item) => (
           <Card
-            shadow="sm"
-            // padding="xl"
             component="a"
             withBorder
             maw={250}

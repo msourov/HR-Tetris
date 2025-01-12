@@ -6,13 +6,14 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
-import { FormData } from "./EmployeeForm";
+import { FormData } from "../EmployeeForm";
 
 interface Tab1FieldsProps {
   watch: UseFormWatch<FormData>;
   register: UseFormRegister<FormData>;
   setValue: UseFormSetValue<FormData>;
   errors: FieldErrors | undefined;
+  type: string;
 }
 
 const Tab1Fields: React.FC<Tab1FieldsProps> = ({
@@ -20,6 +21,7 @@ const Tab1Fields: React.FC<Tab1FieldsProps> = ({
   register,
   setValue,
   errors,
+  type,
 }) => {
   return (
     <>
@@ -52,22 +54,27 @@ const Tab1Fields: React.FC<Tab1FieldsProps> = ({
         {...register("email")}
         error={errors && (errors.email?.message as string)}
       />
-      <TextInput
-        variant="filled"
-        label="Password"
-        placeholder="******"
-        type="password"
-        {...register("password")}
-        error={errors && (errors.password?.message as string)}
-      />
+      {type === "add" && (
+        <TextInput
+          variant="filled"
+          label="Password"
+          placeholder="******"
+          type="password"
+          {...register("password")}
+          error={errors && (errors.password?.message as string)}
+        />
+      )}
+
       <DatePickerInput
         variant="filled"
         label="Date of birth"
         placeholder="Pick date"
         {...register("bod")}
-        value={watch("bod")}
-        onChange={(value) => setValue("bod", value)}
-        error={errors && (errors.password?.message as string)}
+        value={watch("bod") ? new Date(watch("bod")) : new Date()}
+        onChange={(value) => {
+          if (value) setValue("bod", value.toISOString());
+        }}
+        error={errors && (errors.bod?.message as string)}
       />
       <TextInput
         variant="filled"
@@ -80,12 +87,17 @@ const Tab1Fields: React.FC<Tab1FieldsProps> = ({
         variant="filled"
         label="Select marital status"
         placeholder="Single / Married"
-        data={["Married", "Single"]}
+        data={[
+          { value: "Married", label: "Married" },
+          { value: "Single", label: "Single" },
+        ]}
         {...register("marital_status")}
-        value={watch("marital_status")}
-        onChange={(value) =>
-          setValue("marital_status", value as "Married" | "Single")
+        value={
+          ["Married", "Single"].includes(watch("marital_status"))
+            ? watch("marital_status")
+            : "Single"
         }
+        onChange={(value) => setValue("marital_status", value || "Single")}
         error={errors && (errors.marital_status?.message as string)}
       />
     </>

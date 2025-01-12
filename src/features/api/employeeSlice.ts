@@ -57,10 +57,7 @@ export const employeeApi = createApi({
       }),
       invalidatesTags: [{ type: "Employee", id: "LIST" }],
     }),
-    editEmployee: builder.mutation<
-      Response,
-      { uid: string; name: string; active: boolean; role: string }
-    >({
+    editEmployee: builder.mutation<Response, UnifiedEmployeePayload>({
       query: (data) => ({
         url: "employee/update",
         method: "PUT",

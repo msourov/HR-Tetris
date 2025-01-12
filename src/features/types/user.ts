@@ -13,8 +13,8 @@ export interface User {
   create_at: string;
 }
 
-interface UserResponseData {
-  role_name: string | number | boolean | Date | Logs | undefined;
+export interface UserResponseData {
+  role_name: string;
   mobile: string;
   uid: string;
   id: number;
@@ -36,4 +36,5 @@ export interface EditUserRequest {
 
 export interface UserResponse extends PaginatedApiResponse<User[]> {}
 export interface CreateUserResponse extends getDataResponse<User> {}
-export interface SingleUserResponse extends getDataResponse<UserResponseData> {}
+export interface SingleUserResponse
+  extends getDataResponse<UserResponseData[]> {}

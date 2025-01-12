@@ -134,7 +134,7 @@ const initialSidebarData = [
       },
       {
         label: "Certification",
-        link: "/certification",
+        link: "/certifications",
       },
       {
         label: "Overtime",

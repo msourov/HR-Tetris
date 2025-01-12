@@ -82,6 +82,9 @@ export const EmplyeeTable = lazy(
 export const AddEmployee = lazy(
   () => import("./pages/EmployeeModule/AddEmployee")
 );
+export const EditEmployee = lazy(
+  () => import("./pages/EmployeeModule/EditEmployee")
+);
 export const EmployeeDetail = lazy(
   () => import("./pages/EmployeeModule/EmplyeeDetail")
 );
@@ -101,4 +104,16 @@ export const AnnouncementList = lazy(
 );
 export const EditAnnnouncement = lazy(
   () => import("./pages/AnnouncementModule/EditAnnouncement")
+);
+export const CertificationLayout = lazy(
+  () => import("./pages/EmployeeModule/Certification")
+);
+export const CertificationTable = lazy(
+  () => import("./pages/EmployeeModule/Certification/CertificationTable")
+);
+export const CertificationDetail = lazy(
+  () => import("./pages/EmployeeModule/Certification/CertificationDetail")
+);
+export const AddCertification = lazy(
+  () => import("./pages/EmployeeModule/Certification/AddCertification")
 );
