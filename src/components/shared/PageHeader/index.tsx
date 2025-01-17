@@ -57,7 +57,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
         variant="light"
         color="blue"
         size="sm"
-        className="border border-blue-500 shadow-md"
+        className="border border-blue-500 shadow-md text-sm"
         leftSection={Operation === "Add" && <IconPlus size={16} />}
         onClick={() => navigate(`add-${route}`)}
       >{`${Operation} ${Heading}`}</Button>

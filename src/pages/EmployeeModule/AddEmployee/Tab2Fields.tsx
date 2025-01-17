@@ -1,7 +1,7 @@
 import { Box, NumberInput, Select, Switch } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { FieldErrors, UseFormSetValue, UseFormWatch } from "react-hook-form";
-import { FormData } from "./EmployeeForm";
+import { FormData } from "../EmployeeForm";
 
 interface Tab2FieldsProps {
   watch: UseFormWatch<FormData>;

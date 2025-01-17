@@ -8,7 +8,7 @@ import {
   SimpleGrid,
   Divider,
 } from "@mantine/core";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormWatch } from "react-hook-form";
 import { z } from "zod";
 import { randomId, useListState } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -68,7 +68,28 @@ const getSchema = (type: string) =>
     ),
   });
 
-export type FormData = z.infer<ReturnType<typeof getSchema>>;
+export type FormData = {
+  name: string;
+  phone: string;
+  email: string;
+  bod: string;
+  marital_status: "Married" | "Single";
+  salary: number;
+  joining_date: string;
+  employee_id: string;
+  department: string;
+  designation: string;
+  shift_and_schedule: string;
+  supervisor: boolean;
+  executives: string;
+  permissions: {
+    label: string;
+    name: string;
+    checked: boolean;
+    key: string;
+  }[];
+  password: string;
+};
 
 const EmployeeForm: React.FC<EmployeeFormProps> = ({
   tab,
@@ -128,7 +149,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
             name: draftValues?.name || "",
             phone: draftValues?.phone || "",
             email: draftValues?.email || "",
-            password: draftValues?.password || "",
+            password: draftValues?.password,
             joining_date: draftValues?.joining_date
               ? parseDate(draftValues?.joining_date)
               : new Date().toISOString(),
@@ -174,6 +195,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         name: editFormData?.personal?.name || "",
         phone: editFormData?.personal?.phone || "",
         email: editFormData?.personal?.email || "",
+        password: '',
         bod: editFormData?.personal?.bod
           ? parseDate(editFormData.personal.bod)
           : new Date().toISOString(),
@@ -251,9 +273,14 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
 
       // Handle create vs. edit
       if (type === "edit") {
+        const updatedPayload = {
+          ...payload,
+          marital_status: payload.marital_status ?? undefined,
+        };
+
         response = await editEmployee({
           uid: editFormData?.uid,
-          ...payload,
+          ...updatedPayload,
         }).unwrap();
         sessionStorage.removeItem(draftKey);
         console.log(response);
@@ -341,7 +368,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               {tab === "1" && (
                 <Tab1Fields
                   type={type}
-                  watch={watch}
+                  watch={watch as UseFormWatch<FormData>}
                   register={register}
                   setValue={setValue}
                   errors={errors}
@@ -350,7 +377,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
 
               {tab === "2" && (
                 <Tab2Fields
-                  watch={watch}
+                  watch={watch as UseFormWatch<FormData>}
                   setValue={setValue}
                   errors={errors}
                   departmentOptions={departmentOptions || []}

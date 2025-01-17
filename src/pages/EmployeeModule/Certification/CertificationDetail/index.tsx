@@ -1,9 +1,12 @@
-import { useParams } from "react-router-dom";
+import { Box, Button } from "@mantine/core";
 import { useGetCertificationDetailQuery } from "../../../../features/api/certificationSlice";
+import { IconCheck, IconX } from "@tabler/icons-react";
 
-const CertificationDetail = () => {
-  const { id: uid } = useParams();
+interface CertificationDetailProps {
+  uid: string;
+}
 
+const CertificationDetail = ({ uid }: CertificationDetailProps) => {
   const {
     data: certificationDetail,
     isLoading,
@@ -25,7 +28,7 @@ const CertificationDetail = () => {
   }
 
   return (
-    <div className="py-10 px-5">
+    <div className="pb-10 px-5">
       <div className="max-w-4xl mx-auto bg-white rounded-lg p-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">
           Certification Details
@@ -111,6 +114,19 @@ const CertificationDetail = () => {
             <span>{formatDateTime(certificationDetail?.data?.update_at)}</span>
           </div>
         </div>
+        <Box className="flex gap-2 pt-8 pb-4 float-right">
+          <Button color="green" leftSection={<IconCheck size={20} />}>
+            Accept
+          </Button>
+          <Button
+            color="red"
+            c="red"
+            variant="outline"
+            leftSection={<IconX color="red" size={20} />}
+          >
+            Reject
+          </Button>
+        </Box>
       </div>
     </div>
   );

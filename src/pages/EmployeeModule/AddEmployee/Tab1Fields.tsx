@@ -97,7 +97,13 @@ const Tab1Fields: React.FC<Tab1FieldsProps> = ({
             ? watch("marital_status")
             : "Single"
         }
-        onChange={(value) => setValue("marital_status", value || "Single")}
+        onChange={(value) => {
+          if (value === "Married" || value === "Single") {
+            setValue("marital_status", value);
+          } else {
+            setValue("marital_status", "Single"); // Default to "Single" if the value is invalid
+          }
+        }}
         error={errors && (errors.marital_status?.message as string)}
       />
     </>
