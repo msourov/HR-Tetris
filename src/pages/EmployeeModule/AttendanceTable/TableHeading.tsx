@@ -2,9 +2,11 @@ import { Table } from "@mantine/core";
 
 const TableHeading = () => {
   return (
-    <Table.Thead className="bg-[#212922] text-white px-4">
+    <Table.Thead className="bg-[#2274A5] text-white px-4">
       <Table.Tr>
-        <Table.Th style={{ width: "10%", paddingLeft: "32px" }}>Serial</Table.Th>
+        <Table.Th style={{ width: "10%", paddingLeft: "32px" }}>
+          Serial
+        </Table.Th>
         <Table.Th style={{ width: "10%" }}>Employee ID</Table.Th>
         <Table.Th style={{ width: "10%" }}>Attendance Status</Table.Th>{" "}
         <Table.Th style={{ width: "10%" }}>Date Attended</Table.Th>{" "}

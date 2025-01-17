@@ -12,7 +12,7 @@ const AppLayout: React.FC = () => {
   // }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-gray-200 overflow-auto">
+    <div className="flex flex-col h-screen bg-gray-100 overflow-auto">
       <Topbar />
       <div className="flex flex-1">
         <div className="w-2/8 h-auto">

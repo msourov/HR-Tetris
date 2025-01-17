@@ -1,18 +1,16 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
+import Cookies from "js-cookie";
+import { tagTypes } from "./tags";
+import { LoginRequest, LoginResponse } from "./typesOld";
 import {
   CreateUserResponse,
   EditUserRequest,
-  LoginRequest,
-  LoginResponse,
-  Request,
-  Response,
   SingleUserResponse,
   User,
   UserResponse,
-} from "./typesOld";
-import Cookies from "js-cookie";
-import { tagTypes } from "./tags";
+} from "../types/user";
+import { Request, Response } from "../types/shared";
 
 export const userApi = createApi({
   reducerPath: "userApi",

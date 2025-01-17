@@ -1,20 +1,19 @@
 import { Box } from "@mantine/core";
+import AppPageHeader from "../../../components/core/AppPageHeader";
 import { Outlet } from "react-router-dom";
-import AppPageHeader from "../../components/core/AppPageHeader";
 
-const EmployeeLayout = () => {
+const CertificationLayout = () => {
   return (
     <Box className="flex flex-col h-screen">
       <AppPageHeader
-        Heading="Employee"
-        Breadcrumb={{ module: "Employee Management", page: "List" }}
+        Heading="Certification"
+        Breadcrumb={{ module: "Certification Management", page: "List" }}
       />
       <Box className="w-[95%] mb-8 mx-auto max-h-fit bg-white rounded-lg drop-shadow-lg flex-1 overflow-auto">
-        {/* {data && <RoleTable data={data.data} />} */}
         <Outlet />
       </Box>
     </Box>
   );
 };
 
-export default EmployeeLayout;
+export default CertificationLayout;

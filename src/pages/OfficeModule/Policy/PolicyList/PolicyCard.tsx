@@ -11,7 +11,6 @@ interface PolicyCardProps {
 const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
   return (
     <Card
-      shadow="sm"
       padding="lg"
       radius="md"
       withBorder

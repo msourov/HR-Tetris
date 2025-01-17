@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import PageHeader from "../shared/PageHeader";
 import { Button } from "@mantine/core";
-import { BiArrowBack } from "react-icons/bi";
+import { IoMdReturnLeft } from "react-icons/io";
 
 type PageHeaderProps = {
   Operation?: string;
@@ -28,14 +28,13 @@ const AppPageHeader: React.FC<PageHeaderProps> = ({
     return (
       <Button
         variant="outline"
-        size="compact-md"
-        leftSection={<BiArrowBack />}
-        mt={20}
-        mb={-10}
-        w={100}
+        color="black"
+        size="compact-sm"
         ml={30}
-        color="blue"
+        w={"80px"}
+        leftSection={<IoMdReturnLeft size={16} color="gray" />}
         onClick={() => navigate(-1)}
+        className="text-gray-600 hover:bg-gray-200 my-8"
       >
         Back
       </Button>

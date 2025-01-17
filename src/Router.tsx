@@ -11,6 +11,9 @@ import {
   AttendanceTable,
   CandidateDetail,
   Candidates,
+  CertificationDetail,
+  CertificationLayout,
+  CertificationTable,
   Company,
   Dashboard,
   DepartmentDetail,
@@ -22,6 +25,7 @@ import {
   EditAnnnouncement,
   EditDepartment,
   EditDesignation,
+  EditEmployee,
   EditShift,
   EditUser,
   EmployeeDetail,
@@ -37,7 +41,6 @@ import {
   PolicyDetail,
   PolicyLayout,
   PolicyList,
-  ProtectedRoute,
   PublicRoute,
   Recruitment,
   Role,
@@ -50,25 +53,18 @@ import {
   UserDetail,
   UserTable,
 } from "./lazyComponents";
-import EditEmployee from "./pages/EmployeeModule/EditEmployee";
+import ProtectedRoute from "./services/auth/ProtectedRoutes";
 
 const loader = (
   <div className="flex justify-center items-center">
     <Loader type="dots" color="blue" size="sm" my={30} />
-    {/* <Text className="text-center" my={40}>
-      Loading...
-    </Text> */}
   </div>
 );
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Suspense fallback={loader}>
-        <AppLayout />
-      </Suspense>
-    ),
+    element: <AppLayout />,
     errorElement: (
       <Suspense fallback={<Loader type="dots" color="red" size="sm" />}>
         <ErrorPage />
@@ -356,6 +352,28 @@ export const router = createBrowserRouter([
               {
                 path: ":departmentName/detail",
                 element: <DepartmentDetail />,
+              },
+            ],
+          },
+          {
+            path: "certifications",
+            element: (
+              <Suspense fallback={loader}>
+                <CertificationLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: <CertificationTable />,
+              },
+              {
+                path: ":id",
+                element: (
+                  <Suspense fallback={loader}>
+                    <CertificationDetail />
+                  </Suspense>
+                ),
               },
             ],
           },

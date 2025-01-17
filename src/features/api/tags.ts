@@ -13,4 +13,5 @@ export const tagTypes = {
   TICKET: "Ticket",
   ANNOUNCEMENT: "Announcement",
   CONSUMABLE: "Consumable",
+  CERTIFICATION: "Certification",
 };

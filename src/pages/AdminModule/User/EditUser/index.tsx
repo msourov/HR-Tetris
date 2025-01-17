@@ -70,7 +70,9 @@ const EditUser = () => {
     if (userDetail?.data) {
       reset({
         ...userDetail.data,
-        role: userDetail.data.role_id || "", // Ensure role_id is set
+        name: userDetail?.data[0]?.name || "",
+        role: userDetail.data[0]?.role_id || "", // Ensure role_id is set
+        active: userDetail.data[0]?.active || false,
       });
     }
   }, [userDetail, reset]);

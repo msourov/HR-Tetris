@@ -15,9 +15,7 @@ export const EditDepartment = lazy(
 export const Login = lazy(() => import("./pages/Login"));
 export const OtpPage = lazy(() => import("./pages/Login/OtpPage"));
 export const PublicRoute = lazy(() => import("./services/auth/PublicRoute"));
-export const ProtectedRoute = lazy(
-  () => import("./services/auth/ProtectedRoutes")
-);
+
 export const UserDetail = lazy(
   () => import("./pages/AdminModule/User/UserDetail")
 );
@@ -84,6 +82,9 @@ export const EmplyeeTable = lazy(
 export const AddEmployee = lazy(
   () => import("./pages/EmployeeModule/AddEmployee")
 );
+export const EditEmployee = lazy(
+  () => import("./pages/EmployeeModule/EditEmployee")
+);
 export const EmployeeDetail = lazy(
   () => import("./pages/EmployeeModule/EmplyeeDetail")
 );
@@ -103,4 +104,16 @@ export const AnnouncementList = lazy(
 );
 export const EditAnnnouncement = lazy(
   () => import("./pages/AnnouncementModule/EditAnnouncement")
+);
+export const CertificationLayout = lazy(
+  () => import("./pages/EmployeeModule/Certification")
+);
+export const CertificationTable = lazy(
+  () => import("./pages/EmployeeModule/Certification/CertificationTable")
+);
+export const CertificationDetail = lazy(
+  () => import("./pages/EmployeeModule/Certification/CertificationDetail")
+);
+export const AddCertification = lazy(
+  () => import("./pages/EmployeeModule/Certification/AddCertification")
 );

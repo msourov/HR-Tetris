@@ -2,9 +2,9 @@ import { Table } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import ErrorAlert from "../../../components/shared/ErrorAlert";
-import { Employee } from "../../../features/api/typesOld";
 import EmployeeActions from "./EmployeeActions";
 import CommonSkeleton from "../../../components/shared/CommonSkeleton";
+import { Employee } from "../../../features/types/employee";
 
 interface TableItemProps {
   data: Employee[];
@@ -23,36 +23,43 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
     return <CommonSkeleton cols={9} rows={5} />;
   }
   if (error) {
-    <ErrorAlert message="Error fetching users" />;
+    return <ErrorAlert message="Error fetching users" />;
   }
 
   return (
-    <>
-      <Table.Tbody className="text-gray-600 font-semibold">
-        {data.map((item, index) => (
-          <Table.Tr>
-            <Table.Td style={{ width: "2%" }}>{index + 1}</Table.Td>
-            <Table.Td style={{ width: "15%" }}>{item?.name}</Table.Td>
-            <Table.Td style={{ width: "10%" }}>{item?.employee_id}</Table.Td>
-            <Table.Td style={{ width: "10%" }}>{item?.phone}</Table.Td>
-            <Table.Td style={{ width: "10%" }}>{item?.email}</Table.Td>
-            <Table.Td style={{ width: "10%" }}>
-              {item?.shift_and_schedule?.name}
-            </Table.Td>
-            <Table.Td style={{ width: "10%" }}>
-              {item?.department?.name}
-            </Table.Td>
-            <Table.Td style={{ width: "10%" }}>
-              {item?.designation?.name}
-            </Table.Td>
-
-            <Table.Td style={{ width: "5%" }}>
-              <EmployeeActions id={item?.uid} />
-            </Table.Td>
-          </Table.Tr>
-        ))}
-      </Table.Tbody>
-    </>
+    <Table.Tbody className="text-black font-medium">
+      {data.map((item, index) => (
+        <Table.Tr key={item.uid}>
+          <Table.Td style={{ width: "2%", paddingLeft: "1.5rem" }}>
+            {index + 1}
+          </Table.Td>
+          <Table.Td style={{ width: "15%" }}>
+            {item.personal?.name || "N/A"}
+          </Table.Td>
+          <Table.Td style={{ width: "10%" }}>
+            {item.work?.employee_id || "N/A"}
+          </Table.Td>
+          <Table.Td style={{ width: "10%" }}>
+            {item.personal?.phone || "N/A"}
+          </Table.Td>
+          <Table.Td style={{ width: "10%" }}>
+            {item.personal?.email || "N/A"}
+          </Table.Td>
+          <Table.Td style={{ width: "10%" }}>
+            {item.work?.shift_and_schedule?.name || "N/A"}
+          </Table.Td>
+          <Table.Td style={{ width: "10%" }}>
+            {item.work?.department?.name || "N/A"}
+          </Table.Td>
+          <Table.Td style={{ width: "10%" }}>
+            {item.work?.designation?.name || "N/A"}
+          </Table.Td>
+          <Table.Td style={{ width: "5%", paddingRight: "1.5rem" }}>
+            <EmployeeActions id={item.uid} />
+          </Table.Td>
+        </Table.Tr>
+      ))}
+    </Table.Tbody>
   );
 };
 
