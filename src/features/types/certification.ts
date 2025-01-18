@@ -26,6 +26,12 @@ export interface CertificationCreatePayload {
   apply_date: string;
 }
 
+export interface CertificationApprovalPayload {
+  uid: string;
+  is_approved: "approved" | "rejected";
+  reject_purpose: string;
+}
+
 export interface AllCertificationsResponse
   extends PaginatedApiResponse<Certification[]> {}
 

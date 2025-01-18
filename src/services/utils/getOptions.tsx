@@ -1,14 +1,14 @@
 import { useDepartmentHelperQuery } from "../../features/api/departmentSlice";
 import { useDesignationHelperQuery } from "../../features/api/designationSlice";
 import { useShiftHelperQuery } from "../../features/api/shiftSlice";
-import { useGetEmplyeeHelperQuery } from "../../features/api/employeeSlice";
+import { useGetEmployeeHelperQuery } from "../../features/api/employeeSlice";
 import { useMemo } from "react";
 
 const useOptions = () => {
   const { data: departments } = useDepartmentHelperQuery();
   const { data: designations } = useDesignationHelperQuery();
   const { data: shifts } = useShiftHelperQuery();
-  const { data: employees } = useGetEmplyeeHelperQuery();
+  const { data: employees } = useGetEmployeeHelperQuery();
 
   const departmentOptions = useMemo(
     () =>

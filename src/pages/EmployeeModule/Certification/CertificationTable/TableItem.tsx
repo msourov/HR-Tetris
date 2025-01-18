@@ -46,24 +46,24 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
 
   return (
     <>
-      <Table.Tbody className="text-black font-medium  px-4">
+      <Table.Tbody className="text-black font-medium px-4 bg-gray-100 border">
         {data.map((item, index) => (
           <Table.Tr
             key={item.uid}
-            className="cursor-pointer hover:bg-gray-100"
+            className="cursor-pointer hover:bg-white"
             onClick={() => {
               setCurrentUid(item.uid);
               open();
             }}
           >
             <Table.Td style={{ width: "5%" }}>{index + 1}</Table.Td>
-            <Table.Td style={{ width: "15%" }}>
+            <Table.Td style={{ width: "20%" }}>
               {item.employee_name || "N/A"}
             </Table.Td>
             <Table.Td style={{ width: "20%" }}>
               {item.certification_type || "N/A"}
             </Table.Td>
-            <Table.Td style={{ width: "30%" }}>
+            <Table.Td style={{ width: "25%" }}>
               {item.purpose || "N/A"}
             </Table.Td>
             <Table.Td

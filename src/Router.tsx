@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { Suspense } from "react";
 import { Loader } from "@mantine/core";
 import {
+  AddCertification,
   AddEmployee,
   AddNewRole,
   AddNewUser,
@@ -371,7 +372,15 @@ export const router = createBrowserRouter([
                 path: ":id",
                 element: (
                   <Suspense fallback={loader}>
-                    <CertificationDetail />
+                    <CertificationDetail uid="some-uid" />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "add-certification",
+                element: (
+                  <Suspense fallback={loader}>
+                    <AddCertification />
                   </Suspense>
                 ),
               },

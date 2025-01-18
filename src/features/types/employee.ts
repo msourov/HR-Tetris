@@ -304,7 +304,7 @@ export interface employeeHelperInterface {
   uid: string;
   name: string;
   employee_id: string;
-  designatio: string;
+  designation: string;
   department: string;
 }
 

@@ -52,7 +52,7 @@ export const useEmployeeForm = (
 ) => {
   const { uid } = useParams();
   const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
-  const { data } = useGetEmployeeDetailQuery({ uid }, { skip: type === "add" });
+  useGetEmployeeDetailQuery({ uid }, { skip: type === "add" });
   const {
     departmentOptions,
     designationOptions,
@@ -131,9 +131,7 @@ export const useEmployeeForm = (
     const payload = { ...formattedData, ...preparedData };
     delete payload.permissions;
     try {
-      const response = await createEmployee(
-        payload as UnifiedEmployeePayload
-      ).unwrap();
+      await createEmployee(payload as UnifiedEmployeePayload).unwrap();
       sessionStorage.removeItem(draftKey);
       navigate(-1);
     } catch (error) {

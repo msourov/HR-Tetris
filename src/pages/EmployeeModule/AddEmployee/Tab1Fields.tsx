@@ -76,13 +76,15 @@ const Tab1Fields: React.FC<Tab1FieldsProps> = ({
         }}
         error={errors && (errors.bod?.message as string)}
       />
-      <TextInput
-        variant="filled"
-        label="Employee ID"
-        placeholder="EMP12345"
-        {...register("employee_id")}
-        error={errors && (errors.employee_id?.message as string)}
-      />
+      {type === "add" && (
+        <TextInput
+          variant="filled"
+          label="Employee ID"
+          placeholder="EMP12345"
+          {...register("employee_id")}
+          error={errors && (errors.employee_id?.message as string)}
+        />
+      )}
       <Select
         variant="filled"
         label="Select marital status"

@@ -23,7 +23,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import { useGetEmplyeeHelperQuery } from "../../../features/api/employeeSlice";
+import { useGetEmployeeHelperQuery } from "../../../features/api/employeeSlice";
 
 const schema = z.object({
   purpose: z.string().min(1, "Purpose is required"),
@@ -49,7 +49,7 @@ const Overtime = () => {
     start_time: undefined as string | undefined,
     end_time: undefined as string | undefined,
   });
-  const { data: employees } = useGetEmplyeeHelperQuery();
+  const { data: employees } = useGetEmployeeHelperQuery();
   const { data, isLoading, error, refetch } = useAllOvertimeQuery(searchParams);
   const [createOvertime, { isLoading: isCreating }] =
     useCreateOvertimeMutation();

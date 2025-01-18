@@ -3,6 +3,7 @@ import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
 import {
   AllCertificationsResponse,
+  CertificationApprovalPayload,
   CertificationCreatePayload,
   CertificationResponse,
 } from "../types/certification";
@@ -35,7 +36,6 @@ export const certificationApi = createApi({
           : [{ type: "Certification", id: "LIST" }],
     }),
 
-    // Get a single certification by UID
     getCertificationDetail: builder.query<
       CertificationResponse,
       { uid: string | undefined }
@@ -49,7 +49,6 @@ export const certificationApi = createApi({
       ],
     }),
 
-    // Create a new certification
     createCertification: builder.mutation<Response, CertificationCreatePayload>(
       {
         query: (data) => ({
@@ -60,6 +59,21 @@ export const certificationApi = createApi({
         invalidatesTags: [{ type: "Certification", id: "LIST" }],
       }
     ),
+
+    approveCertification: builder.mutation<
+      Response,
+      CertificationApprovalPayload
+    >({
+      query: (data) => ({
+        url: "certifications/approval",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: (_result, _error, { uid }) => [
+        { type: "Certification", id: uid },
+        { type: "Certification", id: "LIST" },
+      ],
+    }),
   }),
 });
 
@@ -67,4 +81,5 @@ export const {
   useGetCertificationsQuery,
   useGetCertificationDetailQuery,
   useCreateCertificationMutation,
+  useApproveCertificationMutation,
 } = certificationApi;

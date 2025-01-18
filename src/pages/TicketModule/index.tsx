@@ -9,7 +9,7 @@ import { z } from "zod";
 import axios from "axios";
 import { getToken } from "../../services/utils/getToken";
 import { useGetAllTicketsQuery } from "../../features/api/ticketSlice";
-import { useGetEmplyeeHelperQuery } from "../../features/api/employeeSlice";
+import { useGetEmployeeHelperQuery } from "../../features/api/employeeSlice";
 import { IoPersonCircle } from "react-icons/io5";
 
 const ticketSchema = z.object({
@@ -25,7 +25,7 @@ type TicketFormType = z.infer<typeof ticketSchema>;
 
 const TicketLayout = () => {
   const [opened, { open, close }] = useDisclosure(false);
-  const { data: employees } = useGetEmplyeeHelperQuery();
+  const { data: employees } = useGetEmployeeHelperQuery();
   const { refetch } = useGetAllTicketsQuery({ page: 1, limit: 10 });
 
   const {
