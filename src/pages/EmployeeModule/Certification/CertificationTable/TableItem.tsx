@@ -25,7 +25,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   const [currentUid, setCurrentUid] = useState<string>("");
 
   if (isLoading) {
-    return <CommonSkeleton cols={9} rows={5} />;
+    return <CommonSkeleton cols={6} rows={5} />;
   }
 
   if (error) {

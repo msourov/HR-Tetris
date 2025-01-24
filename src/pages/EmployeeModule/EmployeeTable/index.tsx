@@ -15,7 +15,7 @@ const EmplyeeTable = () => {
 
   return (
     <Box>
-      <Table>
+      <Table verticalSpacing="sm">
         <TableHeading />
         <TableItem
           data={employees?.data || []}

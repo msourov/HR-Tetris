@@ -1,4 +1,4 @@
-import { Table } from "@mantine/core";
+import { Pill, Table } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import ErrorAlert from "../../../components/shared/ErrorAlert";
@@ -27,31 +27,42 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   }
 
   return (
-    <Table.Tbody className="text-black font-medium">
+    <Table.Tbody className="text-black font-medium border-b bg-gray-100">
       {data.map((item, index) => (
-        <Table.Tr key={item.uid}>
+        <Table.Tr
+          key={item.uid}
+          className="hover:bg-white text-gray-500 font-semibold"
+        >
           <Table.Td style={{ width: "2%", paddingLeft: "1.5rem" }}>
             {index + 1}
           </Table.Td>
           <Table.Td style={{ width: "15%" }}>
             {item.personal?.name || "N/A"}
           </Table.Td>
-          <Table.Td style={{ width: "10%" }}>
+          <Table.Td style={{ width: "5%" }}>
             {item.work?.employee_id || "N/A"}
           </Table.Td>
-          <Table.Td style={{ width: "10%" }}>
+          <Table.Td style={{ width: "10%" }} className="">
             {item.personal?.phone || "N/A"}
           </Table.Td>
           <Table.Td style={{ width: "10%" }}>
             {item.personal?.email || "N/A"}
           </Table.Td>
           <Table.Td style={{ width: "10%" }}>
-            {item.work?.shift_and_schedule?.name || "N/A"}
+            <Pill
+              className={`${
+                item.work?.shift_and_schedule?.name.split(" ")[0] === "Morning"
+                  ? "bg-yellow-500"
+                  : "bg-orange-700"
+              } text-white`}
+            >
+              {item.work?.shift_and_schedule?.name.split(" ")[0] || "N/A"}
+            </Pill>
           </Table.Td>
           <Table.Td style={{ width: "10%" }}>
             {item.work?.department?.name || "N/A"}
           </Table.Td>
-          <Table.Td style={{ width: "10%" }}>
+          <Table.Td style={{ width: "15%" }}>
             {item.work?.designation?.name || "N/A"}
           </Table.Td>
           <Table.Td style={{ width: "5%", paddingRight: "1.5rem" }}>

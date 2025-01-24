@@ -14,4 +14,5 @@ export const tagTypes = {
   ANNOUNCEMENT: "Announcement",
   CONSUMABLE: "Consumable",
   CERTIFICATION: "Certification",
+  ATTENDANCE: "Attendance",
 };

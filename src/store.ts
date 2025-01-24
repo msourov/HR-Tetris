@@ -13,6 +13,7 @@ import { leaveApi } from "./features/api/leaveSlice";
 import { ticketApi } from "./features/api/ticketSlice";
 import { announcementApi } from "./features/api/announcementSlice";
 import { certificationApi } from "./features/api/certificationSlice";
+import { attendanceApi } from "./features/api/attendanceSlice";
 
 const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ const store = configureStore({
     [ticketApi.reducerPath]: ticketApi.reducer,
     [announcementApi.reducerPath]: announcementApi.reducer,
     [certificationApi.reducerPath]: certificationApi.reducer,
+    [attendanceApi.reducerPath]: attendanceApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -46,7 +48,8 @@ const store = configureStore({
       leaveApi.middleware,
       ticketApi.middleware,
       announcementApi.middleware,
-      certificationApi.middleware
+      certificationApi.middleware,
+      attendanceApi.middleware
     ),
 });
 

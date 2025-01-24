@@ -120,7 +120,7 @@ const LeaveReviewModal: React.FC<LeaveReviewModalProps> = ({ close, uid }) => {
           Approve
         </Button>
         <Button
-          variant="filled"
+          variant="outline"
           color="red"
           size="compact-md"
           className="text-sm"

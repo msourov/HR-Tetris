@@ -12,7 +12,7 @@ const LeaveList = ({ data }: { data: Leave[] }) => {
       initial={{ opacity: 0, x: -100, scrollBehavior: "smooth" }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="sm:max-h-[80vh] md:max-h-[80vh] lg:max-h-[80vh]"
+      className="sm:max-h-[80vh] md:max-h-[80vh] lg:max-h-[80vh] py-4"
     >
       <ScrollArea
         type="scroll"
