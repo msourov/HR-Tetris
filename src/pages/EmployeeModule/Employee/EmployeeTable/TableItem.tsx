@@ -1,10 +1,10 @@
 import { Pill, Table } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
-import ErrorAlert from "../../../components/shared/ErrorAlert";
+import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import EmployeeActions from "./EmployeeActions";
-import CommonSkeleton from "../../../components/shared/CommonSkeleton";
-import { Employee } from "../../../features/types/employee";
+import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
+import { Employee } from "../../../../features/types/employee";
 
 interface TableItemProps {
   data: Employee[];
@@ -60,7 +60,9 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
             </Pill>
           </Table.Td>
           <Table.Td style={{ width: "10%" }}>
-            {item.work?.department?.name || "N/A"}
+            <Pill className="bg-white">
+              {item.work?.department?.name || "N/A"}
+            </Pill>
           </Table.Td>
           <Table.Td style={{ width: "15%" }}>
             {item.work?.designation?.name || "N/A"}

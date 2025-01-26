@@ -2,12 +2,17 @@ import { Box, Pagination, Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
 import { useGetAllAttendanceQuery } from "../../../features/api/attendanceSlice";
+// import AppPageHeader from "../../../components/core/AppPageHeader";
 
 const EmplyeeTable = () => {
   const { data: attendance, isLoading, error } = useGetAllAttendanceQuery();
 
   return (
     <Box>
+      {/* <AppPageHeader
+        Heading="Employee"
+        Breadcrumb={{ module: "Employee Management", page: "List" }}
+      /> */}
       <Table>
         <TableHeading />
         <TableItem

@@ -28,9 +28,17 @@ import { useGetEmployeeHelperQuery } from "../../../features/api/employeeSlice";
 const schema = z.object({
   purpose: z.string().min(1, "Purpose is required"),
   employee_id: z.string().min(1, "Employee ID is required"),
-  start_time: z.date({ invalid_type_error: "Start date is required" }),
-  end_time: z.date({ invalid_type_error: "End date is required" }),
+  start_time: z.date({
+    required_error: "Start time is required",
+    invalid_type_error: "Invalid start time format",
+  }),
+  end_time: z.date({
+    required_error: "End time is required",
+    invalid_type_error: "Invalid end time format",
+  }),
 });
+
+type ErrorResponse = { data: { detail: string } };
 
 type FormData = z.infer<typeof schema>;
 
@@ -68,7 +76,7 @@ const Overtime = () => {
   const employeeOptions = Array.isArray(employees?.data)
     ? employees?.data.map((item) => ({
         label: item?.name,
-        value: item?.uid,
+        value: item?.employee_id,
       }))
     : [];
 
@@ -116,7 +124,7 @@ const Overtime = () => {
       console.error("Failed to create overtime:", error);
       notifications.show({
         title: "Error!",
-        message: "An error occurred while creating the ticket",
+        message: (error as ErrorResponse).data.detail,
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
@@ -125,6 +133,7 @@ const Overtime = () => {
   };
 
   const employeeId = watch("employee_id");
+  console.log(errors);
 
   return (
     <Box className="w-[85%] mx-auto rounded-lg px-4">
@@ -262,18 +271,21 @@ const Overtime = () => {
             label="Start time"
             valueFormat="DD MMM YYYY hh:mm A"
             placeholder="Pick Start Date"
-            value={watch("start_time")}
-            onChange={(date) => setValue("end_time", date ?? new Date())}
+            value={watch("start_time") ?? null}
+            onChange={(date) => setValue("start_time", date ?? new Date())}
+            error={errors.start_time?.message}
             className="mb-2"
             required
           />
+
           <DateTimePicker
             variant="filled"
             label="End time"
             valueFormat="DD MMM YYYY hh:mm A"
             placeholder="Pick End Date"
-            value={watch("end_time") ?? new Date()}
+            value={watch("end_time") ?? null}
             onChange={(date) => setValue("end_time", date ?? new Date())}
+            error={errors.end_time?.message}
             className="mb-2"
             required
           />

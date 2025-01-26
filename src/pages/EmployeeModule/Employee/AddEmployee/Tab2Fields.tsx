@@ -105,7 +105,7 @@ const Tab2Fields: React.FC<Tab2FieldsProps> = ({
         <Select
           className="-my-5"
           variant="filled"
-          label="Select Executives"
+          label="Select Subordinates"
           data={employeeOptions}
           value={watch("executives") || ""}
           multiple

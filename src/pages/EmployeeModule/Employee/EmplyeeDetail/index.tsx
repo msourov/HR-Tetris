@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetEmployeeDetailQuery } from "../../../features/api/employeeSlice";
+import { useGetEmployeeDetailQuery } from "../../../../features/api/employeeSlice";
 import {
   Text,
   Title,
@@ -11,7 +11,7 @@ import {
   Tabs,
   Box,
 } from "@mantine/core";
-import ErrorAlert from "../../../components/shared/ErrorAlert";
+import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { BsFillPersonVcardFill } from "react-icons/bs";
 import { useState } from "react";

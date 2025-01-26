@@ -91,6 +91,16 @@ export const userApi = createApi({
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: "User", id }],
     }),
+    changeOwnPassword: builder.mutation<
+      Response,
+      { uid: string; old_password: string; new_password: string }
+    >({
+      query: (data) => ({
+        url: "role-user/self/chnage-password",
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -101,4 +111,5 @@ export const {
   useCreateUserMutation,
   useEditUserMutation,
   useDeleteUserMutation,
+  useChangeOwnPasswordMutation,
 } = userApi;

@@ -26,6 +26,20 @@ const CustomCard: React.FC<LeaveData> = ({
 }: LeaveData) => {
   const [opened, { open, close }] = useDisclosure(false);
 
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Invalid date";
+    }
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   return (
     <Card className="w-full px-6 border border-gray-200 rounded-lg shadow-lg flex flex-row">
       {/* Left section (80%) */}
@@ -41,20 +55,20 @@ const CustomCard: React.FC<LeaveData> = ({
         new Date(leave_end_date).toLocaleDateString() ? (
           <div className="flex flex-col text-gray-600 mt-2">
             <Text className="text-sm font-semibold">
-              <Pill className=" text-sm mb-2 text-blue-500">
-                {new Date(leave_start_date).toLocaleDateString()}
+              <Pill className="text-sm mb-2 text-blue-500">
+                {formatDate(leave_start_date)}
               </Pill>
             </Text>
             <Text className="text-sm font-medium">
               <Pill className="text-sm text-gray-600">
-                {new Date(leave_start_date).toLocaleTimeString()}
+                {formatDate(leave_start_date)}
               </Pill>
               <Text span c="blue" className="font-bold w-10">
                 {" "}
                 -{" "}
               </Text>
               <Pill className="text-sm text-gray-600">
-                {new Date(leave_end_date).toLocaleTimeString()}
+                {formatDate(leave_end_date)}
               </Pill>
             </Text>
           </div>

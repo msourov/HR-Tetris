@@ -7,8 +7,8 @@ import { MdDeleteOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import { useDeleteEmployeeMutation } from "../../../features/api/employeeSlice";
-import ErrorAlert from "../../../components/shared/ErrorAlert";
+import { useDeleteEmployeeMutation } from "../../../../features/api/employeeSlice";
+import ErrorAlert from "../../../../components/shared/ErrorAlert";
 
 interface EmplyeeActionProp {
   id: string;

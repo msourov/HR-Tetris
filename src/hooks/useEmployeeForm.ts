@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreateEmployeeProps,
   Permissions,
-} from "../pages/EmployeeModule/AddEmployee/types";
+} from "../pages/EmployeeModule/Employee/AddEmployee/types";
 import { UnifiedEmployeePayload } from "../features/types/employee";
 
 const schema = z.object({

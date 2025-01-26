@@ -32,18 +32,6 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
     return <ErrorAlert message="Error fetching certifications" />;
   }
 
-  const getStatusStyle = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "approved":
-        return "text-green-500 font-bold"; // Approved styling
-      case "rejected":
-        return "text-red-500 font-bold"; // Rejected styling
-      case "pending":
-      default:
-        return "text-yellow-500 font-bold"; // Pending styling
-    }
-  };
-
   return (
     <>
       <Table.Tbody className="text-black font-medium px-4 bg-gray-100 border">
@@ -52,8 +40,8 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
             key={item.uid}
             className="cursor-pointer hover:bg-white"
             onClick={() => {
-              setCurrentUid(item.uid);
               open();
+              setCurrentUid(item.uid);
             }}
           >
             <Table.Td style={{ width: "5%" }}>{index + 1}</Table.Td>
@@ -79,15 +67,31 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
               </Pill>
             </Table.Td>
             <Table.Td style={{ width: "8%" }}>
-              <span className={getStatusStyle(item.is_approved || "pending")}>
+              <Pill
+                size="sm"
+                c={
+                  item.is_approved === "pending"
+                    ? "yellow"
+                    : item.is_approved === "rejected"
+                    ? "red"
+                    : "green"
+                }
+                className={
+                  item.is_approved === "pending"
+                    ? "bg-yellow-100"
+                    : item.is_approved === "rejected"
+                    ? "bg-red-200"
+                    : "bg-green-200"
+                }
+              >
                 {item.is_approved.toUpperCase()}
-              </span>
+              </Pill>
             </Table.Td>
           </Table.Tr>
         ))}
       </Table.Tbody>
       <Modal opened={opened} onClose={close} size="auto">
-        <CertificationDetail uid={currentUid} />
+        <CertificationDetail uid={currentUid} closeModal={close} />
       </Modal>
     </>
   );

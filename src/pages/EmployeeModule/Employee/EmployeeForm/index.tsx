@@ -24,12 +24,12 @@ import {
   useCreateEmployeeMutation,
   useEditEmployeeMutation,
   useGetEmployeeDetailQuery,
-} from "../../../features/api/employeeSlice";
-import useOptions from "../../../services/utils/getOptions";
+} from "../../../../features/api/employeeSlice";
+import useOptions from "../../../../services/utils/getOptions";
 import {
   EmployeeAccess,
   UnifiedEmployeePayload,
-} from "../../../features/types/employee";
+} from "../../../../features/types/employee";
 import Tab1Fields from "../AddEmployee/Tab1Fields";
 import Tab2Fields from "../AddEmployee/Tab2Fields";
 

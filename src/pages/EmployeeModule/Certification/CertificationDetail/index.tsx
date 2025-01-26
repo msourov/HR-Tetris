@@ -1,14 +1,14 @@
-import { Box, Button } from "@mantine/core";
+import { Box, Button, Loader, Pill } from "@mantine/core";
 import {
   useGetCertificationDetailQuery,
   useApproveCertificationMutation,
 } from "../../../../features/api/certificationSlice";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
-import { useNavigate } from "react-router-dom";
 
 interface CertificationDetailProps {
   uid: string;
+  closeModal: () => void;
 }
 
 interface ErrorResponse {
@@ -16,7 +16,7 @@ interface ErrorResponse {
   data: { detail: string };
 }
 
-const CertificationDetail = ({ uid }: CertificationDetailProps) => {
+const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
   const {
     data: certificationDetail,
     isLoading,
@@ -25,7 +25,6 @@ const CertificationDetail = ({ uid }: CertificationDetailProps) => {
 
   const [approveCertification, { isLoading: isMutating }] =
     useApproveCertificationMutation();
-  const navigate = useNavigate();
 
   const formatDate = (dateString: string | undefined): string =>
     dateString ? new Date(dateString).toLocaleDateString() : "N/A";
@@ -50,7 +49,7 @@ const CertificationDetail = ({ uid }: CertificationDetailProps) => {
         color: "green",
         autoClose: 3000,
       });
-      navigate(-1);
+      closeModal();
     } catch (error) {
       console.log(error);
       if (error && typeof error === "object" && "data" in error) {
@@ -76,7 +75,11 @@ const CertificationDetail = ({ uid }: CertificationDetailProps) => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Box className="w-full h-full flex justify-center items-center">
+        <Loader size="lg" />
+      </Box>
+    );
   }
 
   if (error) {
@@ -118,7 +121,25 @@ const CertificationDetail = ({ uid }: CertificationDetailProps) => {
 
             <div className="text-gray-600 font-medium">Approval:</div>
             <div className="text-gray-800 capitalize">
-              {certificationDetail?.data?.is_approved }
+              <Pill
+                size="sm"
+                c={
+                  certificationDetail?.data?.is_approved === "pending"
+                    ? "yellow"
+                    : certificationDetail?.data?.is_approved === "rejected"
+                    ? "red"
+                    : "green"
+                }
+                className={
+                  certificationDetail?.data?.is_approved === "pending"
+                    ? "bg-yellow-100"
+                    : certificationDetail?.data?.is_approved === "rejected"
+                    ? "bg-red-200"
+                    : "bg-green-200"
+                }
+              >
+                {certificationDetail?.data?.is_approved}
+              </Pill>
             </div>
           </div>
 
@@ -168,30 +189,32 @@ const CertificationDetail = ({ uid }: CertificationDetailProps) => {
             <span>{formatDateTime(certificationDetail?.data?.update_at)}</span>
           </div>
         </div>
-        <Box className="flex gap-2 pt-8 pb-4 float-right">
-          <Button
-            color="green"
-            leftSection={<IconCheck size={20} />}
-            onClick={() => handleApproval("approved")}
-            loading={isMutating}
-          >
-            Accept
-          </Button>
-          <Button
-            color="red"
-            variant="outline"
-            leftSection={<IconX size={20} />}
-            onClick={() =>
-              handleApproval(
-                "rejected",
-                "Reason for rejection can be provided here."
-              )
-            }
-            loading={isMutating}
-          >
-            Reject
-          </Button>
-        </Box>
+        {certificationDetail?.data?.is_approved === "pending" && (
+          <Box className="flex gap-2 pt-8 pb-4 float-right">
+            <Button
+              color="green"
+              leftSection={<IconCheck size={20} />}
+              onClick={() => handleApproval("approved")}
+              loading={isMutating}
+            >
+              Accept
+            </Button>
+            <Button
+              color="red"
+              variant="outline"
+              leftSection={<IconX size={20} />}
+              onClick={() =>
+                handleApproval(
+                  "rejected",
+                  "Reason for rejection can be provided here."
+                )
+              }
+              loading={isMutating}
+            >
+              Reject
+            </Button>
+          </Box>
+        )}
       </div>
     </div>
   );
