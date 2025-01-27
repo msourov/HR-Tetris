@@ -1,14 +1,5 @@
 import { useGetDashboardResponseQuery } from "../../features/api/companySlice";
-import {
-  Alert,
-  Title,
-  Card,
-  Box,
-  Image,
-  Divider,
-  Text,
-  Skeleton,
-} from "@mantine/core";
+import { Alert, Title, Card, Image, Divider, Skeleton } from "@mantine/core";
 import { LineChart } from "@mantine/charts";
 import { biaxialData } from "./DummyData";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -25,12 +16,12 @@ const LeaveSection = lazy(() => import("./LeaveSection"));
 const OvertimeSection = lazy(() => import("./OvertimeSection"));
 
 const skeleton = (
-  <Box>
+  <div>
     <Skeleton height={35} mb={6} radius="sm" c="grape" />
     <Skeleton height={35} width="100%" radius="sm" mb={6} />
     <Skeleton height={35} width="100%" radius="sm" mb={4} />
     <Skeleton height={35} width="100%" radius="md" />
-  </Box>
+  </div>
 );
 
 const Dashboard = () => {
@@ -89,19 +80,16 @@ const Dashboard = () => {
 
   return (
     <div className="flex gap-4 my-6 lg:my-12 md:gap-6 lg:mx-8 mx-4 w-[95%] overflow-x-hidden">
-      <Box className="w-[65%]">
-        <Box className="flex flex-col justify-evenly mb-6 gap-8 rounded-md">
+      <div className="w-[65%]">
+        <div className="flex flex-col justify-evenly mb-6 gap-8 rounded-md">
           <Card
             withBorder
             className=" shadow-lg 
            flex flex-col md:flex-row justify-center gap-2 rounded-md hover:shadow-md transition-shadow"
           >
             {/* Employee Info */}
-            <Box
-              p="sm"
-              className="border border-green-200 flex flex-col items-center sm:justify-around gap-2 w-[270px]"
-            >
-              <Box className="flex justify-between gap-4">
+            <div className="border border-green-200 flex flex-col items-center sm:justify-around gap-2 w-[270px] p-4">
+              <div className="flex justify-between gap-4">
                 <Image
                   src="/assets/team.png"
                   fit="contain"
@@ -113,45 +101,40 @@ const Dashboard = () => {
                   Employees
                   {/* </span> */}
                 </Title>
-              </Box>
+              </div>
               <Divider size="xs" w="100%" color="blue" />
 
-              <Box className="flex items-center justify-between gap-6">
-                <Box className="flex gap-4 items-center text-center">
-                  <Box className="flex gap-2 text-gray-500 items-center">
+              <div className="flex items-center justify-between gap-6">
+                <div className="flex gap-4 items-center text-center">
+                  <div className="flex gap-2 text-gray-500 items-center">
                     <IoIosPeople className="text-green-500" size={28} />
-                    <Text fw={700} c="green">
-                      {60}
-                    </Text>
-                  </Box>
-                  <Box className="flex gap-2 text-blue-500 items-center">
+                    <p className="font-bold text-green-500">{60}</p>
+                  </div>
+                  <div className="flex gap-2 text-blue-500 items-center">
                     <MdNetworkCell size={20} />
-                    <Text c="" fw={700}>
+                    <p className="font-bold text-green-400">
                       {/* {employee?.active_employee || 0} */}
                       55
-                    </Text>
-                  </Box>
+                    </p>
+                  </div>
                   {/* {employee?.inactive_employee !== 0 && (
-                    <Box className="flex gap-2 text-blue-300">
+                    <div className="flex gap-2 text-blue-300">
                       <Text c="dimmed">Inactive</Text>
                       <Text c="black" fw={700}>
                         {employee?.inactive_employee || 0}
                       </Text>
-                    </Box>
+                    </div>
                   )} */}
-                  <Box className="flex gap-2 text-gray-400 items-center">
+                  <div className="flex gap-2 text-gray-400 items-center">
                     <IoCloudOffline size={24} />
-                    <Text fw={700}>5</Text>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
+                    <p className="font-bold">5</p>
+                  </div>
+                </div>
+              </div>
+            </div>
             {/* Department Info */}
-            <Box
-              p="sm"
-              className="border border-green-200 flex flex-col items-center sm:justify-around gap-2 w-[270px]"
-            >
-              <Box className="flex justify-between gap-4">
+            <div className="border border-green-200 flex flex-col items-center sm:justify-around gap-2 w-[270px] p-4">
+              <div className="flex justify-between gap-4">
                 <Image
                   src="/assets/department.png"
                   fit="contain"
@@ -163,45 +146,46 @@ const Dashboard = () => {
                   Departments
                   {/* </span> */}
                 </Title>
-              </Box>
+              </div>
               <Divider size="xs" w="100%" color="blue" />
 
               {/* Department Info */}
 
-              <Box className="flex items-center justify-between gap-6">
-                <Box className="flex gap-4 items-center text-center">
-                  <Box className="flex gap-2 text-gray-500 items-center">
+              <div className="flex items-center justify-between gap-6">
+                <div className="flex gap-4 items-center text-center">
+                  <div className="flex gap-2 text-gray-500 items-center">
                     <IoIosPeople className="text-green-500" size={28} />
-                    <Text fw={700} c="green">
+                    <p className="font-bold text-green-500">
                       {department?.total || 0}
-                    </Text>
-                  </Box>
-                  <Box className="flex gap-2 text-blue-500 items-center">
+                    </p>
+                  </div>
+                  <div className="flex gap-2 text-blue-500 items-center">
                     <MdNetworkCell size={20} />
-                    <Text fw={700}>{department?.active || 0}</Text>
-                  </Box>
+                    <p className="font-bold">{department?.active || 0}</p>
+                  </div>
                   {department?.inactive !== 0 && (
-                    <Box className="flex gap-2 text-gray-400 items-center">
+                    <div className="flex gap-2 text-gray-400 items-center">
                       <IoCloudOffline size={24} />
-                      <Text fw={700}>{department?.inactive || 0}</Text>
-                    </Box>
+                      <p className="font-bold">{department?.inactive || 0}</p>
+                    </div>
                   )}
-                </Box>
-              </Box>
-            </Box>
+                </div>
+              </div>
+            </div>
           </Card>
-        </Box>
+        </div>
 
-        <Box>
+        <div>
           <Card
             shadow="sm"
             padding="lg"
             mb="lg"
             className="w-[full] rounded-md shadow-lg"
           >
-            <Text fw={600} ta="center" mb={30} c="blue" className="opacity-65">
+            <p className="font-semibold text-center mb-7 text-blue-500 opacity-65">
               Company growth
-            </Text>
+            </p>
+
             <LineChart
               h={300}
               data={biaxialData}
@@ -215,10 +199,10 @@ const Dashboard = () => {
               ]}
             />
           </Card>
-        </Box>
-      </Box>
-      <Box className="w-[35%]">
-        <Box className="mb-6 w-full bg-white">
+        </div>
+      </div>
+      <div className="w-[35%]">
+        <div className="mb-6 w-full bg-white">
           {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 && (
             <Suspense fallback={skeleton}>
               <LeaveSection
@@ -228,8 +212,8 @@ const Dashboard = () => {
               />
             </Suspense>
           )}
-        </Box>
-        <Box className="mb-6 w-full bg-white">
+        </div>
+        <div className="mb-6 w-full bg-white">
           {overtimeData &&
             Array.isArray(overtimeData?.data) &&
             overtimeData?.data.length > 0 && (
@@ -241,8 +225,8 @@ const Dashboard = () => {
                 />
               </Suspense>
             )}
-        </Box>
-      </Box>
+        </div>
+      </div>
     </div>
   );
 };

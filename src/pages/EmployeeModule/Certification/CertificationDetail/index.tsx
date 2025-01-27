@@ -1,4 +1,4 @@
-import { Box, Button, Loader, Pill } from "@mantine/core";
+import { Button, Loader, Pill } from "@mantine/core";
 import {
   useGetCertificationDetailQuery,
   useApproveCertificationMutation,
@@ -76,9 +76,9 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
 
   if (isLoading) {
     return (
-      <Box className="w-full h-full flex justify-center items-center">
+      <div className="w-full h-full flex justify-center items-center">
         <Loader size="lg" />
-      </Box>
+      </div>
     );
   }
 
@@ -190,7 +190,7 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
           </div>
         </div>
         {certificationDetail?.data?.is_approved === "pending" && (
-          <Box className="flex gap-2 pt-8 pb-4 float-right">
+          <div className="flex gap-2 pt-8 pb-4 float-right">
             <Button
               color="green"
               leftSection={<IconCheck size={20} />}
@@ -213,7 +213,7 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
             >
               Reject
             </Button>
-          </Box>
+          </div>
         )}
       </div>
     </div>

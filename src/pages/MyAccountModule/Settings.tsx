@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { PasswordInput, Button, Card, Stack, Grid, Text } from "@mantine/core";
+import { PasswordInput, Button, Card, Grid } from "@mantine/core";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MdOutlineLock } from "react-icons/md";
@@ -51,13 +51,13 @@ const Settings = () => {
   return (
     <div className="flex justify-center py-10">
       <Card padding="xl" radius="md" className="w-[90%]">
-        <Stack>
-          <Text size="xl" ta="center" className="text-white bg-orange-400">
+        <div className="space-y-6">
+          <p className="text-xl text-center text-white bg-orange-400">
             Password & Security Section
-          </Text>
+          </p>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack>
+            <div className="space-y-4">
               <PasswordInput
                 label="Current Password"
                 placeholder="Enter Current Password"
@@ -87,20 +87,21 @@ const Settings = () => {
                   />
                 </Grid.Col>
               </Grid>
-
-              <Button
-                disabled={isLoading}
-                type="submit"
-                size="sm"
-                color="blue"
-                w={100}
-                className="self-end"
-              >
-                Update
-              </Button>
-            </Stack>
+              <div className="flex justify-end">
+                <Button
+                  disabled={isLoading}
+                  type="submit"
+                  size="sm"
+                  color="blue"
+                  w={100}
+                  className="flex justify-end"
+                >
+                  Update
+                </Button>
+              </div>
+            </div>
           </form>
-        </Stack>
+        </div>
       </Card>
     </div>
   );

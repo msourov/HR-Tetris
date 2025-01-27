@@ -7,6 +7,7 @@ import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import { useDisclosure } from "@mantine/hooks";
 import CertificationDetail from "../CertificationDetail";
 import { useState } from "react";
+import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
 
 interface TableItemProps {
   data: Certification[];
@@ -67,25 +68,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
               </Pill>
             </Table.Td>
             <Table.Td style={{ width: "8%" }}>
-              <Pill
-                size="sm"
-                c={
-                  item.is_approved === "pending"
-                    ? "yellow"
-                    : item.is_approved === "rejected"
-                    ? "red"
-                    : "green"
-                }
-                className={
-                  item.is_approved === "pending"
-                    ? "bg-yellow-100"
-                    : item.is_approved === "rejected"
-                    ? "bg-red-200"
-                    : "bg-green-200"
-                }
-              >
-                {item.is_approved.toUpperCase()}
-              </Pill>
+              <AppApprovalStatus status={item.is_approved} />
             </Table.Td>
           </Table.Tr>
         ))}

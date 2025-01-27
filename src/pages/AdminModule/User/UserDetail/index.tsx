@@ -1,6 +1,4 @@
 import {
-  Box,
-  Text,
   Loader,
   Alert,
   Card,
@@ -24,9 +22,9 @@ const UserDetail: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Box className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen">
         <Loader size="lg" variant="dots" />
-      </Box>
+      </div>
     );
   }
 
@@ -43,28 +41,22 @@ const UserDetail: React.FC = () => {
   const logsSteps = (Array.isArray(user?.logs) ? user.logs : [])
     .filter(Boolean)
     .map((log, index) => (
-      <Stepper.Step
-        key={index}
-        label={<Text size="sm">{log?.admin ?? "N/A"}</Text>}
-        description={<Text size="xs">{log?.message ?? "N/A"}</Text>}
-      >
-        <Text size="xs" color="dimmed">
-          <Text fw="bold" color="gray.7">
-            Created:{" "}
-            <Text span color="blue">
-              {log?.create_at
-                ? new Date(log.create_at).toLocaleString()
-                : "N/A"}
-            </Text>
-          </Text>
-        </Text>
-      </Stepper.Step>
+      <div key={index}>
+        <p className="text-sm font-medium">{log?.admin ?? "N/A"}</p>
+        <p className="text-xs">{log?.message ?? "N/A"}</p>
+        <p className="text-xs text-gray-500">
+          <span className="font-bold text-gray-700">Created: </span>
+          <span className="text-blue-500">
+            {log?.create_at ? new Date(log.create_at).toLocaleString() : "N/A"}
+          </span>
+        </p>
+      </div>
     ));
 
   console.log(user);
 
   return (
-    <Box className="flex flex-col justify-between md:flex-row p-6 lg:py-10 gap-8 rounded-lg shadow-sm max-w-6xl mx-auto">
+    <div className="flex flex-col justify-between md:flex-row p-6 lg:py-10 gap-8 rounded-lg shadow-sm max-w-6xl mx-auto">
       {/* Left Section: User Details */}
       <Card withBorder radius="md" className="w-full flex-1 md:w-1/3 bg-white">
         <Card.Section p="md" className="flex justify-center">
@@ -76,9 +68,8 @@ const UserDetail: React.FC = () => {
         </Card.Section>
 
         <Group mb="xs" className="mx-auto">
-          <Text fw={500} size="lg" ta="center">
-            {user?.name}
-          </Text>
+          <p className="font-medium text-lg text-center">{user?.name}</p>
+
           <Badge
             className={`${
               user?.active
@@ -90,23 +81,19 @@ const UserDetail: React.FC = () => {
           </Badge>
         </Group>
 
-        <Box className="flex-1 bg-gray-100 py-4">
-          <Text
-            size="sm"
-            c="dimmed"
-            className="flex items-center gap-2 justify-center"
-          >
+        <div className="flex-1 bg-gray-100 py-4">
+          <p className="text-sm text-gray-500 flex items-center gap-2 justify-center">
             <FaPhoneAlt />
-            <Text span>{user?.mobile}</Text>
-          </Text>
-          <Text size="xs" ta="center" color="dimmed" mt="xs">
+            <span>{user?.mobile}</span>
+          </p>
+          <p className="text-xs text-gray-500 text-center mt-1">
             {user?.role_name}
-          </Text>
-        </Box>
+          </p>
+        </div>
       </Card>
 
       {/* Right Section: Activity Logs */}
-      <Box
+      <div
         className="bg-blue-50 w-[260px] rounded-lg border p-6 mx-auto"
         style={{ minHeight: "400px" }}
       >
@@ -127,12 +114,12 @@ const UserDetail: React.FC = () => {
             {logsSteps}
           </Stepper>
         ) : (
-          <Text color="dimmed" size="sm" ta="center">
+          <p className="text-sm text-center text-gray-500">
             No activity logs available.
-          </Text>
+          </p>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

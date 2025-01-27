@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Modal, Select, Textarea, TextInput } from "@mantine/core";
+import { Button, Modal, Select, Textarea, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
@@ -95,7 +95,7 @@ const TicketLayout = () => {
   const employeeId = watch("employee_id");
 
   return (
-    <Box className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen">
       {/* <PageHeader
         Operation="Open A"
         Heading="Ticket"
@@ -109,10 +109,10 @@ const TicketLayout = () => {
       >
         New ticket
       </Button>
-      <Box className="w-[95%] my-8 mx-auto bg-white rounded-lg drop-shadow-lg flex-1 overflow-auto">
+      <div className="w-[95%] my-8 mx-auto bg-white rounded-lg drop-shadow-lg flex-1 overflow-auto">
         {/* {data && <RoleTable data={data.data} />} */}
         <Outlet />
-      </Box>
+      </div>
       <Modal opened={opened} onClose={close} withCloseButton={false}>
         <form onSubmit={handleSubmit(onSubmit)} className="pt-2 pb-6 px-6">
           <Select
@@ -152,7 +152,7 @@ const TicketLayout = () => {
           </Button>
         </form>
       </Modal>
-    </Box>
+    </div>
   );
 };
 

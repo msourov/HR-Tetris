@@ -1,12 +1,10 @@
 import {
-  Box,
   Button,
   Loader,
   Modal,
   Paper,
   Select,
   Switch,
-  Text,
   TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -80,7 +78,7 @@ const EditDepartment = () => {
 
   const activeStatus = watch("active");
 
-  const text = <Text fw={500}>Select Department</Text>;
+  const text = <p className="font-medium">Select Department</p>;
 
   const onSubmit = async (data: EditDepartmentType) => {
     console.log("submitted data", data);
@@ -132,8 +130,8 @@ const EditDepartment = () => {
   };
 
   return (
-    <Box className="my-6">
-      <Box className="flex justify-end">
+    <div className="my-6">
+      <div className="flex justify-end">
         <Button
           leftSection={<LuPlusCircle />}
           color="black"
@@ -144,7 +142,7 @@ const EditDepartment = () => {
         >
           Add
         </Button>
-      </Box>
+      </div>
       <Modal opened={addOpened} onClose={addClose} title="Add Department">
         <AddNewDepartment toggleModal={toggleModal} />
       </Modal>
@@ -168,7 +166,7 @@ const EditDepartment = () => {
                 {...register("name")}
                 error={errors.name?.message as React.ReactNode}
               />
-              <Box className="max-w-20 mt-4">
+              <div className="max-w-20 mt-4">
                 <Switch
                   size="lg"
                   onLabel="Disable"
@@ -177,7 +175,7 @@ const EditDepartment = () => {
                   checked={activeStatus}
                   {...register("active")}
                 />
-              </Box>
+              </div>
 
               <Button
                 type="submit"
@@ -193,19 +191,19 @@ const EditDepartment = () => {
       )}
       {departmentDetail && (
         <>
-          <Box className="flex justify-end mt-10">
+          <div className="flex justify-end mt-10">
             <Button variant="light" color="red" onClick={openDelete}>
               Delete
             </Button>
-          </Box>
+          </div>
           <Modal
             opened={deleteOpened}
             onClose={closeDelete}
             centered
             className="text-center"
           >
-            <Text>Are you sure you want to delete?</Text>
-            <Box className="flex gap-2 justify-center mt-4">
+            <p>Are you sure you want to delete?</p>
+            <div className="flex gap-2 justify-center mt-4">
               <Button
                 color="red"
                 onClick={handleDelete}
@@ -216,11 +214,11 @@ const EditDepartment = () => {
               <Button color="gray" onClick={close} disabled={deleteDeptLoading}>
                 Cancel
               </Button>
-            </Box>
+            </div>
           </Modal>
         </>
       )}
-    </Box>
+    </div>
   );
 };
 

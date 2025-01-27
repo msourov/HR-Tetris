@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Card,
   Divider,
@@ -8,7 +7,6 @@ import {
   Popover,
   Select,
   SimpleGrid,
-  Text,
 } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useGetCandidatesQuery } from "../../../features/api/recruitmentSlice";
@@ -48,7 +46,7 @@ const Candidates = () => {
   }
   return (
     <div>
-      <Box className="flex justify-end">
+      <div className="flex justify-end">
         <Popover
           opened={opened}
           onChange={setOpened}
@@ -79,7 +77,7 @@ const Candidates = () => {
               value={value}
               onChange={setDepartment}
             />
-            <Box className="flex justify-end gap-2 mt-4">
+            <div className="flex justify-end gap-2 mt-4">
               <Button
                 variant="default"
                 size="compact-sm"
@@ -99,10 +97,10 @@ const Candidates = () => {
               >
                 Close
               </Button>
-            </Box>
+            </div>
           </Popover.Dropdown>
         </Popover>
-      </Box>
+      </div>
 
       <SimpleGrid
         cols={{ base: 1, sm: 2, md: 3, xl: 4 }}
@@ -118,28 +116,22 @@ const Candidates = () => {
             maw={350}
             className="text-center flex-auto p-4 max-w-full overflow-hidden py-6"
           >
-            <Text fw={500} size="lg" className="truncate">
-              {item?.name}
-            </Text>
-            <Text size="sm" className="truncate mb-2">
-              {item?.email}
-            </Text>
-            <Text size="sm" c="dimmed" mb={16}>
-              {item?.department}
-            </Text>
+            <p className="text-lg font-medium truncate">{item?.name}</p>
+            <p className="text-sm truncate mb-2">{item?.email}</p>
+            <p className="text-sm text-gray-500 mb-4">{item?.department}</p>
             <Divider />
             <Card.Section className="flex py-4 px-2 justify-between">
-              <Text size="sm">
+              <p className="text-sm">
                 Applied:{" "}
-                <Text component="span" c="blue">
+                <span className="text-blue-500">
                   {item?.create_at.substring(0, 10)}
-                </Text>
-              </Text>
+                </span>
+              </p>
               <Pill size="sm" c="dimmed">
                 {item?.state}
               </Pill>
             </Card.Section>
-            <Text lineClamp={2}>{item?.cover_letter}</Text>
+            <p className="line-clamp-2">{item?.cover_letter}</p>
             <Card.Section>
               <Button
                 className="bg-black hover:bg-gray-700"

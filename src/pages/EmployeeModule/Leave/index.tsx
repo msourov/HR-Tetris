@@ -1,17 +1,8 @@
-import {
-  Box,
-  Loader,
-  Popover,
-  Select,
-  Button,
-  Text,
-  Modal,
-  Textarea,
-} from "@mantine/core";
+import { Select, Button, Modal, Textarea } from "@mantine/core";
 import ErrorAlert from "../../../components/shared/ErrorAlert";
 
 import { useState } from "react";
-import { IoFilter, IoPersonCircle } from "react-icons/io5";
+import { IoPersonCircle } from "react-icons/io5";
 import { DateTimePicker } from "@mantine/dates";
 import LeaveList from "./LeaveList";
 import {
@@ -25,6 +16,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useGetEmployeeHelperQuery } from "../../../features/api/employeeSlice";
+import { CiCalendarDate } from "react-icons/ci";
+import OvertimeLeaveSkeleton from "../../../components/shared/Skeletons/OvertimeLeaveSkeleton";
 
 const schema = z.object({
   purpose: z.string().min(1, "Purpose is required"),
@@ -41,7 +34,6 @@ interface ErrorResponse {
 type FormData = z.infer<typeof schema>;
 
 const Leave = () => {
-  const [opened, setOpened] = useState(false);
   const [query, setQuery] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -79,10 +71,13 @@ const Leave = () => {
 
   if (isLoading)
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <Loader size="lg" />
+      <div className="w-full h-full flex flex-col gap-4 my-8 mx-12">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <OvertimeLeaveSkeleton key={index} />
+        ))}
       </div>
     );
+
   if (error) return <ErrorAlert message="Error fetching leave" />;
 
   const handleSearch = () => {
@@ -94,7 +89,6 @@ const Leave = () => {
     };
     setSearchParams(newParams);
     refetch();
-    setOpened(false);
   };
 
   const onSubmit = async (data: FormData) => {
@@ -135,125 +129,94 @@ const Leave = () => {
   const employeeId = watch("employee_id");
 
   return (
-    <Box className="w-[85%] mx-auto rounded-lg px-4">
-      <Box className="flex justify-end gap-6 items-center mt-6 mb-2 mr-4">
+    <div className="w-[85%] mx-auto rounded-lg px-4">
+      <div className="flex flex-row-reverse justify-between gap-6 items-center mt-6 mb-2 mr-4">
         <Button
-          variant="filled"
+          variant="light"
           color="orange"
-          size="compact-sm"
-          className="w-[80px]"
+          size="compact-lg"
+          className="w-[80px] border border-orange-300 text-sm"
           onClick={modalOpen}
         >
           Add
         </Button>
-        <Popover
-          opened={opened}
-          onChange={setOpened}
-          width={300}
-          position="bottom"
-          withArrow
-          shadow="md"
-        >
-          <Popover.Target>
-            <Button
-              leftSection={<IoFilter />}
-              size="compact-sm"
-              color="white"
-              bg="black"
-              c="white"
-              variant="outline"
-              onClick={() => setOpened((o) => !o)}
-            >
-              Filter
-            </Button>
-          </Popover.Target>
-          <Popover.Dropdown bg="var(--mantine-color-body)">
+        <div className="flex items-center gap-4">
+          <div className="flex gap-2">
             <DateTimePicker
-              variant="filled"
               valueFormat="DD MMM YYYY hh:mm A"
               placeholder="Pick Start Date"
               popoverProps={{ withinPortal: false }}
               value={startDate}
               onChange={setStartDate}
-              className="mb-2"
             />
             <DateTimePicker
-              variant="filled"
               valueFormat="DD MMM YYYY hh:mm A"
               placeholder="Pick End Date"
               popoverProps={{ withinPortal: false }}
               value={endDate}
               onChange={setEndDate}
-              className="mb-2"
             />
             <Select
-              variant="filled"
               placeholder="Select Status"
               comboboxProps={{ withinPortal: false }}
               data={["pending", "approved", "rejected"]}
               value={query}
               onChange={(value) => setQuery(value)}
             />
-            <Box className="flex justify-end gap-2 mt-4">
-              <Button
-                variant="default"
-                size="compact-sm"
-                onClick={handleSearch}
-              >
-                Apply
-              </Button>
-              <Button
-                variant="default"
-                size="compact-sm"
-                onClick={() => {
-                  setQuery(null);
-                  setStartDate(null);
-                  setEndDate(null);
-                  setSearchParams({
-                    ...searchParams,
-                    is_approved: undefined,
-                    start_time: undefined,
-                    end_time: undefined,
-                  });
-                }}
-              >
-                Clear
-              </Button>
-              <Button
-                variant="default"
-                size="compact-sm"
-                c="red"
-                onClick={() => setOpened(false)}
-              >
-                Close
-              </Button>
-            </Box>
-          </Popover.Dropdown>
-        </Popover>
-      </Box>
-      <Box>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button
+              variant="filled"
+              color="blue"
+              size="compact-sm"
+              onClick={handleSearch}
+            >
+              Apply
+            </Button>
+            <Button
+              variant="default"
+              size="compact-sm"
+              onClick={() => {
+                setQuery(null);
+                setStartDate(null);
+                setEndDate(null);
+                setSearchParams({
+                  ...searchParams,
+                  is_approved: undefined,
+                  start_time: undefined,
+                  end_time: undefined,
+                });
+              }}
+            >
+              Clear
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div>
         {data && Array.isArray(data?.data) && data?.data.length > 0 ? (
           <LeaveList data={data?.data ?? []} />
         ) : (
-          <Text ta="center">No data found</Text>
+          <p className="text-center">No data found</p>
         )}
-      </Box>
+      </div>
       <Modal opened={modalOpened} onClose={modalClose} withCloseButton={false}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Select
             label="Employee ID"
             placeholder="Select an employee"
+            variant="filled"
             leftSection={<IoPersonCircle />}
             data={employeeOptions}
             value={employeeId}
             onChange={(value) => {
-              console.log(value);
               if (value) setValue("employee_id", value);
             }}
             error={errors.employee_id?.message as React.ReactNode}
             searchable
             required
             className="mb-2"
+            autoFocus={false}
           />
           <Textarea
             {...register("purpose")}
@@ -266,6 +229,8 @@ const Leave = () => {
           />
           <DateTimePicker
             label="Start Date"
+            variant="filled"
+            leftSection={<CiCalendarDate />}
             {...register("leave_start_date")}
             value={watch("leave_start_date") ?? new Date()}
             onChange={(date) =>
@@ -277,6 +242,8 @@ const Leave = () => {
           />
           <DateTimePicker
             label="End Date"
+            variant="filled"
+            leftSection={<CiCalendarDate />}
             {...register("leave_end_date")}
             value={watch("leave_end_date") ?? new Date()}
             onChange={(date) => setValue("leave_end_date", date ?? new Date())}
@@ -285,7 +252,7 @@ const Leave = () => {
             className="mb-2"
           />
 
-          <Box className="flex justify-end gap-4">
+          <div className="flex justify-end gap-4">
             <Button
               type="submit"
               variant="filled"
@@ -303,10 +270,10 @@ const Leave = () => {
             >
               Cancel
             </Button>
-          </Box>
+          </div>
         </form>
       </Modal>
-    </Box>
+    </div>
   );
 };
 

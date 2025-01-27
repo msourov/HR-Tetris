@@ -2,14 +2,12 @@ import { useParams } from "react-router-dom";
 import { useGetCandidateDetailQuery } from "../../../features/api/recruitmentSlice";
 import {
   Badge,
-  Box,
   Button,
   Card,
   Divider,
   Grid,
   Loader,
   ScrollArea,
-  Text,
 } from "@mantine/core";
 import axios from "axios";
 
@@ -54,30 +52,28 @@ const CandidateDetail = () => {
   }
 
   if (error) {
-    <Text c="red">{`Something went wrong. ${error}`}</Text>;
+    <p className="text-red-500">{`Something went wrong. ${error}`}</p>;
   }
 
   return (
-    <Box>
+    <div>
       <Grid>
         <Grid.Col span={12}>
           <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Text fw={500} size="lg">
-              Profile
-            </Text>
+            <p className="text-lg font-medium">Profile</p>
             <Divider my="sm" />
-            <Text>Name: {candidateData?.name}</Text>
-            <Text>Email: {candidateData?.email}</Text>
-            <Text>Department: {candidateData?.department}</Text>
-            <Text>Application Date: {applicationDate}</Text>
-            <Text>
+            <p>Name: {candidateData?.name}</p>
+            <p>Email: {candidateData?.email}</p>
+            <p>Department: {candidateData?.department}</p>
+            <p>Application Date: {applicationDate}</p>
+            <p>
               State:{" "}
               <Badge
                 color={candidateData?.state === "pending" ? "yellow" : "green"}
               >
                 {candidateData?.state}
               </Badge>
-            </Text>
+            </p>
             <Button
               mt={32}
               maw={"160px"}
@@ -93,26 +89,24 @@ const CandidateDetail = () => {
 
         <Grid.Col span={12}>
           <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Text fw={500} size="lg">
-              Cover Letter
-            </Text>
+            <p className="text-lg font-medium">Cover Letter</p>
             <Divider my="sm" />
             <ScrollArea style={{ height: 300 }}>
-              <Text>{candidateData?.cover_letter}</Text>
+              <p>{candidateData?.cover_letter}</p>
             </ScrollArea>
           </Card>
         </Grid.Col>
       </Grid>
 
-      {/* <Box mt="md" className="flex justify-end">
+      {/* <div mt="md" className="flex justify-end">
         <Button variant="default" size="sm" mr="sm">
           Edit
         </Button>
         <Button variant="outline" size="sm" color="red">
           Delete
         </Button>
-      </Box> */}
-    </Box>
+      </div> */}
+    </div>
   );
 };
 

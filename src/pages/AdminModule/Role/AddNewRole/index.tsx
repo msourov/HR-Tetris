@@ -1,13 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Paper,
-  Button,
-  Checkbox,
-  Switch,
-  Text,
-  Box,
-  TextInput,
-} from "@mantine/core";
+import { Paper, Button, Checkbox, Switch, TextInput } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { randomId, useListState } from "@mantine/hooks";
@@ -199,7 +191,7 @@ const AddNewRole = () => {
   return (
     <Paper withBorder shadow="md" radius="md" p="md">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Text c="dimmed">Role Name</Text>
+        <p className="text-gray-500">Role Name</p>
         <TextInput
           // label="Role Name"
           placeholder="Enter role name"
@@ -207,12 +199,10 @@ const AddNewRole = () => {
           {...register("name")}
           error={errors.name?.message}
         />
-        <Text c="dimmed">Select Accesses</Text>
+        <p className="text-gray-500">Select Accesses</p>
         {items}
-        <Text c="dimmed" className="mt-6 mb-2">
-          Set Status
-        </Text>
-        <Box className="max-w-20">
+        <p className="mt-6 mb-2 text-gray-500">Set Status</p>
+        <div className="max-w-20">
           <Switch
             size="lg"
             onLabel="Disable"
@@ -220,7 +210,7 @@ const AddNewRole = () => {
             color="black"
             {...register("status")}
           />
-        </Box>
+        </div>
 
         <Button type="submit" className="rounded-lg mt-6" bg="orange">
           Create

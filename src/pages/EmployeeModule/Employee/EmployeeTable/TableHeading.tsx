@@ -8,8 +8,8 @@ const TableHeading = () => {
           Serial
         </Table.Th>
         <Table.Th style={{ width: "15%" }}>Name</Table.Th>
-        <Table.Th style={{ width: "5%" }}>ID</Table.Th>
-        <Table.Th style={{ width: "10%" }}>Phone Number</Table.Th>
+        <Table.Th style={{ width: "5%" }}>EID</Table.Th>
+        <Table.Th style={{ width: "10%" }}>Phone</Table.Th>
         <Table.Th style={{ width: "15%" }}>Email</Table.Th>
         <Table.Th style={{ width: "8%" }}>Shift</Table.Th>
         <Table.Th style={{ width: "7%" }}>Department</Table.Th>

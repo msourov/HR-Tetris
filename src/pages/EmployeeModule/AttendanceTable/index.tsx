@@ -1,4 +1,4 @@
-import { Box, Pagination, Table } from "@mantine/core";
+import { Pagination, Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
 import { useGetAllAttendanceQuery } from "../../../features/api/attendanceSlice";
@@ -8,7 +8,7 @@ const EmplyeeTable = () => {
   const { data: attendance, isLoading, error } = useGetAllAttendanceQuery();
 
   return (
-    <Box>
+    <div>
       {/* <AppPageHeader
         Heading="Employee"
         Breadcrumb={{ module: "Employee Management", page: "List" }}
@@ -21,10 +21,10 @@ const EmplyeeTable = () => {
           error={error}
         />
       </Table>
-      <Box className="px-4 pt-8 pb-4 float-right">
+      <div className="px-4 pt-8 pb-4 float-right">
         <Pagination total={4} color="rgb(33, 41, 34)" />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

@@ -1,10 +1,8 @@
 import {
-  Box,
   Loader,
   Popover,
   Select,
   Button,
-  Text,
   Modal,
   Textarea,
 } from "@mantine/core";
@@ -136,8 +134,8 @@ const Overtime = () => {
   console.log(errors);
 
   return (
-    <Box className="w-[85%] mx-auto rounded-lg px-4">
-      <Box className="flex justify-end gap-6 items-center mt-6 mb-2 mr-4">
+    <div className="w-[85%] mx-auto rounded-lg px-4">
+      <div className="flex justify-end gap-6 items-center mt-6 mb-2 mr-4">
         <Button
           variant="filled"
           color="orange"
@@ -195,7 +193,7 @@ const Overtime = () => {
               value={query}
               onChange={(value) => setQuery(value)}
             />
-            <Box className="flex justify-end gap-2 mt-4">
+            <div className="flex justify-end gap-2 mt-4">
               <Button
                 variant="default"
                 size="compact-sm"
@@ -228,18 +226,18 @@ const Overtime = () => {
               >
                 Close
               </Button>
-            </Box>
+            </div>
           </Popover.Dropdown>
         </Popover>
-      </Box>
-      <Box>
+      </div>
+      <div>
         {data && Array.isArray(data?.data) && data?.data.length > 0 ? (
           <OvertimeList data={data?.data ?? []} />
         ) : (
           // <OvertimeTable />
-          <Text ta="center">No data found</Text>
+          <p className="text-center">No data found</p>
         )}
-      </Box>
+      </div>
       <Modal opened={modalOpened} onClose={modalClose} withCloseButton={false}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Select
@@ -290,7 +288,7 @@ const Overtime = () => {
             required
           />
 
-          <Box className="flex justify-end gap-4">
+          <div className="flex justify-end gap-4">
             <Button type="submit" variant="filled" color="blue" mt="md">
               Submit
             </Button>
@@ -302,10 +300,10 @@ const Overtime = () => {
             >
               Cancel
             </Button>
-          </Box>
+          </div>
         </form>
       </Modal>
-    </Box>
+    </div>
   );
 };
 

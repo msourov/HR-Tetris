@@ -1,4 +1,4 @@
-import { Box, Button, Loader, Menu, Modal, Text } from "@mantine/core";
+import { Button, Loader, Menu, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CiEdit } from "react-icons/ci";
@@ -57,7 +57,7 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
   //   return <div>Error</div>;
   // }
   return (
-    <Box>
+    <div>
       <Menu transitionProps={{ transition: "rotate-right", duration: 150 }}>
         <Menu.Target>
           <button>
@@ -86,7 +86,7 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
           </Menu.Item>
           {/* {popoverOpen && (
             <Popover.Dropdown>
-              <Box>
+              <div>
                 <Text>Are you sure you want to delete?</Text>
                 <Button color="red" onClick={() => console.log("Deleted")}>
                   Confirm
@@ -94,23 +94,23 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
                 <Button color="gray" onClick={() => setPopoverOpen(false)}>
                   Cancel
                 </Button>
-              </Box>
+              </div>
             </Popover.Dropdown>
           )} */}
         </Menu.Dropdown>
       </Menu>
       <Modal opened={opened} onClose={close} centered className="text-center">
-        <Text>Are you sure you want to delete?</Text>
-        <Box className="flex gap-2 justify-center mt-4">
+        <p>Are you sure you want to delete?</p>
+        <div className="flex gap-2 justify-center mt-4">
           <Button color="red" onClick={DeleteUser}>
             Confirm
           </Button>
           <Button color="gray" onClick={close}>
             Cancel
           </Button>
-        </Box>
+        </div>
       </Modal>
-    </Box>
+    </div>
   );
 };
 

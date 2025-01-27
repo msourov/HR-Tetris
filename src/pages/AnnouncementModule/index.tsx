@@ -1,4 +1,4 @@
-import { Box, rem, Tabs } from "@mantine/core";
+import { rem, Tabs } from "@mantine/core";
 import { IconList, IconSettings } from "@tabler/icons-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -27,7 +27,7 @@ const AnnouncementLayout = () => {
 
   const iconStyle = { width: rem(12), height: rem(12) };
   return (
-    <Box className="w-[95%] my-8 mx-auto bg-white rounded-lg drop-shadow-lg py-6 px-10">
+    <div className="w-[95%] my-8 mx-auto bg-white rounded-lg drop-shadow-lg py-6 px-10">
       <Tabs radius="xs" value={activeTab} onChange={handleTabChange}>
         <Tabs.List>
           <Tabs.Tab value="list" leftSection={<IconList style={iconStyle} />}>
@@ -47,7 +47,7 @@ const AnnouncementLayout = () => {
           <Outlet />
         </Tabs.Panel>
       </Tabs>
-    </Box>
+    </div>
   );
 };
 

@@ -1,16 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useGetEmployeeDetailQuery } from "../../../../features/api/employeeSlice";
-import {
-  Text,
-  Title,
-  Badge,
-  Avatar,
-  Stepper,
-  Group,
-  Loader,
-  Tabs,
-  Box,
-} from "@mantine/core";
+import { Badge, Avatar, Stepper, Group, Loader, Tabs } from "@mantine/core";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { BsFillPersonVcardFill } from "react-icons/bs";
@@ -33,8 +23,8 @@ const EmployeeDetail = () => {
     .map((log, index) => (
       <Stepper.Step
         key={index}
-        label={<Text size="sm">{log?.admin ?? "N/A"}</Text>}
-        description={<Text size="xs">{log?.message ?? "N/A"}</Text>}
+        label={<p className="text-sm">{log?.admin ?? "N/A"}</p>}
+        description={<p className="text-xs">{log?.message ?? "N/A"}</p>}
       >
         {/* <Text size="xs" color="dimmed">
           <Text fw="bold">
@@ -62,8 +52,8 @@ const EmployeeDetail = () => {
   }
 
   return (
-    <Box className="p-6 bg-gray-50 min-h-[70vh]">
-      <Box>
+    <div className="p-6 bg-gray-50 min-h-[70vh]">
+      <div>
         <Group align="flex-start">
           <Avatar
             size={120}
@@ -71,13 +61,13 @@ const EmployeeDetail = () => {
             src={`https://avatar.iran.liara.run/public`}
           />
           <div className="self-center">
-            <Title order={3} c="dimmed">
+            <p className="text-lg text-gray-500">
               {employee?.data.personal.name}
-            </Title>
-            <Text color="dimmed" size="sm">
+            </p>
+            <p className="text-sm text-gray-500">
               {employee?.data.work.designation.name} -{" "}
               {employee?.data.work.department.name}
-            </Text>
+            </p>
             <Badge
               color={employee?.data.personal.active ? "green" : "red"}
               variant="light"
@@ -86,8 +76,8 @@ const EmployeeDetail = () => {
             </Badge>
           </div>
         </Group>
-      </Box>
-      <Box className="flex justify-between mt-4">
+      </div>
+      <div className="flex justify-between mt-4">
         <Tabs
           color="blue"
           variant="default"
@@ -107,175 +97,127 @@ const EmployeeDetail = () => {
               <RiArchive2Line color="#7CB9E8" size={20} />
             </Tabs.Tab>
           </Tabs.List>
-          <Box className="px-4 border pb-6 bg-gray-100 h-[320px]">
+          <div className="px-4 border pb-6 bg-gray-100 h-[320px]">
             <Tabs.Panel value="personal">
-              <Text
-                size="xl"
-                ta="center"
-                className="border-b-2 mt-4 mb-6 font-semibold"
-              >
+              <p className="text-xl text-center border-b-2 mt-4 mb-6 font-semibold">
                 Personal Information
-              </Text>
-              <Box>
-                <Box>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Phone:
-                    </Text>
+              </p>
+              <div>
+                <div>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Phone:</span>
                     +88{employee?.data.personal.phone}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Email:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Email:</span>
                     {employee?.data.personal.email}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Date of birth:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Date of birth:</span>
                     {employee?.data.personal.bod
                       ? new Date(
                           employee.data.personal.bod
                         ).toLocaleDateString()
                       : "N/A"}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Marital Status:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Marital Status:</span>
                     {employee?.data.personal.marital_status}
-                  </Text>
-                </Box>
-                <Box>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Address:
-                    </Text>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Address:</span>
                     {employee?.data.personal.address}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Spouse Name:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Spouse Name:</span>
                     {employee?.data.personal.spouse_name || "N/A"}
-                  </Text>
-                </Box>
-              </Box>
+                  </p>
+                </div>
+              </div>
             </Tabs.Panel>
 
             <Tabs.Panel value="work">
-              <Text
-                size="xl"
-                ta="center"
-                className="border-b-2 mt-4 mb-6 font-semibold"
-              >
+              <p className="text-xl text-center border-b-2 mt-4 mb-6 font-semibold">
                 Work Information
-              </Text>
-              <Box>
-                <Box>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Employee ID:
-                    </Text>
+              </p>
+              <div>
+                <div>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Employee ID:</span>
                     {employee?.data.work.employee_id}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Company:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Company:</span>
                     {employee?.data.work.company?.name}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Joining Date:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Joining Date:</span>
                     {employee?.data.work.joining_date
                       ? new Date(
                           employee.data.work.joining_date
                         ).toLocaleDateString()
                       : "N/A"}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Salary:
-                    </Text>
-                    ${employee?.data.work.salary?.toFixed(2) ?? "N/A"}
-                  </Text>
-                </Box>
-                <Box>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Work Location:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Salary:</span>$
+                    {employee?.data.work.salary?.toFixed(2) ?? "N/A"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Work Location:</span>
                     {employee?.data.work.work_location}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Work Email:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Work Email:</span>
                     {employee?.data.work.work_email}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Shift & Schedule:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Shift & Schedule:</span>
                     {employee?.data.work.shift_and_schedule.name}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Is Supervisor:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Is Supervisor:</span>
                     {employee?.data.work.supervisor ? "Yes" : "No"}
-                  </Text>
-                </Box>
-              </Box>
+                  </p>
+                </div>
+              </div>
             </Tabs.Panel>
             <Tabs.Panel value="others">
-              <Text
-                size="xl"
-                ta="center"
-                className="border-b-2 mt-4 mb-6 font-semibold"
-              >
+              <p className="text-xl text-center border-b-2 mt-4 mb-6 font-semibold">
                 Emergency Contact
-              </Text>
-              <Box>
-                <Box>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Contact Name:
-                    </Text>
+              </p>
+              <div>
+                <div>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Contact Name:</span>
                     {employee?.data.emergency_contact.name}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Contact Relationship:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Contact Relationship:</span>
                     {employee?.data.emergency_contact.relationship}
-                  </Text>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Contact Phone:
-                    </Text>
+                  </p>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Contact Phone:</span>
                     {employee?.data.emergency_contact.phone}
-                  </Text>
-                </Box>
-                <Box>
-                  <Text className="text-md flex justify-between">
-                    <Text span c="dimmed">
-                      Contact Address:
-                    </Text>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-md flex justify-between">
+                    <span className="text-gray-500">Contact Address:</span>
                     {employee?.data.emergency_contact.address}
-                  </Text>
-                </Box>
-              </Box>
+                  </p>
+                </div>
+              </div>
             </Tabs.Panel>
-          </Box>
+          </div>
         </Tabs>
-        <Box p="lg" className="bg-blue-50 border">
-          <Title order={4} mb="md" ta="center" c="blue">
+        <div className="p-6 bg-blue-50 border">
+          <p className="text-center text-blue-600 text-lg font-semibold mb-4">
             Activity Logs
-          </Title>
+          </p>
           {logsSteps.length ? (
             <Stepper
               color="blue"
@@ -291,13 +233,13 @@ const EmployeeDetail = () => {
               {logsSteps}
             </Stepper>
           ) : (
-            <Text color="dimmed" size="sm" ta="center">
+            <p className="text-center text-gray-500 text-sm">
               No activity logs available.
-            </Text>
+            </p>
           )}
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   );
 };
 

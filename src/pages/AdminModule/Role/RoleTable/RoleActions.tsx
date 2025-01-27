@@ -1,4 +1,4 @@
-import { Box, Button, Loader, Menu, Modal, Text } from "@mantine/core";
+import { Button, Loader, Menu, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CiEdit } from "react-icons/ci";
@@ -56,7 +56,7 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
   }
 
   return (
-    <Box>
+    <div>
       <Menu transitionProps={{ transition: "rotate-right", duration: 150 }}>
         <Menu.Target>
           <button disabled={disabled}>
@@ -95,17 +95,17 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
         centered
         className="text-center"
       >
-        <Text>Are you sure you want to delete?</Text>
-        <Box className="flex gap-2 justify-center mt-4">
+        <p>Are you sure you want to delete?</p>
+        <div className="flex gap-2 justify-center mt-4">
           <Button color="red" onClick={DeleteRole}>
             Confirm
           </Button>
           <Button color="gray" onClick={closeDelete}>
             Cancel
           </Button>
-        </Box>
+        </div>
       </Modal>
-    </Box>
+    </div>
   );
 };
 
