@@ -1,5 +1,5 @@
-import { Box, Pagination, Table } from "@mantine/core";
-import { useGetEmployeesQuery } from "../../../features/api/employeeSlice";
+import { Pagination, Table } from "@mantine/core";
+import { useGetEmployeesQuery } from "../../../../features/api/employeeSlice";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
 
@@ -10,12 +10,12 @@ const EmplyeeTable = () => {
     error,
   } = useGetEmployeesQuery({
     page: 1,
-    limit: 10,
+    limit: 12,
   });
 
   return (
-    <Box>
-      <Table>
+    <div>
+      <Table verticalSpacing="sm">
         <TableHeading />
         <TableItem
           data={employees?.data || []}
@@ -23,10 +23,10 @@ const EmplyeeTable = () => {
           error={error}
         />
       </Table>
-      <Box className="px-4 pt-8 pb-4 float-right">
+      <div className="px-4 pt-8 pb-4 float-right">
         <Pagination total={4} color="rgb(33, 41, 34)" />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

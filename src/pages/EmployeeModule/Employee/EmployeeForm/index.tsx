@@ -24,12 +24,12 @@ import {
   useCreateEmployeeMutation,
   useEditEmployeeMutation,
   useGetEmployeeDetailQuery,
-} from "../../../features/api/employeeSlice";
-import useOptions from "../../../services/utils/getOptions";
+} from "../../../../features/api/employeeSlice";
+import useOptions from "../../../../services/utils/getOptions";
 import {
   EmployeeAccess,
   UnifiedEmployeePayload,
-} from "../../../features/types/employee";
+} from "../../../../features/types/employee";
 import Tab1Fields from "../AddEmployee/Tab1Fields";
 import Tab2Fields from "../AddEmployee/Tab2Fields";
 
@@ -50,9 +50,10 @@ const getSchema = (type: string) =>
         ? z.string().min(6, "Password must be at least 6 characters long")
         : z.string().optional(),
     joining_date: z.string(),
-    employee_id: z
-      .string()
-      .min(6, "Employee ID must be at least 6 characters long"),
+    employee_id:
+      type === "add"
+        ? z.string().min(6, "Employee ID must be at least 6 characters long")
+        : z.string().optional(),
     department: z.string().min(1, "Department is required"),
     designation: z.string().min(1, "Designation is required"),
     shift_and_schedule: z.string().min(1, "Shift and schedule is required"),
@@ -195,7 +196,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         name: editFormData?.personal?.name || "",
         phone: editFormData?.personal?.phone || "",
         email: editFormData?.personal?.email || "",
-        password: '',
         bod: editFormData?.personal?.bod
           ? parseDate(editFormData.personal.bod)
           : new Date().toISOString(),
@@ -207,7 +207,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         joining_date: editFormData?.work?.joining_date
           ? new Date(editFormData.work.joining_date).toISOString()
           : new Date().toISOString(),
-        employee_id: editFormData?.work?.employee_id || "",
         salary: editFormData?.work?.salary || 0,
         department: editFormData?.work?.department?.uid || "",
         designation: editFormData?.work?.designation?.uid || "",

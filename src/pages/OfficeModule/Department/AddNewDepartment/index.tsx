@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Loader, Paper, Switch, TextInput } from "@mantine/core";
+import { Button, Loader, Paper, Switch, TextInput } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAddDepartmentMutation } from "../../../../features/api/departmentSlice";
@@ -62,7 +62,7 @@ const AddNewDepartment: React.FC<AddNewDepartmentProps> = ({ toggleModal }) => {
             {...register("name")}
             error={errors.name?.message as React.ReactNode}
           />
-          <Box className="max-w-20 mt-4">
+          <div className="max-w-20 mt-4">
             <Switch
               size="lg"
               onLabel="Disable"
@@ -71,7 +71,7 @@ const AddNewDepartment: React.FC<AddNewDepartmentProps> = ({ toggleModal }) => {
               checked={activeStatus}
               {...register("active")}
             />
-          </Box>
+          </div>
 
           <Button
             type="submit"

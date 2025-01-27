@@ -1,12 +1,10 @@
 import {
-  Box,
   Button,
   Card,
   Loader,
   Modal,
   Pill,
   SimpleGrid,
-  Text,
   Textarea,
 } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -20,6 +18,7 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { Response, Announcement } from "../../../features/api/typesOld";
+import AppApprovalStatus from "../../../components/core/AppApprovalStatus";
 
 const AnnouncementList = () => {
   const [value, setValue] = useState("");
@@ -116,7 +115,7 @@ const AnnouncementList = () => {
   };
 
   return (
-    <Box className="mt-6">
+    <div className="mt-6">
       <SimpleGrid
         cols={{ sm: 2, md: 2, xl: 3 }}
         spacing={{ base: 10, sm: "xl" }}
@@ -134,52 +133,29 @@ const AnnouncementList = () => {
               open();
             }}
           >
-            <Box className="flex justify-between">
-              <Text fw={500} size="md" className="truncate">
+            <div className="flex justify-between">
+              <p className="font-medium text-lg truncate">
                 {selectedAnnouncement?.name}
-              </Text>
-              <Text component="span" className="text-right">
-                <Pill
-                  size="sm"
-                  c={
-                    selectedAnnouncement?.is_approve === "pending"
-                      ? "yellow"
-                      : "green"
-                  }
-                  className={
-                    selectedAnnouncement?.is_approve === "pending"
-                      ? "bg-yellow-100"
-                      : "bg-green-200"
-                  }
-                >
-                  {`${
-                    selectedAnnouncement?.is_approve === "pending"
-                      ? "Pending Approval"
-                      : "Approved"
-                  }`}
-                </Pill>
-              </Text>
-            </Box>
+              </p>
+              <p className="text-right">
+                <AppApprovalStatus status={selectedAnnouncement?.is_approve} />
+              </p>
+            </div>
 
-            <Text
-              fw={500}
-              size="sm"
-              c="dimmed"
-              className="text-left my-2"
-              lineClamp={3}
-            >
+            <p className="font-medium text-sm text-gray-500 my-2 text-left line-clamp-3">
               {selectedAnnouncement?.descriptions}
-            </Text>
-            <Box className="flex justify-between">
-              <Text component="span" className="text-left text-sm">
+            </p>
+
+            <div className="flex justify-between">
+              <p className="text-left text-sm">
                 Created By {selectedAnnouncement?.creator_name}
-              </Text>
-              <Text component="span" className="text-left">
-                <Pill size="sm" c="dimmed">
+              </p>
+              <p className="text-left">
+                <Pill size="sm" className="text-gray-500">
                   {selectedAnnouncement?.department_name}
                 </Pill>
-              </Text>
-            </Box>
+              </p>
+            </div>
           </Card>
         ))}
       </SimpleGrid>
@@ -196,30 +172,23 @@ const AnnouncementList = () => {
           //   scrollAreaComponent={ScrollArea.Autosize}
         >
           <Card>
-            <Text
-              fw={500}
-              size="xl"
-              className="text-center mb-4 text-[#212922]"
-            >
+            <p className="font-medium text-xl text-center mb-4 text-[#212922]">
               {selectedAnnouncement?.name}
-            </Text>
+            </p>
 
-            <Text
-              fw={500}
-              size="md"
-              c="dimmed"
-              className="text-left mb-6 border px-2 py-4 text-[#212922]"
-            >
+            <p className="font-medium text-md text-gray-500 text-left mb-6 border px-2 py-4 text-[#212922]">
               {selectedAnnouncement?.descriptions}
-            </Text>
-            <Text component="span" className="text-left text-sm">
+            </p>
+
+            <p className="text-left text-sm">
               Created By {selectedAnnouncement?.creator_name}
-            </Text>
-            <Text>
-              <Pill size="md" c="dimmed" my={10}>
+            </p>
+
+            <p>
+              <Pill size="md" className="text-gray-500 my-10">
                 {selectedAnnouncement?.department_name}
               </Pill>
-            </Text>
+            </p>
           </Card>
           {selectedAnnouncement?.is_approve === "pending" && (
             <Textarea
@@ -234,7 +203,7 @@ const AnnouncementList = () => {
             />
           )}
           {selectedAnnouncement?.is_approve === "pending" ? (
-            <Box className="flex justify-end gap-4">
+            <div className="flex justify-end gap-4">
               <Button
                 variant="filled"
                 bg="blue"
@@ -253,17 +222,17 @@ const AnnouncementList = () => {
               >
                 Reject
               </Button>
-            </Box>
+            </div>
           ) : (
-            <Box className="flex justify-end gap-4">
+            <div className="flex justify-end gap-4">
               <Pill className="bg-green-300 text-green-900 font-bold">
                 Approved
               </Pill>
-            </Box>
+            </div>
           )}
         </Modal>
       )}
-    </Box>
+    </div>
   );
 };
 

@@ -74,7 +74,7 @@ export const employeeApi = createApi({
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: "Employee", id }],
     }),
-    getEmplyeeHelper: builder.query<EmployeeHelperResponse, void>({
+    getEmployeeHelper: builder.query<EmployeeHelperResponse, void>({
       query: () => ({
         url: "employee/helper",
         method: "GET",
@@ -89,5 +89,5 @@ export const {
   useCreateEmployeeMutation,
   useEditEmployeeMutation,
   useDeleteEmployeeMutation,
-  useGetEmplyeeHelperQuery,
+  useGetEmployeeHelperQuery,
 } = employeeApi;

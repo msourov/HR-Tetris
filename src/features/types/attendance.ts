@@ -1,6 +1,6 @@
 import { getDataResponse } from "./shared";
 
-export interface AttendanceLog {
+export interface Attendance {
   id: number;
   uid: string;
   employee_id: string;
@@ -9,12 +9,10 @@ export interface AttendanceLog {
   ip_address: string | null;
   mac_address: string | null;
   logs: string | null;
-  create_at: string; // ISO date string
-  update_at: string | null; // ISO date string or null
-  attended_date: string; // ISO date string
-  end_attendent_time: string | null; // ISO date string or null
+  create_at: string;
+  update_at: string | null;
+  attended_date: string;
+  end_attendent_time: string | null;
 }
 
-export type AttendanceResponse = getDataResponse<
-  AttendanceLog | AttendanceLog[]
->;
+export type AttendanceResponse = getDataResponse<Attendance[]>;

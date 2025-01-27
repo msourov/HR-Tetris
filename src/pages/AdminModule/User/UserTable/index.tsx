@@ -1,4 +1,4 @@
-import { Box, Table } from "@mantine/core";
+import { Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
 import { User } from "../../../../features/api/typesOld";
@@ -19,12 +19,12 @@ const UserTable = () => {
     }
   }
   return (
-    <Box>
+    <div>
       <Table>
         <TableHeading />
         <TableItem data={users} isLoading={isLoading} error={error} />
       </Table>
-    </Box>
+    </div>
   );
 };
 

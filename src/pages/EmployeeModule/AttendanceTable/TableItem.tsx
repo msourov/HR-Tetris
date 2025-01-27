@@ -1,19 +1,12 @@
-import { Table } from "@mantine/core";
+import { Pill, Table } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import ErrorAlert from "../../../components/shared/ErrorAlert";
 import CommonSkeleton from "../../../components/shared/CommonSkeleton";
-
-interface AttendanceLog {
-  id: number;
-  employee_id: string;
-  is_attend: boolean;
-  attended_date: string;
-  is_home_office: boolean | null;
-}
+import { Attendance } from "../../../features/types/attendance";
 
 interface TableItemProps {
-  data: AttendanceLog[];
+  data: Attendance[];
   isLoading: boolean;
   error?:
     | {
@@ -33,9 +26,9 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   }
 
   return (
-    <Table.Tbody className="text-gray-600 font-semibold">
+    <Table.Tbody className="text-black font-medium border-b bg-gray-100">
       {data.map((item, index) => (
-        <Table.Tr key={item.id}>
+        <Table.Tr key={item.uid} className="hover:bg-white">
           <Table.Td
             className="w-[2%] pl-[2rem]"
             // style={{ width: "2%", padding: "12px", paddingLeft: "32px" }}
@@ -46,7 +39,11 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
             {item.employee_id}
           </Table.Td>
           <Table.Td style={{ width: "10%", padding: "12px" }}>
-            {item.is_attend ? "Present" : "Absent"}
+            {item.is_attend ? (
+              <Pill className="bg-green-600 text-white">Present</Pill>
+            ) : (
+              <Pill className="bg-red-600 text-white">Absent</Pill>
+            )}
           </Table.Td>
           <Table.Td style={{ width: "10%", padding: "12px" }}>
             {new Date(item.attended_date).toLocaleDateString()}

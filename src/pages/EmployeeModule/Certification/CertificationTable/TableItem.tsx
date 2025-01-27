@@ -7,6 +7,7 @@ import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import { useDisclosure } from "@mantine/hooks";
 import CertificationDetail from "../CertificationDetail";
 import { useState } from "react";
+import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
 
 interface TableItemProps {
   data: Certification[];
@@ -25,45 +26,33 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   const [currentUid, setCurrentUid] = useState<string>("");
 
   if (isLoading) {
-    return <CommonSkeleton cols={9} rows={5} />;
+    return <CommonSkeleton cols={6} rows={5} />;
   }
 
   if (error) {
     return <ErrorAlert message="Error fetching certifications" />;
   }
 
-  const getStatusStyle = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "approved":
-        return "text-green-500 font-bold"; // Approved styling
-      case "rejected":
-        return "text-red-500 font-bold"; // Rejected styling
-      case "pending":
-      default:
-        return "text-yellow-500 font-bold"; // Pending styling
-    }
-  };
-
   return (
     <>
-      <Table.Tbody className="text-black font-medium  px-4">
+      <Table.Tbody className="text-black font-medium px-4 bg-gray-100 border">
         {data.map((item, index) => (
           <Table.Tr
             key={item.uid}
-            className="cursor-pointer hover:bg-gray-100"
+            className="cursor-pointer hover:bg-white"
             onClick={() => {
-              setCurrentUid(item.uid);
               open();
+              setCurrentUid(item.uid);
             }}
           >
             <Table.Td style={{ width: "5%" }}>{index + 1}</Table.Td>
-            <Table.Td style={{ width: "15%" }}>
+            <Table.Td style={{ width: "20%" }}>
               {item.employee_name || "N/A"}
             </Table.Td>
             <Table.Td style={{ width: "20%" }}>
               {item.certification_type || "N/A"}
             </Table.Td>
-            <Table.Td style={{ width: "30%" }}>
+            <Table.Td style={{ width: "25%" }}>
               {item.purpose || "N/A"}
             </Table.Td>
             <Table.Td
@@ -79,15 +68,13 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
               </Pill>
             </Table.Td>
             <Table.Td style={{ width: "8%" }}>
-              <span className={getStatusStyle(item.is_approved || "pending")}>
-                {item.is_approved.toUpperCase()}
-              </span>
+              <AppApprovalStatus status={item.is_approved} />
             </Table.Td>
           </Table.Tr>
         ))}
       </Table.Tbody>
       <Modal opened={opened} onClose={close} size="auto">
-        <CertificationDetail uid={currentUid} />
+        <CertificationDetail uid={currentUid} closeModal={close} />
       </Modal>
     </>
   );

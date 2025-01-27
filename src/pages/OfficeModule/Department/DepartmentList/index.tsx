@@ -1,4 +1,4 @@
-import { Box, Card, Loader, Pill, SimpleGrid, Text } from "@mantine/core";
+import { Card, Loader, Pill, SimpleGrid } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useGetDepartmentsQuery } from "../../../../features/api/departmentSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -27,7 +27,7 @@ const DepartmentList = () => {
   }
 
   return (
-    <Box className="mt-6">
+    <div className="mt-6">
       <SimpleGrid
         cols={{ sm: 3, md: 5, xl: 6 }}
         spacing={{ base: 10, sm: "xl" }}
@@ -41,11 +41,9 @@ const DepartmentList = () => {
             className="text-center flex-auto max-w-full overflow-hidden py-6 gap-2 cursor-pointer"
             onClick={() => navigate(`${item?.name}/detail`)}
           >
-            <Text fw={500} size="md" className="truncate">
-              {item?.name}
-            </Text>
+            <p className="font-medium text-md truncate">{item?.name}</p>
             {/* <Card.Section className="flex py-4 px-2 justify-end"> */}
-            <Text component="span">
+            <span>
               <Pill
                 size="sm"
                 c="dimmed"
@@ -53,11 +51,11 @@ const DepartmentList = () => {
               >
                 {`${item?.active ? "Active" : "Inactive"}`}
               </Pill>
-            </Text>
+            </span>
           </Card>
         ))}
       </SimpleGrid>
-    </Box>
+    </div>
   );
 };
 

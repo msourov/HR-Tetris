@@ -1,4 +1,4 @@
-import { Button, Box, Text, Title, Paper, Container } from "@mantine/core";
+import { Button, Title, Paper, Container } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { IconArrowLeft } from "@tabler/icons-react";
 
@@ -12,14 +12,13 @@ export default function ErrorPage() {
   return (
     <Container size="xs" px="xs" my="xl">
       <Paper shadow="xl" p="xl" radius="md">
-        <Box>
+        <div>
           <Title order={1} c="red" mb="md">
             Oops!
           </Title>
-          <Text color="dimmed" size="lg" mb="lg">
-            Sorry, Page not found!
-          </Text>
-          {/* <Box mb="md">
+          <p className="text-gray-500 text-lg mb-6">Sorry, Page not found!</p>
+
+          {/* <div mb="md">
             <Text size="sm" color="gray">
               <i>{error.statusText || "Unknown Error"}</i>
             </Text>
@@ -28,7 +27,7 @@ export default function ErrorPage() {
                 <i>{error.data}</i>
               </Text>
             )}
-          </Box> */}
+          </div> */}
           <Button
             leftSection={<IconArrowLeft size={16} />}
             variant="outline"
@@ -37,7 +36,7 @@ export default function ErrorPage() {
           >
             Go Back
           </Button>
-        </Box>
+        </div>
       </Paper>
     </Container>
   );

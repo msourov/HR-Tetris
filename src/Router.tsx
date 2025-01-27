@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { Suspense } from "react";
 import { Loader } from "@mantine/core";
 import {
+  AddCertification,
   AddEmployee,
   AddNewRole,
   AddNewUser,
@@ -54,6 +55,8 @@ import {
   UserTable,
 } from "./lazyComponents";
 import ProtectedRoute from "./services/auth/ProtectedRoutes";
+import Settings from "./pages/MyAccountModule/Settings";
+import Profile from "./pages/MyAccountModule/Profile";
 
 const loader = (
   <div className="flex justify-center items-center">
@@ -80,6 +83,22 @@ export const router = createBrowserRouter([
             element: (
               <Suspense fallback={loader}>
                 <Dashboard />
+              </Suspense>
+            ),
+          },
+          {
+            path: "profile",
+            element: (
+              <Suspense fallback={loader}>
+                <Profile />
+              </Suspense>
+            ),
+          },
+          {
+            path: "settings",
+            element: (
+              <Suspense fallback={loader}>
+                <Settings />
               </Suspense>
             ),
           },
@@ -371,7 +390,15 @@ export const router = createBrowserRouter([
                 path: ":id",
                 element: (
                   <Suspense fallback={loader}>
-                    <CertificationDetail />
+                    <CertificationDetail uid="some-uid" closeModal={() => {}} />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "add-certification",
+                element: (
+                  <Suspense fallback={loader}>
+                    <AddCertification />
                   </Suspense>
                 ),
               },

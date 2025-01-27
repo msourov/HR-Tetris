@@ -1,4 +1,4 @@
-import { Card, Avatar, Group, Text, Grid } from "@mantine/core";
+import { Card, Avatar, Group, Grid } from "@mantine/core";
 import { useParams } from "react-router-dom";
 
 const users = [
@@ -32,9 +32,10 @@ const DepartmentDetail = () => {
   const { departmentName } = useParams();
   return (
     <div>
-      <Text ta="center" size="xl" fw={700} mb="lg">
+      <p className="text-center text-xl font-bold mb-6">
         {`${departmentName} Department`}
-      </Text>
+      </p>
+
       <Grid>
         {users.map((user) => (
           <Grid.Col key={user.id} span={{ base: 6, md: 4 }}>
@@ -44,15 +45,9 @@ const DepartmentDetail = () => {
                   {user.name.charAt(0)}
                 </Avatar>
                 <div>
-                  <Text size="sm" fw={500}>
-                    {user.name}
-                  </Text>
-                  <Text color="dimmed" size="xs">
-                    {user.email}
-                  </Text>
-                  <Text color="dimmed" size="xs">
-                    {user.role}
-                  </Text>
+                  <p className="text-sm font-medium">{user.name}</p>
+                  <p className="text-xs text-gray-500">{user.email}</p>
+                  <p className="text-xs text-gray-500">{user.role}</p>
                 </div>
               </Group>
             </Card>

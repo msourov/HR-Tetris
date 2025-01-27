@@ -8,7 +8,7 @@ const TableHeading = () => {
           Serial
         </Table.Th>
         <Table.Th style={{ width: "10%" }}>Employee ID</Table.Th>
-        <Table.Th style={{ width: "10%" }}>Attendance Status</Table.Th>{" "}
+        <Table.Th style={{ width: "10%" }}>Attendance</Table.Th>{" "}
         <Table.Th style={{ width: "10%" }}>Date Attended</Table.Th>{" "}
         <Table.Th style={{ width: "25%", paddingRight: "32px" }}>
           Home Office Status

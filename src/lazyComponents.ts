@@ -77,16 +77,16 @@ export const EditShift = lazy(
 export const HolidayLayout = lazy(() => import("./pages/OfficeModule/Holiday"));
 export const EmployeeLayout = lazy(() => import("./pages/EmployeeModule"));
 export const EmplyeeTable = lazy(
-  () => import("./pages/EmployeeModule/EmployeeTable")
+  () => import("./pages/EmployeeModule/Employee/EmployeeTable")
 );
 export const AddEmployee = lazy(
-  () => import("./pages/EmployeeModule/AddEmployee")
+  () => import("./pages/EmployeeModule/Employee/AddEmployee")
 );
 export const EditEmployee = lazy(
-  () => import("./pages/EmployeeModule/EditEmployee")
+  () => import("./pages/EmployeeModule/Employee/EditEmployee")
 );
 export const EmployeeDetail = lazy(
-  () => import("./pages/EmployeeModule/EmplyeeDetail")
+  () => import("./pages/EmployeeModule/Employee/EmplyeeDetail")
 );
 
 export const AttendanceTable = lazy(

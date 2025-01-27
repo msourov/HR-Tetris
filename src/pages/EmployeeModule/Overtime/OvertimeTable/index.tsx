@@ -1,4 +1,4 @@
-import { Box, Table } from "@mantine/core";
+import {Table } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../../../services/auth/useAuth";
 import TableItem from "./TableItem";
@@ -27,12 +27,12 @@ const OvertimeTable: React.FC = () => {
   }
 
   return (
-    <Box>
+    <div>
       <Table>
         <TableHeading />
         <TableItem data={overtimeData} isLoading={isLoading} error={error} />
       </Table>
-    </Box>
+    </div>
   );
 };
 

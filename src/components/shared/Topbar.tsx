@@ -2,12 +2,22 @@ import { Menu } from "@mantine/core";
 import { IconUserFilled } from "@tabler/icons-react";
 import { LuLogOut } from "react-icons/lu";
 import { useAuth } from "../../services/auth/useAuth";
+import { RiSettings2Line } from "react-icons/ri";
+import { FaRegCircleUser } from "react-icons/fa6";
 // import "../../styles.css";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Topbar = () => {
   const { logout } = useAuth();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    navigate("/profile");
+  };
+  const handleSettingsClick = () => {
+    navigate("/settings");
+  };
+
   return (
     <div className="bg-white text-black px-6 flex justify-between items-center border-b-2 relative">
       <div className="relative">
@@ -24,6 +34,12 @@ const Topbar = () => {
             </button>
           </Menu.Target>
           <Menu.Dropdown>
+            <Menu.Item leftSection={<FaRegCircleUser />}>
+              <button onClick={handleProfileClick}>Profile</button>
+            </Menu.Item>
+            <Menu.Item leftSection={<RiSettings2Line />}>
+              <button onClick={handleSettingsClick}>Settings</button>
+            </Menu.Item>
             <Menu.Item leftSection={<LuLogOut />}>
               <button onClick={() => logout()}>Logout</button>
             </Menu.Item>

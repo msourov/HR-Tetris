@@ -1,4 +1,4 @@
-import { Box, ScrollArea } from "@mantine/core";
+import { ScrollArea } from "@mantine/core";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Leave } from "../../../../features/api/typesOld";
@@ -12,7 +12,7 @@ const LeaveList = ({ data }: { data: Leave[] }) => {
       initial={{ opacity: 0, x: -100, scrollBehavior: "smooth" }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="sm:max-h-[80vh] md:max-h-[80vh] lg:max-h-[80vh]"
+      className="sm:max-h-[80vh] md:max-h-[80vh] lg:max-h-[80vh] py-4"
     >
       <ScrollArea
         type="scroll"
@@ -20,7 +20,7 @@ const LeaveList = ({ data }: { data: Leave[] }) => {
         // h={"90vh"}
         style={{ overflowY: "hidden" }}
       >
-        <Box className="mb-10 gap-4 flex flex-col">
+        <div className="mb-10 gap-4 flex flex-col">
           {data.map((item, index) => (
             <motion.div
               initial={{ opacity: 0, x: -100 * index }}
@@ -39,7 +39,7 @@ const LeaveList = ({ data }: { data: Leave[] }) => {
               />
             </motion.div>
           ))}
-        </Box>
+        </div>
       </ScrollArea>
     </motion.div>
   );

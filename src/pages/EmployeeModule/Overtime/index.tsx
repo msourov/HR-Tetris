@@ -1,10 +1,8 @@
 import {
-  Box,
   Loader,
   Popover,
   Select,
   Button,
-  Text,
   Modal,
   Textarea,
 } from "@mantine/core";
@@ -23,14 +21,22 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import { useGetEmplyeeHelperQuery } from "../../../features/api/employeeSlice";
+import { useGetEmployeeHelperQuery } from "../../../features/api/employeeSlice";
 
 const schema = z.object({
   purpose: z.string().min(1, "Purpose is required"),
   employee_id: z.string().min(1, "Employee ID is required"),
-  start_time: z.date({ invalid_type_error: "Start date is required" }),
-  end_time: z.date({ invalid_type_error: "End date is required" }),
+  start_time: z.date({
+    required_error: "Start time is required",
+    invalid_type_error: "Invalid start time format",
+  }),
+  end_time: z.date({
+    required_error: "End time is required",
+    invalid_type_error: "Invalid end time format",
+  }),
 });
+
+type ErrorResponse = { data: { detail: string } };
 
 type FormData = z.infer<typeof schema>;
 
@@ -49,7 +55,7 @@ const Overtime = () => {
     start_time: undefined as string | undefined,
     end_time: undefined as string | undefined,
   });
-  const { data: employees } = useGetEmplyeeHelperQuery();
+  const { data: employees } = useGetEmployeeHelperQuery();
   const { data, isLoading, error, refetch } = useAllOvertimeQuery(searchParams);
   const [createOvertime, { isLoading: isCreating }] =
     useCreateOvertimeMutation();
@@ -68,7 +74,7 @@ const Overtime = () => {
   const employeeOptions = Array.isArray(employees?.data)
     ? employees?.data.map((item) => ({
         label: item?.name,
-        value: item?.uid,
+        value: item?.employee_id,
       }))
     : [];
 
@@ -116,7 +122,7 @@ const Overtime = () => {
       console.error("Failed to create overtime:", error);
       notifications.show({
         title: "Error!",
-        message: "An error occurred while creating the ticket",
+        message: (error as ErrorResponse).data.detail,
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
@@ -125,10 +131,11 @@ const Overtime = () => {
   };
 
   const employeeId = watch("employee_id");
+  console.log(errors);
 
   return (
-    <Box className="w-[85%] mx-auto rounded-lg px-4">
-      <Box className="flex justify-end gap-6 items-center mt-6 mb-2 mr-4">
+    <div className="w-[85%] mx-auto rounded-lg px-4">
+      <div className="flex justify-end gap-6 items-center mt-6 mb-2 mr-4">
         <Button
           variant="filled"
           color="orange"
@@ -186,7 +193,7 @@ const Overtime = () => {
               value={query}
               onChange={(value) => setQuery(value)}
             />
-            <Box className="flex justify-end gap-2 mt-4">
+            <div className="flex justify-end gap-2 mt-4">
               <Button
                 variant="default"
                 size="compact-sm"
@@ -219,18 +226,18 @@ const Overtime = () => {
               >
                 Close
               </Button>
-            </Box>
+            </div>
           </Popover.Dropdown>
         </Popover>
-      </Box>
-      <Box>
+      </div>
+      <div>
         {data && Array.isArray(data?.data) && data?.data.length > 0 ? (
           <OvertimeList data={data?.data ?? []} />
         ) : (
           // <OvertimeTable />
-          <Text ta="center">No data found</Text>
+          <p className="text-center">No data found</p>
         )}
-      </Box>
+      </div>
       <Modal opened={modalOpened} onClose={modalClose} withCloseButton={false}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Select
@@ -262,23 +269,26 @@ const Overtime = () => {
             label="Start time"
             valueFormat="DD MMM YYYY hh:mm A"
             placeholder="Pick Start Date"
-            value={watch("start_time")}
-            onChange={(date) => setValue("end_time", date ?? new Date())}
+            value={watch("start_time") ?? null}
+            onChange={(date) => setValue("start_time", date ?? new Date())}
+            error={errors.start_time?.message}
             className="mb-2"
             required
           />
+
           <DateTimePicker
             variant="filled"
             label="End time"
             valueFormat="DD MMM YYYY hh:mm A"
             placeholder="Pick End Date"
-            value={watch("end_time") ?? new Date()}
+            value={watch("end_time") ?? null}
             onChange={(date) => setValue("end_time", date ?? new Date())}
+            error={errors.end_time?.message}
             className="mb-2"
             required
           />
 
-          <Box className="flex justify-end gap-4">
+          <div className="flex justify-end gap-4">
             <Button type="submit" variant="filled" color="blue" mt="md">
               Submit
             </Button>
@@ -290,10 +300,10 @@ const Overtime = () => {
             >
               Cancel
             </Button>
-          </Box>
+          </div>
         </form>
       </Modal>
-    </Box>
+    </div>
   );
 };
 

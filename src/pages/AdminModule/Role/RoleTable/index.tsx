@@ -1,4 +1,4 @@
-import { Box, Table } from "@mantine/core";
+import { Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
 import { Role } from "../../../../features/api/typesOld";
 import TableItem from "./TableItem";
@@ -21,12 +21,12 @@ const RoleTable: React.FC = () => {
   }
 
   return (
-    <Box>
+    <div>
       <Table>
         <TableHeading />
         <TableItem data={roles} loading={isLoading} />
       </Table>
-    </Box>
+    </div>
   );
 };
 
