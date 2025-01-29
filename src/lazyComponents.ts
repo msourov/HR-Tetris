@@ -14,7 +14,6 @@ export const EditDepartment = lazy(
 );
 export const Login = lazy(() => import("./pages/Login"));
 export const OtpPage = lazy(() => import("./pages/Login/OtpPage"));
-export const PublicRoute = lazy(() => import("./services/auth/PublicRoute"));
 
 export const UserDetail = lazy(
   () => import("./pages/AdminModule/User/UserDetail")
@@ -64,6 +63,9 @@ export const ShiftList = lazy(
 export const PolicyLayout = lazy(() => import("./pages/OfficeModule/Policy"));
 export const PolicyList = lazy(
   () => import("./pages/OfficeModule/Policy/PolicyList")
+);
+export const CreatePolicy = lazy(
+  () => import("./pages/OfficeModule/Policy/AddPolicy/CreatePolicy.tsx")
 );
 export const ManagePolicy = lazy(
   () => import("./pages/OfficeModule/Policy/EditPolicy")

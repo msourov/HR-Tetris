@@ -47,9 +47,9 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
 
   if (isLoading) {
     return (
-      <div>
+      <>
         <Loader type="dots" />
-      </div>
+      </>
     );
   }
 
@@ -57,7 +57,7 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
   //   return <div>Error</div>;
   // }
   return (
-    <div>
+    <>
       <Menu transitionProps={{ transition: "rotate-right", duration: 150 }}>
         <Menu.Target>
           <button>
@@ -110,7 +110,7 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
           </Button>
         </div>
       </Modal>
-    </div>
+    </>
   );
 };
 

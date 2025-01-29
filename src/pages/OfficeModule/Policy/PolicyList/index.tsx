@@ -108,13 +108,15 @@ const PolicyList = () => {
 
   return (
     <Box className="mt-6">
-      <h2 className="text-xl text-center text-gray-500">Text Policies</h2>
-      <Divider />
+      <Divider
+        my="xs"
+        label={<p className="text-lg text-blue-400">Text Policies</p>}
+        labelPosition="center"
+      />
       <SimpleGrid
         cols={{ base: 1, sm: 2, md: 3, xl: 4 }}
         spacing={{ base: 10, sm: "xl" }}
         verticalSpacing={{ base: "md", sm: "xl" }}
-        mt="lg"
       >
         {policyTexts?.map((item) => (
           <PolicyCard
@@ -140,13 +142,16 @@ const PolicyList = () => {
           policyDetailLoading={policyDetailLoading}
         />
       </SimpleGrid>
-      <h2 className="text-xl text-center mt-4 text-gray-500">Files</h2>
-      <Divider />
+      <Divider
+        my="xs"
+        mt="xl"
+        label={<p className="text-lg text-blue-400">Policy Files</p>}
+        labelPosition="center"
+      />
       <SimpleGrid
         cols={{ base: 1, sm: 2, md: 3, xl: 4 }}
         spacing={{ base: 10, sm: "xl" }}
         verticalSpacing={{ base: "md", sm: "xl" }}
-        mt="lg"
       >
         {policyFiles?.map((item) => (
           <PolicyCard
@@ -177,17 +182,21 @@ const PolicyModal: React.FC<PolicyModalProps> = ({
         <PDFViewer uid={policyDetail?.data?.uid} />
       ) : (
         <ScrollArea className="lg:px-10 sm:px-6 lg:max-h-[70vh] sm:h-[80vh]">
-          <Text ta="center" fw={700} size="xl">
-            {policyDetail?.data?.name}
-          </Text>
-          <Divider />
+          <Divider
+            my="xs"
+            label={
+              <p className="text-lg text-blue-400">
+                {policyDetail?.data?.name}
+              </p>
+            }
+            labelPosition="center"
+          />
           <div
             dangerouslySetInnerHTML={{
               __html:
                 policyDetail?.data?.descriptions || "No description available",
             }}
-            style={{ margin: 0 }}
-            className="description-content"
+            className="description-content bg-gray-100 p-4"
           />
           <Text size="sm" color="dimmed" className="mt-6">
             {policyDetail?.data?.logs?.message} by{" "}

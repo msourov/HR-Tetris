@@ -230,7 +230,7 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
   ));
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <>Loading...</>;
   }
 
   return (

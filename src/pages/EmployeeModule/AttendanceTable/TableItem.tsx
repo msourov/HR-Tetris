@@ -30,12 +30,12 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
       {data.map((item, index) => (
         <Table.Tr key={item.uid} className="hover:bg-white">
           <Table.Td
-            className="w-[2%] pl-[2rem]"
+            className="w-[2%] pl-[1rem]"
             // style={{ width: "2%", padding: "12px", paddingLeft: "32px" }}
           >
             {index + 1}
           </Table.Td>
-          <Table.Td style={{ width: "10%", padding: "12px" }}>
+          <Table.Td style={{ width: "5%", padding: "12px" }}>
             {item.employee_id}
           </Table.Td>
           <Table.Td style={{ width: "10%", padding: "12px" }}>

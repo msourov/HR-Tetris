@@ -73,7 +73,7 @@ const AddNewAnnouncement: React.FC<AddNewAnnouncement> = ({ toggleModal }) => {
   };
 
   return (
-    <div>
+    <>
       <Paper withBorder shadow="md" radius="md" p="md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
@@ -104,7 +104,7 @@ const AddNewAnnouncement: React.FC<AddNewAnnouncement> = ({ toggleModal }) => {
           </Button>
         </form>
       </Paper>
-    </div>
+    </>
   );
 };
 

@@ -98,7 +98,7 @@ const AddCertification = () => {
   const employeeIdValue = watch("employee_id");
 
   if (isLoading || isLoadingEmployees) {
-    return <div>Loading...</div>;
+    return <>Loading...</>;
   }
 
   if (employeeError || createCertificationError) {

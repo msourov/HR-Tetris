@@ -102,7 +102,7 @@ const OvertimeReviewModal: React.FC<OvertimeReviewModalProps> = ({
   }
 
   return (
-    <div>
+    <>
       <TextInput
         placeholder="Reason for rejection"
         mb={20}
@@ -133,7 +133,7 @@ const OvertimeReviewModal: React.FC<OvertimeReviewModalProps> = ({
           Reject
         </Button>
       </Group>
-    </div>
+    </>
   );
 };
 

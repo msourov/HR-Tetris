@@ -1,8 +1,10 @@
-import { Card, Text, Badge, Pill, Button, Modal } from "@mantine/core";
+import { Card, Text, Pill, Button, Modal } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import { useDisclosure } from "@mantine/hooks";
 import OvertimeReviewModal from "./ReviewModal";
+import dayjs from "dayjs";
+import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
 
 interface OvertimeData {
   employee_id: string;
@@ -31,48 +33,45 @@ const CustomCard: React.FC<OvertimeData> = ({
 }: OvertimeData) => {
   const [opened, { open, close }] = useDisclosure(false);
 
+  const formattedStartDate = dayjs(start_time).format("MMM D, YYYY");
+  const formattedEndDate = dayjs(end_time).format("MMM D, YYYY");
+  const formattedStartTime = dayjs(start_time).format("h:mm A");
+  const formattedEndTime = dayjs(end_time).format("h:mm A");
+
   return (
     <Card className="w-full px-6 border border-gray-200 rounded-lg shadow-lg flex flex-row">
       {/* Left section (80%) */}
       <div className="w-5/6 pr-4">
         <Text className="text-lg font-semibold">{employee_name}</Text>
         <Text className="mt-2 text-gray-700">{purpose}</Text>
-        {new Date(start_time).toLocaleDateString() ===
-        new Date(end_time).toLocaleDateString() ? (
+        {dayjs(start_time).isSame(dayjs(end_time), "day") ? (
           <div className="flex flex-col text-gray-600 mt-2">
             <Text className="text-sm">
-              <Pill className=" text-sm mb-2 text-blue-500">
-                {new Date(start_time).toLocaleDateString()}
+              <Pill className="text-sm mb-2 text-blue-500">
+                {formattedStartDate}
               </Pill>
             </Text>
             <Text className="text-sm font-medium">
               <Pill className="text-sm text-gray-600">
-                {new Date(start_time).toLocaleTimeString()}
+                {formattedStartTime}
               </Pill>
               <Text span c="blue" className="font-bold w-10">
                 {" "}
                 -{" "}
               </Text>
-              <Pill className="text-sm text-gray-600">
-                {new Date(end_time).toLocaleTimeString()}
-              </Pill>
+              <Pill className="text-sm text-gray-600">{formattedEndTime}</Pill>
             </Text>
           </div>
         ) : (
           <div className="flex flex-col text-gray-600 mt-2">
             <Text className="text-sm">
-              <Pill className=" text-sm mb-2 text-blue-500">
-                {new Date(start_time).toLocaleDateString()} -{" "}
-                {new Date(end_time).toLocaleTimeString()}
+              <Pill className="text-sm mb-2 text-blue-500">
+                {formattedStartDate} - {formattedEndDate}
               </Pill>
             </Text>
             <Text className="text-sm">
-              {/* <Text span c="blue" className="font-bold ">
-                To:{" "}
-              </Text> */}
               <Pill className="text-sm mb-2 text-blue-500">
-                {new Date(end_time).toLocaleDateString()} -{" "}
-                {new Date(start_time).toLocaleTimeString()}
+                {formattedStartTime} - {formattedEndTime}
               </Pill>
             </Text>
           </div>
@@ -81,24 +80,14 @@ const CustomCard: React.FC<OvertimeData> = ({
 
       {/* Right section (20%) */}
       <div className="w-1/6 flex flex-col items-end justify-start gap-4">
-        <Badge
-          className={`px-2 py-1 text-xs font-semibold ${
-            is_approved === "approved"
-              ? "bg-green-100 text-green-700"
-              : is_approved === "reject" || is_approved === "rejected"
-              ? "bg-red-100 text-red-700"
-              : "bg-yellow-100 text-yellow-600"
-          }`}
-          size="lg"
-        >
-          {is_approved === "pending"
-            ? is_approved.toUpperCase()
-            : is_approved === "reject"
-            ? "REJECTED"
-            : is_approved.toUpperCase()}
-        </Badge>
+        <AppApprovalStatus status={is_approved} />
         {is_approved === "pending" && (
-          <Button onClick={open} variant="light" size="compact-sm">
+          <Button
+            onClick={open}
+            variant="filled"
+            color="blue"
+            size="compact-sm"
+          >
             Review
           </Button>
         )}

@@ -31,7 +31,7 @@ const users = [
 const DepartmentDetail = () => {
   const { departmentName } = useParams();
   return (
-    <div>
+    <>
       <p className="text-center text-xl font-bold mb-6">
         {`${departmentName} Department`}
       </p>
@@ -44,17 +44,17 @@ const DepartmentDetail = () => {
                 <Avatar src={null} alt={user.name} color="blue">
                   {user.name.charAt(0)}
                 </Avatar>
-                <div>
+                <>
                   <p className="text-sm font-medium">{user.name}</p>
                   <p className="text-xs text-gray-500">{user.email}</p>
                   <p className="text-xs text-gray-500">{user.role}</p>
-                </div>
+                </>
               </Group>
             </Card>
           </Grid.Col>
         ))}
       </Grid>
-    </div>
+    </>
   );
 };
 

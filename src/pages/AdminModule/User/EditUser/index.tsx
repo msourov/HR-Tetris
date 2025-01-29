@@ -105,7 +105,7 @@ const EditUser = () => {
   const roleIdValue = watch("role");
 
   if (isLoadingDetail || isLoadingRoles) {
-    return <div>Loading...</div>;
+    return <>Loading...</>;
   }
 
   if (detailError || rolesError) {

@@ -27,12 +27,12 @@ const OvertimeTable: React.FC = () => {
   }
 
   return (
-    <div>
+    <>
       <Table>
         <TableHeading />
         <TableItem data={overtimeData} isLoading={isLoading} error={error} />
       </Table>
-    </div>
+    </>
   );
 };
 

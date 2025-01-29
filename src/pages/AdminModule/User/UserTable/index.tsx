@@ -19,12 +19,12 @@ const UserTable = () => {
     }
   }
   return (
-    <div>
+    <>
       <Table>
         <TableHeading />
         <TableItem data={users} isLoading={isLoading} error={error} />
       </Table>
-    </div>
+    </>
   );
 };
 

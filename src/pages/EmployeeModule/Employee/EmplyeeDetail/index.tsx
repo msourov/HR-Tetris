@@ -53,7 +53,7 @@ const EmployeeDetail = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-[70vh]">
-      <div>
+      <>
         <Group align="flex-start">
           <Avatar
             size={120}
@@ -76,7 +76,7 @@ const EmployeeDetail = () => {
             </Badge>
           </div>
         </Group>
-      </div>
+      </>
       <div className="flex justify-between mt-4">
         <Tabs
           color="blue"
@@ -102,8 +102,8 @@ const EmployeeDetail = () => {
               <p className="text-xl text-center border-b-2 mt-4 mb-6 font-semibold">
                 Personal Information
               </p>
-              <div>
-                <div>
+              <>
+                <>
                   <p className="text-md flex justify-between">
                     <span className="text-gray-500">Phone:</span>
                     +88{employee?.data.personal.phone}
@@ -124,8 +124,8 @@ const EmployeeDetail = () => {
                     <span className="text-gray-500">Marital Status:</span>
                     {employee?.data.personal.marital_status}
                   </p>
-                </div>
-                <div>
+                </>
+                <>
                   <p className="text-md flex justify-between">
                     <span className="text-gray-500">Address:</span>
                     {employee?.data.personal.address}
@@ -134,16 +134,16 @@ const EmployeeDetail = () => {
                     <span className="text-gray-500">Spouse Name:</span>
                     {employee?.data.personal.spouse_name || "N/A"}
                   </p>
-                </div>
-              </div>
+                </>
+              </>
             </Tabs.Panel>
 
             <Tabs.Panel value="work">
               <p className="text-xl text-center border-b-2 mt-4 mb-6 font-semibold">
                 Work Information
               </p>
-              <div>
-                <div>
+              <>
+                <>
                   <p className="text-md flex justify-between">
                     <span className="text-gray-500">Employee ID:</span>
                     {employee?.data.work.employee_id}
@@ -164,8 +164,8 @@ const EmployeeDetail = () => {
                     <span className="text-gray-500">Salary:</span>$
                     {employee?.data.work.salary?.toFixed(2) ?? "N/A"}
                   </p>
-                </div>
-                <div>
+                </>
+                <>
                   <p className="text-md flex justify-between">
                     <span className="text-gray-500">Work Location:</span>
                     {employee?.data.work.work_location}
@@ -182,15 +182,15 @@ const EmployeeDetail = () => {
                     <span className="text-gray-500">Is Supervisor:</span>
                     {employee?.data.work.supervisor ? "Yes" : "No"}
                   </p>
-                </div>
-              </div>
+                </>
+              </>
             </Tabs.Panel>
             <Tabs.Panel value="others">
               <p className="text-xl text-center border-b-2 mt-4 mb-6 font-semibold">
                 Emergency Contact
               </p>
-              <div>
-                <div>
+              <>
+                <>
                   <p className="text-md flex justify-between">
                     <span className="text-gray-500">Contact Name:</span>
                     {employee?.data.emergency_contact.name}
@@ -203,14 +203,14 @@ const EmployeeDetail = () => {
                     <span className="text-gray-500">Contact Phone:</span>
                     {employee?.data.emergency_contact.phone}
                   </p>
-                </div>
-                <div>
+                </>
+                <>
                   <p className="text-md flex justify-between">
                     <span className="text-gray-500">Contact Address:</span>
                     {employee?.data.emergency_contact.address}
                   </p>
-                </div>
-              </div>
+                </>
+              </>
             </Tabs.Panel>
           </div>
         </Tabs>

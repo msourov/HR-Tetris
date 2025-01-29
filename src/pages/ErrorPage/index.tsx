@@ -12,7 +12,7 @@ export default function ErrorPage() {
   return (
     <Container size="xs" px="xs" my="xl">
       <Paper shadow="xl" p="xl" radius="md">
-        <div>
+        <>
           <Title order={1} c="red" mb="md">
             Oops!
           </Title>
@@ -36,7 +36,7 @@ export default function ErrorPage() {
           >
             Go Back
           </Button>
-        </div>
+        </>
       </Paper>
     </Container>
   );

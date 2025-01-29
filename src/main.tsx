@@ -23,6 +23,10 @@ const theme = createTheme({
   primaryColor: "cyan",
 });
 
+if (import.meta.hot) {
+  import.meta.hot.accept();
+}
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <MantineProvider theme={theme}>

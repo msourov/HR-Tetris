@@ -3,7 +3,7 @@ import AppPageHeader from "../../../components/core/AppPageHeader";
 
 const Role = () => {
   return (
-    <div>
+    <>
       <AppPageHeader
         Heading="Role"
         Breadcrumb={{ module: "Admin Management", page: "Role" }}
@@ -12,7 +12,7 @@ const Role = () => {
         {/* {data && <RoleTable data={data.data} />} */}
         <Outlet />
       </div>
-    </div>
+    </>
   );
 };
 

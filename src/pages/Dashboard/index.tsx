@@ -16,12 +16,12 @@ const LeaveSection = lazy(() => import("./LeaveSection"));
 const OvertimeSection = lazy(() => import("./OvertimeSection"));
 
 const skeleton = (
-  <div>
+  <>
     <Skeleton height={35} mb={6} radius="sm" c="grape" />
     <Skeleton height={35} width="100%" radius="sm" mb={6} />
     <Skeleton height={35} width="100%" radius="sm" mb={4} />
     <Skeleton height={35} width="100%" radius="md" />
-  </div>
+  </>
 );
 
 const Dashboard = () => {
@@ -175,7 +175,7 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        <div>
+        <>
           <Card
             shadow="sm"
             padding="lg"
@@ -199,7 +199,7 @@ const Dashboard = () => {
               ]}
             />
           </Card>
-        </div>
+        </>
       </div>
       <div className="w-[35%]">
         <div className="mb-6 w-full bg-white">

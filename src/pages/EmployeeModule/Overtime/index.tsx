@@ -230,14 +230,14 @@ const Overtime = () => {
           </Popover.Dropdown>
         </Popover>
       </div>
-      <div>
+      <>
         {data && Array.isArray(data?.data) && data?.data.length > 0 ? (
           <OvertimeList data={data?.data ?? []} />
         ) : (
           // <OvertimeTable />
           <p className="text-center">No data found</p>
         )}
-      </div>
+      </>
       <Modal opened={modalOpened} onClose={modalClose} withCloseButton={false}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Select

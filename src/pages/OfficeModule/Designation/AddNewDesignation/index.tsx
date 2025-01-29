@@ -56,7 +56,7 @@ const AddNewDesignation: React.FC<AddNewDesignationProps> = ({
   };
 
   return (
-    <div>
+    <>
       <Paper withBorder shadow="md" radius="md" p="md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
@@ -85,7 +85,7 @@ const AddNewDesignation: React.FC<AddNewDesignationProps> = ({
           </Button>
         </form>
       </Paper>
-    </div>
+    </>
   );
 };
 

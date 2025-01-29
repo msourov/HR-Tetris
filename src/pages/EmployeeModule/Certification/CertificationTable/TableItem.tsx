@@ -1,4 +1,4 @@
-import { Modal, Pill, Table } from "@mantine/core";
+import { Modal, Pill, Table, Text } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
@@ -8,6 +8,7 @@ import { useDisclosure } from "@mantine/hooks";
 import CertificationDetail from "../CertificationDetail";
 import { useState } from "react";
 import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
+import dayjs from "dayjs";
 
 interface TableItemProps {
   data: Certification[];
@@ -46,14 +47,16 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
             }}
           >
             <Table.Td style={{ width: "5%" }}>{index + 1}</Table.Td>
-            <Table.Td style={{ width: "20%" }}>
+            <Table.Td style={{ width: "10%" }}>
               {item.employee_name || "N/A"}
             </Table.Td>
-            <Table.Td style={{ width: "20%" }}>
-              {item.certification_type || "N/A"}
+            <Table.Td style={{ width: "15%" }}>
+              <Pill className="bg-white">
+                {item.certification_type || "N/A"}
+              </Pill>
             </Table.Td>
-            <Table.Td style={{ width: "25%" }}>
-              {item.purpose || "N/A"}
+            <Table.Td style={{ width: "40%" }}>
+              <Text lineClamp={3}>{item.purpose || "N/A"}</Text>
             </Table.Td>
             <Table.Td
               style={{
@@ -63,7 +66,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
             >
               <Pill bg="gray" c="white">
                 {item.apply_date
-                  ? new Date(item.apply_date).toLocaleDateString()
+                  ? dayjs(item.apply_date).format("MMM D, YYYY") // Format using dayjs
                   : "N/A"}
               </Pill>
             </Table.Td>
@@ -73,7 +76,16 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
           </Table.Tr>
         ))}
       </Table.Tbody>
-      <Modal opened={opened} onClose={close} size="auto">
+      <Modal
+        opened={opened}
+        onClose={close}
+        size="70%"
+        withCloseButton={false}
+        overlayProps={{
+          backgroundOpacity: 0.35,
+          blur: 3,
+        }}
+      >
         <CertificationDetail uid={currentUid} closeModal={close} />
       </Modal>
     </>

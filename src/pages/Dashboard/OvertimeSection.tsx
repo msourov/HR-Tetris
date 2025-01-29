@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useDisclosure } from "@mantine/hooks";
 import OvertimeReviewModal from "../EmployeeModule/Overtime/OvertimeList/ReviewModal";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import dayjs from "dayjs";
 
 type OvertimeSectionProps = {
   data: Overtime | Overtime[];
@@ -65,8 +66,17 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
                           <Text>{item.employee_name}</Text>
                           <Text c="dimmed">{item.purpose}</Text>
                           <Text c="blue" mt={10} className="opacity-65">
-                            {new Date(item?.start_time).toLocaleDateString()} -{" "}
-                            {new Date(item?.end_time).toLocaleDateString()}
+                            {dayjs(item?.start_time).isSame(
+                              dayjs(item?.end_time),
+                              "day"
+                            )
+                              ? dayjs(item?.start_time).format("DD/MM/YYYY")
+                              : dayjs(item?.start_time).format(
+                                  "DD/MM/YYYY"
+                                )}{" "}
+                            - {dayjs(item?.end_time).format("DD/MM/YYYY")}
+                            {/* {new Date(item?.start_time).toLocaleDateString()} -{" "}
+                            {new Date(item?.end_time).toLocaleDateString()} */}
                           </Text>
                         </Box>
                         <Button

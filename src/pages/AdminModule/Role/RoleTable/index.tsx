@@ -21,12 +21,12 @@ const RoleTable: React.FC = () => {
   }
 
   return (
-    <div>
+    <>
       <Table>
         <TableHeading />
         <TableItem data={roles} loading={isLoading} />
       </Table>
-    </div>
+    </>
   );
 };
 

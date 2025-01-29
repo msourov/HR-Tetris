@@ -1,6 +1,7 @@
 import { Button, Card, Text } from "@mantine/core";
 import { AllPolicy } from "../../../../features/api/typesOld";
 import { IconDownload } from "@tabler/icons-react";
+import dayjs from "dayjs";
 
 interface PolicyCardProps {
   item: AllPolicy;
@@ -17,11 +18,11 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
       style={{ display: "flex", flexDirection: "column", height: "100%" }}
       key={item?.id}
     >
-      <Text fw={500} ta="center" pb="0.5rem">
+      <Text my="xs" className="w-fit px-2 border-b-2 rounded-md mx-auto">
         {item?.name}
       </Text>
 
-      <Text size="sm" className="leading-6" pt="0.5rem">
+      <Text size="sm" className="leading-6">
         {item?.descriptions?.length > 300 ? (
           <span
             dangerouslySetInnerHTML={{
@@ -33,16 +34,23 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
         )}
       </Text>
 
-      <Text size="xs" color="dimmed" mb={10}>
-        Created: {new Date(item?.create_at).toLocaleDateString()}
+      <Text size="xs" color="dimmed" my={10}>
+        Created:{" "}
+        <span className="text-amber-600 text-sm font-mono">
+          {dayjs(item?.create_at).format("MMM D, YYYY h:mm A")}
+        </span>
       </Text>
 
       {isFile ? (
         <Button
-          leftSection={<IconDownload />}
-          w="60%"
+          leftSection={
+            <IconDownload className="size-6 animate-bounce transition-all duration-300 ease-in-out hover:scale-110" />
+          }
+          w={160}
           mx="auto"
-          bg="orange"
+          mt={16}
+          variant="light"
+          radius="md"
           onClick={() => onClick(item?.uid)}
         >
           Download
@@ -50,9 +58,9 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
       ) : (
         <Button
           size="xs"
+          mt={16}
           onClick={() => onClick(item?.uid)}
           style={{ marginTop: "auto", width: "50%", marginInline: "auto" }}
-          bg="orange"
         >
           See More
         </Button>

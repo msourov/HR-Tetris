@@ -54,7 +54,7 @@ const AddNewDepartment: React.FC<AddNewDepartmentProps> = ({ toggleModal }) => {
   };
 
   return (
-    <div>
+    <>
       <Paper withBorder shadow="md" radius="md" p="md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
@@ -83,7 +83,7 @@ const AddNewDepartment: React.FC<AddNewDepartmentProps> = ({ toggleModal }) => {
           </Button>
         </form>
       </Paper>
-    </div>
+    </>
   );
 };
 

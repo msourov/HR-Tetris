@@ -68,7 +68,12 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
             {item.work?.designation?.name || "N/A"}
           </Table.Td>
           <Table.Td style={{ width: "5%", paddingRight: "1.5rem" }}>
-            <EmployeeActions id={item.uid} />
+            <EmployeeActions
+              id={item.work?.employee_id}
+              name={item.personal?.name}
+              department={item.work?.department?.name}
+              designation={item.work?.designation?.name}
+            />
           </Table.Td>
         </Table.Tr>
       ))}

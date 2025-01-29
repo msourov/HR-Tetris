@@ -42,7 +42,6 @@ import {
   PolicyDetail,
   PolicyLayout,
   PolicyList,
-  PublicRoute,
   Recruitment,
   Role,
   RoleTable,
@@ -57,6 +56,7 @@ import {
 import ProtectedRoute from "./services/auth/ProtectedRoutes";
 import Settings from "./pages/MyAccountModule/Settings";
 import Profile from "./pages/MyAccountModule/Profile";
+import PublicRoute from "./services/auth/PublicRoute";
 
 const loader = (
   <div className="flex justify-center items-center">

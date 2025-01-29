@@ -45,7 +45,7 @@ const Candidates = () => {
     <p>{`Something went wrong. ${error}`}</p>;
   }
   return (
-    <div>
+    <>
       <div className="flex justify-end">
         <Popover
           opened={opened}
@@ -145,7 +145,7 @@ const Candidates = () => {
           </Card>
         ))}
       </SimpleGrid>
-    </div>
+    </>
   );
 };
 

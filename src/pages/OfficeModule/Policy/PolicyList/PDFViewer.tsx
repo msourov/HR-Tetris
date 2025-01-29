@@ -45,7 +45,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ uid }) => {
   };
 
   if (error) {
-    return <div>{error}</div>;
+    return <>{error}</>;
   }
 
   return (
@@ -61,7 +61,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ uid }) => {
           ))}
         </Document>
       ) : (
-        <div>Loading PDF...</div>
+        <>Loading PDF...</>
       )}
     </div>
   );

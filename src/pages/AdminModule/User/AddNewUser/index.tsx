@@ -93,7 +93,7 @@ const AddNewUser = () => {
   const roleIdValue = watch("role");
 
   if (isLoading || isLoadingRoles) {
-    return <div>Loading...</div>;
+    return <>Loading...</>;
   }
 
   if (rolesError || createUserError) {

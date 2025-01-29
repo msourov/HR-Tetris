@@ -49,14 +49,14 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
 
   if (isLoading) {
     return (
-      <div>
+      <>
         <Loader type="dots" />
-      </div>
+      </>
     );
   }
 
   return (
-    <div>
+    <>
       <Menu transitionProps={{ transition: "rotate-right", duration: 150 }}>
         <Menu.Target>
           <button disabled={disabled}>
@@ -105,7 +105,7 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
           </Button>
         </div>
       </Modal>
-    </div>
+    </>
   );
 };
 

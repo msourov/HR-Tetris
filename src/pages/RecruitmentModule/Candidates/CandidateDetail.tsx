@@ -56,7 +56,7 @@ const CandidateDetail = () => {
   }
 
   return (
-    <div>
+    <>
       <Grid>
         <Grid.Col span={12}>
           <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -106,7 +106,7 @@ const CandidateDetail = () => {
           Delete
         </Button>
       </div> */}
-    </div>
+    </>
   );
 };
 

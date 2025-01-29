@@ -8,7 +8,7 @@ const EmplyeeTable = () => {
   const { data: attendance, isLoading, error } = useGetAllAttendanceQuery();
 
   return (
-    <div>
+    <>
       {/* <AppPageHeader
         Heading="Employee"
         Breadcrumb={{ module: "Employee Management", page: "List" }}
@@ -24,7 +24,7 @@ const EmplyeeTable = () => {
       <div className="px-4 pt-8 pb-4 float-right">
         <Pagination total={4} color="rgb(33, 41, 34)" />
       </div>
-    </div>
+    </>
   );
 };
 

@@ -14,7 +14,7 @@ const EmplyeeTable = () => {
   });
 
   return (
-    <div>
+    <>
       <Table verticalSpacing="sm">
         <TableHeading />
         <TableItem
@@ -26,7 +26,7 @@ const EmplyeeTable = () => {
       <div className="px-4 pt-8 pb-4 float-right">
         <Pagination total={4} color="rgb(33, 41, 34)" />
       </div>
-    </div>
+    </>
   );
 };
 
