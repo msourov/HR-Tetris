@@ -25,7 +25,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     <Box
       w={"100%"}
       px={"2.25rem"}
-      className="flex justify-between items-center mb-6 py-4 bg-gradient-to-r from-orange-200 to-blue-200 border-b border-blue-400"
+      className="flex justify-between items-center mb-6 py-4 bg-gradient-to-r from-blue-100 to-blue-500 "
     >
       <div className="space-y-4">
         {Breadcrumb && (
@@ -54,10 +54,11 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       </div>
 
       <Button
-        variant="light"
-        color="blue"
+        variant="filled"
+        color="white"
+        c="blue"
         size="sm"
-        className="border border-blue-500 shadow-md text-sm"
+        className="shadow-md text-sm hover:bg-blue-100 hover:text-white"
         leftSection={Operation === "Add" && <IconPlus size={16} />}
         onClick={() => navigate(`add-${route}`)}
       >{`${Operation} ${Heading}`}</Button>

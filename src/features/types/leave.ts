@@ -7,10 +7,11 @@ export interface Leave {
   employee_name: string;
   purpose: string;
   leave_type: string;
+  leave_preiod: string;
   leave_start_date: string;
   leave_end_date: string;
   is_active: boolean;
-  is_approved: "pending" | "approved" | "rejected" | null;
+  is_approved: "pending" | "approved" | "rejected";
   logs: Log | Log[];
   create_at: string;
   update_at: string;
@@ -20,6 +21,7 @@ export interface CreateLeaveRequest {
   purpose: string;
   employee_id: string;
   leave_type: string;
+  leave_preiod: string;
   leave_start_date: string;
   leave_end_date: string;
 }

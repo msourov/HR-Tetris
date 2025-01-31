@@ -7,7 +7,7 @@ const OvertimeLeaveSkeleton = () => {
       padding="lg"
       radius="md"
       withBorder
-      className="flex flex-row items-start gap-4"
+      className="flex flex-row items-start gap-4 max-w-[90%]"
     >
       {/* Left Section */}
       <div className="flex-1">

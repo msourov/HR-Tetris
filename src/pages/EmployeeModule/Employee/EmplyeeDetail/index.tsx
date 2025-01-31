@@ -80,133 +80,133 @@ const EmployeeDetail = () => {
       <div className="flex justify-between mt-4">
         <Tabs
           color="blue"
-          variant="default"
+          variant="outline"
           defaultValue="personal"
           value={activeTab}
           onChange={setActiveTab}
           className="lg:w-[60%] xl:w-[50%]"
         >
-          <Tabs.List className={`w-fit rounded-lg border my-6 bg-white`}>
+          <Tabs.List className={`w-fit rounded-lg my-6`}>
             <Tabs.Tab value="personal">
-              <BsFillPersonVcardFill color="#7CB9E8" size={20} />
+              <BsFillPersonVcardFill color="#56203D" size={20} />
             </Tabs.Tab>
             <Tabs.Tab value="work">
-              <MdOutlineWorkOutline color="#7CB9E8" size={20} />
+              <MdOutlineWorkOutline color="#56203D" size={20} />
             </Tabs.Tab>
             <Tabs.Tab value="others">
-              <RiArchive2Line color="#7CB9E8" size={20} />
+              <RiArchive2Line color="#56203D" size={20} />
             </Tabs.Tab>
           </Tabs.List>
-          <div className="px-4 border pb-6 bg-gray-100 h-[320px]">
-            <Tabs.Panel value="personal">
-              <p className="text-xl text-center border-b-2 mt-4 mb-6 font-semibold">
+          <div className="px-4 border pb-6 bg-[#808FB8] h-[320px]">
+            <Tabs.Panel value="personal" px={8}>
+              <p className="text-lg text-center text-white border-b-2 border-amber-300 py-2 mb-6 font-thin">
                 Personal Information
               </p>
               <>
                 <>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Phone:</span>
+                  <p className="text-md text-white text-white flex justify-between">
+                    <span className="text-gray-200">Phone:</span>
                     +88{employee?.data.personal.phone}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Email:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Email:</span>
                     {employee?.data.personal.email}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Date of birth:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Date of birth:</span>
                     {employee?.data.personal.bod
                       ? new Date(
                           employee.data.personal.bod
                         ).toLocaleDateString()
                       : "N/A"}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Marital Status:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Marital Status:</span>
                     {employee?.data.personal.marital_status}
                   </p>
                 </>
                 <>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Address:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Address:</span>
                     {employee?.data.personal.address}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Spouse Name:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Spouse Name:</span>
                     {employee?.data.personal.spouse_name || "N/A"}
                   </p>
                 </>
               </>
             </Tabs.Panel>
 
-            <Tabs.Panel value="work">
-              <p className="text-xl text-center border-b-2 mt-4 mb-6 font-semibold">
+            <Tabs.Panel value="work" px={8}>
+              <p className="text-lg text-center text-white border-b-2 border-amber-300 py-2 mb-6 font-thin">
                 Work Information
               </p>
               <>
                 <>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Employee ID:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Employee ID:</span>
                     {employee?.data.work.employee_id}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Company:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Company:</span>
                     {employee?.data.work.company?.name}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Joining Date:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Joining Date:</span>
                     {employee?.data.work.joining_date
                       ? new Date(
                           employee.data.work.joining_date
                         ).toLocaleDateString()
                       : "N/A"}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Salary:</span>$
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Salary:</span>$
                     {employee?.data.work.salary?.toFixed(2) ?? "N/A"}
                   </p>
                 </>
                 <>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Work Location:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Work Location:</span>
                     {employee?.data.work.work_location}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Work Email:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Work Email:</span>
                     {employee?.data.work.work_email}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Shift & Schedule:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Shift & Schedule:</span>
                     {employee?.data.work.shift_and_schedule.name}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Is Supervisor:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Is Supervisor:</span>
                     {employee?.data.work.supervisor ? "Yes" : "No"}
                   </p>
                 </>
               </>
             </Tabs.Panel>
             <Tabs.Panel value="others">
-              <p className="text-xl text-center border-b-2 mt-4 mb-6 font-semibold">
+              <p className="text-lg text-center text-white border-b-2 border-amber-300 py-2 mb-6 font-thin">
                 Emergency Contact
               </p>
               <>
                 <>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Contact Name:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Contact Name:</span>
                     {employee?.data.emergency_contact.name}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Contact Relationship:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Contact Relationship:</span>
                     {employee?.data.emergency_contact.relationship}
                   </p>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Contact Phone:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Contact Phone:</span>
                     {employee?.data.emergency_contact.phone}
                   </p>
                 </>
                 <>
-                  <p className="text-md flex justify-between">
-                    <span className="text-gray-500">Contact Address:</span>
+                  <p className="text-md text-white flex justify-between">
+                    <span className="text-gray-200">Contact Address:</span>
                     {employee?.data.emergency_contact.address}
                   </p>
                 </>

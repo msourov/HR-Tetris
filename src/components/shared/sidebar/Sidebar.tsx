@@ -256,16 +256,19 @@ export function Sidebar() {
   }, []);
 
   useEffect(() => {
-    const currentPath = location.pathname;
-    setActiveLink(currentPath);
-  }, [location]);
+    setActiveLink(location.pathname);
+  }, [location.pathname]);
+
   const handleLinkClick = (link: string) => {
     setActiveLink(link);
     navigate(link);
   };
 
-  const isGroupActive = (groupItems: Item[]) =>
-    groupItems.some((item: Item) => item.link === activeLink);
+  const isGroupActive = (groupItems: Item[]) => {
+    return groupItems.some(
+      (item: Item) => item.link === `/${activeLink?.split("/")[1]}`
+    );
+  };
 
   return (
     <Box
@@ -315,7 +318,11 @@ export function Sidebar() {
               <LinksGroup
                 key={group.items[0].label}
                 label={group.items[0].label}
-                isActive={activeLink === group.items[0].link}
+                isActive={
+                  activeLink
+                    ? activeLink.startsWith(group.items[0].link)
+                    : false
+                }
                 onClick={() => handleLinkClick(group.items[0].link)}
                 icon={group.icon}
               />
@@ -346,7 +353,9 @@ export function Sidebar() {
                       <LinksGroup
                         key={item.label}
                         label={item.label}
-                        isActive={activeLink === item.link}
+                        isActive={
+                          activeLink ? activeLink.startsWith(item.link) : false
+                        }
                         onClick={() => handleLinkClick(item.link)}
                       />
                     </Box>

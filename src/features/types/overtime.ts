@@ -1,4 +1,4 @@
-import { Log, PaginatedApiResponse } from "./shared";
+import { getDataResponse, Log, PaginatedApiResponse } from "./shared";
 
 export interface Overtime {
   id: number;
@@ -27,6 +27,8 @@ export interface ApproveOvertimeRequest {
   is_approved: string;
   reject_purpose?: string;
 }
+
+export interface OvertimeDetail extends getDataResponse<Overtime> {}
 
 export interface OvertimeResponse
   extends PaginatedApiResponse<Overtime[] | Overtime> {

@@ -8,7 +8,7 @@ import { useDisclosure } from "@mantine/hooks";
 import CertificationDetail from "../CertificationDetail";
 import { useState } from "react";
 import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
-import dayjs from "dayjs";
+import useFormatDate from "../../../../services/utils/useFormatDate";
 
 interface TableItemProps {
   data: Certification[];
@@ -25,6 +25,7 @@ interface TableItemProps {
 const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [currentUid, setCurrentUid] = useState<string>("");
+  const { formatDate } = useFormatDate();
 
   if (isLoading) {
     return <CommonSkeleton cols={6} rows={5} />;
@@ -47,7 +48,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
             }}
           >
             <Table.Td style={{ width: "5%" }}>{index + 1}</Table.Td>
-            <Table.Td style={{ width: "10%" }}>
+            <Table.Td style={{ width: "10%" }} className="text-sm">
               {item.employee_name || "N/A"}
             </Table.Td>
             <Table.Td style={{ width: "15%" }}>
@@ -56,7 +57,9 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
               </Pill>
             </Table.Td>
             <Table.Td style={{ width: "40%" }}>
-              <Text lineClamp={3}>{item.purpose || "N/A"}</Text>
+              <Text lineClamp={3} className="text-sm">
+                {item.purpose || "N/A"}
+              </Text>
             </Table.Td>
             <Table.Td
               style={{
@@ -65,9 +68,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
               }}
             >
               <Pill bg="gray" c="white">
-                {item.apply_date
-                  ? dayjs(item.apply_date).format("MMM D, YYYY") // Format using dayjs
-                  : "N/A"}
+                {item.apply_date ? formatDate(item.apply_date) : "N/A"}
               </Pill>
             </Table.Td>
             <Table.Td style={{ width: "8%" }}>

@@ -1,12 +1,12 @@
-import { Button, Divider, Pill, Textarea } from "@mantine/core";
+import { Button, Divider, Pill, ScrollArea, Textarea } from "@mantine/core";
 import {
   useGetCertificationDetailQuery,
   useApproveCertificationMutation,
 } from "../../../../features/api/certificationSlice";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
-import dayjs from "dayjs";
-import CertificationDetailSkeleton from "../../../../components/shared/Skeletons/CertificationDetailSkeleton";
+import CertificationDetailSkeleton from "../../../../components/shared/skeletons/CertificationDetailSkeleton";
+import useFormatDate from "../../../../services/utils/useFormatDate";
 
 interface CertificationDetailProps {
   uid: string;
@@ -28,11 +28,7 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
   const [approveCertification, { isLoading: isMutating }] =
     useApproveCertificationMutation();
 
-  const formatDate = (dateString: string | undefined): string =>
-    dateString ? dayjs(dateString).format("MMM D, YYYY") : "N/A";
-
-  const formatDateTime = (dateString: string | undefined): string =>
-    dateString ? dayjs(dateString).format("MMM D, YYYY h:mm A") : "N/A";
+  const { formatDate } = useFormatDate();
 
   const handleApproval = async (
     isApproved: "approved" | "rejected",
@@ -154,12 +150,12 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
               label={<p className="text-lg text-blue-400">Logs</p>}
               labelPosition="center"
             />
-            <ul className="space-y-4">
+            <ScrollArea.Autosize mah={220} className="space-y-4">
               {Array.isArray(certificationDetail?.data?.logs) ? (
                 certificationDetail?.data?.logs.map((log, index) => (
-                  <li
+                  <div
                     key={index}
-                    className="group relative p-4 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 ease-out"
+                    className="group relative px-4 py-2 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 ease-out mb-2"
                   >
                     <div className="flex items-start gap-4">
                       {/* Icon Container */}
@@ -186,7 +182,7 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
                       </div>
 
                       {/* Content */}
-                      <div className="flex-1">
+                      <div className="">
                         <p className="text-gray-700 text-sm leading-relaxed">
                           {log.message}
                         </p>
@@ -200,7 +196,7 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
                         {/* Status Indicator */}
                         <div className="absolute top-4 right-4 flex items-center gap-1">
                           <span className="text-xs font-mono text-amber-600">
-                            {formatDateTime(log.create_at)}
+                            {formatDate(log.create_at, true)}
                           </span>
                           {/* <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
@@ -212,14 +208,14 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
                         </div>
                       </div>
                     </div>
-                  </li>
+                  </div>
                 ))
               ) : (
                 <li className="text-center py-6 text-gray-500">
                   No activity logs available
                 </li>
               )}
-            </ul>
+            </ScrollArea.Autosize>
           </div>
         </div>
 
@@ -243,7 +239,7 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
               <span className="font-medium">Created:</span>
             </div>
             <span className="text-gray-700 font-mono">
-              {formatDateTime(certificationDetail?.data?.create_at)}
+              {formatDate(certificationDetail?.data?.create_at, true)}
             </span>
 
             {/* Updated At */}
@@ -264,7 +260,7 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
               <span className="font-medium">Updated:</span>
             </div>
             <span className="text-gray-700 font-mono">
-              {formatDateTime(certificationDetail?.data?.update_at)}
+              {formatDate(certificationDetail?.data?.update_at, true)}
             </span>
           </div>
         </div>

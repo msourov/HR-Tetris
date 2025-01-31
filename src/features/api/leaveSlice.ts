@@ -7,6 +7,7 @@ import {
   LeaveResponse,
   UpdateLeaveRequest,
 } from "../types/leave";
+import { Request, Response } from "../types/shared";
 
 export const leaveApi = createApi({
   reducerPath: "leaveApi",
@@ -63,7 +64,7 @@ export const leaveApi = createApi({
           : [{ type: "Leave", id: "LIST" }],
     }),
 
-    createLeave: builder.mutation<void, CreateLeaveRequest>({
+    createLeave: builder.mutation<Response, CreateLeaveRequest>({
       query: (data) => ({
         url: "leave/create",
         method: "POST",
@@ -72,14 +73,14 @@ export const leaveApi = createApi({
       invalidatesTags: [{ type: "Leave", id: "LIST" }],
     }),
 
-    getLeaveById: builder.query<LeaveResponse, { uid: string }>({
+    getLeaveDetail: builder.query<LeaveResponse, { uid: string }>({
       query: ({ uid }) => ({
         url: `leave/${uid}`,
         method: "GET",
       }),
       providesTags: (_result, _error, { uid }) => [{ type: "Leave", id: uid }],
     }),
-    updateLeave: builder.mutation<void, UpdateLeaveRequest>({
+    updateLeave: builder.mutation<Response, UpdateLeaveRequest>({
       query: ({ uid, ...data }) => ({
         url: `leave/update`,
         method: "PUT",
@@ -87,7 +88,15 @@ export const leaveApi = createApi({
       }),
       invalidatesTags: (_result, _error, { uid }) => [
         { type: "Leave", id: uid },
+        { type: "Leave", id: "LIST" },
       ],
+    }),
+    deleteLeave: builder.mutation<Response, Request>({
+      query: ({ id }) => ({
+        url: `leave/delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Leave", id: "LIST" }],
     }),
 
     approveLeave: builder.mutation<void, ApproveLeaveRequest>({
@@ -106,7 +115,8 @@ export const leaveApi = createApi({
 export const {
   useAllLeaveQuery,
   useCreateLeaveMutation,
-  useGetLeaveByIdQuery,
+  useGetLeaveDetailQuery,
   useUpdateLeaveMutation,
+  useDeleteLeaveMutation,
   useApproveLeaveMutation,
 } = leaveApi;

@@ -69,7 +69,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
           </Table.Td>
           <Table.Td style={{ width: "5%", paddingRight: "1.5rem" }}>
             <EmployeeActions
-              id={item.work?.employee_id}
+              id={item.uid}
               name={item.personal?.name}
               department={item.work?.department?.name}
               designation={item.work?.designation?.name}

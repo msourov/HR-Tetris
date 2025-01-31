@@ -1,18 +1,11 @@
+import { Select, Button, Modal, Textarea } from "@mantine/core";
 import {
-  Loader,
-  Popover,
-  Select,
-  Button,
-  Modal,
-  Textarea,
-} from "@mantine/core";
-import {
-  useAllOvertimeQuery,
+  useGetAllOvertimeQuery,
   useCreateOvertimeMutation,
 } from "../../../features/api/overtimeSlice";
 import ErrorAlert from "../../../components/shared/ErrorAlert";
 import { useState } from "react";
-import { IoFilter, IoPersonCircle } from "react-icons/io5";
+import { IoPersonCircle } from "react-icons/io5";
 import { DateTimePicker } from "@mantine/dates";
 import OvertimeList from "./OvertimeList";
 import { useDisclosure } from "@mantine/hooks";
@@ -22,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useGetEmployeeHelperQuery } from "../../../features/api/employeeSlice";
+import OvertimeLeaveSkeleton from "../../../components/shared/skeletons/OvertimeLeaveSkeleton";
 
 const schema = z.object({
   purpose: z.string().min(1, "Purpose is required"),
@@ -43,7 +37,6 @@ type FormData = z.infer<typeof schema>;
 const Overtime = () => {
   const [modalOpened, { open: modalOpen, close: modalClose }] =
     useDisclosure(false);
-  const [opened, setOpened] = useState(false);
   const [query, setQuery] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -56,7 +49,8 @@ const Overtime = () => {
     end_time: undefined as string | undefined,
   });
   const { data: employees } = useGetEmployeeHelperQuery();
-  const { data, isLoading, error, refetch } = useAllOvertimeQuery(searchParams);
+  const { data, isLoading, error, refetch } =
+    useGetAllOvertimeQuery(searchParams);
   const [createOvertime, { isLoading: isCreating }] =
     useCreateOvertimeMutation();
 
@@ -78,12 +72,15 @@ const Overtime = () => {
       }))
     : [];
 
-  if (isLoading || isCreating)
+  if (isLoading)
     return (
-      <div className="w-full flex items-center justify-center">
-        <Loader size="sm" />
+      <div className="w-full h-full flex flex-col gap-4 my-8 mx-12">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <OvertimeLeaveSkeleton key={index} />
+        ))}
       </div>
     );
+
   if (error) return <ErrorAlert message="Error fetching overtime" />;
 
   const handleSearch = () => {
@@ -95,7 +92,6 @@ const Overtime = () => {
     };
     setSearchParams(newParams);
     refetch();
-    setOpened(false);
   };
 
   const onSubmit = async (data: FormData) => {
@@ -135,107 +131,78 @@ const Overtime = () => {
 
   return (
     <div className="w-[85%] mx-auto rounded-lg px-4">
-      <div className="flex justify-end gap-6 items-center mt-6 mb-2 mr-4">
+      <div className="flex flex-row-reverse justify-between gap-6 items-center mt-6 mb-2 mr-4">
         <Button
           variant="filled"
           color="orange"
           size="compact-sm"
-          className="w-[80px]"
+          className="w-[80px] border border-orange-300 text-sm"
           onClick={modalOpen}
+          disabled={isCreating}
         >
           Add
         </Button>
-        <Popover
-          opened={opened}
-          onChange={setOpened}
-          width={300}
-          position="bottom"
-          withArrow
-          shadow="md"
-        >
-          <Popover.Target>
-            <Button
-              leftSection={<IoFilter />}
-              size="compact-sm"
-              color="white"
-              bg="black"
-              c="white"
-              variant="outline"
-              onClick={() => setOpened((o) => !o)}
-            >
-              Filter
-            </Button>
-          </Popover.Target>
-          <Popover.Dropdown bg="var(--mantine-color-body)">
+
+        <div className="flex items-center gap-4">
+          <div className="flex gap-2">
             <DateTimePicker
-              variant="filled"
               valueFormat="DD MMM YYYY hh:mm A"
               placeholder="Pick Start Date"
               popoverProps={{ withinPortal: false }}
               value={startDate}
               onChange={setStartDate}
-              className="mb-2"
             />
             <DateTimePicker
-              variant="filled"
               valueFormat="DD MMM YYYY hh:mm A"
               placeholder="Pick End Date"
               popoverProps={{ withinPortal: false }}
               value={endDate}
               onChange={setEndDate}
-              className="mb-2"
             />
             <Select
-              variant="filled"
               placeholder="Select Status"
               comboboxProps={{ withinPortal: false }}
               data={["pending", "approved", "rejected"]}
               value={query}
               onChange={(value) => setQuery(value)}
             />
-            <div className="flex justify-end gap-2 mt-4">
-              <Button
-                variant="default"
-                size="compact-sm"
-                onClick={handleSearch}
-              >
-                Apply
-              </Button>
-              <Button
-                variant="default"
-                size="compact-sm"
-                onClick={() => {
-                  setQuery(null);
-                  setStartDate(null);
-                  setEndDate(null);
-                  setSearchParams({
-                    ...searchParams,
-                    is_approved: undefined,
-                    start_time: undefined,
-                    end_time: undefined,
-                  });
-                }}
-              >
-                Clear
-              </Button>
-              <Button
-                variant="default"
-                size="compact-sm"
-                c="red"
-                onClick={() => setOpened(false)}
-              >
-                Close
-              </Button>
-            </div>
-          </Popover.Dropdown>
-        </Popover>
+          </div>
+          <div className="flex gap-2 my-auto">
+            <Button
+              variant="filled"
+              color="blue"
+              size="compact-sm"
+              onClick={handleSearch}
+            >
+              Apply
+            </Button>
+            <Button
+              variant="default"
+              size="compact-sm"
+              onClick={() => {
+                setQuery(null);
+                setStartDate(null);
+                setEndDate(null);
+                setSearchParams({
+                  ...searchParams,
+                  is_approved: undefined,
+                  start_time: undefined,
+                  end_time: undefined,
+                });
+              }}
+            >
+              Clear
+            </Button>
+          </div>
+        </div>
       </div>
       <>
         {data && Array.isArray(data?.data) && data?.data.length > 0 ? (
           <OvertimeList data={data?.data ?? []} />
         ) : (
-          // <OvertimeTable />
-          <p className="text-center">No data found</p>
+          <p className="text-center text-gray-500 mt-12 text-lg">
+            No data found
+          </p>
         )}
       </>
       <Modal opened={modalOpened} onClose={modalClose} withCloseButton={false}>
@@ -289,7 +256,13 @@ const Overtime = () => {
           />
 
           <div className="flex justify-end gap-4">
-            <Button type="submit" variant="filled" color="blue" mt="md">
+            <Button
+              type="submit"
+              variant="filled"
+              color="blue"
+              mt="md"
+              disabled={isCreating}
+            >
               Submit
             </Button>
             <Button

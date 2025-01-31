@@ -1,14 +1,19 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
-import { OvertimeResponse, ApproveOvertimeRequest, Response } from "./typesOld";
 import { tagTypes } from "./tags";
+import {
+  ApproveOvertimeRequest,
+  OvertimeDetail,
+  OvertimeResponse,
+} from "../types/overtime";
+import { Response } from "../types/shared";
 
 export const overtimeApi = createApi({
   reducerPath: "overtimeApi",
   baseQuery: baseQuery,
   tagTypes: [tagTypes.OVERTIME],
   endpoints: (builder) => ({
-    allOvertime: builder.query<
+    getAllOvertime: builder.query<
       OvertimeResponse,
       {
         page: number;
@@ -42,6 +47,15 @@ export const overtimeApi = createApi({
             ]
           : [{ type: "Overtime", id: "LIST" }],
     }),
+    getOvertimeDetail: builder.query<OvertimeDetail, { uid: string }>({
+      query: ({ uid }) => ({
+        url: `overtime/${uid}`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, { uid }) => [
+        { type: "Overtime", id: uid },
+      ],
+    }),
     createOvertime: builder.mutation<
       Response,
       {
@@ -72,7 +86,8 @@ export const overtimeApi = createApi({
 });
 
 export const {
-  useAllOvertimeQuery,
+  useGetAllOvertimeQuery,
+  useGetOvertimeDetailQuery,
   useCreateOvertimeMutation,
   useApproveOvertimeMutation,
 } = overtimeApi;

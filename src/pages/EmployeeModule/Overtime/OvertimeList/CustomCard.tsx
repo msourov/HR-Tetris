@@ -5,6 +5,7 @@ import { useDisclosure } from "@mantine/hooks";
 import OvertimeReviewModal from "./ReviewModal";
 import dayjs from "dayjs";
 import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
+import useFormatDate from "../../../../services/utils/useFormatDate";
 
 interface OvertimeData {
   employee_id: string;
@@ -32,9 +33,10 @@ const CustomCard: React.FC<OvertimeData> = ({
   is_approved,
 }: OvertimeData) => {
   const [opened, { open, close }] = useDisclosure(false);
+  const { formatDate } = useFormatDate();
 
-  const formattedStartDate = dayjs(start_time).format("MMM D, YYYY");
-  const formattedEndDate = dayjs(end_time).format("MMM D, YYYY");
+  const formattedStartDate = formatDate(start_time);
+  const formattedEndDate = formatDate(end_time);
   const formattedStartTime = dayjs(start_time).format("h:mm A");
   const formattedEndTime = dayjs(end_time).format("h:mm A");
 
@@ -47,30 +49,32 @@ const CustomCard: React.FC<OvertimeData> = ({
         {dayjs(start_time).isSame(dayjs(end_time), "day") ? (
           <div className="flex flex-col text-gray-600 mt-2">
             <Text className="text-sm">
-              <Pill className="text-sm mb-2 text-blue-500">
+              <Pill className="text-sm mb-2 text-blue-500 font-mono">
                 {formattedStartDate}
               </Pill>
             </Text>
             <Text className="text-sm font-medium">
-              <Pill className="text-sm text-gray-600">
+              <Pill className="text-sm text-gray-600 font-mono">
                 {formattedStartTime}
               </Pill>
               <Text span c="blue" className="font-bold w-10">
                 {" "}
                 -{" "}
               </Text>
-              <Pill className="text-sm text-gray-600">{formattedEndTime}</Pill>
+              <Pill className="text-sm text-gray-600 font-mono">
+                {formattedEndTime}
+              </Pill>
             </Text>
           </div>
         ) : (
           <div className="flex flex-col text-gray-600 mt-2">
             <Text className="text-sm">
-              <Pill className="text-sm mb-2 text-blue-500">
+              <Pill className="text-sm mb-2 text-blue-500 font-mono">
                 {formattedStartDate} - {formattedEndDate}
               </Pill>
             </Text>
             <Text className="text-sm">
-              <Pill className="text-sm mb-2 text-blue-500">
+              <Pill className="text-sm mb-2 text-blue-500 font-mono">
                 {formattedStartTime} - {formattedEndTime}
               </Pill>
             </Text>
