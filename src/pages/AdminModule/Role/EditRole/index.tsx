@@ -7,10 +7,9 @@ import { EditRoleRequest } from "../../../../features/api/typesOld";
 import { useEffect } from "react";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import {
-  useEditRoleMutation,
-  useGetRoleDetailQuery,
-} from "../../../../features/api/roleSlice";
+import { useEditRoleMutation } from "../../../../features/api/roleSlice";
+import { Role } from "../../../../features/types/role";
+import { ErrorResponse } from "react-router-dom";
 
 type Permissions = {
   label: string;
@@ -34,6 +33,7 @@ interface EditRoleProps {
   id: string;
   name: string;
   closeModal: () => void;
+  roleData: Role;
 }
 
 const schema = z.object({
@@ -96,12 +96,6 @@ const initialValues: Permissions[] = [
     key: randomId(),
   },
   {
-    label: "Employee Management",
-    name: "employee_management",
-    checked: false,
-    key: randomId(),
-  },
-  {
     label: "Inventory Management",
     name: "inventory_management",
     checked: false,
@@ -121,9 +115,8 @@ const initialValues: Permissions[] = [
   },
 ];
 
-const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
+const EditRole = ({ id: uid, name, closeModal, roleData }: EditRoleProps) => {
   const [values, handlers] = useListState(initialValues);
-  const { data: getRoleDetail, isLoading } = useGetRoleDetailQuery({ uid });
   const [editRole] = useEditRoleMutation();
   const {
     register,
@@ -143,20 +136,19 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
   const activeStatus = watch("status");
 
   useEffect(() => {
-    if (getRoleDetail) {
+    if (roleData) {
       const rolePermissions = initialValues.map((permission) => ({
         ...permission,
         checked:
-          getRoleDetail.data.access[
-            permission.name as keyof typeof getRoleDetail.data.access
-          ] === "a",
+          roleData.access[permission.name as keyof typeof roleData.access] ===
+          "a",
       }));
 
       handlers.setState(rolePermissions);
       setValue("permissions", rolePermissions);
-      setValue("status", getRoleDetail.data.active);
+      setValue("status", roleData.active);
     }
-  }, [getRoleDetail, setValue]);
+  }, [roleData, setValue]);
 
   const prepareEditRoleData = (
     permissions: Permissions[]
@@ -186,10 +178,10 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
       }),
     };
     try {
-      await editRole(editData).unwrap();
+      const response = await editRole(editData).unwrap();
       notifications.show({
         title: "Success!",
-        message: "Succesfully updated role",
+        message: response.message || "Succesfully updated role",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
@@ -197,7 +189,7 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
     } catch (error) {
       notifications.show({
         title: "Error!",
-        message: "Couldn't update role",
+        message: (error as ErrorResponse).data.detail || "Couldn't update role",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
@@ -228,10 +220,6 @@ const EditRole = ({ id: uid, name, closeModal }: EditRoleProps) => {
       }
     />
   ));
-
-  if (isLoading) {
-    return <>Loading...</>;
-  }
 
   return (
     <Paper withBorder shadow="md" radius="md" p="md">

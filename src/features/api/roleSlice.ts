@@ -1,14 +1,13 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
+import { tagTypes } from "./tags";
 import {
   CreateRoleRequest,
   EditRoleRequest,
-  Request,
-  Response,
   RoleDetailResponse,
   RoleResponse,
-} from "./typesOld";
-import { tagTypes } from "./tags";
+} from "../types/role";
+import { Request, Response } from "../types/shared";
 
 export const roleApi = createApi({
   reducerPath: "roleApi",

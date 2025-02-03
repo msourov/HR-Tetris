@@ -1,12 +1,15 @@
-import { Button, Loader, Menu, Modal } from "@mantine/core";
+import { Button, Loader, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import EditRole from "../EditRole";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import { useDeleteRoleMutation } from "../../../../features/api/roleSlice";
+import {
+  useDeleteRoleMutation,
+  useGetRoleDetailQuery,
+} from "../../../../features/api/roleSlice";
+import { Role } from "../../../../features/types/role";
 
 interface RoleActionProps {
   name: string;
@@ -17,12 +20,13 @@ interface RoleActionProps {
 const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
   const [editOpened, { open: openEdit, close: closeEdit }] =
     useDisclosure(false);
+  const { data: roleDetail, isLoading: isDetailLoading } =
+    useGetRoleDetailQuery({ uid: id }, { skip: !editOpened });
+
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
   const [deleteRole, { isLoading }] = useDeleteRoleMutation();
-  const closeModal = () => {
-    closeEdit();
-  };
+
   const DeleteRole = async () => {
     try {
       const response = await deleteRole({ id }).unwrap();
@@ -55,54 +59,80 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
     );
   }
 
+  console.log(roleDetail);
+
   return (
     <>
-      <Menu transitionProps={{ transition: "rotate-right", duration: 150 }}>
-        <Menu.Target>
-          <button disabled={disabled}>
-            <BiDotsVerticalRounded style={{ opacity: disabled ? 0.4 : 1 }} />
-          </button>
-        </Menu.Target>
-        <Menu.Dropdown>
-          {/* <Menu.Item leftSection={<IoEyeOutline />}>View</Menu.Item> */}
-          <Menu.Item leftSection={<CiEdit />} onClick={openEdit}>
-            Edit
-          </Menu.Item>
-          <Menu.Item
-            leftSection={<MdDeleteOutline />}
-            className="text-red-600"
-            onClick={openDelete}
-          >
-            Delete
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
-      <Modal.Root opened={editOpened} onClose={closeEdit} centered>
-        <Modal.Overlay className="bg-opacity-15" />
-        <Modal.Content>
-          <Modal.Header>
-            <Modal.Title>Edit Role</Modal.Title>
-            <Modal.CloseButton />
-          </Modal.Header>
-          <Modal.Body>
-            <EditRole id={id} name={name} closeModal={closeModal} />
-          </Modal.Body>
-        </Modal.Content>
-      </Modal.Root>
+      <div className="flex items-center gap-3 text-gray-600">
+        <button
+          onClick={openEdit}
+          disabled={disabled}
+          className={`
+            p-1.5 rounded-md transition-all
+            text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700
+            disabled:text-gray-400 disabled:bg-transparent disabled:cursor-not-allowed
+          `}
+        >
+          <CiEdit className="w-5 h-5" />
+        </button>
+
+        <button
+          onClick={openDelete}
+          disabled={disabled}
+          className={`
+            p-1.5 rounded-md transition-all
+            text-red-600 hover:bg-red-50 hover:text-red-700
+            disabled:text-gray-400 disabled:bg-transparent disabled:cursor-not-allowed
+          `}
+        >
+          <MdDeleteOutline className="w-5 h-5" />
+        </button>
+      </div>
+
+      <Modal opened={editOpened} onClose={closeEdit} title="Edit Role">
+        {isDetailLoading ? (
+          <div className="flex justify-center p-4">
+            <Loader type="dots" />
+          </div>
+        ) : (
+          <EditRole
+            id={id}
+            name={name}
+            closeModal={closeEdit}
+            roleData={roleDetail?.data ?? ({} as Role)}
+          />
+        )}
+      </Modal>
+
       <Modal
         opened={deleteOpened}
         onClose={closeDelete}
+        withCloseButton={false}
         centered
-        className="text-center"
       >
-        <p>Are you sure you want to delete?</p>
-        <div className="flex gap-2 justify-center mt-4">
-          <Button color="red" onClick={DeleteRole}>
-            Confirm
-          </Button>
-          <Button color="gray" onClick={closeDelete}>
-            Cancel
-          </Button>
+        <div className="space-y-4 text-center">
+          <p className="text-gray-600">
+            Are you sure you want to delete{" "}
+            <span className="font-semibold">{name}</span>?
+          </p>
+          <div className="flex gap-3 justify-center">
+            <Button
+              color="red"
+              onClick={DeleteRole}
+              loading={isLoading}
+              className="px-6"
+            >
+              Delete
+            </Button>
+            <Button
+              variant="outline"
+              color="gray"
+              onClick={closeDelete}
+              className="px-6"
+            >
+              Cancel
+            </Button>
+          </div>
         </div>
       </Modal>
     </>

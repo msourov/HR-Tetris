@@ -20,7 +20,7 @@ const AppPageHeader: React.FC<PageHeaderProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname.split("/");
-  const pageType = ["add", "edit", "attendance"].includes(
+  const pageType = ["add", "edit", "attendance", "home-office"].includes(
     path[path.length - 1].split("-")[0]
   );
 

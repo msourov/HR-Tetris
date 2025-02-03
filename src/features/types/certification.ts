@@ -1,4 +1,4 @@
-import { getDataResponse, PaginatedApiResponse } from "./shared";
+import { getDataResponse, Log, PaginatedApiResponse } from "./shared";
 
 export interface Certification {
   id: number;
@@ -10,11 +10,7 @@ export interface Certification {
   apply_date: string;
   is_active: boolean;
   is_approved: "pending" | "approved" | "rejected";
-  logs: {
-    admin: string;
-    message: string;
-    create_at: string;
-  }[];
+  logs: Log | Log[];
   create_at: string;
   update_at: string;
 }
@@ -30,6 +26,13 @@ export interface CertificationApprovalPayload {
   uid: string;
   is_approved: "approved" | "rejected";
   reject_purpose: string;
+}
+
+export interface UpdateCertificationPayload {
+  uid: string;
+  purpose: string;
+  certification_type: string;
+  active: boolean;
 }
 
 export interface AllCertificationsResponse

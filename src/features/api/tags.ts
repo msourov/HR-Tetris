@@ -15,4 +15,5 @@ export const tagTypes = {
   CONSUMABLE: "Consumable",
   CERTIFICATION: "Certification",
   ATTENDANCE: "Attendance",
+  HOME_OFFICE: "Home_office",
 };

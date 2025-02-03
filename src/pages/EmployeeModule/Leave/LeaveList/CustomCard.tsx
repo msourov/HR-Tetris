@@ -17,7 +17,6 @@ interface LeaveData {
 }
 
 const CustomCard: React.FC<LeaveData> = ({
-  employee_id,
   employee_name,
   uid,
   purpose,
@@ -131,7 +130,7 @@ const CustomCard: React.FC<LeaveData> = ({
         title={
           <p className="text-gray-400">
             Reviewing Leave Request of employee{" "}
-            <span className="text-blue-500 font-bold">{employee_id}</span>
+            <span className="text-blue-500 font-thin">{employee_name}</span>
           </p>
         }
       >

@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { ErrorResponse, useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -16,30 +16,26 @@ import {
 import { IconX, IconCheck } from "@tabler/icons-react";
 
 import { notifications } from "@mantine/notifications";
-import {
-  useEditUserMutation,
-  useGetUserDetailQuery,
-} from "../../../../features/api/userSlice";
+import { useEditUserMutation } from "../../../../features/api/userSlice";
 import { useGetRolesQuery } from "../../../../features/api/roleSlice";
-import ErrorAlert from "../../../../components/shared/ErrorAlert";
+import { User } from "../../../../features/types/user";
 
 const schema = z.object({
   active: z.boolean(),
-  name: z.string().min(2),
-  // role: z.string().uuid(), for production
-  role: z.string(), // for testing
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  role: z.string().min(1, "Role is required"),
 });
 
 type EditUserRequest = z.infer<typeof schema>;
 
-const EditUser = () => {
-  const { uid } = useParams();
+interface EditUserProps {
+  id: string;
+  closeModal: () => void;
+  userData?: User;
+}
+
+const EditUser = ({ id, closeModal, userData }: EditUserProps) => {
   const [editUser, { isLoading }] = useEditUserMutation();
-  const {
-    data: userDetail,
-    isLoading: isLoadingDetail,
-    error: detailError,
-  } = useGetUserDetailQuery({ uid });
   const {
     data: roles,
     isLoading: isLoadingRoles,
@@ -54,6 +50,7 @@ const EditUser = () => {
       })),
     [roles]
   );
+  console.log(userData);
 
   const {
     register,
@@ -64,36 +61,41 @@ const EditUser = () => {
     formState: { errors },
   } = useForm<EditUserRequest>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      name: userData?.name || "",
+      role: userData?.role_id || "",
+      active: userData?.active || false,
+    },
   });
 
   useEffect(() => {
-    if (userDetail?.data) {
+    if (userData) {
       reset({
-        ...userDetail.data,
-        name: userDetail?.data[0]?.name || "",
-        role: userDetail.data[0]?.role_id || "", // Ensure role_id is set
-        active: userDetail.data[0]?.active || false,
+        name: userData.name || "",
+        role: userData.role_id || "",
+        active: userData.active || false,
       });
     }
-  }, [userDetail, reset]);
+  }, [userData, reset]);
 
   const onSubmit: SubmitHandler<EditUserRequest> = async (
     data: EditUserRequest
   ) => {
     try {
-      const obj = { ...data, uid };
-      await editUser(obj).unwrap();
+      const obj = { ...data, uid: id };
+      const response = await editUser(obj).unwrap();
       notifications.show({
         title: "Success!",
-        message: "Succesfully updated user",
+        message: response.message || "Succesfully updated user",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
       });
     } catch (error) {
+      console.error(error);
       notifications.show({
         title: "Error!",
-        message: "Couldn't update user",
+        message: (error as ErrorResponse).data.detail || "Couldn't update user",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
@@ -104,20 +106,6 @@ const EditUser = () => {
   const activeValue = watch("active");
   const roleIdValue = watch("role");
 
-  if (isLoadingDetail || isLoadingRoles) {
-    return <>Loading...</>;
-  }
-
-  if (detailError || rolesError) {
-    return (
-      <ErrorAlert
-        message={
-          rolesError ? "Error fetching roles" : "Error fetching user detail"
-        }
-      />
-    );
-  }
-
   return (
     <Paper withBorder radius="md" p="md">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -127,28 +115,22 @@ const EditUser = () => {
           error={errors.name?.message as React.ReactNode}
         />
         <Select
-          label="Select role"
+          label="User role"
           data={rolesOption}
-          value={roleIdValue} // Set the current value of the select
-          onChange={(value) => {
-            if (value) {
-              setValue("role", value);
-            }
-          }}
+          value={roleIdValue || ""}
+          onChange={(value) => setValue("role", value || "")}
           error={errors.role?.message as React.ReactNode}
           mt={8}
         />
+
         <Text c="dimmed" className="mt-6 mb-2">
           Set Status
         </Text>
         <Box className="max-w-20">
           <Switch
             size="lg"
-            // onLabel="Disable"
-            // offLabel="Activate"
             color="black"
-            {...register("active")}
-            checked={activeValue}
+            checked={activeValue} // Controlled value
             onChange={(e) => setValue("active", e.currentTarget.checked)}
           />
         </Box>

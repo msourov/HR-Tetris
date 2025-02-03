@@ -16,6 +16,7 @@ import {
   CertificationLayout,
   CertificationTable,
   Company,
+  CreateHomeOffice,
   Dashboard,
   DepartmentDetail,
   DepartmentLayout,
@@ -34,6 +35,8 @@ import {
   EmplyeeTable,
   ErrorPage,
   HolidayLayout,
+  HomeOfficeLayout,
+  HomeOfficeTable,
   Leave,
   Login,
   ManagePolicy,
@@ -399,6 +402,36 @@ export const router = createBrowserRouter([
                 element: (
                   <Suspense fallback={loader}>
                     <AddCertification />
+                  </Suspense>
+                ),
+              },
+            ],
+          },
+          {
+            path: "home-office",
+            element: (
+              <Suspense fallback={loader}>
+                <HomeOfficeLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: <HomeOfficeTable />,
+              },
+              {
+                path: ":id",
+                element: (
+                  <Suspense fallback={loader}>
+                    {/* <HomeOfficeDetail uid="some-uid" closeModal={() => {}} /> */}
+                  </Suspense>
+                ),
+              },
+              {
+                path: "create",
+                element: (
+                  <Suspense fallback={loader}>
+                    <CreateHomeOffice />
                   </Suspense>
                 ),
               },

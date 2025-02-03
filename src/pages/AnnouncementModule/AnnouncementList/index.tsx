@@ -127,14 +127,14 @@ const AnnouncementList = () => {
             component="a"
             withBorder
             maw={450}
-            className="text-center flex-auto max-w-full overflow-hidden gap-2 cursor-pointer"
+            className="text-center flex-auto max-w-full overflow-hidden gap-2 cursor-pointer bg-gray-50"
             onClick={() => {
               setSelectedAnnouncement(selectedAnnouncement);
               open();
             }}
           >
             <div className="flex justify-between">
-              <p className="font-medium text-lg truncate">
+              <p className="font-medium text-lg truncate text-gray-600">
                 {selectedAnnouncement?.name}
               </p>
               <p className="text-right">
@@ -146,12 +146,15 @@ const AnnouncementList = () => {
               {selectedAnnouncement?.descriptions}
             </p>
 
-            <div className="flex justify-between">
-              <p className="text-left text-sm">
-                Created By {selectedAnnouncement?.creator_name}
+            <div className="flex justify-between text-gray-400">
+              <p className="text-left text-sm ">
+                Created By{" "}
+                <span className="text-blue-400">
+                  {selectedAnnouncement?.creator_name}
+                </span>
               </p>
               <p className="text-left">
-                <Pill size="sm" className="text-gray-500">
+                <Pill size="sm" className="text-white bg-orange-400">
                   {selectedAnnouncement?.department_name}
                 </Pill>
               </p>

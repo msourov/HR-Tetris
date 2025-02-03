@@ -6,6 +6,7 @@ export interface Leave {
   employee_id: string;
   employee_name: string;
   purpose: string;
+  reject_purpose: string;
   leave_type: string;
   leave_preiod: string;
   leave_start_date: string;

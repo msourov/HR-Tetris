@@ -28,6 +28,18 @@ export interface ApproveOvertimeRequest {
   reject_purpose?: string;
 }
 
+export interface CreateOvertime {
+  purpose: string;
+  employee_id: string;
+  start_time: string;
+  end_time: string;
+}
+
+export interface UpdateOvertime extends CreateOvertime {
+  uid: string;
+  amount: number;
+}
+
 export interface OvertimeDetail extends getDataResponse<Overtime> {}
 
 export interface OvertimeResponse

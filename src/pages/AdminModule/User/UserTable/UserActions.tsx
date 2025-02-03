@@ -7,7 +7,12 @@ import { MdDeleteOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import { useDeleteUserMutation } from "../../../../features/api/userSlice";
+import {
+  useDeleteUserMutation,
+  useGetUserDetailQuery,
+} from "../../../../features/api/userSlice";
+import EditUser from "../EditUser";
+import ErrorAlert from "../../../../components/shared/ErrorAlert";
 
 interface RoleActionProps {
   id: string;
@@ -15,11 +20,17 @@ interface RoleActionProps {
 
 const UserActions: React.FC<RoleActionProps> = ({ id }) => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [editOpened, { open: openEdit, close: closeEdit }] =
+    useDisclosure(false);
+
+  const {
+    data: userDetail,
+    isLoading: isLoadingDetail,
+    error: detailError,
+  } = useGetUserDetailQuery({ uid: id });
+
   const [deleteUser, { isLoading }] = useDeleteUserMutation();
   const navigate = useNavigate();
-  //   const closeModal = () => {
-  //     close();
-  //   };
 
   const DeleteUser = async () => {
     try {
@@ -53,9 +64,10 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
     );
   }
 
-  // if (error) {
-  //   return <div>Error</div>;
-  // }
+  if (detailError) {
+    return <ErrorAlert message="Error fetching user detail" />;
+  }
+
   return (
     <>
       <Menu transitionProps={{ transition: "rotate-right", duration: 150 }}>
@@ -71,10 +83,7 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
           >
             View
           </Menu.Item>
-          <Menu.Item
-            leftSection={<CiEdit />}
-            onClick={() => navigate(`${id}/edit`)}
-          >
+          <Menu.Item leftSection={<CiEdit />} onClick={openEdit}>
             Edit
           </Menu.Item>
           <Menu.Item
@@ -84,21 +93,21 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
           >
             Delete
           </Menu.Item>
-          {/* {popoverOpen && (
-            <Popover.Dropdown>
-              <div>
-                <Text>Are you sure you want to delete?</Text>
-                <Button color="red" onClick={() => console.log("Deleted")}>
-                  Confirm
-                </Button>
-                <Button color="gray" onClick={() => setPopoverOpen(false)}>
-                  Cancel
-                </Button>
-              </div>
-            </Popover.Dropdown>
-          )} */}
         </Menu.Dropdown>
       </Menu>
+      <Modal opened={editOpened} onClose={closeEdit} title="Edit User">
+        {isLoadingDetail ? (
+          <div className="flex justify-center p-4">
+            <Loader type="dots" />
+          </div>
+        ) : (
+          <EditUser
+            id={id}
+            closeModal={closeEdit}
+            userData={userDetail?.data[0]}
+          />
+        )}
+      </Modal>
       <Modal opened={opened} onClose={close} centered className="text-center">
         <p>Are you sure you want to delete?</p>
         <div className="flex gap-2 justify-center mt-4">

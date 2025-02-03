@@ -65,34 +65,6 @@ const EmployeeActions: React.FC<EmplyeeActionProp> = ({
   }
   return (
     <>
-      {/* <Menu transitionProps={{ transition: "rotate-right", duration: 150 }}>
-        <Menu.Target>
-          <button>
-            <BiDotsVerticalRounded />
-          </button>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item
-            leftSection={<IoEyeOutline />}
-            onClick={() => navigate(`${id}/detail`)}
-          >
-            View
-          </Menu.Item>
-          <Menu.Item
-            leftSection={<CiEdit />}
-            onClick={() => navigate(`${id}/edit-employee`)}
-          >
-            Edit
-          </Menu.Item>
-          <Menu.Item
-            leftSection={<MdDeleteOutline />}
-            className="text-red-600"
-            onClick={openDelete}
-          >
-            Delete
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu> */}
       <div className="flex items-center gap-2 text-gray-600">
         <button
           onClick={() => navigate(`${id}/detail`)}

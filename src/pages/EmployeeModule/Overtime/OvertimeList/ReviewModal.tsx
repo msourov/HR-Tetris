@@ -113,7 +113,7 @@ const OvertimeReviewModal: React.FC<OvertimeReviewModalProps> = ({
       />
       <Group justify="flex-end">
         <Button
-          variant="outline"
+          variant="filled"
           size="compact-md"
           color="green"
           className="text-sm"

@@ -6,6 +6,7 @@ import OvertimeReviewModal from "./ReviewModal";
 import dayjs from "dayjs";
 import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
 import useFormatDate from "../../../../services/utils/useFormatDate";
+import OvertimeDetail from "../OvertimeDetail";
 
 interface OvertimeData {
   employee_id: string;
@@ -33,6 +34,9 @@ const CustomCard: React.FC<OvertimeData> = ({
   is_approved,
 }: OvertimeData) => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [viewOvertimeOpened, { open: viewOpen, close: viewClose }] =
+    useDisclosure(false);
+
   const { formatDate } = useFormatDate();
 
   const formattedStartDate = formatDate(start_time);
@@ -45,7 +49,7 @@ const CustomCard: React.FC<OvertimeData> = ({
       {/* Left section (80%) */}
       <div className="w-5/6 pr-4">
         <Text className="text-lg font-semibold">{employee_name}</Text>
-        <Text className="mt-2 text-gray-700">{purpose}</Text>
+        <Text className="mt-2 text-gray-500">{purpose}</Text>
         {dayjs(start_time).isSame(dayjs(end_time), "day") ? (
           <div className="flex flex-col text-gray-600 mt-2">
             <Text className="text-sm">
@@ -85,18 +89,37 @@ const CustomCard: React.FC<OvertimeData> = ({
       {/* Right section (20%) */}
       <div className="w-1/6 flex flex-col items-end justify-start gap-4">
         <AppApprovalStatus status={is_approved} />
-        {is_approved === "pending" && (
+        <div className="mt-auto flex flex-col gap-2">
+          {is_approved === "pending" && (
+            <Button
+              onClick={open}
+              variant="filled"
+              color="blue"
+              size="compact-sm"
+            >
+              Review
+            </Button>
+          )}
           <Button
-            onClick={open}
             variant="filled"
             color="blue"
+            w={70}
             size="compact-sm"
+            fw={500}
+            onClick={viewOpen}
           >
-            Review
+            View
           </Button>
-        )}
+        </div>
       </div>
-
+      <Modal
+        opened={viewOvertimeOpened}
+        withCloseButton={false}
+        onClose={viewClose}
+        size="xl"
+      >
+        <OvertimeDetail uid={uid} closeModal={viewClose} />
+      </Modal>
       <Modal
         opened={opened}
         onClose={close}

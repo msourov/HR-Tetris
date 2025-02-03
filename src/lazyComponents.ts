@@ -119,3 +119,16 @@ export const CertificationDetail = lazy(
 export const AddCertification = lazy(
   () => import("./pages/EmployeeModule/Certification/AddCertification")
 );
+
+export const HomeOfficeLayout = lazy(
+  () => import("./pages/EmployeeModule/HomeOffice")
+);
+export const HomeOfficeTable = lazy(
+  () => import("./pages/EmployeeModule/HomeOffice/HomeOfficeTable")
+);
+export const HomeOfficeDetail = lazy(
+  () => import("./pages/EmployeeModule/HomeOffice/HomeOfficeDetail")
+);
+export const CreateHomeOffice = lazy(
+  () => import("./pages/EmployeeModule/HomeOffice/CreateHomeOffice")
+);

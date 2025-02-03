@@ -46,3 +46,9 @@ export interface AccessPermissions {
   anouncement_management: string;
   recruitment_management: string;
 }
+
+export interface ApproveRequest {
+  uid: string;
+  is_approved: string;
+  reject_purpose: string;
+}

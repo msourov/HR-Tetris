@@ -6,11 +6,11 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../services/auth/useAuth";
 import { Leave, Overtime } from "../../features/api/typesOld";
 import { useAllLeaveQuery } from "../../features/api/leaveSlice";
-import { useAllOvertimeQuery } from "../../features/api/overtimeSlice";
 import { lazy, Suspense } from "react";
 import { IoCloudOffline } from "react-icons/io5";
 import { MdNetworkCell } from "react-icons/md";
 import { IoIosPeople } from "react-icons/io";
+import { useGetAllOvertimeQuery } from "../../features/api/overtimeSlice";
 
 const LeaveSection = lazy(() => import("./LeaveSection"));
 const OvertimeSection = lazy(() => import("./OvertimeSection"));
@@ -43,7 +43,7 @@ const Dashboard = () => {
     data: overtimeData,
     isLoading: overtimeLoading,
     error: overtimeError,
-  } = useAllOvertimeQuery({
+  } = useGetAllOvertimeQuery({
     page: 1,
     limit: 10,
   });

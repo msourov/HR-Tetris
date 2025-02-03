@@ -6,6 +6,7 @@ import {
   CertificationApprovalPayload,
   CertificationCreatePayload,
   CertificationResponse,
+  UpdateCertificationPayload,
 } from "../types/certification";
 import { Response } from "../types/shared";
 
@@ -59,7 +60,30 @@ export const certificationApi = createApi({
         invalidatesTags: [{ type: "Certification", id: "LIST" }],
       }
     ),
+    updateCertification: builder.mutation<Response, UpdateCertificationPayload>(
+      {
+        query: (data) => ({
+          url: "certifications/update",
+          method: "PUT",
+          body: data,
+        }),
+        invalidatesTags: (_result, _error, { uid }) => [
+          { type: "Certification", id: uid },
+          { type: "Certification", id: "LIST" },
+        ],
+      }
+    ),
 
+    deleteCertification: builder.mutation<Response, { uid: string }>({
+      query: ({ uid }) => ({
+        url: `certifications/delete/${uid}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_result, _error, { uid }) => [
+        { type: "Certification", id: uid },
+        { type: "Certification", id: "LIST" },
+      ],
+    }),
     approveCertification: builder.mutation<
       Response,
       CertificationApprovalPayload
@@ -81,5 +105,7 @@ export const {
   useGetCertificationsQuery,
   useGetCertificationDetailQuery,
   useCreateCertificationMutation,
+  useUpdateCertificationMutation,
+  useDeleteCertificationMutation,
   useApproveCertificationMutation,
 } = certificationApi;

@@ -3,13 +3,12 @@ import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
 import {
   AllShiftResponse,
-  Request,
-  Response,
   ShiftCreateRequest,
   ShiftDetailResponse,
   ShiftHelper,
   ShiftUpdateRequest,
-} from "./typesOld";
+} from "../types/shift";
+import { Request, Response } from "../types/shared";
 
 export const shiftApi = createApi({
   reducerPath: "shiftScheduleApi",

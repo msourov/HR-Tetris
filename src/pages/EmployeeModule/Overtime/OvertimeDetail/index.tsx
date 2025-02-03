@@ -6,14 +6,13 @@ import {
   Card,
   Group,
   Text,
-  TextInput,
-  Textarea,
   Button,
   Divider,
   Timeline,
   Pill,
   Loader,
   ScrollArea,
+  Textarea,
 } from "@mantine/core";
 import {
   IconUser,
@@ -24,48 +23,48 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
-
 import { DatePickerInput } from "@mantine/dates";
 import { ErrorResponse } from "react-router-dom";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import {
-  useDeleteLeaveMutation,
-  useGetLeaveDetailQuery,
-  useUpdateLeaveMutation,
-} from "../../../../features/api/leaveSlice";
+  useDeleteOvertimeMutation,
+  useGetOvertimeDetailQuery,
+  useUpdateOvertimeMutation,
+} from "../../../../features/api/overtimeSlice";
 import { Log } from "../../../../features/types/shared";
 
 // Define the schema
-const leaveSchema = z
-  .object({
-    leave_type: z.string().min(1, "Leave type is required"),
-    purpose: z.string().min(1, "Purpose is required"),
-    leave_preiod: z.string().min(1, "Leave period is required"),
-    leave_start_date: z.date({ required_error: "Start date is required" }),
-    leave_end_date: z.date({ required_error: "End date is required" }),
-  })
-  .refine((data) => data.leave_end_date > data.leave_start_date, {
-    message: "End date must be later than start date",
-    path: ["leave_end_date"],
-  });
+const overtimeSchema = z.object({
+  purpose: z.string().min(1, "Purpose is required"),
+  start_time: z.date({ required_error: "Start time is required" }),
+  end_time: z.date({ required_error: "End time is required" }),
+});
 
-const LeaveDetail = ({
+const OvertimeDetail = ({
   uid,
   closeModal,
 }: {
   uid: string;
   closeModal: () => void;
 }) => {
-  const { data, isLoading, error, refetch } = useGetLeaveDetailQuery({ uid });
-  const [updateLeave, { isLoading: updateLoading }] = useUpdateLeaveMutation();
-  const [deleteLeave, { isLoading: deleteLoading }] = useDeleteLeaveMutation();
+  const { data, isLoading, error, refetch } = useGetOvertimeDetailQuery({
+    uid,
+  });
+  const [updateOvertime, { isLoading: updateLoading }] =
+    useUpdateOvertimeMutation();
+  const [deleteOvertime, { isLoading: deleteLoading }] =
+    useDeleteOvertimeMutation();
+
   const { formatDate } = useFormatDate();
   const [isEditing, setIsEditing] = useState(false);
-  const [date, setDate] = useState<[Date | null, Date | null]>([null, null]);
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
 
-  const leaveData = data?.data
+  const overtimeData = data?.data
     ? Array.isArray(data.data)
       ? data.data[0]
       : data.data
@@ -79,56 +78,48 @@ const LeaveDetail = ({
     reset,
     formState: { errors },
   } = useForm<{
-    leave_type: string;
     purpose: string;
-    leave_preiod: string;
-    leave_start_date: Date;
-    leave_end_date: Date;
+    start_time: Date;
+    end_time: Date;
   }>({
-    resolver: zodResolver(leaveSchema),
+    resolver: zodResolver(overtimeSchema),
   });
 
   useEffect(() => {
-    if (leaveData) {
+    if (overtimeData) {
       reset({
-        leave_type: leaveData.leave_type || "",
-        purpose: leaveData.purpose || "",
-        leave_preiod: leaveData.leave_preiod || "",
-        leave_start_date: new Date(leaveData.leave_start_date),
-        leave_end_date: new Date(leaveData.leave_end_date),
+        purpose: overtimeData.purpose || "",
+        start_time: new Date(overtimeData.start_time),
+        end_time: new Date(overtimeData.end_time),
       });
-      setDate([
-        leaveData.leave_start_date
-          ? new Date(leaveData.leave_start_date)
-          : null,
-        leaveData.leave_end_date ? new Date(leaveData.leave_end_date) : null,
+      setDateRange([
+        overtimeData.start_time ? new Date(overtimeData.start_time) : null,
+        overtimeData.end_time ? new Date(overtimeData.end_time) : null,
       ]);
     }
-  }, [leaveData, reset]);
+  }, [overtimeData, reset]);
 
   const handleEditSubmit = async (formData: {
-    leave_type: string;
     purpose: string;
-    leave_preiod: string;
-    leave_start_date: Date;
-    leave_end_date: Date;
+    start_time: Date;
+    end_time: Date;
   }) => {
     try {
-      if (!leaveData?.uid || !leaveData?.employee_id) {
+      if (!overtimeData?.uid || !overtimeData?.employee_id) {
         throw new Error("UID or Employee ID is missing");
       }
       const payload = {
         ...formData,
-        uid: leaveData.uid,
-        leave_start_date: date[0] ? date[0].toISOString() : "",
-        leave_end_date: date[1] ? date[1].toISOString() : "",
+        uid: overtimeData.uid,
+        start_time: dateRange[0] ? dateRange[0].toISOString() : "",
+        end_time: dateRange[1] ? dateRange[1].toISOString() : "",
+        employee_id: overtimeData.employee_id,
         amount: 0,
-        employee_id: leaveData.employee_id,
       };
-      const response = await updateLeave(payload).unwrap();
+      const response = await updateOvertime(payload).unwrap();
       notifications.show({
         title: "Success!",
-        message: response.message || "Leave updated successfully",
+        message: response.message || "Overtime updated successfully",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
@@ -141,7 +132,7 @@ const LeaveDetail = ({
         title: "Error!",
         message:
           (error as ErrorResponse)?.data?.detail ||
-          "An error occurred while updating leave",
+          "An error occurred while updating overtime",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
@@ -149,16 +140,17 @@ const LeaveDetail = ({
     }
   };
 
-  const handleDeleteLeave = async () => {
+  const handleDeleteOvertime = async () => {
     try {
-      if (!leaveData?.uid) {
+      if (!overtimeData?.uid) {
         throw new Error("UID is missing");
       }
-      const response = await deleteLeave({ id: leaveData.uid }).unwrap();
-      console.log(response);
+      const response = await deleteOvertime({
+        overtime_id: overtimeData.uid,
+      }).unwrap();
       notifications.show({
         title: "Success!",
-        message: response.message || "Leave deleted successfully",
+        message: response.message || "Overtime deleted successfully",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
@@ -170,7 +162,7 @@ const LeaveDetail = ({
         title: "Error!",
         message:
           (error as ErrorResponse)?.data?.detail ||
-          "An error occurred while deleting leave",
+          "An error occurred while deleting overtime",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
@@ -186,24 +178,24 @@ const LeaveDetail = ({
     );
   }
 
-  if (error) return <ErrorAlert message="Error fetching leave detail" />;
+  if (error) return <ErrorAlert message="Error fetching overtime detail" />;
 
-  if (!leaveData) return <ErrorAlert message="No leave data found" />;
+  if (!overtimeData) return <ErrorAlert message="No overtime data found" />;
 
   return (
     <Card withBorder radius="md" p="xl" className="max-w-2xl mx-auto">
       <Group justify="space-between" mb="md">
         <div>
           <Text fz="xl" fw={700}>
-            Leave Request
+            Overtime Request
           </Text>
           <Text c="dimmed" fz="sm">
-            Created: {formatDate(leaveData.create_at)}
+            Created: {formatDate(overtimeData.create_at)}
           </Text>
         </div>
         <Group>
-          <AppApprovalStatus status={leaveData?.is_approved} />
-          {leaveData?.is_approved === "pending" && (
+          <AppApprovalStatus status={overtimeData?.is_approved} />
+          {overtimeData?.is_approved === "pending" && (
             <Button
               variant="subtle"
               color="yellow"
@@ -225,35 +217,40 @@ const LeaveDetail = ({
               EID
             </Text>
             <Pill bg="grape" c="white" size="md">
-              {leaveData.employee_id}
+              {overtimeData.employee_id}
             </Pill>
           </Group>
 
           <Group gap="xs">
             <IconInfoCircle size={16} className="text-green-500" />
             <Text fw={500} c="dimmed" size="sm">
-              Leave Type
+              Purpose
             </Text>
             {isEditing ? (
-              <TextInput
+              <Textarea
+                autoFocus
+                autosize
+                minRows={2}
+                maxRows={8}
                 variant="filled"
-                value={watch("leave_type") || ""}
-                {...register("leave_type")}
+                value={watch("purpose") || ""}
+                {...register("purpose")}
                 onChange={(e) =>
-                  setValue("leave_type", e.target.value, {
+                  setValue("purpose", e.target.value, {
                     shouldValidate: true,
                   })
                 }
-                error={errors.leave_type?.message}
+                error={errors.purpose?.message}
+                className="w-[100%]"
               />
             ) : (
-              <Text className="border px-2 bg-gray-100 text-gray-600">
-                {leaveData.leave_type}
+              <Text className="border px-2 py-1 bg-gray-100 text-gray-600">
+                {overtimeData.purpose}
               </Text>
             )}
           </Group>
 
-          <Group mt={20} className="flex justify-between">
+          <Group className="flex justify-between">
             <Group gap="xs">
               {isEditing ? (
                 <DatePickerInput
@@ -270,83 +267,37 @@ const LeaveDetail = ({
                   onError={(error) => {
                     if (error) {
                       return (
-                        errors.leave_start_date?.message ||
-                        errors.leave_end_date?.message
+                        errors.start_time?.message || errors.end_time?.message
                       );
                     }
                   }}
-                  value={date}
-                  onChange={setDate}
+                  value={dateRange}
+                  onChange={setDateRange}
                 />
               ) : (
-                <Text className="font-mono bg-blue-100 text-blue-800 rounded-lg px-2">
-                  {formatDate(leaveData.leave_start_date)} -{" "}
-                  {formatDate(leaveData.leave_end_date)}
-                </Text>
+                <div className="">
+                  <div className="flex items-center gap-2">
+                    <IconCalendar size={16} className="text-blue-500" />
+                    <Text fw={500} c="dimmed" size="sm">
+                      Date
+                    </Text>
+                  </div>
+                  <Text className="font-mono bg-blue-100 text-blue-800 rounded-lg px-2">
+                    {formatDate(overtimeData.start_time)} -{" "}
+                    {formatDate(overtimeData.end_time)}
+                  </Text>
+                </div>
               )}
             </Group>
-
-            {isEditing ? (
-              <TextInput
-                variant="filled"
-                description={<p className="text-sm">Period</p>}
-                value={watch("leave_preiod")}
-                {...register("leave_preiod")}
-                onChange={(e) =>
-                  setValue("leave_preiod", e.target.value, {
-                    shouldValidate: true,
-                  })
-                }
-                error={errors.leave_preiod?.message}
-              />
-            ) : (
-              <Pill className="text-sm text-white bg-sky-500">
-                {leaveData.leave_preiod}
-              </Pill>
-            )}
           </Group>
 
-          <Divider
-            label={<Text size="sm">Purpose</Text>}
-            labelPosition="left"
-          />
-          {isEditing ? (
-            <Textarea
-              variant="filled"
-              autosize
-              minRows={2}
-              maxRows={6}
-              value={watch("purpose")}
-              {...register("purpose")}
-              error={errors.purpose?.message}
-            />
-          ) : (
-            <Text c="grape" className="border px-2 py-2 bg-gray-100" size="sm">
-              {leaveData.purpose}
-            </Text>
-          )}
-          {leaveData.is_approved === "rejected" && (
-            <div className="items-center space-y-2 gap-2 border py-2 px-2 bg-red-100">
-              <Text className="text-sm text-red-500">Rejection Reason</Text>
-              <Text className="px-2 py-1 border bg-white">
-                {leaveData.reject_purpose}
-              </Text>
-            </div>
-          )}
-
-          <Divider
-            label="Activity Log"
-            labelPosition="center"
-            mx={"auto"}
-            w={"90%"}
-          />
-
-          <ScrollArea.Autosize mah={220} className="space-y-4 bg-gray-100 p-2">
-            {leaveData.logs && (
+          <ScrollArea.Autosize mah={220} className="space-y-4">
+            {overtimeData.logs ? (
               <>
-                <Timeline active={1} bulletSize={24} lineWidth={2} mt={10}>
-                  {Array.isArray(leaveData.logs) ? (
-                    leaveData.logs.map((log: Log, index: number) => (
+                <Divider label="Activity Log" labelPosition="left" />
+                <Timeline active={1} bulletSize={24} lineWidth={2}>
+                  {Array.isArray(overtimeData.logs) ? (
+                    overtimeData.logs.map((log: Log, index: number) => (
                       <Timeline.Item
                         key={index}
                         bullet={<IconUser size={12} />}
@@ -367,47 +318,73 @@ const LeaveDetail = ({
                   ) : (
                     <Timeline.Item
                       bullet={<IconUser size={12} />}
-                      title={`Created by ${leaveData.logs.admin}`}
+                      title={`Created by ${overtimeData.logs.admin}`}
                     >
                       <Text c="dimmed" size="sm">
-                        {leaveData.logs.message}
+                        {overtimeData.logs.message}
                       </Text>
                       <Text
                         size="sm"
                         mt={4}
                         className="font-mono  text-blue-400"
                       >
-                        {formatDate(leaveData.logs.create_at, true)}
+                        {formatDate(overtimeData.logs.create_at, true)}
                       </Text>
                     </Timeline.Item>
                   )}
-
-                  {/* <Timeline.Item
-                    bullet={<IconUser size={12} />}
-                    title={`Created by ${
-                      Array.isArray(leaveData.logs)
-                        ? leaveData.logs[0].admin
-                        : leaveData.logs.admin
-                    }`}
-                  >
-                    <Text c="dimmed" size="sm">
-                      {Array.isArray(leaveData.logs)
-                        ? leaveData.logs[0].message
-                        : leaveData.logs.message}
-                    </Text>
-                    <Text size="sm" mt={4} className="font-mono">
-                      {Array.isArray(leaveData.logs)
-                        ? formatDate(leaveData.logs[0].create_at)
-                        : formatDate(leaveData.logs.create_at, true)}
-                    </Text>
-                  </Timeline.Item> */}
                 </Timeline>
               </>
+            ) : (
+              <li className="text-center py-6 text-gray-500">
+                No activity logs available
+              </li>
             )}
           </ScrollArea.Autosize>
         </div>
 
-        <Group justify="flex-end" mt="xl">
+        <div className="flex gap-2 my-8 float-right">
+          {isEditing && overtimeData?.is_approved === "pending" ? (
+            <>
+              <Button
+                variant="outline"
+                color="gray"
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="filled"
+                color="blue"
+                loading={updateLoading}
+              >
+                Save Changes
+              </Button>
+            </>
+          ) : (
+            <Group justify="flex-end" mt="xl">
+              <Button
+                variant="filled"
+                color="red"
+                onClick={handleDeleteOvertime}
+                className="mt-4"
+                disabled={deleteLoading}
+              >
+                Delete
+              </Button>
+              <Button
+                variant="outline"
+                color="blue"
+                onClick={closeModal}
+                className="mt-4"
+              >
+                Close
+              </Button>
+            </Group>
+          )}
+        </div>
+
+        {/* <Group justify="flex-end" mt="xl">
           {isEditing ? (
             <>
               <Button
@@ -431,7 +408,7 @@ const LeaveDetail = ({
               <Button
                 variant="filled"
                 color="red"
-                onClick={handleDeleteLeave}
+                onClick={handleDeleteOvertime}
                 className="mt-4"
                 disabled={deleteLoading}
               >
@@ -447,10 +424,10 @@ const LeaveDetail = ({
               </Button>
             </Group>
           )}
-        </Group>
+        </Group> */}
       </form>
     </Card>
   );
 };
 
-export default LeaveDetail;
+export default OvertimeDetail;
