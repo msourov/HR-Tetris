@@ -115,7 +115,7 @@ const AnnouncementList = () => {
   };
 
   return (
-    <div className="mt-6">
+    <div className="mt-6 py-6">
       <SimpleGrid
         cols={{ sm: 2, md: 2, xl: 3 }}
         spacing={{ base: 10, sm: "xl" }}
@@ -127,14 +127,14 @@ const AnnouncementList = () => {
             component="a"
             withBorder
             maw={450}
-            className="text-center flex-auto max-w-full overflow-hidden gap-2 cursor-pointer bg-gray-50"
+            className="text-center border-blue-200 flex-auto max-w-full overflow-hidden gap-2 cursor-pointer bg-gray-50"
             onClick={() => {
               setSelectedAnnouncement(selectedAnnouncement);
               open();
             }}
           >
             <div className="flex justify-between">
-              <p className="font-medium text-lg truncate text-gray-600">
+              <p className="font-semibold truncate text-gray-600">
                 {selectedAnnouncement?.name}
               </p>
               <p className="text-right">

@@ -35,11 +35,12 @@ const DepartmentList = () => {
       >
         {departmentData?.data?.map((item) => (
           <Card
+            key={item?.uid}
             component="a"
             withBorder
             maw={250}
             className="text-center flex-auto max-w-full overflow-hidden py-6 gap-2 cursor-pointer"
-            onClick={() => navigate(`${item?.name}/detail`)}
+            onClick={() => navigate(`${item?.uid}/detail`)}
           >
             <p className="font-medium text-md truncate">{item?.name}</p>
             {/* <Card.Section className="flex py-4 px-2 justify-end"> */}

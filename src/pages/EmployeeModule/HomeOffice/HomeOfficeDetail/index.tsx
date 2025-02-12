@@ -241,18 +241,19 @@ const HomeOfficeDetail = ({ uid, closeModal }: HomeOfficeDetailProps) => {
 
               {/* Purpose */}
               <div className="text-gray-500 font-medium">Purpose:</div>
-              {isEditing ? (
-                <Textarea
-                  variant="filled"
-                  autosize
-                  minRows={2}
-                  maxRows={10}
-                  {...register("purpose")}
-                  error={errors.purpose?.message?.toString()}
-                />
-              ) : (
+              {/* {isEditing ? ( */}
+              <Textarea
+                variant="filled"
+                autosize
+                minRows={2}
+                maxRows={10}
+                {...register("purpose")}
+                readOnly={!isEditing}
+                error={errors.purpose?.message?.toString()}
+              />
+              {/* ) : (
                 <Text>{homeOfficeDetail?.data?.purpose || "N/A"}</Text>
-              )}
+              )} */}
 
               {/* Start Date */}
               <div className="text-gray-500 font-medium">Start Date:</div>

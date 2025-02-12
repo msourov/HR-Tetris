@@ -47,7 +47,9 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
               setCurrentUid(item.uid);
             }}
           >
-            <Table.Td style={{ width: "5%" }}>{index + 1}</Table.Td>
+            <Table.Td style={{ width: "5%", paddingBlock: "0.5rem" }}>
+              {index + 1}
+            </Table.Td>
             <Table.Td style={{ width: "10%" }} className="text-sm">
               {item.employee_name || "N/A"}
             </Table.Td>

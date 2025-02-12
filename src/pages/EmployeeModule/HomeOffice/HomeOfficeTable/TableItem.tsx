@@ -57,7 +57,9 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
               setCurrentUid(item.uid);
             }}
           >
-            <Table.Td style={{ width: "5%" }}>{index + 1}</Table.Td>
+            <Table.Td style={{ width: "5%", paddingBlock: "0.75rem" }}>
+              {index + 1}
+            </Table.Td>
             <Table.Td style={{ width: "20%" }} className="text-sm">
               {item.employee_name || "N/A"}
             </Table.Td>
@@ -65,7 +67,10 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
               {item.employee_id || "N/A"}
             </Table.Td>
             <Table.Td style={{ width: "25%" }}>
-              <Text lineClamp={3} className="text-sm">
+              <Text
+                lineClamp={3}
+                className="text-sm bg-white w-fit px-2 rounded-lg border"
+              >
                 {item.purpose || "N/A"}
               </Text>
             </Table.Td>

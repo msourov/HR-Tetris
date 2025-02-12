@@ -6,6 +6,8 @@ import {
   Loader,
   ScrollArea,
   Divider,
+  Tabs,
+  Button,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import {
@@ -18,6 +20,8 @@ import PDFViewer from "./PDFViewer";
 import { AllPolicy } from "../../../../features/api/typesOld";
 import PolicyCard from "./PolicyCard";
 import axios from "axios";
+import { IoTextSharp } from "react-icons/io5";
+import { FaRegFileAlt } from "react-icons/fa";
 
 interface PolicyModalProps {
   opened: boolean;
@@ -109,59 +113,76 @@ const PolicyList = () => {
   return (
     <Box className="mt-6">
       <Divider
-        my="xs"
-        label={<p className="text-lg text-blue-400">Text Policies</p>}
+        label={
+          <Text className="font-bold text-xl text-gray-500">Policies</Text>
+        }
         labelPosition="center"
+        className="my-6"
       />
-      <SimpleGrid
-        cols={{ base: 1, sm: 2, md: 3, xl: 4 }}
-        spacing={{ base: 10, sm: "xl" }}
-        verticalSpacing={{ base: "md", sm: "xl" }}
-      >
-        {policyTexts?.map((item) => (
-          <PolicyCard
-            key={item?.id}
-            item={item}
-            onClick={handlePolicyDetail}
-            isFile={false}
-          />
-        ))}
+      <Tabs variant="outline" defaultValue="text">
+        <Tabs.List>
+          <Tabs.Tab value="text" leftSection={<IoTextSharp />}>
+            Text
+          </Tabs.Tab>
+          <Tabs.Tab value="file" leftSection={<FaRegFileAlt />}>
+            Files
+          </Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="text" className="p-6">
+          <SimpleGrid
+            cols={{ base: 1, sm: 2, md: 3 }}
+            spacing={{ base: 10, sm: "xl" }}
+            verticalSpacing={{ base: "md", sm: "xl" }}
+          >
+            {policyTexts?.map((item) => (
+              <div key={item?.id} className="flex justify-center bg-gray-200">
+                <PolicyCard
+                  key={item.id}
+                  item={item}
+                  onClick={handlePolicyDetail}
+                  isFile={false}
+                />
+              </div>
+            ))}
+          </SimpleGrid>
+        </Tabs.Panel>
+        <Tabs.Panel value="file" className="p-4 my-6">
+          <SimpleGrid
+            cols={{ base: 1, sm: 2, md: 3 }}
+            spacing={{ base: 10, sm: "xl" }}
+            verticalSpacing={{ base: "md", sm: "xl" }}
+          >
+            {policyFiles?.map((item) => (
+              <div
+                key={item?.id}
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                <PolicyCard
+                  key={item?.id}
+                  item={item}
+                  onClick={handleDownload}
+                  isFile={true}
+                />
+              </div>
+            ))}
+          </SimpleGrid>
+        </Tabs.Panel>
+      </Tabs>
 
-        <PolicyModal
-          opened={opened}
-          onClose={() => setOpened(false)}
-          policyDetail={
-            policyDetail && "data" in policyDetail
-              ? {
-                  data: Array.isArray(policyDetail.data)
-                    ? policyDetail.data[0]
-                    : policyDetail.data,
-                }
-              : null
-          }
-          policyDetailLoading={policyDetailLoading}
-        />
-      </SimpleGrid>
-      <Divider
-        my="xs"
-        mt="xl"
-        label={<p className="text-lg text-blue-400">Policy Files</p>}
-        labelPosition="center"
+      <PolicyModal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        policyDetail={
+          policyDetail && "data" in policyDetail
+            ? {
+                data: Array.isArray(policyDetail.data)
+                  ? policyDetail.data[0]
+                  : policyDetail.data,
+              }
+            : null
+        }
+        policyDetailLoading={policyDetailLoading}
       />
-      <SimpleGrid
-        cols={{ base: 1, sm: 2, md: 3, xl: 4 }}
-        spacing={{ base: 10, sm: "xl" }}
-        verticalSpacing={{ base: "md", sm: "xl" }}
-      >
-        {policyFiles?.map((item) => (
-          <PolicyCard
-            key={item?.id}
-            item={item}
-            onClick={handleDownload}
-            isFile={true}
-          />
-        ))}
-      </SimpleGrid>
     </Box>
   );
 };
@@ -175,13 +196,13 @@ const PolicyModal: React.FC<PolicyModalProps> = ({
   policyDetailLoading,
 }) => {
   return (
-    <Modal opened={opened} onClose={onClose} size="80%">
+    <Modal opened={opened} onClose={onClose} size="80%" withCloseButton={false}>
       {policyDetailLoading ? (
-        <Loader />
+        <Loader type="dots" />
       ) : !policyDetail?.data?.descriptions ? (
         <PDFViewer uid={policyDetail?.data?.uid} />
       ) : (
-        <ScrollArea className="lg:px-10 sm:px-6 lg:max-h-[70vh] sm:h-[80vh]">
+        <ScrollArea className="lg:px-10 sm:px-6 lg:max-h-[60vh] sm:h-[80vh]">
           <Divider
             my="xs"
             label={
@@ -196,9 +217,13 @@ const PolicyModal: React.FC<PolicyModalProps> = ({
               __html:
                 policyDetail?.data?.descriptions || "No description available",
             }}
-            className="description-content bg-gray-100 p-4"
+            className="description-content bg-gray-100 p-4 mt-4"
           />
-          <Text size="sm" color="dimmed" className="mt-6">
+          <Text
+            size="sm"
+            color="white"
+            className="mt-6 bg-gray-400 w-fit px-4 py-1 rounded-md"
+          >
             {policyDetail?.data?.logs?.message} by{" "}
             {policyDetail?.data?.logs?.admin} on{" "}
             {policyDetail?.data?.logs?.create_at
@@ -207,6 +232,11 @@ const PolicyModal: React.FC<PolicyModalProps> = ({
           </Text>
         </ScrollArea>
       )}
+      <div className="flex justify-end mr-10">
+        <Button variant="outline" color="blue" onClick={onClose}>
+          Close
+        </Button>
+      </div>
     </Modal>
   );
 };

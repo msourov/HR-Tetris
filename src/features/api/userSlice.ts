@@ -15,7 +15,7 @@ import { Request, Response } from "../types/shared";
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: baseQuery,
-  tagTypes: [tagTypes.USER],
+  tagTypes: [tagTypes.USER, tagTypes.PROFILE],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (data) => ({
@@ -101,6 +101,36 @@ export const userApi = createApi({
         body: data,
       }),
     }),
+    showProfileImage: builder.query<string, { mobile: string }>({
+      query: ({ mobile }) => ({
+        url: `role-user/show/file/${mobile}`,
+        method: "GET",
+        responseHandler: async (response) => {
+          const blob = await response.blob();
+          return URL.createObjectURL(blob);
+        },
+      }),
+      providesTags: (_result, _error, { mobile }) => [
+        { type: tagTypes.PROFILE, id: mobile },
+      ],
+    }),
+
+    uploadProfile: builder.mutation<Response, FormData>({
+      query: (formData) => {
+        return {
+          url: "role-user/upload",
+          method: "POST",
+          body: formData,
+          headers: {
+            
+          }
+        };
+      },
+      invalidatesTags: (_result, _error, formData) => {
+        const mobile = formData.get("mobile") as string;
+        return [{ type: tagTypes.PROFILE, id: mobile }];
+      },
+    }),
   }),
 });
 
@@ -112,4 +142,6 @@ export const {
   useEditUserMutation,
   useDeleteUserMutation,
   useChangeOwnPasswordMutation,
+  useShowProfileImageQuery,
+  useUploadProfileMutation,
 } = userApi;

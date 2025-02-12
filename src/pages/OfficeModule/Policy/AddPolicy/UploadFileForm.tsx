@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ContextModalProps } from "@mantine/modals";
 import axios, { AxiosError } from "axios";
 import { getToken } from "../../../../services/utils/getToken";
+import { MdOutlineFileUpload } from "react-icons/md";
 
 const schema = z.object({
   name: z.string().min(2),
@@ -132,7 +133,11 @@ const UploadPolicyFile = ({ context, id }: UploadPolicyFileProps) => {
             accept="image/png,image/jpeg,application/pdf"
           >
             {(props) => (
-              <Button {...props} bg="orange">
+              <Button
+                variant="outline"
+                {...props}
+                leftSection={<MdOutlineFileUpload size={20} />}
+              >
                 Upload file
               </Button>
             )}

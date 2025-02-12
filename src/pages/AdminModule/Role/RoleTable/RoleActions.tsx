@@ -59,8 +59,6 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
     );
   }
 
-  console.log(roleDetail);
-
   return (
     <>
       <div className="flex items-center gap-3 text-gray-600">

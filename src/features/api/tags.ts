@@ -16,4 +16,6 @@ export const tagTypes = {
   CERTIFICATION: "Certification",
   ATTENDANCE: "Attendance",
   HOME_OFFICE: "Home_office",
+  PROFILE: "Profile",
+  TANGIBLE: "Tangible",
 };

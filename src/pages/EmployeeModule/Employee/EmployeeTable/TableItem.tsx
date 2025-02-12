@@ -29,10 +29,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   return (
     <Table.Tbody className="text-black font-medium border-b bg-gray-100">
       {data.map((item, index) => (
-        <Table.Tr
-          key={item.uid}
-          className="hover:bg-white text-gray-500 font-semibold"
-        >
+        <Table.Tr key={item.uid} className="hover:bg-white text-emerald-950">
           <Table.Td style={{ width: "2%", paddingLeft: "1.5rem" }}>
             {index + 1}
           </Table.Td>

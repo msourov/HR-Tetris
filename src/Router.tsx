@@ -72,9 +72,9 @@ export const router = createBrowserRouter([
     path: "/",
     element: <AppLayout />,
     errorElement: (
-      <Suspense fallback={<Loader type="dots" color="red" size="sm" />}>
-        <ErrorPage />
-      </Suspense>
+      // <Suspense fallback={<Loader type="dots" color="red" size="sm" />}>
+      <ErrorPage />
+      // </Suspense>
     ),
     children: [
       {
@@ -145,7 +145,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: ":uid/edit",
-                element: <EditUser />,
+                element: <EditUser id="" closeModal={() => {}} />,
               },
             ],
           },
@@ -184,7 +184,7 @@ export const router = createBrowserRouter([
               //   ),
               // },
               {
-                path: ":departmentName/detail",
+                path: ":id/detail",
                 element: <DepartmentDetail />,
               },
             ],

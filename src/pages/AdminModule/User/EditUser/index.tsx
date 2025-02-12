@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { ErrorResponse, useParams } from "react-router-dom";
+import { ErrorResponse } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,11 +14,10 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconX, IconCheck } from "@tabler/icons-react";
-
 import { notifications } from "@mantine/notifications";
+import { User } from "../../../../features/types/user";
 import { useEditUserMutation } from "../../../../features/api/userSlice";
 import { useGetRolesQuery } from "../../../../features/api/roleSlice";
-import { User } from "../../../../features/types/user";
 
 const schema = z.object({
   active: z.boolean(),
@@ -38,8 +37,7 @@ const EditUser = ({ id, closeModal, userData }: EditUserProps) => {
   const [editUser, { isLoading }] = useEditUserMutation();
   const {
     data: roles,
-    isLoading: isLoadingRoles,
-    error: rolesError,
+    // isLoading: isLoadingRoles,
   } = useGetRolesQuery({ page: 1, limit: 10 });
 
   const rolesOption = useMemo(
@@ -91,6 +89,7 @@ const EditUser = ({ id, closeModal, userData }: EditUserProps) => {
         color: "green",
         autoClose: 3000,
       });
+      closeModal();
     } catch (error) {
       console.error(error);
       notifications.show({

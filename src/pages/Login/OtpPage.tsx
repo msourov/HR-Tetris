@@ -45,6 +45,7 @@ const OtpPage: React.FC = () => {
           localStorage.removeItem("password");
           localStorage.setItem("role", JSON.stringify(response?.role));
           localStorage.setItem("userId", response.mobile);
+          localStorage.setItem("uid", response.uid);
           localStorage.setItem("name", response.name);
           navigate("/", { replace: true });
         } else {

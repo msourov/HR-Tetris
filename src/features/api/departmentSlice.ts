@@ -1,7 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
-import { DepartmentDetail, DepartmentHelper, DepartmentResponse } from "../types/department";
+import {
+  DepartmentDetailResponse,
+  DepartmentHelper,
+  DepartmentResponse,
+} from "../types/department";
 import { Response } from "../types/shared";
 
 export const departmentApi = createApi({
@@ -29,7 +33,7 @@ export const departmentApi = createApi({
           : [{ type: "Department", id: "LIST" }],
     }),
     getDepartmentDetail: builder.query<
-      DepartmentDetail,
+      DepartmentDetailResponse,
       { uid: string | undefined }
     >({
       query: ({ uid }) => ({

@@ -139,6 +139,7 @@ export interface Logs {
 export interface LoginResponse {
   access_token: string;
   role: AccessPermissions;
+  uid: string;
   mobile: string;
   name: string;
   refresh_token: string;

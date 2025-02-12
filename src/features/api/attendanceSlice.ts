@@ -27,7 +27,7 @@ export const attendanceApi = createApi({
           : [{ type: "Attendance", id: "LIST" }],
     }),
 
-    getAttendance: builder.query<AttendanceResponse, { uid: string }>({
+    getAttendanceDetail: builder.query<AttendanceResponse, { uid: string }>({
       query: ({ uid }) => ({
         url: `attendance/${uid}`,
         method: "GET",
@@ -39,5 +39,5 @@ export const attendanceApi = createApi({
   }),
 });
 
-export const { useGetAllAttendanceQuery, useGetAttendanceQuery } =
+export const { useGetAllAttendanceQuery, useGetAttendanceDetailQuery } =
   attendanceApi;

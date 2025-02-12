@@ -232,7 +232,7 @@ const LeaveDetail = ({
           <Group gap="xs">
             <IconInfoCircle size={16} className="text-green-500" />
             <Text fw={500} c="dimmed" size="sm">
-              Leave Type
+              Type
             </Text>
             {isEditing ? (
               <TextInput
@@ -310,21 +310,17 @@ const LeaveDetail = ({
             label={<Text size="sm">Purpose</Text>}
             labelPosition="left"
           />
-          {isEditing ? (
-            <Textarea
-              variant="filled"
-              autosize
-              minRows={2}
-              maxRows={6}
-              value={watch("purpose")}
-              {...register("purpose")}
-              error={errors.purpose?.message}
-            />
-          ) : (
-            <Text c="grape" className="border px-2 py-2 bg-gray-100" size="sm">
-              {leaveData.purpose}
-            </Text>
-          )}
+
+          <Textarea
+            autosize
+            minRows={2}
+            maxRows={6}
+            readOnly={!isEditing}
+            value={watch("purpose")}
+            {...register("purpose")}
+            error={errors.purpose?.message}
+          />
+
           {leaveData.is_approved === "rejected" && (
             <div className="items-center space-y-2 gap-2 border py-2 px-2 bg-red-100">
               <Text className="text-sm text-red-500">Rejection Reason</Text>

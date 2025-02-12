@@ -12,17 +12,16 @@ interface PolicyCardProps {
 const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
   return (
     <Card
-      padding="lg"
-      radius="md"
       withBorder
-      style={{ display: "flex", flexDirection: "column", height: "100%" }}
+      w={400}
+      className="flex flex-col bg-green-50 px-6 py-4"
       key={item?.id}
     >
-      <Text my="xs" className="w-fit px-2 border-b-2 rounded-md mx-auto">
+      <Text className="w-fit px-2 mx-auto font-bold text-green-900">
         {item?.name}
       </Text>
 
-      <Text size="sm" className="leading-6">
+      <Text size="sm" className="leading-6 my-4 text-gray-500">
         {item?.descriptions?.length > 300 ? (
           <span
             dangerouslySetInnerHTML={{

@@ -5,18 +5,12 @@ import { useAuth } from "../../services/auth/useAuth";
 import { RiSettings2Line } from "react-icons/ri";
 import { FaRegCircleUser } from "react-icons/fa6";
 // import "../../styles.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Topbar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
-
-  const handleProfileClick = () => {
-    navigate("/profile");
-  };
-  const handleSettingsClick = () => {
-    navigate("/settings");
-  };
+  const { pathname } = useLocation();
 
   return (
     <div className="bg-white text-black px-6 flex justify-between items-center border-b-2 relative">
@@ -33,15 +27,31 @@ const Topbar = () => {
               <IconUserFilled color="black" stroke={1} />
             </button>
           </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item leftSection={<FaRegCircleUser />}>
-              <button onClick={handleProfileClick}>Profile</button>
+          <Menu.Dropdown className="bg-white shadow-md rounded-lg text-xs">
+            <Menu.Item
+              leftSection={<FaRegCircleUser size={16} />}
+              onClick={() => navigate("/profile")}
+              className={`cursor-pointer ${
+                pathname === "/profile" ? "text-blue-500" : "text-gray-500"
+              }`}
+            >
+              Profile
             </Menu.Item>
-            <Menu.Item leftSection={<RiSettings2Line />}>
-              <button onClick={handleSettingsClick}>Settings</button>
+            <Menu.Item
+              leftSection={<RiSettings2Line size={16} />}
+              onClick={() => navigate("/settings")}
+              className={`cursor-pointer ${
+                pathname === "/settings" ? "text-blue-500" : "text-gray-500"
+              }`}
+            >
+              Settings
             </Menu.Item>
-            <Menu.Item leftSection={<LuLogOut />}>
-              <button onClick={() => logout()}>Logout</button>
+            <Menu.Item
+              leftSection={<LuLogOut size={16} />}
+              onClick={logout}
+              className="cursor-pointer text-red-500 hover:bg-red-100"
+            >
+              Logout
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
