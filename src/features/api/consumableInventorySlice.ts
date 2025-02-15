@@ -2,7 +2,8 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
 import {
-  Consumable,
+  AllConsumables,
+  ConsumableDetails,
   ConsumableFormParams,
   ConsumablesUpdate,
 } from "../types/inventory";
@@ -13,8 +14,8 @@ export const consumableApi = createApi({
   baseQuery: baseQuery,
   tagTypes: [tagTypes.CONSUMABLE],
   endpoints: (builder) => ({
-    allConsumables: builder.query<
-      Consumable[],
+    getAllConsumables: builder.query<
+      AllConsumables,
       { page: number; limit: number }
     >({
       query: ({ page, limit }) => ({
@@ -25,24 +26,62 @@ export const consumableApi = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ uid }) => ({ type: "Consumable", id: uid })),
+              ...result.data.map(({ uid }) => ({
+                type: "Consumable",
+                id: uid,
+              })),
               { type: "Consumable", id: "LIST" },
             ]
           : [{ type: "Consumable", id: "LIST" }],
     }),
-
-    createConsumable: builder.mutation<Response, ConsumableFormParams>({
-      query: (data) => ({
-        url: "consumables/create",
-        method: "POST",
-        body: data,
+    getConsumableDetails: builder.query<ConsumableDetails, { uid: string }>({
+      query: ({ uid }) => ({
+        url: `consumables/${uid}`,
+        method: "GET",
       }),
+      providesTags: (_result, _error, { uid }) => [
+        { type: "Consumable", id: uid },
+      ],
+    }),
+    createConsumable: builder.mutation<Response, ConsumableFormParams>({
+      query: (data) => {
+        // Destructure file and the rest of the parameters
+        const { file, buyer_at, ...params } = data;
+        const formattedBuyerAt = buyer_at
+          ? new Date(buyer_at).toISOString()
+          : "";
+
+        // Convert parameters to query string
+        const qs = new URLSearchParams(
+          Object.entries({
+            ...params,
+            buyer_at: formattedBuyerAt,
+          }).reduce((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+          }, {} as Record<string, string>)
+        ).toString();
+
+        // Build the request object
+        const request: { url: string; method: string; body?: FormData } = {
+          url: `consumables/create?${qs}`,
+          method: "POST",
+        };
+
+        if (file) {
+          const formData = new FormData();
+          formData.append("file", file);
+          request.body = formData;
+        }
+
+        return request;
+      },
       invalidatesTags: [{ type: "Consumable", id: "LIST" }],
     }),
 
     updateConsumable: builder.mutation<Response, ConsumablesUpdate>({
-      query: ({ uid, ...data }) => ({
-        url: `consumables/update/${uid}`,
+      query: (data) => ({
+        url: `consumables/update`,
         method: "PUT",
         body: data,
       }),
@@ -52,7 +91,7 @@ export const consumableApi = createApi({
     }),
 
     deleteConsumable: builder.mutation<Response, { uid: string }>({
-      query: (uid) => ({
+      query: ({ uid }) => ({
         url: `consumables/delete/${uid}`,
         method: "DELETE",
       }),
@@ -73,7 +112,8 @@ export const consumableApi = createApi({
 });
 
 export const {
-  useAllConsumablesQuery,
+  useGetAllConsumablesQuery,
+  useGetConsumableDetailsQuery,
   useCreateConsumableMutation,
   useUpdateConsumableMutation,
   useDeleteConsumableMutation,

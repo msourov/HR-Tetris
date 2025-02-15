@@ -15,6 +15,9 @@ import { announcementApi } from "./features/api/announcementSlice";
 import { certificationApi } from "./features/api/certificationSlice";
 import { attendanceApi } from "./features/api/attendanceSlice";
 import { homeOfficeApi } from "./features/api/homeOfficeSlice";
+import { tangibleApi } from "./features/api/tangibleInventorySlice";
+import { consumableApi } from "./features/api/consumableInventorySlice";
+import { categoryApi } from "./features/api/categorySlice";
 
 const store = configureStore({
   reducer: {
@@ -34,6 +37,9 @@ const store = configureStore({
     [certificationApi.reducerPath]: certificationApi.reducer,
     [attendanceApi.reducerPath]: attendanceApi.reducer,
     [homeOfficeApi.reducerPath]: homeOfficeApi.reducer,
+    [tangibleApi.reducerPath]: tangibleApi.reducer,
+    [consumableApi.reducerPath]: consumableApi.reducer,
+    [categoryApi.reducerPath]: categoryApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -52,7 +58,10 @@ const store = configureStore({
       announcementApi.middleware,
       certificationApi.middleware,
       attendanceApi.middleware,
-      homeOfficeApi.middleware
+      homeOfficeApi.middleware,
+      tangibleApi.middleware,
+      consumableApi.middleware,
+      categoryApi.middleware
     ),
 });
 

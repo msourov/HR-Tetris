@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 const CertificationLayout = () => {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col">
       <AppPageHeader
         Heading="Certification"
         Breadcrumb={{ module: "Certification Management", page: "List" }}

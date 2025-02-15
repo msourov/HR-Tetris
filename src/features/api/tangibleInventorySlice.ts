@@ -13,27 +13,55 @@ export const tangibleApi = createApi({
   baseQuery: baseQuery,
   tagTypes: [tagTypes.TANGIBLE],
   endpoints: (builder) => ({
-    allTangibles: builder.query<Tangible[], { page: number; limit: number }>({
-      query: ({ page, limit }) => ({
-        url: "tangibles/all",
-        method: "GET",
-        params: { page, limit },
-      }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ uid }) => ({ type: "Tangible", id: uid })),
-              { type: "Tangible", id: "LIST" },
-            ]
-          : [{ type: "Tangible", id: "LIST" }],
+    getAllTangibles: builder.query<Tangible[], { page: number; limit: number }>(
+      {
+        query: ({ page, limit }) => ({
+          url: "tangibles/all",
+          method: "GET",
+          params: { page, limit },
+        }),
+        providesTags: (result) =>
+          result
+            ? [
+                ...result.map(({ uid }) => ({ type: "Tangible", id: uid })),
+                { type: "Tangible", id: "LIST" },
+              ]
+            : [{ type: "Tangible", id: "LIST" }],
+      }
+    ),
+    getTangibleDetails: builder.query<Tangible, { uid: string }>({
+      query: ({ uid }) => ({ url: `tangibles/${uid}`, method: "GET" }),
+      providesTags: (_result, _error, { uid }) => [
+        { type: "Tangible", id: uid },
+      ],
     }),
-
     createTangible: builder.mutation<Response, TangibleFormParams>({
-      query: (data) => ({
-        url: "tangibles/create",
-        method: "POST",
-        body: data,
-      }),
+      query: (data) => {
+        // Destructure file and the rest of the parameters
+        const { file, ...params } = data;
+
+        // Convert parameters to query string
+        const qs = new URLSearchParams(
+          Object.entries(params).reduce((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+          }, {} as Record<string, string>)
+        ).toString();
+
+        // Build the request object
+        const request: { url: string; method: string; body?: FormData } = {
+          url: `tangibles/create?${qs}`,
+          method: "POST",
+        };
+
+        if (file) {
+          const formData = new FormData();
+          formData.append("file", file);
+          request.body = formData;
+        }
+
+        return request;
+      },
       invalidatesTags: [{ type: "Tangible", id: "LIST" }],
     }),
 
@@ -70,7 +98,8 @@ export const tangibleApi = createApi({
 });
 
 export const {
-  useAllTangiblesQuery,
+  useGetAllTangiblesQuery,
+  useGetTangibleDetailsQuery,
   useCreateTangibleMutation,
   useUpdateTangibleMutation,
   useDeleteTangibleMutation,

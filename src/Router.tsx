@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { Suspense } from "react";
 import { Loader } from "@mantine/core";
 import {
+  AddCategory,
   AddCertification,
   AddEmployee,
   AddNewRole,
@@ -12,10 +13,13 @@ import {
   AttendanceTable,
   CandidateDetail,
   Candidates,
+  CategoryLayout,
+  CategoryList,
   CertificationDetail,
   CertificationLayout,
   CertificationTable,
   Company,
+  ConsumablesInventory,
   CreateHomeOffice,
   Dashboard,
   DepartmentDetail,
@@ -50,8 +54,10 @@ import {
   RoleTable,
   ShiftLayout,
   ShiftList,
+  TangiblesInventory,
   TicketLayout,
   TicketList,
+  UpdateCategory,
   User,
   UserDetail,
   UserTable,
@@ -60,6 +66,7 @@ import ProtectedRoute from "./services/auth/ProtectedRoutes";
 import Settings from "./pages/MyAccountModule/Settings";
 import Profile from "./pages/MyAccountModule/Profile";
 import PublicRoute from "./services/auth/PublicRoute";
+import InventoryLayout from "./pages/InventoryModule";
 
 const loader = (
   <div className="flex justify-center items-center">
@@ -438,6 +445,40 @@ export const router = createBrowserRouter([
             ],
           },
           {
+            path: "category",
+            element: (
+              <Suspense fallback={loader}>
+                <CategoryLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: (
+                  <Suspense fallback={loader}>
+                    <CategoryList />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "add-category",
+                element: (
+                  <Suspense fallback={loader}>
+                    <AddCategory />
+                  </Suspense>
+                ),
+              },
+              {
+                path: ":id/edit",
+                element: (
+                  <Suspense fallback={loader}>
+                    <UpdateCategory />
+                  </Suspense>
+                ),
+              },
+            ],
+          },
+          {
             path: "ticket",
             element: (
               <Suspense fallback={loader}>
@@ -474,6 +515,24 @@ export const router = createBrowserRouter([
               {
                 path: ":id/detail",
                 element: <CandidateDetail />,
+              },
+            ],
+          },
+          {
+            path: "inventory",
+            element: (
+              <Suspense fallback={loader}>
+                <InventoryLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                path: "consumables",
+                element: <ConsumablesInventory />,
+              },
+              {
+                path: "tangibles",
+                element: <TangiblesInventory />,
               },
             ],
           },

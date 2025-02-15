@@ -18,4 +18,5 @@ export const tagTypes = {
   HOME_OFFICE: "Home_office",
   PROFILE: "Profile",
   TANGIBLE: "Tangible",
+  CATEGORY: "Category",
 };

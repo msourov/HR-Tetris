@@ -144,6 +144,10 @@ const initialSidebarData = [
         label: "Home Office",
         link: "/home-office",
       },
+      {
+        label: "Category",
+        link: "/category",
+      },
     ],
   },
   {
@@ -151,17 +155,17 @@ const initialSidebarData = [
     icon: <MdOutlineInventory2 />,
     permissionKey: "inventory_management",
     items: [
-      {
-        label: "Issued Equipment",
-        link: "/issued-equipment",
-      },
+      // {
+      //   label: "Issued Equipment",
+      //   link: "/issued-equipment",
+      // },
       {
         label: "Tangible",
-        link: "/tangible",
+        link: "/inventory/tangibles",
       },
       {
         label: "Consumable",
-        link: "/consumable",
+        link: "/inventory/consumables",
       },
     ],
   },

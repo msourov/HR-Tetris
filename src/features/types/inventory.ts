@@ -28,17 +28,17 @@ export interface ConsumableFormParams {
   descriptions?: string;
   buyer_id?: string;
   buyer_at?: string;
+  file?: File;
 }
 
 export interface ConsumablesUpdate {
   uid: string;
   name: string;
   descriptions: string;
-  active: boolean;
   quantity: number;
   price: number;
   buyer_id: string;
-  buyer_at: string;
+  buyer_at: string | null;
 }
 
 // Tangibles
@@ -67,6 +67,7 @@ export interface TangibleFormParams {
   price: number;
   location?: string;
   category?: string;
+  file?: File;
 }
 
 export interface TangibleUpdate {

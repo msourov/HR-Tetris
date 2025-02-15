@@ -132,3 +132,26 @@ export const HomeOfficeDetail = lazy(
 export const CreateHomeOffice = lazy(
   () => import("./pages/EmployeeModule/HomeOffice/CreateHomeOffice")
 );
+
+export const InventoryLayout = lazy(() => import("./pages/InventoryModule"));
+
+export const TangiblesInventory = lazy(
+  () => import("./pages/InventoryModule/TangibleInventory")
+);
+export const ConsumablesInventory = lazy(
+  () => import("./pages/InventoryModule/ConsumableInventory")
+);
+
+// Category
+export const CategoryLayout = lazy(
+  () => import("./pages/EmployeeModule/Category")
+);
+export const CategoryList = lazy(
+  () => import("./pages/EmployeeModule/Category/CategoryList")
+);
+export const AddCategory = lazy(
+  () => import("./pages/EmployeeModule/Category/AddCategory")
+);
+export const UpdateCategory = lazy(
+  () => import("./pages/EmployeeModule/Category/UpdateCategory")
+);

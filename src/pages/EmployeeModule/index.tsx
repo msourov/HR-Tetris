@@ -3,7 +3,7 @@ import AppPageHeader from "../../components/core/AppPageHeader";
 
 const EmployeeLayout = () => {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col">
       <AppPageHeader
         Heading="Employee"
         Breadcrumb={{ module: "Employee Management", page: "List" }}

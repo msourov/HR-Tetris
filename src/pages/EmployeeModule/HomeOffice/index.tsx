@@ -6,7 +6,7 @@ import { IconPlus } from "@tabler/icons-react";
 const HomeOfficeLayout = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col">
       <div className="flex justify-between items-center mb-6 py-4 px-8">
         <div className="space-y-4">
           <Button
