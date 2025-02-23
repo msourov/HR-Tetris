@@ -58,7 +58,7 @@ export interface Tangible {
   logs: Log[];
 }
 
-// export interface AllTangibles extends PaginatedApiResponse<Tangible[] | Tangible> {}
+export interface AllTangibles extends PaginatedApiResponse<Tangible[]> {}
 
 export interface TangibleFormParams {
   name: string;
@@ -81,7 +81,3 @@ export interface TangibleUpdate {
   category: string;
 }
 
-// export interface ConsumableDetails extends getDataResponse<Consumable> {}
-
-// export interface AllTangibles
-//   extends PaginatedApiResponse<Tangible[] | Tangible> {}

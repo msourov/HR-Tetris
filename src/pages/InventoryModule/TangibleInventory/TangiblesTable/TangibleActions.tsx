@@ -2,39 +2,23 @@ import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { CiEdit } from "react-icons/ci";
 import { IoEyeOutline } from "react-icons/io5";
-import { MdDeleteOutline } from "react-icons/md";
+import { MdDeleteOutline, MdDescription } from "react-icons/md";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { ErrorResponse } from "react-router-dom";
 
-import {
-  FaTag,
-  FaDollarSign,
-  FaCube,
-  FaUserCircle,
-  FaCalendarAlt,
-} from "react-icons/fa";
+import { FaTag, FaDollarSign, FaCube, FaCalendarAlt } from "react-icons/fa";
 import React from "react";
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import { useDeleteTangibleMutation } from "../../../../features/api/tangibleInventorySlice";
 import TangibleUpdate from "../TangibleUpdate";
+import { Tangible } from "../../../../features/types/inventory";
 
 // Removed employee deletion mutation since this is for consumables
 // import { useDeleteEmployeeMutation } from "../../../../features/api/employeeSlice";
 
 interface TangibleActionProp {
-  data: {
-    uid: string;
-    name: string;
-    descriptions: string;
-    price: number;
-    quantity: number;
-    active: boolean;
-    buyer_id: string;
-    buyer_at: string | null;
-    extension: string;
-    logs?: { message: string; create_at: string; admin: string }[];
-  };
+  data: Tangible;
 }
 
 const TangibleActions: React.FC<TangibleActionProp> = ({ data }) => {
@@ -102,7 +86,10 @@ const TangibleActions: React.FC<TangibleActionProp> = ({ data }) => {
         opened={viewModalOpened}
         onClose={closeView}
         size="xl"
-        overlayProps={{ blur: 3 }}
+        overlayProps={{
+          backgroundOpacity: 0.55,
+          blur: 3,
+        }}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
           {/* Header Section – full width */}
@@ -152,67 +139,35 @@ const TangibleActions: React.FC<TangibleActionProp> = ({ data }) => {
             </div>
           </div>
 
-          {/* Purchase Information Section */}
           <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
             <div className="flex items-center gap-2 mb-4">
-              <FaUserCircle className="h-5 w-5 text-purple-600" />
-              <h3 className="text-sm font-semibold text-gray-600">
-                Purchase Information
-              </h3>
+              <MdDescription className="h-5 w-5 text-purple-600" />
+              <h3 className="text-sm font-semibold text-gray-600">Details</h3>
             </div>
             <div className="grid grid-cols-1 gap-4">
               <DetailItem
-                label="Buyer ID"
-                value={data.buyer_id || "N/A"}
+                label="Location"
+                value={data.location}
                 valueClassName="font-mono text-sm text-purple-700"
               />
               <DetailItem
-                label="Purchased"
+                label="Category"
+                value={data.category}
+                valueClassName="font-mono text-sm text-purple-700"
+              />
+              <DetailItem
+                label="Created At"
                 value={
-                  data.buyer_at ? (
-                    <div className="flex items-center gap-2">
-                      <FaCalendarAlt className="h-4 w-4 text-gray-400" />
-                      <span className="text-gray-700 text-sm font-mono">
-                        {/* {new Date(data.buyer_at).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })} */}
-                        {formatDate(data.buyer_at, true)}
-                      </span>
-                    </div>
-                  ) : (
-                    <span className="text-gray-400 italic">Not purchased</span>
-                  )
+                  <div className="flex items-center gap-2">
+                    <FaCalendarAlt className="h-4 w-4 text-gray-400" />
+                    <span className="text-gray-700 text-sm font-mono">
+                      {formatDate(data.create_at, true)}
+                    </span>
+                  </div>
                 }
               />
             </div>
           </div>
-
-          {/* Activity Log Section – spans full width if present */}
-          {/* {data.logs && data.logs.length > 0 && (
-            <div className="col-span-full bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-              <h3 className="text-sm font-semibold text-gray-600 mb-4">
-                Activity Log
-              </h3>
-              <div className="space-y-3">
-                {data.logs.map((log, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <div className="flex-none w-8 h-8 bg-gray-50 rounded-full flex items-center justify-center">
-                      <FaUserCircle className="h-4 w-4 text-gray-400" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-gray-800">{log.message}</p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        {new Date(log.create_at).toLocaleString()} by{" "}
-                        {log.admin}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )} */}
         </div>
       </Modal>
 
@@ -244,12 +199,7 @@ const TangibleActions: React.FC<TangibleActionProp> = ({ data }) => {
           >
             Confirm
           </Button>
-          <Button
-            color="gray"
-            onClick={closeDelete}
-            loading={deleteLoading}
-            disabled={deleteLoading}
-          >
+          <Button color="gray" onClick={closeDelete} disabled={deleteLoading}>
             Cancel
           </Button>
         </div>

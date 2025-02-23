@@ -13,6 +13,7 @@ import {
   Loader,
   ScrollArea,
   Textarea,
+  Grid,
 } from "@mantine/core";
 import {
   IconUser,
@@ -183,12 +184,12 @@ const OvertimeDetail = ({
   if (!overtimeData) return <ErrorAlert message="No overtime data found" />;
 
   return (
-    <Card withBorder radius="md" p="xl" className="max-w-2xl mx-auto">
+    <Card radius="md" p="lg" className="max-w-2xl mx-auto">
+      <h1 className="text-xl font-bold text-orange-400 mb-4 text-center">
+        Overtime Request
+      </h1>
       <Group justify="space-between" mb="md">
         <div>
-          <Text fz="xl" fw={700}>
-            Overtime Request
-          </Text>
           <Text c="dimmed" fz="sm">
             Created: {formatDate(overtimeData.create_at)}
           </Text>
@@ -210,22 +211,30 @@ const OvertimeDetail = ({
       </Group>
 
       <form onSubmit={handleSubmit(handleEditSubmit)}>
-        <div className="space-y-4">
-          <Group gap="xs">
-            <IconUser size={16} className="text-blue-500" />
-            <Text fw={500} c="dimmed" size="sm">
-              EID
-            </Text>
+        <Grid gutter="md">
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <Group gap="xs">
+              <IconUser size={16} className="text-blue-500" />
+              <Text fw={500} c="dimmed" size="sm">
+                EID
+              </Text>
+            </Group>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 6 }}>
             <Pill bg="grape" c="white" size="md">
               {overtimeData.employee_id}
             </Pill>
-          </Group>
+          </Grid.Col>
 
-          <Group gap="xs">
-            <IconInfoCircle size={16} className="text-green-500" />
-            <Text fw={500} c="dimmed" size="sm">
-              Purpose
-            </Text>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <Group gap="xs">
+              <IconInfoCircle size={16} className="text-green-500" />
+              <Text fw={500} c="dimmed" size="sm">
+                Purpose
+              </Text>
+            </Group>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 6 }}>
             {isEditing ? (
               <Textarea
                 autoFocus
@@ -244,187 +253,145 @@ const OvertimeDetail = ({
                 className="w-[100%]"
               />
             ) : (
-              <Text className="border px-2 py-1 bg-gray-100 text-gray-600">
+              <Text className="px-3 py-1 bg-gray-100 rounded-md">
                 {overtimeData.purpose}
               </Text>
             )}
-          </Group>
-
-          <Group className="flex justify-between">
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 6 }}>
             <Group gap="xs">
-              {isEditing ? (
-                <DatePickerInput
-                  label={
-                    <div className="flex items-center gap-2">
-                      <IconCalendar size={16} className="text-blue-500" />
-                      <Text fw={500} c="dimmed" size="sm">
-                        Date
-                      </Text>
-                    </div>
-                  }
-                  variant="filled"
-                  type="range"
-                  onError={(error) => {
-                    if (error) {
-                      return (
-                        errors.start_time?.message || errors.end_time?.message
-                      );
-                    }
-                  }}
-                  value={dateRange}
-                  onChange={setDateRange}
-                />
-              ) : (
-                <div className="">
-                  <div className="flex items-center gap-2">
-                    <IconCalendar size={16} className="text-blue-500" />
-                    <Text fw={500} c="dimmed" size="sm">
-                      Date
-                    </Text>
-                  </div>
-                  <Text className="font-mono bg-blue-100 text-blue-800 rounded-lg px-2">
-                    {formatDate(overtimeData.start_time)} -{" "}
-                    {formatDate(overtimeData.end_time)}
-                  </Text>
-                </div>
-              )}
+              <IconCalendar size={16} className="text-blue-500" />
+              <Text fw={500} c="dimmed" size="sm">
+                Dates
+              </Text>
             </Group>
-          </Group>
+          </Grid.Col>
 
-          <ScrollArea.Autosize mah={220} className="space-y-4">
-            {overtimeData.logs ? (
-              <>
-                <Divider label="Activity Log" labelPosition="left" />
-                <Timeline active={1} bulletSize={24} lineWidth={2}>
-                  {Array.isArray(overtimeData.logs) ? (
-                    overtimeData.logs.map((log: Log, index: number) => (
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            {isEditing ? (
+              <DatePickerInput
+                variant="filled"
+                type="range"
+                onError={(error) => {
+                  if (error) {
+                    return (
+                      errors.start_time?.message || errors.end_time?.message
+                    );
+                  }
+                }}
+                value={dateRange}
+                onChange={setDateRange}
+              />
+            ) : (
+              <div className="">
+                <Text className="font-mono bg-blue-100 text-blue-800 rounded-lg px-2">
+                  {formatDate(overtimeData.start_time)} -{" "}
+                  {formatDate(overtimeData.end_time)}
+                </Text>
+              </div>
+            )}
+          </Grid.Col>
+
+          <Grid.Col span={12}>
+            <Divider
+              label="Activity Log"
+              labelPosition="center"
+              mb="lg"
+              className="w-full"
+            />
+            <ScrollArea.Autosize
+              mah={220}
+              className="pr-4 bg-blue-500 rounded-lg p-4"
+            >
+              <Timeline active={1} bulletSize={24} lineWidth={2}>
+                {/* Check if logs exist */}
+                {overtimeData.logs && (
+                  <>
+                    {Array.isArray(overtimeData.logs) ? (
+                      overtimeData.logs.map((log: Log, index: number) => (
+                        <Timeline.Item
+                          key={index}
+                          bullet={<IconUser size={12} />}
+                          title={`${log.admin}`}
+                          className="text-white"
+                        >
+                          <Text size="sm" className="text-gray-300">
+                            {log.message}
+                          </Text>
+                          <Text size="xs" mt={2} c="yellow">
+                            {formatDate(log.create_at, true)}
+                          </Text>
+                        </Timeline.Item>
+                      ))
+                    ) : (
                       <Timeline.Item
-                        key={index}
                         bullet={<IconUser size={12} />}
-                        title={`Created by ${log.admin}`}
+                        title={`${overtimeData.logs.admin}`}
                       >
                         <Text c="dimmed" size="sm">
-                          {log.message}
+                          {overtimeData.logs.message}
                         </Text>
-                        <Text
-                          size="sm"
-                          mt={4}
-                          className="font-mono  text-blue-400"
-                        >
-                          {formatDate(log.create_at, true)}
+                        <Text size="xs" mt={2} c="blue">
+                          {formatDate(overtimeData.logs.create_at, true)}
                         </Text>
                       </Timeline.Item>
-                    ))
-                  ) : (
-                    <Timeline.Item
-                      bullet={<IconUser size={12} />}
-                      title={`Created by ${overtimeData.logs.admin}`}
-                    >
-                      <Text c="dimmed" size="sm">
-                        {overtimeData.logs.message}
-                      </Text>
-                      <Text
-                        size="sm"
-                        mt={4}
-                        className="font-mono  text-blue-400"
-                      >
-                        {formatDate(overtimeData.logs.create_at, true)}
-                      </Text>
-                    </Timeline.Item>
-                  )}
-                </Timeline>
-              </>
-            ) : (
-              <li className="text-center py-6 text-gray-500">
-                No activity logs available
-              </li>
-            )}
-          </ScrollArea.Autosize>
-        </div>
+                    )}
+                  </>
+                )}
+              </Timeline>
 
-        <div className="flex gap-2 my-8 float-right">
-          {isEditing && overtimeData?.is_approved === "pending" ? (
-            <>
-              <Button
-                variant="outline"
-                color="gray"
-                onClick={() => setIsEditing(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                variant="filled"
-                color="blue"
-                loading={updateLoading}
-              >
-                Save Changes
-              </Button>
-            </>
-          ) : (
-            <Group justify="flex-end" mt="xl">
-              <Button
-                variant="filled"
-                color="red"
-                onClick={handleDeleteOvertime}
-                className="mt-4"
-                disabled={deleteLoading}
-              >
-                Delete
-              </Button>
-              <Button
-                variant="outline"
-                color="blue"
-                onClick={closeModal}
-                className="mt-4"
-              >
-                Close
-              </Button>
+              {/* Show message if no logs exist */}
+              {!overtimeData.logs && (
+                <Text c="dimmed" mt="md" className="text-center">
+                  No activity logs available
+                </Text>
+              )}
+            </ScrollArea.Autosize>
+          </Grid.Col>
+          <Grid.Col span={12} mt="lg">
+            <Group justify="flex-end" gap="sm">
+              {isEditing && overtimeData?.is_approved === "pending" ? (
+                <>
+                  <Button
+                    variant="outline"
+                    color="gray"
+                    onClick={() => setIsEditing(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="filled"
+                    color="blue"
+                    loading={updateLoading}
+                  >
+                    Save Changes
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="filled"
+                    color="red"
+                    onClick={handleDeleteOvertime}
+                    className="mt-4"
+                    disabled={deleteLoading}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="outline"
+                    color="blue"
+                    onClick={closeModal}
+                    className="mt-4"
+                  >
+                    Close
+                  </Button>
+                </>
+              )}
             </Group>
-          )}
-        </div>
-
-        {/* <Group justify="flex-end" mt="xl">
-          {isEditing ? (
-            <>
-              <Button
-                variant="outline"
-                color="gray"
-                onClick={() => setIsEditing(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                variant="filled"
-                color="blue"
-                loading={updateLoading}
-              >
-                Save Changes
-              </Button>
-            </>
-          ) : (
-            <Group justify="flex-end" mt="xl">
-              <Button
-                variant="filled"
-                color="red"
-                onClick={handleDeleteOvertime}
-                className="mt-4"
-                disabled={deleteLoading}
-              >
-                Delete
-              </Button>
-              <Button
-                variant="outline"
-                color="blue"
-                onClick={closeModal}
-                className="mt-4"
-              >
-                Close
-              </Button>
-            </Group>
-          )}
-        </Group> */}
+          </Grid.Col>
+        </Grid>
       </form>
     </Card>
   );

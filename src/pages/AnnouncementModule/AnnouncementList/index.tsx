@@ -1,12 +1,5 @@
-import {
-  Button,
-  Card,
-  Loader,
-  Modal,
-  Pill,
-  SimpleGrid,
-  Textarea,
-} from "@mantine/core";
+// AnnouncementList.tsx
+import { Card, Loader, Modal, Pill, SimpleGrid } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../../services/auth/useAuth";
 import {
@@ -19,6 +12,7 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { Response, Announcement } from "../../../features/api/typesOld";
 import AppApprovalStatus from "../../../components/core/AppApprovalStatus";
+import AnnouncementDetails from "./AnnouncementDetail";
 
 const AnnouncementList = () => {
   const [value, setValue] = useState("");
@@ -37,7 +31,7 @@ const AnnouncementList = () => {
   const { logout } = useAuth();
 
   if (isLoading || approveAnnLoading) {
-    <Loader type="dots" />;
+    return <Loader type="dots" />;
   }
 
   if (error) {
@@ -70,7 +64,7 @@ const AnnouncementList = () => {
       }
       console.log(response);
     } catch (error) {
-      console.error("Error approving overtime:", error);
+      console.error("Error approving announcement:", error);
       notifications.show({
         title: "Error!",
         message: "Something went wrong!",
@@ -82,6 +76,7 @@ const AnnouncementList = () => {
       close();
     }
   };
+
   const handleRejectAnnouncement = async (uid: string) => {
     try {
       const response = await approveAnnouncement({
@@ -101,7 +96,7 @@ const AnnouncementList = () => {
       }
       close();
     } catch (error) {
-      console.error("Error approving overtime:", error);
+      console.error("Error rejecting announcement:", error);
       notifications.show({
         title: "Error!",
         message: "Something went wrong!",
@@ -121,41 +116,41 @@ const AnnouncementList = () => {
         spacing={{ base: 10, sm: "xl" }}
         verticalSpacing={{ base: "md", sm: "xl" }}
       >
-        {announcementData?.data?.map((selectedAnnouncement) => (
+        {announcementData?.data?.map((announcement) => (
           <Card
-            // padding="xl"
             component="a"
             withBorder
             maw={450}
             className="text-center border-blue-200 flex-auto max-w-full overflow-hidden gap-2 cursor-pointer bg-gray-50"
             onClick={() => {
-              setSelectedAnnouncement(selectedAnnouncement);
+              setSelectedAnnouncement(announcement);
               open();
             }}
+            key={announcement.uid}
           >
             <div className="flex justify-between">
               <p className="font-semibold truncate text-gray-600">
-                {selectedAnnouncement?.name}
+                {announcement.name}
               </p>
               <p className="text-right">
-                <AppApprovalStatus status={selectedAnnouncement?.is_approve} />
+                <AppApprovalStatus status={announcement.is_approve} />
               </p>
             </div>
 
             <p className="font-medium text-sm text-gray-500 my-2 text-left line-clamp-3">
-              {selectedAnnouncement?.descriptions}
+              {announcement.descriptions}
             </p>
 
             <div className="flex justify-between text-gray-400">
-              <p className="text-left text-sm ">
+              <p className="text-left text-sm">
                 Created By{" "}
                 <span className="text-blue-400">
-                  {selectedAnnouncement?.creator_name}
+                  {announcement.creator_name}
                 </span>
               </p>
               <p className="text-left">
                 <Pill size="sm" className="text-white bg-orange-400">
-                  {selectedAnnouncement?.department_name}
+                  {announcement.department_name}
                 </Pill>
               </p>
             </div>
@@ -172,67 +167,14 @@ const AnnouncementList = () => {
             backgroundOpacity: 0.55,
             blur: 3,
           }}
-          //   scrollAreaComponent={ScrollArea.Autosize}
         >
-          <Card>
-            <p className="font-medium text-xl text-center mb-4 text-[#212922]">
-              {selectedAnnouncement?.name}
-            </p>
-
-            <p className="font-medium text-md text-gray-500 text-left mb-6 border px-2 py-4 text-[#212922]">
-              {selectedAnnouncement?.descriptions}
-            </p>
-
-            <p className="text-left text-sm">
-              Created By {selectedAnnouncement?.creator_name}
-            </p>
-
-            <p>
-              <Pill size="md" className="text-gray-500 my-10">
-                {selectedAnnouncement?.department_name}
-              </Pill>
-            </p>
-          </Card>
-          {selectedAnnouncement?.is_approve === "pending" && (
-            <Textarea
-              variant="filled"
-              placeholder="Reason for rejection"
-              className="w-[95%] mb-6 mx-auto"
-              mb={20}
-              value={value}
-              onChange={(event) => {
-                setValue(event.currentTarget.value);
-              }}
-            />
-          )}
-          {selectedAnnouncement?.is_approve === "pending" ? (
-            <div className="flex justify-end gap-4">
-              <Button
-                variant="filled"
-                bg="blue"
-                onClick={() =>
-                  handleApproveAnnouncement(selectedAnnouncement?.uid)
-                }
-              >
-                Approve
-              </Button>
-              <Button
-                variant="light"
-                color="red"
-                onClick={() =>
-                  handleRejectAnnouncement(selectedAnnouncement?.uid)
-                }
-              >
-                Reject
-              </Button>
-            </div>
-          ) : (
-            <div className="flex justify-end gap-4">
-              <Pill className="bg-green-300 text-green-900 font-bold">
-                Approved
-              </Pill>
-            </div>
-          )}
+          <AnnouncementDetails
+            announcement={selectedAnnouncement}
+            value={value}
+            setValue={setValue}
+            handleApproveAnnouncement={handleApproveAnnouncement}
+            handleRejectAnnouncement={handleRejectAnnouncement}
+          />
         </Modal>
       )}
     </div>

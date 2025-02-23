@@ -25,7 +25,7 @@ const TangibleTable = () => {
     <>
       <Table>
         <TableHeading />
-        <TableItem data={data || []} isLoading={isLoading} error={error} />
+        <TableItem data={data?.data || []} isLoading={isLoading} error={error} />
       </Table>
     </>
   );

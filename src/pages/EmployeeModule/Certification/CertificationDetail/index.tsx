@@ -15,7 +15,7 @@ import {
 } from "../../../../features/api/certificationSlice";
 import { IconCheck, IconEdit, IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
-import CertificationDetailSkeleton from "../../../../components/shared/skeletons/CertificationDetailSkeleton";
+import CertificationDetailSkeleton from "../../../../components/shared/Skeletons/CertificationDetailSkeleton";
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import { useEffect, useState } from "react";
 import { z } from "zod";
@@ -205,7 +205,7 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
           Certification Details
         </h1>
         <form onSubmit={handleSubmit(handleEditSubmit)}>
-          <div className="space-y-4  text-sm">
+          <div className="space-y-4 text-sm">
             <div className="grid grid-cols-[200px_1fr] gap-4">
               <div className="text-gray-500 font-medium">Certification:</div>
               <div className="text-gray-800">
@@ -469,7 +469,7 @@ const CertificationDetail = ({ uid, closeModal }: CertificationDetailProps) => {
                 Delete
               </Button>
               <Button
-                variant="filled"
+                variant="outline"
                 color="blue"
                 className="w-[80px] text-sm"
                 onClick={closeModal}

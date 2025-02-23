@@ -9,7 +9,7 @@ const TableHeading = () => {
         <Table.Th style={{ width: "25%" }}>Values</Table.Th>
         <Table.Th style={{ width: "20%" }}>Model Type</Table.Th>
         <Table.Th style={{ width: "15%" }}>Created At</Table.Th>
-        <Table.Th style={{ width: "10%" }}>Action</Table.Th>
+        <Table.Th style={{ width: "5%" }}>Action</Table.Th>
       </Table.Tr>
     </Table.Thead>
   );

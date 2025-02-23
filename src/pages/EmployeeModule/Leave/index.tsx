@@ -17,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useGetEmployeeHelperQuery } from "../../../features/api/employeeSlice";
 import { CiCalendarDate } from "react-icons/ci";
-import OvertimeLeaveSkeleton from "../../../components/shared/skeletons/OvertimeLeaveSkeleton";
+import OvertimeLeaveSkeleton from "../../../components/shared/Skeletons/OvertimeLeaveSkeleton";
 import dayjs from "dayjs";
 
 const schema = z

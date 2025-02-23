@@ -59,7 +59,7 @@ export const categoryApi = createApi({
     }),
 
     deleteCategory: builder.mutation<Response, { uid: string }>({
-      query: (uid) => ({
+      query: ({ uid }) => ({
         url: `categories/delete/${uid}`,
         method: "DELETE",
       }),

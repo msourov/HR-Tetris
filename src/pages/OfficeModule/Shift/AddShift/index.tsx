@@ -71,6 +71,7 @@ const AddShift: React.FC<AddShiftProps> = ({ toggleModal }) => {
       day_end_time: `${data.day_end_time}:00`,
       start_time: data.start_time.toISOString(),
       end_time: data.end_time.toISOString(),
+      descriptions: data.descriptions || "",
     };
 
     try {

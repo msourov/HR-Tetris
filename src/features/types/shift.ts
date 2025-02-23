@@ -5,7 +5,7 @@ interface ShiftBase {
   name: string;
   active: boolean;
   regular: boolean;
-  descriptions: string;
+  descriptions: string | undefined;
   day_start_time: string;
   day_end_time: string;
   off_day: string;

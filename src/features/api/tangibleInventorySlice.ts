@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
 import {
+  AllTangibles,
   Tangible,
   TangibleFormParams,
   TangibleUpdate,
@@ -13,22 +14,25 @@ export const tangibleApi = createApi({
   baseQuery: baseQuery,
   tagTypes: [tagTypes.TANGIBLE],
   endpoints: (builder) => ({
-    getAllTangibles: builder.query<Tangible[], { page: number; limit: number }>(
-      {
-        query: ({ page, limit }) => ({
-          url: "tangibles/all",
-          method: "GET",
-          params: { page, limit },
-        }),
-        providesTags: (result) =>
-          result
-            ? [
-                ...result.map(({ uid }) => ({ type: "Tangible", id: uid })),
-                { type: "Tangible", id: "LIST" },
-              ]
-            : [{ type: "Tangible", id: "LIST" }],
-      }
-    ),
+    getAllTangibles: builder.query<
+      AllTangibles,
+      { page: number; limit: number }
+    >({
+      query: ({ page, limit }) => ({
+        url: "tangibles/all",
+        method: "GET",
+        params: { page, limit },
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...(Array.isArray(result.data)
+                ? result.data.map(({ uid }) => ({ type: "Tangible", id: uid }))
+                : [{ type: "Tangible", id: (result.data as Tangible).uid }]),
+              { type: "Tangible", id: "LIST" },
+            ]
+          : [{ type: "Tangible", id: "LIST" }],
+    }),
     getTangibleDetails: builder.query<Tangible, { uid: string }>({
       query: ({ uid }) => ({ url: `tangibles/${uid}`, method: "GET" }),
       providesTags: (_result, _error, { uid }) => [
@@ -77,7 +81,7 @@ export const tangibleApi = createApi({
     }),
 
     deleteTangible: builder.mutation<Response, { uid: string }>({
-      query: (uid) => ({
+      query: ({ uid }) => ({
         url: `tangibles/delete/${uid}`,
         method: "DELETE",
       }),

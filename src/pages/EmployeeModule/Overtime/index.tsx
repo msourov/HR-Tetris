@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useGetEmployeeHelperQuery } from "../../../features/api/employeeSlice";
-import OvertimeLeaveSkeleton from "../../../components/shared/skeletons/OvertimeLeaveSkeleton";
+import OvertimeLeaveSkeleton from "../../../components/shared/Skeletons/OvertimeLeaveSkeleton";
 
 const schema = z.object({
   purpose: z.string().min(1, "Purpose is required"),

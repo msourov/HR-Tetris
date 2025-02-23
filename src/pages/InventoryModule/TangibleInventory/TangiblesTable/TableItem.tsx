@@ -4,6 +4,7 @@ import { SerializedError } from "@reduxjs/toolkit";
 import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import { Tangible } from "../../../../features/types/inventory";
+import TangibleActions from "./TangibleActions";
 
 interface TableItemProps {
   data: Tangible[];
@@ -21,6 +22,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   if (error) {
     return <ErrorAlert message="Error fetching tangible items" />;
   }
+  console.log(data);
 
   return (
     <Table.Tbody className="text-gray-800 font-medium border-b bg-gray-50">
@@ -44,9 +46,9 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
           <Table.Td style={{ width: "15%" }}>
             {item.create_at ? new Date(item.create_at).toLocaleString() : "N/A"}
           </Table.Td>
-          {/* <Table.Td style={{ width: "10%" }}>
+          <Table.Td style={{ width: "10%" }}>
             <TangibleActions data={item} />
-          </Table.Td> */}
+          </Table.Td>
         </Table.Tr>
       ))}
     </Table.Tbody>

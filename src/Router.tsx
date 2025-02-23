@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import { Suspense } from "react";
 import { Loader } from "@mantine/core";
 import {
-  AddCategory,
   AddCertification,
   AddEmployee,
   AddNewRole,
@@ -460,14 +459,14 @@ export const router = createBrowserRouter([
                   </Suspense>
                 ),
               },
-              {
-                path: "add-category",
-                element: (
-                  <Suspense fallback={loader}>
-                    <AddCategory />
-                  </Suspense>
-                ),
-              },
+              // {
+              //   path: "add-category",
+              //   element: (
+              //     <Suspense fallback={loader}>
+              //       <AddCategory closeModal={() => {}} />
+              //     </Suspense>
+              //   ),
+              // },
               {
                 path: ":id/edit",
                 element: (

@@ -3,10 +3,10 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../../../services/auth/useAuth";
 import TableItem from "./TableItem";
 import TableHeading from "./TableHeading";
-import { useAllOvertimeQuery } from "../../../../features/api/overtimeSlice";
+import { useGetAllOvertimeQuery } from "../../../../features/api/overtimeSlice";
 
 const OvertimeTable: React.FC = () => {
-  const { data, error, isLoading } = useAllOvertimeQuery({
+  const { data, error, isLoading } = useGetAllOvertimeQuery({
     page: 1,
     limit: 10,
   });

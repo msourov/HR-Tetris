@@ -4,6 +4,7 @@ import { SerializedError } from "@reduxjs/toolkit";
 import { Table } from "@mantine/core";
 import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
+import CategoryActions from "./CategoryActions";
 
 interface TableItemProps {
   data: Category[];
@@ -37,8 +38,8 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
           <Table.Td style={{ width: "15%" }}>
             {item.create_at ? new Date(item.create_at).toLocaleString() : "N/A"}
           </Table.Td>
-          <Table.Td style={{ width: "10%" }}>
-            {/* <CategoryActions data={item} /> */}
+          <Table.Td style={{ width: "5%" }}>
+            <CategoryActions uid={item?.uid} />
           </Table.Td>
         </Table.Tr>
       ))}

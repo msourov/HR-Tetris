@@ -149,9 +149,6 @@ export const CategoryLayout = lazy(
 export const CategoryList = lazy(
   () => import("./pages/EmployeeModule/Category/CategoryList")
 );
-export const AddCategory = lazy(
-  () => import("./pages/EmployeeModule/Category/AddCategory")
-);
 export const UpdateCategory = lazy(
   () => import("./pages/EmployeeModule/Category/UpdateCategory")
 );

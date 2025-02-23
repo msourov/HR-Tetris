@@ -19,4 +19,5 @@ export const tagTypes = {
   PROFILE: "Profile",
   TANGIBLE: "Tangible",
   CATEGORY: "Category",
+  LOAN: "Loan",
 };

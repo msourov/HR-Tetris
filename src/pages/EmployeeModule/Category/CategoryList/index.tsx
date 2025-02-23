@@ -4,6 +4,7 @@ import { useAuth } from "../../../../services/auth/useAuth";
 import { Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
+import AddCategoryRow from "../AddCategory/AddCategoryRow";
 
 const CategoryList = () => {
   const { data, isLoading, error } = useGetAllCategoriesQuery({
@@ -23,6 +24,9 @@ const CategoryList = () => {
   console.log(data);
   return (
     <>
+      <div className="mb-4 flex justify-end">
+        <AddCategoryRow />
+      </div>
       <Table>
         <TableHeading />
         <TableItem data={data || []} isLoading={isLoading} error={error} />
