@@ -76,7 +76,7 @@ export const PolicyDetail = lazy(
 export const EditShift = lazy(
   () => import("./pages/OfficeModule/Shift/EditShift")
 );
-export const HolidayLayout = lazy(() => import("./pages/OfficeModule/Holiday"));
+export const Holiday = lazy(() => import("./pages/OfficeModule/Holiday"));
 export const EmployeeLayout = lazy(() => import("./pages/EmployeeModule"));
 export const EmplyeeTable = lazy(
   () => import("./pages/EmployeeModule/Employee/EmployeeTable")
@@ -97,7 +97,9 @@ export const AttendanceTable = lazy(
 export const Overtime = lazy(() => import("./pages/EmployeeModule/Overtime"));
 export const Leave = lazy(() => import("./pages/EmployeeModule/Leave"));
 export const TicketLayout = lazy(() => import("./pages/TicketModule"));
-export const TicketList = lazy(() => import("./pages/TicketModule/TicketList"));
+export const TicketList = lazy(
+  () => import("./pages/TicketModule/TicketList/index.tsx")
+);
 export const AnnouncementLayout = lazy(
   () => import("./pages/AnnouncementModule")
 );
@@ -141,6 +143,8 @@ export const TangiblesInventory = lazy(
 export const ConsumablesInventory = lazy(
   () => import("./pages/InventoryModule/ConsumableInventory")
 );
+
+export const Loan = lazy(() => import("./pages/InventoryModule/Loan"));
 
 // Category
 export const CategoryLayout = lazy(

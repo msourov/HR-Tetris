@@ -95,7 +95,7 @@ const TicketLayout = () => {
   const employeeId = watch("employee_id");
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col">
       {/* <PageHeader
         Operation="Open A"
         Heading="Ticket"

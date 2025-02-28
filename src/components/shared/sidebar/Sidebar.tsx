@@ -155,10 +155,10 @@ const initialSidebarData = [
     icon: <MdOutlineInventory2 />,
     permissionKey: "inventory_management",
     items: [
-      // {
-      //   label: "Issued Equipment",
-      //   link: "/issued-equipment",
-      // },
+      {
+        label: "Issued Equipment",
+        link: "/inventory/issued-equipment",
+      },
       {
         label: "Tangible",
         link: "/inventory/tangibles",

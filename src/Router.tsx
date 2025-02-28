@@ -37,10 +37,11 @@ import {
   EmployeeLayout,
   EmplyeeTable,
   ErrorPage,
-  HolidayLayout,
+  Holiday,
   HomeOfficeLayout,
   HomeOfficeTable,
   Leave,
+  Loan,
   Login,
   ManagePolicy,
   OtpPage,
@@ -265,7 +266,7 @@ export const router = createBrowserRouter([
             path: "holidays",
             element: (
               <Suspense fallback={loader}>
-                <HolidayLayout />
+                <Holiday />
               </Suspense>
             ),
             children: [
@@ -487,7 +488,11 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <TicketList />,
+                element: (
+                  <Suspense fallback={loader}>
+                    <TicketList />
+                  </Suspense>
+                ),
               },
               // {
               //   path: "add-employee",
@@ -532,6 +537,10 @@ export const router = createBrowserRouter([
               {
                 path: "tangibles",
                 element: <TangiblesInventory />,
+              },
+              {
+                path: "issued-equipment",
+                element: <Loan />,
               },
             ],
           },

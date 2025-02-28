@@ -243,12 +243,7 @@ const ConsumableActions: React.FC<ConsumableActionProp> = ({ data }) => {
           >
             Confirm
           </Button>
-          <Button
-            color="gray"
-            onClick={closeDelete}
-            loading={deleteLoading}
-            disabled={deleteLoading}
-          >
+          <Button color="gray" onClick={closeDelete} disabled={deleteLoading}>
             Cancel
           </Button>
         </div>

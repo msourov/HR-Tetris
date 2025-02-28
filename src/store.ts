@@ -18,6 +18,7 @@ import { homeOfficeApi } from "./features/api/homeOfficeSlice";
 import { tangibleApi } from "./features/api/tangibleInventorySlice";
 import { consumableApi } from "./features/api/consumableInventorySlice";
 import { categoryApi } from "./features/api/categorySlice";
+import { loanApi } from "./features/api/loanSlice";
 
 const store = configureStore({
   reducer: {
@@ -39,6 +40,7 @@ const store = configureStore({
     [homeOfficeApi.reducerPath]: homeOfficeApi.reducer,
     [tangibleApi.reducerPath]: tangibleApi.reducer,
     [consumableApi.reducerPath]: consumableApi.reducer,
+    [loanApi.reducerPath]: loanApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -61,6 +63,7 @@ const store = configureStore({
       homeOfficeApi.middleware,
       tangibleApi.middleware,
       consumableApi.middleware,
+      loanApi.middleware,
       categoryApi.middleware
     ),
 });

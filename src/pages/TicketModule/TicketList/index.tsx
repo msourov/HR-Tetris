@@ -1,164 +1,125 @@
 import {
-  Box,
-  Container,
-  Divider,
-  Drawer,
-  Loader,
-  Stack,
+  Card,
   Text,
+  Group,
+  Stack,
+  Divider,
+  Button,
+  List,
+  Badge,
+  Loader,
+  Paper,
+  Modal,
 } from "@mantine/core";
-import { useGetAllTicketsQuery } from "../../../features/api/ticketSlice";
-import { Ticket } from "../../../features/api/typesOld";
-import TicketChat from "./TicketChat";
-import { ChatList } from "react-chat-elements";
-import { useEffect, useState, useMemo } from "react";
 import { useDisclosure } from "@mantine/hooks";
+import { IconMessage } from "@tabler/icons-react";
+import { useState } from "react";
+import { Ticket } from "../../../features/types/ticket";
+import { useGetAllTicketsQuery } from "../../../features/api/ticketSlice";
+import useFormatDate from "../../../services/utils/useFormatDate";
+import TicketThread from "./TicketThread";
 
-const TicketList = () => {
-  const [opened, { open, close }] = useDisclosure(false);
-  const [activeChat, setActiveChat] = useState<number | null>(() => {
-    const savedChatId = localStorage.getItem("activeChat");
-    return savedChatId ? Number(savedChatId) : null;
-  });
-  const [activeArchivedTicket, setActiveArchivedTicket] = useState<
-    number | null
-  >(null);
-  const { data, isLoading } = useGetAllTicketsQuery({
-    page: 1,
-    limit: 10,
-  });
-  const tickets = useMemo(() => data?.data || [], [data]);
+export default function TicketList() {
+  const { data, isLoading } = useGetAllTicketsQuery({ page: 1, limit: 10 });
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+  const [viewArchived, { open: openArchive, close: closeArchive }] =
+    useDisclosure(false);
+  const { formatDate } = useFormatDate();
+  const tickets = data?.data || [];
 
-  useEffect(() => {
-    if (Array.isArray(tickets) && tickets.length > 0 && activeChat === null) {
-      setActiveChat(tickets[0].id);
-    }
-  }, [activeChat, tickets]);
-
-  useEffect(() => {
-    if (activeChat !== null) {
-      localStorage.setItem("activeChat", activeChat.toString());
-    }
-  }, [activeChat]);
-
-  if (isLoading)
-    return (
-      <div className="flex justify-center items-center">
-        <Loader size="lg" />
-      </div>
-    );
-  const activeTicket = Array.isArray(tickets)
-    ? tickets.find((ticket: Ticket) => ticket.id === activeChat)
-    : null;
-
-  const archivedTicket = Array.isArray(tickets)
-    ? tickets.find((ticket: Ticket) => ticket.id === activeArchivedTicket)
-    : null;
-
-  const openTickets = Array.isArray(tickets)
-    ? tickets.filter((item) => item?.status === "open")
-    : [];
-
-  const archivedTickets = Array.isArray(tickets)
-    ? tickets.filter((item) => item?.status === "resolved")
-    : [];
-  console.log(archivedTickets);
-
-  const handleArchiveChatOpen = (ticket: Ticket) => {
-    setActiveArchivedTicket(ticket.id);
-    open();
-  };
+  const openTickets = tickets.filter((t) => t.status === "open");
+  const archivedTickets = tickets.filter((t) => t.status === "resolved");
+  if (isLoading) return <Loader className="mx-auto" />;
 
   return (
-    <Box className="w-full flex flex-row">
-      <Container className="flex ml-0 mt-4 overflow-hidden px-0 w-[70%]">
-        <Box
-          w="30%"
-          className="border-b border-gray-400 h-[70svh] min-w-[200px] overflow-hidden"
-        >
-          <Stack
-            justify="center"
-            gap="md"
-            className="flex flex-col justify-start items-center gap-1 pt-2 h-full"
-          >
-            {openTickets.map((item: Ticket) => (
-              <Box className="w-full" key={item.id}>
-                <ChatList
-                  className="chat-list"
-                  id={item.uid}
-                  lazyLoadingImage="path/to/lazy-loading-image.png"
-                  onClick={() => setActiveChat(item.id)}
-                  dataSource={[
-                    {
-                      id: item.uid,
-                      avatar: `https://avatar.iran.liara.run/public/${item.uid}`,
-                      alt: "employee",
-                      title: item.name,
-                      date: new Date(item.update_at),
-                    },
-                  ]}
-                />
-              </Box>
-            ))}
-          </Stack>
-        </Box>
-        <Box
-          w="70%"
-          className="min-w-[400px] h-[70svh] bg-[#cbd9ff] border-r-2 overflow-auto m-auto"
-        >
-          {activeChat && activeTicket && (
-            <TicketChat ticket={activeTicket} open={true} />
-          )}
-        </Box>
-      </Container>
-      <Box className="w-[25%] border-l-1 border bg-slate-300 py-4 px-2">
-        <Divider
-          label={
-            <>
-              <Text ta="center" fw="bold" color="blue" mb={10}>
-                Archived Tickets
-              </Text>
-            </>
-          }
-        />
-        {Array.isArray(archivedTickets)
-          ? archivedTickets.map((item) => (
-              <ChatList
-                key={item.uid}
-                className="chat-list"
-                id={`chat-list-${item.id}`}
-                onClick={() => handleArchiveChatOpen(item)}
-                dataSource={[
-                  {
-                    id: item?.id,
-                    avatar: `https://avatar.iran.liara.run/public/${item?.uid}`,
-                    alt: "avatar",
-                    title: item?.name,
-                    subtitle: "",
-                    date: new Date(item?.update_at),
-                  },
-                ]}
-                lazyLoadingImage="path/to/your/lazy-loading-image.png" // Provide a path to the lazy loading image
-              />
-            ))
-          : []}
-      </Box>
-      <Drawer
-        offset={8}
-        position="right"
-        radius="md"
-        opened={opened}
-        onClose={close}
-      >
-        <Text ta="center" fw="bold" color="dimmed" mb={30}>
-          Archived Ticket
+    <Group align="start" className="p-4 gap-4" wrap="nowrap">
+      {/* Ticket Thread List */}
+      <Stack className="w-80" gap="sm">
+        <Text size="xl" fw="bold">
+          Open Tickets
         </Text>
-        {activeArchivedTicket && archivedTicket && (
-          <TicketChat ticket={archivedTicket} open={false} />
-        )}
-      </Drawer>
-    </Box>
-  );
-};
+        <List spacing="sm">
+          {openTickets.map((ticket) => (
+            <List.Item key={ticket.id}>
+              <Card
+                withBorder
+                onClick={() => setSelectedTicket(ticket)}
+                className={`cursor-pointer ${
+                  selectedTicket?.id === ticket.id ? "border-blue-500" : ""
+                }`}
+              >
+                <Group justify="space-between">
+                  <Text fw={500}>{ticket.subject}</Text>
+                  <Badge color={ticket.status === "open" ? "blue" : "gray"}>
+                    {ticket.status}
+                  </Badge>
+                </Group>
+                <Text size="sm" c="dimmed" lineClamp={1}>
+                  {ticket.chat[0]?.message}
+                </Text>
+                <Group justify="space-between" mt="sm">
+                  <Text size="xs">{formatDate(ticket.created_at)}</Text>
+                  <Group gap={4}>
+                    <IconMessage size={14} />
+                    <Text size="xs">{ticket.chat.length}</Text>
+                  </Group>
+                </Group>
+              </Card>
+            </List.Item>
+          ))}
+        </List>
 
-export default TicketList;
+        <Divider my="sm" />
+
+        <Button variant="subtle" onClick={openArchive}>
+          View Archived ({archivedTickets.length})
+        </Button>
+      </Stack>
+
+      {/* Selected Ticket Thread */}
+      <Paper withBorder className="flex-1 p-4">
+        {selectedTicket ? (
+          <TicketThread
+            ticket={selectedTicket}
+            onBack={() => setSelectedTicket(null)}
+          />
+        ) : (
+          <Text c="dimmed" className="text-center">
+            Select a ticket to view
+          </Text>
+        )}
+      </Paper>
+
+      {/* Archived Tickets Modal */}
+      <Modal
+        opened={viewArchived}
+        onClose={closeArchive}
+        title="Archived Tickets"
+      >
+        <Stack gap="sm">
+          {archivedTickets.map((ticket) => (
+            <Card key={ticket.id} withBorder>
+              <Text fw={500}>{ticket.subject}</Text>
+              <Text size="sm" c="dimmed" lineClamp={2}>
+                {ticket.chat[0]?.message}
+              </Text>
+              <Group justify="space-between" mt="sm">
+                <Text size="xs">{formatDate(ticket.created_at)}</Text>
+                <Button
+                  size="xs"
+                  variant="outline"
+                  onClick={() => {
+                    setSelectedTicket(ticket);
+                    closeArchive();
+                  }}
+                >
+                  View Thread
+                </Button>
+              </Group>
+            </Card>
+          ))}
+        </Stack>
+      </Modal>
+    </Group>
+  );
+}
