@@ -7,7 +7,6 @@ import {
   TicketResolveResponse,
   TicketResponse,
 } from "../types/ticket";
-import { getToken } from "../../services/utils/getToken";
 
 export const ticketApi = createApi({
   reducerPath: "ticketApi",
@@ -73,33 +72,10 @@ export const ticketApi = createApi({
 
     createTicket: builder.mutation<void, CreateTicketRequest>({
       query: (data) => {
-        const formData = new FormData();
-
-        // Required fields
-        formData.append("employee_id", data.employee_id);
-        formData.append("type", data.type);
-        formData.append("message", data.message);
-
-        // Optional fields
-        data.name && formData.append("name", data.name);
-
-        // Fix 3: Use correct array format for assignees
-        data.assignee?.forEach((assignee) => {
-          formData.append("assignee[]", assignee); // Add [] for array format
-        });
-
-        // Files handling (already correct)
-        data.files?.forEach((file) => {
-          formData.append("files", file);
-        });
-
         return {
           url: "tickets/create",
           method: "POST",
-          body: formData,
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
+          body: data,
         };
       },
       invalidatesTags: [{ type: "Ticket", id: "LIST" }],

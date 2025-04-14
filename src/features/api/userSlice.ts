@@ -121,9 +121,7 @@ export const userApi = createApi({
           url: "role-user/upload",
           method: "POST",
           body: formData,
-          headers: {
-            
-          }
+          headers: {},
         };
       },
       invalidatesTags: (_result, _error, formData) => {
