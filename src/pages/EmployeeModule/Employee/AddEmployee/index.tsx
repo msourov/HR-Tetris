@@ -137,6 +137,18 @@ const initialPermissionValues = [
     checked: true,
     key: randomId(),
   },
+  {
+    label: "Holiday",
+    name: "holiday_management",
+    checked: true,
+    key: randomId(),
+  },
+  {
+    label: "Holiday Approval",
+    name: "holiday_approve_management",
+    checked: true,
+    key: randomId(),
+  },
 ];
 
 const AddEmployee = () => {

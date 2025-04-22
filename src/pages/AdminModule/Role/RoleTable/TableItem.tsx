@@ -4,24 +4,12 @@ import { AccessPermissions, Role } from "../../../../features/api/typesOld";
 import RoleActions from "./RoleActions";
 import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
 import "../../../../styles.css";
+import { ColorMap } from ".";
 
 interface TableItemProps {
   data: Role[];
   loading: boolean;
 }
-
-type ColorMap = {
-  UM: string;
-  OM: string;
-  AUM: string;
-  CM: string;
-  TM: string;
-  AM: string;
-  EM: string;
-  IM: string;
-  RM: string;
-  ATM: string;
-};
 
 const transformAccess = (access: AccessPermissions): [string, string][] => {
   const dataArr: [string, string][] = Object.entries(access);

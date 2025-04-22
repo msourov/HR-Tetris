@@ -1,4 +1,4 @@
-import { Modal, Pill, Table, Text } from "@mantine/core";
+import { Pill, Table, Text } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
@@ -9,17 +9,18 @@ import CertificationDetail from "../CertificationDetail";
 import { useState } from "react";
 import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
 import useFormatDate from "../../../../services/utils/useFormatDate";
+import AppModal from "../../../../components/ui/AppModal";
 
 interface TableItemProps {
   data: Certification[];
   isLoading: boolean;
   error?:
-    | {
-        error: string;
-        status: string;
-      }
-    | FetchBaseQueryError
-    | SerializedError;
+  | {
+    error: string;
+    status: string;
+  }
+  | FetchBaseQueryError
+  | SerializedError;
 }
 
 const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
@@ -79,18 +80,9 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
           </Table.Tr>
         ))}
       </Table.Tbody>
-      <Modal
-        opened={opened}
-        onClose={close}
-        size="70%"
-        withCloseButton={false}
-        overlayProps={{
-          backgroundOpacity: 0.35,
-          blur: 3,
-        }}
-      >
+      <AppModal opened={opened} onClose={close}>
         <CertificationDetail uid={currentUid} closeModal={close} />
-      </Modal>
+      </AppModal>
     </>
   );
 };

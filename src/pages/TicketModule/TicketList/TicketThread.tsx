@@ -104,7 +104,7 @@ const TicketThread = ({ ticket, onBack }: TicketThreadProps) => {
   return (
     <Stack>
       <Group justify="space-between">
-        <Button variant="subtle" onClick={onBack}>
+        <Button variant="subtle" color="blue" onClick={onBack}>
           ← Back to Tickets
         </Button>
         {ticket.status === "open" && (
@@ -117,129 +117,113 @@ const TicketThread = ({ ticket, onBack }: TicketThreadProps) => {
           </Button>
         )}
       </Group>
+      <div className="px-4 py-2">
+        <Text size="lg" fw="bold" className="text-blue-500">
+          {ticket.name}
+        </Text>
+        <Text c="dimmed">Created {formatDate(ticket.create_at)}</Text>
 
-      <Text size="xl" fw="bold">
-        {ticket.name}
-      </Text>
-      <Text c="dimmed">Created {formatDate(ticket.create_at)}</Text>
+        <Divider my="md" />
 
-      <Divider my="md" />
-
-      <Stack gap="xl">
-        {ticket.chat.map((message, index) => (
-          <Card key={index} withBorder>
-            <Group align="start" mb="sm">
-              <Avatar src={message?.user_name} size="md" />
-              <div>
-                <Text fw={500}>{message.user_name}</Text>
-                <Text size="sm" c="dimmed">
-                  {formatDate(message.create_at)}
-                </Text>
-              </div>
-            </Group>
-
-            <Text className="mb-2">{message.message}</Text>
-
-            {/* {message.uploads?.length > 0 && (
-              <Group gap="sm">
-                {message.uploads.map((file, i) => (
-                  <Button
-                    key={i}
-                    variant="outline"
-                    size="xs"
-                    leftSection={<IconPaperclip size={14} />}
-                    component="a"
-                    href={`${import.meta.env.VITE_APP_BASE_URL}tickets/file/${file.file_name
-                      }`}
-                    target="_blank"
-                  >
-                    {file.file_name}
-                  </Button>
-                ))}
+        <Stack gap="xl">
+          {ticket.chat.map((message, index) => (
+            <Card key={index} withBorder>
+              <Group align="start" mb="sm">
+                <Avatar src={message?.user_name} size="md" />
+                <div>
+                  <Text fw={500}>{message.user_name}</Text>
+                  <Text size="sm" c="dimmed">
+                    {formatDate(message.create_at)}
+                  </Text>
+                </div>
               </Group>
-            )} */}
-            {message.uploads?.length > 0 && (
-              <Group gap="sm">
-                {message.uploads.map((file, i) => {
-                  const fileUrl = `https://api.hr-infozilion.pitetris.com/${file.file_path}`;
-                  const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(
-                    file.file_extension.toLowerCase()
-                  );
-                  const isVideo = ['mp4', 'webm', 'mov'].includes(
-                    file.file_extension.toLowerCase()
-                  );
 
-                  return (
-                    <div key={i}>
-                      {isImage ? (
-                        <img
-                          src={fileUrl}
-                          alt={file.file_name}
-                          style={{ maxWidth: 200, maxHeight: 200 }}
-                          className="rounded-md"
-                        />
-                      ) : isVideo ? (
-                        <video
-                          controls
-                          style={{ maxWidth: 200, maxHeight: 200 }}
-                          className="rounded-md"
-                        >
-                          <source src={fileUrl} type={file.file_type} />
-                          Your browser does not support the video tag.
-                        </video>
-                      ) : (
-                        <Button
-                          variant="outline"
-                          size="xs"
-                          leftSection={<IconPaperclip size={14} />}
-                          component="a"
-                          href={fileUrl}
-                          target="_blank"
-                        >
-                          {file.file_name}
-                        </Button>
-                      )}
-                    </div>
-                  );
-                })}
-              </Group>
-            )}
-          </Card>
-        ))}
-      </Stack>
+              <Text className="mb-2">{message.message}</Text>
+              {message.uploads?.length > 0 && (
+                <Group gap="sm">
+                  {message.uploads.map((file, i) => {
+                    const fileUrl = `https://api.hr-infozilion.pitetris.com/${file.file_path}`;
+                    const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(
+                      file.file_extension.toLowerCase()
+                    );
+                    const isVideo = ['mp4', 'webm', 'mov'].includes(
+                      file.file_extension.toLowerCase()
+                    );
 
-      {ticket.status === "open" && (
-        <Paper withBorder className="p-4 mt-4">
-          <Textarea
-            placeholder="Add a comment..."
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.currentTarget.value)}
-            autosize
-            minRows={3}
-            className="mb-3"
-          />
+                    return (
+                      <div key={i}>
+                        {isImage ? (
+                          <img
+                            src={fileUrl}
+                            alt={file.file_name}
+                            style={{ maxWidth: 200, maxHeight: 200 }}
+                            className="rounded-md"
+                          />
+                        ) : isVideo ? (
+                          <video
+                            controls
+                            style={{ maxWidth: 200, maxHeight: 200 }}
+                            className="rounded-md"
+                          >
+                            <source src={fileUrl} type={file.file_type} />
+                            Your browser does not support the video tag.
+                          </video>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="xs"
+                            leftSection={<IconPaperclip size={14} />}
+                            component="a"
+                            href={fileUrl}
+                            target="_blank"
+                          >
+                            {file.file_name}
+                          </Button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </Group>
+              )}
+            </Card>
+          ))}
+        </Stack>
 
-          <Group justify="space-between">
-            <FileInput
-              accept="image/*, .pdf, .doc, .docx"
-              multiple
-              value={files}
-              onChange={setFiles}
-              leftSection={<IconPaperclip size={18} />}
-              placeholder="Attach files"
-              clearable
+        {ticket.status === "open" && (
+          <Paper withBorder className="p-4 mt-4">
+            <Textarea
+              placeholder="Add a comment..."
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.currentTarget.value)}
+              autosize
+              minRows={3}
+              className="mb-3"
             />
 
-            <Button
-              onClick={handleSubmit}
-              disabled={!newMessage && files.length === 0}
-              loading={isSubmitting}
-            >
-              Post Comment
-            </Button>
-          </Group>
-        </Paper>
-      )}
+            <Group justify="space-between">
+              <FileInput
+                accept="image/*, .pdf, .doc, .docx"
+                multiple
+                value={files}
+                onChange={setFiles}
+                leftSection={<IconPaperclip size={18} />}
+                placeholder="Attach files"
+                clearable
+              />
+
+              <Button
+                color="blue"
+                onClick={handleSubmit}
+                disabled={!newMessage && files.length === 0}
+                loading={isSubmitting}
+              >
+                Post Comment
+              </Button>
+            </Group>
+          </Paper>
+        )}
+      </div>
+
     </Stack>
   );
 };

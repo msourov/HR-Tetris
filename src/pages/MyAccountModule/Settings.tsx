@@ -43,11 +43,11 @@ const Settings = () => {
     console.log("Form submitted:", data);
     const uid = localStorage.getItem("uid") || "";
     const payload: { uid: string; old_password: string; new_password: string } =
-      {
-        uid: uid,
-        old_password: data.currentPassword,
-        new_password: data.password.newPassword,
-      };
+    {
+      uid: uid,
+      old_password: data.currentPassword,
+      new_password: data.password.newPassword,
+    };
     try {
       const response = await changeOwnPassword(payload).unwrap();
       console.log(response);
@@ -79,7 +79,7 @@ const Settings = () => {
     <div className="flex justify-center py-10">
       <Card padding="xl" radius="md" className="w-[90%]">
         <div className="space-y-6">
-          <p className="text-xl py-3 text-center text-white bg-orange-400">
+          <p className="text-xl py-3 text-center text-orange-400 border-b-2 mb-8 font-bold">
             Password & Security Section
           </p>
 

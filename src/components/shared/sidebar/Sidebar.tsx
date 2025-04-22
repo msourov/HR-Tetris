@@ -1,8 +1,7 @@
-import { Group, Box, UnstyledButton, Accordion, Divider } from "@mantine/core";
+import { Group, Box, UnstyledButton, Accordion, Divider, Burger, Drawer } from "@mantine/core";
 import { GrUserManager } from "react-icons/gr";
 import { IconHome2 } from "@tabler/icons-react";
 
-// import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
@@ -11,11 +10,10 @@ import { MdOutlineAccountBalance, MdOutlineInventory2 } from "react-icons/md";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { PiCertificate } from "react-icons/pi";
 import { LuMailbox } from "react-icons/lu";
-// import { ProfileSection } from "../../../pages/ProfileSection";
 import classes from "./NavbarLinksGroup.module.css";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface IconProps {
-  // Add specific prop types here based on the Icon component's documentation
   className?: string;
 }
 
@@ -36,15 +34,14 @@ export function LinksGroup({
   isSingleGroup = false,
   icon,
 }: // link,
-LinksGroupProps & { isActive: boolean; onClick: () => void }) {
+  LinksGroupProps & { isActive: boolean; onClick: () => void }) {
   const handleClick: () => void = () => {
     onClick();
   };
   return (
     <UnstyledButton
-      className={`${classes.control} ${isActive ? classes.active : ""} ${
-        isSingleGroup ? classes.singleGroup : ""
-      }`}
+      className={`${classes.control} ${isActive ? classes.active : ""} ${isSingleGroup ? classes.singleGroup : ""
+        }`}
       onClick={handleClick}
     >
       <Group justify="space-between" gap={0} ml={10}>
@@ -58,13 +55,6 @@ LinksGroupProps & { isActive: boolean; onClick: () => void }) {
     </UnstyledButton>
   );
 }
-
-// const getVisibilityStatus = (title: string) => {
-//   const roleData = localStorage.getItem("role");
-//   console.log(roleData);
-//   const role = roleData ? JSON.parse(roleData) : null;
-//   return role ? title in role : false;
-// };
 
 const initialSidebarData = [
   {
@@ -244,8 +234,10 @@ interface Group {
 export function Sidebar() {
   const [activeLink, setActiveLink] = useState<string | null>(null);
   const [sidebarData, setSidebarData] = useState(initialSidebarData);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width: 1023px)');
 
   useEffect(() => {
     const roleData = localStorage.getItem("role");
@@ -266,6 +258,9 @@ export function Sidebar() {
   const handleLinkClick = (link: string) => {
     setActiveLink(link);
     navigate(link);
+    if (isMobile) {
+      setIsDrawerOpen(false);
+    }
   };
 
   const isGroupActive = (groupItems: Item[]) => {
@@ -274,7 +269,7 @@ export function Sidebar() {
     );
   };
 
-  return (
+  const sidebarContent = (
     <Box
       m="0"
       p="0"
@@ -285,8 +280,6 @@ export function Sidebar() {
         onClick={() => handleLinkClick("/")}
         classNames={classes}
         style={{
-          // backgroundColor:
-          //   activeLink === "/" ? "var(--mantine-color-green-1)" : "white",
           color: activeLink === "/" ? "var(--mantine-color-green-5)" : "white",
           fontSize: "0.8rem",
           fontWeight: 700,
@@ -322,11 +315,7 @@ export function Sidebar() {
               <LinksGroup
                 key={group.items[0].label}
                 label={group.items[0].label}
-                isActive={
-                  activeLink
-                    ? activeLink.startsWith(group.items[0].link)
-                    : false
-                }
+                isActive={activeLink?.startsWith(group.items[0].link) ?? false}
                 onClick={() => handleLinkClick(group.items[0].link)}
                 icon={group.icon}
               />
@@ -340,14 +329,10 @@ export function Sidebar() {
                     fontSize: "0.85rem",
                     fontWeight: 700,
                     transform: "translateY(-2px)",
-                    color: isGroupActive(group.items)
-                      ? "var(--mantine-color-green-9)"
-                      : "white",
+                    color: isGroupActive(group.items) ? "var(--mantine-color-green-9)" : "white",
                   }}
                   icon={group?.icon}
-                  className={`${
-                    isGroupActive(group.items) ? "activeGroup" : ""
-                  }`}
+                  className={isGroupActive(group.items) ? "activeGroup" : ""}
                 >
                   {group?.title}
                 </Accordion.Control>
@@ -357,9 +342,7 @@ export function Sidebar() {
                       <LinksGroup
                         key={item.label}
                         label={item.label}
-                        isActive={
-                          activeLink ? activeLink.startsWith(item.link) : false
-                        }
+                        isActive={activeLink?.startsWith(item.link) ?? false}
                         onClick={() => handleLinkClick(item.link)}
                       />
                     </Box>
@@ -372,49 +355,34 @@ export function Sidebar() {
       </Accordion>
     </Box>
   );
-}
 
-{
-  /* <Accordion.Item
-            key={index}
-            value={group?.title}
-            className={classes.customAccordionItem}
-          >
-            <Accordion.Control
-              style={{
-                fontSize: "0.85rem",
-                fontWeight: "700 !important",
-                transform: "translateY(-2px)",
-                color: isGroupActive(group.items)
-                  ? "var(--mantine-color-green-9) "
-                  : "",
-              }}
-              icon={group?.icon}
-              className={`${isGroupActive(group.items) ? "activeGroup" : ""}`}
-            >
-              {group?.title}
-            </Accordion.Control>
-            <Accordion.Panel key={`sub${index}`}>
-            [comment start]
-              {group?.items.map((item) => ( 
-                <LinksGroup
-                  key={item?.label}
-                  label={item?.label}
-                  isActive={activeLink === item?.link}
-                  onClick={() => handleLinkClick(item?.link)}
-                />
-              ))}
-              [comment end]
-              {group.items.map((item) => (
-                <Box key={item.label} className={classes.submenuItem}>
-                  <LinksGroup
-                    key={item.label}
-                    label={item.label}
-                    isActive={activeLink === item.link}
-                    onClick={() => handleLinkClick(item.link)}
-                  />
-                </Box>
-              ))}
-            </Accordion.Panel>
-          </Accordion.Item> */
+  return (
+    <>
+      {isMobile && (
+        <Burger
+          opened={isDrawerOpen}
+          onClick={() => setIsDrawerOpen((o) => !o)}
+          className="z-50 p-4"
+          size="sm"
+        />
+      )}
+
+      {isMobile ? (
+        <Drawer
+          opened={isDrawerOpen}
+          onClose={() => setIsDrawerOpen(false)}
+          size={240}
+          overlayProps={{ opacity: 0.5, blur: 1 }}
+          withinPortal
+          zIndex={1000}
+          classNames={{ content: 'h-full' }}
+          className={classes.body}
+        >
+          {sidebarContent}
+        </Drawer>
+      ) : (
+        sidebarContent
+      )}
+    </>
+  );
 }

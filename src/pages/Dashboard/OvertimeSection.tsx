@@ -72,8 +72,8 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
                             )
                               ? dayjs(item?.start_time).format("DD/MM/YYYY")
                               : dayjs(item?.start_time).format(
-                                  "DD/MM/YYYY"
-                                )}{" "}
+                                "DD/MM/YYYY"
+                              )}{" "}
                             - {dayjs(item?.end_time).format("DD/MM/YYYY")}
                             {/* {new Date(item?.start_time).toLocaleDateString()} -{" "}
                             {new Date(item?.end_time).toLocaleDateString()} */}
@@ -99,7 +99,7 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
                   <Loader type="dots" color="orange" size="sm" />
                 </Box>
               ) : (
-                <Text c="dimmed" my={10}>
+                <Text c="dimmed" my={10} ta='center'>
                   No data available
                 </Text>
               )

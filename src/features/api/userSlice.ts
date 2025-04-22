@@ -101,6 +101,16 @@ export const userApi = createApi({
         body: data,
       }),
     }),
+    changeUserPassword: builder.mutation<
+      Response,
+      { uid: string; new_password: string }
+    >({
+      query: (data) => ({
+        url: "role-user/user/chnage-password",
+        method: "PUT",
+        body: data,
+      }),
+    }),
     showProfileImage: builder.query<string, { mobile: string }>({
       query: ({ mobile }) => ({
         url: `role-user/show/file/${mobile}`,
@@ -140,6 +150,7 @@ export const {
   useEditUserMutation,
   useDeleteUserMutation,
   useChangeOwnPasswordMutation,
+  useChangeUserPasswordMutation,
   useShowProfileImageQuery,
   useUploadProfileMutation,
 } = userApi;

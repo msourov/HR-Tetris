@@ -1,4 +1,4 @@
-import { Button, Loader, Menu, Modal } from "@mantine/core";
+import { Button, Loader, Menu } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CiEdit } from "react-icons/ci";
@@ -13,6 +13,7 @@ import {
 } from "../../../../features/api/userSlice";
 import EditUser from "../EditUser";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
+import AppModal from "../../../../components/ui/AppModal";
 
 interface RoleActionProps {
   id: string;
@@ -95,7 +96,7 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
-      <Modal opened={editOpened} onClose={closeEdit} title="Edit User">
+      <AppModal opened={editOpened} onClose={closeEdit} size='lg' title="Edit User">
         {isLoadingDetail ? (
           <div className="flex justify-center p-4">
             <Loader type="dots" />
@@ -107,9 +108,9 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
             userData={userDetail?.data[0]}
           />
         )}
-      </Modal>
-      <Modal opened={opened} onClose={close} centered className="text-center">
-        <p>Are you sure you want to delete?</p>
+      </AppModal>
+      <AppModal opened={opened} onClose={close} size='md'>
+        <p className="text-center">Are you sure you want to delete?</p>
         <div className="flex gap-2 justify-center mt-4">
           <Button color="red" onClick={DeleteUser}>
             Confirm
@@ -118,7 +119,7 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
             Cancel
           </Button>
         </div>
-      </Modal>
+      </AppModal>
     </>
   );
 };

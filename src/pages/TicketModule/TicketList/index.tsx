@@ -3,7 +3,6 @@ import {
   Text,
   Group,
   Stack,
-  Divider,
   Button,
   List,
   Badge,
@@ -32,23 +31,23 @@ export default function TicketList() {
   if (isLoading) return <div className="flex justify-center"><Loader className="mx-auto" /></div>;
 
   return (
-    <Group align="start" className="p-4 gap-4" wrap="nowrap">
+    <Group align="start" className="gap-4" wrap="nowrap">
       {/* Ticket Thread List */}
-      <Stack className="w-80" gap="sm">
-        <Text size="xl" fw="bold">
+      <Stack className="w-80 flex items-center p-4 " gap="sm" bg='blue'>
+        <Text size="lg" fw='bold' className=" text-white text-center">
           Open Tickets
         </Text>
         <List spacing="sm">
           {openTickets.map((ticket) => (
             <List.Item key={ticket.id} className="w-auto">
               <Card
-                withBorder
+                // withBorder
                 onClick={() => setSelectedTicket(ticket)}
                 className={`cursor-pointer w-[300px] ${selectedTicket?.id === ticket.id ? "border-blue-500" : ""
                   }`}
               >
                 <Group justify="space-between" className="w-full">
-                  <Text fw={500} className="truncate">
+                  <Text fw={500} className="truncate text-blue-500">
                     {ticket.name}
                   </Text>
                   <Badge color={ticket.status === "open" ? "blue" : "gray"}>
@@ -70,15 +69,13 @@ export default function TicketList() {
           ))}
         </List>
 
-        <Divider my="sm" />
-
-        <Button variant="subtle" onClick={openArchive}>
+        <Button variant="transparent" c="white" onClick={openArchive} mt={10}>
           View Archived ({archivedTickets.length})
         </Button>
       </Stack>
 
       {/* Selected Ticket Thread */}
-      <Paper withBorder className="flex-1 p-4">
+      <Paper className="flex-1 p-4">
         {selectedTicket ? (
           <TicketThread
             ticket={selectedTicket}
@@ -95,11 +92,11 @@ export default function TicketList() {
       <Modal
         opened={viewArchived}
         onClose={closeArchive}
-        title="Archived Tickets"
+        title={<p className="font-semibold text-gray-500">Archived Tickets</p>}
       >
         <Stack gap="sm">
           {archivedTickets.map((ticket) => (
-            <Card key={ticket.id} withBorder>
+            <Card key={ticket.id} withBorder className='bg-gray-200'>
               <Text fw={500}>{ticket.name}</Text>
               <Text size="sm" c="dimmed" lineClamp={2}>
                 {ticket.chat[0]?.message}
@@ -108,6 +105,7 @@ export default function TicketList() {
                 <Text size="xs">{formatDate(ticket.create_at)}</Text>
                 <Button
                   size="xs"
+                  color="blue"
                   variant="outline"
                   onClick={() => {
                     setSelectedTicket(ticket);
