@@ -15,7 +15,7 @@ const Topbar = () => {
   return (
     <div className="bg-white text-black px-6 flex justify-between items-center border-b-2 relative">
       <div className="relative">
-        <div className="logo-container">
+        <div className="logo-container min-h-14">
           <img src="/assets/logo.jpg" alt="logo" width="140" />
           {/* <div className="glowing-ball"></div> */}
         </div>
@@ -31,18 +31,16 @@ const Topbar = () => {
             <Menu.Item
               leftSection={<FaRegCircleUser size={16} />}
               onClick={() => navigate("/profile")}
-              className={`cursor-pointer ${
-                pathname === "/profile" ? "text-blue-500" : "text-gray-500"
-              }`}
+              className={`cursor-pointer ${pathname === "/profile" ? "text-blue-500" : "text-gray-500"
+                }`}
             >
               Profile
             </Menu.Item>
             <Menu.Item
               leftSection={<RiSettings2Line size={16} />}
               onClick={() => navigate("/settings")}
-              className={`cursor-pointer ${
-                pathname === "/settings" ? "text-blue-500" : "text-gray-500"
-              }`}
+              className={`cursor-pointer ${pathname === "/settings" ? "text-blue-500" : "text-gray-500"
+                }`}
             >
               Settings
             </Menu.Item>

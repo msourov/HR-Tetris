@@ -42,10 +42,10 @@ const UserDetail: React.FC = () => {
     .filter(Boolean)
     .map((log, index) => (
       <div key={index}>
-        <p className="text-sm font-medium">{log?.admin ?? "N/A"}</p>
-        <p className="text-xs">{log?.message ?? "N/A"}</p>
+        <p className="text-sm font-small text-blue-800 mb-1">{log?.admin || log?.user || "N/A"}</p>
+        <p className="text-xs text-gray-500">{log?.message ?? "N/A"}</p>
         <p className="text-xs text-gray-500">
-          <span className="font-bold text-gray-700">Created: </span>
+          <span className="font-bold">Created: </span>
           <span className="text-blue-500">
             {log?.create_at ? new Date(log.create_at).toLocaleString() : "N/A"}
           </span>
@@ -71,11 +71,10 @@ const UserDetail: React.FC = () => {
           <p className="font-medium text-lg text-center">{user?.name}</p>
 
           <Badge
-            className={`${
-              user?.active
-                ? "bg-green-200 text-green-700"
-                : "bg-red-200 text-red-700"
-            }`}
+            className={`${user?.active
+              ? "bg-green-200 text-green-700"
+              : "bg-red-200 text-red-700"
+              }`}
           >
             {user?.active ? "Active" : "Inactive"}
           </Badge>
@@ -97,7 +96,7 @@ const UserDetail: React.FC = () => {
         className="bg-blue-50 w-[260px] rounded-lg border p-6 mx-auto"
         style={{ minHeight: "400px" }}
       >
-        <Title order={4} mb="md" c="blue" ta="center">
+        <Title order={4} mb="md" c="gray" ta="center">
           Activity Logs
         </Title>
         {logsSteps.length > 0 ? (

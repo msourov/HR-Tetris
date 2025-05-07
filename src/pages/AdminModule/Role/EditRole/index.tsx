@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Paper, Button, Checkbox, Switch } from "@mantine/core";
+import { Paper, Button, Checkbox, Switch, Group } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { randomId, useListState } from "@mantine/hooks";
@@ -14,15 +14,15 @@ import { ErrorResponse } from "react-router-dom";
 type Permissions = {
   label: string;
   name:
-    | "user_management"
-    | "office_management"
-    | "app_user_management"
-    | "employee_management"
-    | "clm_management"
-    | "ticket_management"
-    | "inventory_management"
-    | "anouncement_management"
-    | "recruitment_management";
+  | "user_management"
+  | "office_management"
+  | "app_user_management"
+  | "employee_management"
+  | "clm_management"
+  | "ticket_management"
+  | "inventory_management"
+  | "anouncement_management"
+  | "recruitment_management";
   checked: boolean;
   key: string;
 };
@@ -117,7 +117,7 @@ const initialValues: Permissions[] = [
 
 const EditRole = ({ id: uid, name, closeModal, roleData }: EditRoleProps) => {
   const [values, handlers] = useListState(initialValues);
-  const [editRole] = useEditRoleMutation();
+  const [editRole, { isLoading }] = useEditRoleMutation();
   const {
     register,
     handleSubmit,
@@ -230,7 +230,7 @@ const EditRole = ({ id: uid, name, closeModal, roleData }: EditRoleProps) => {
 
         <div className="max-w-20">
           <Switch
-            size="lg"
+            size="md"
             onLabel="Disable"
             offLabel="Activate"
             color="black"
@@ -238,10 +238,20 @@ const EditRole = ({ id: uid, name, closeModal, roleData }: EditRoleProps) => {
             {...register("status")}
           />
         </div>
+        <Group justify="end" align="center" gap="sm" mt="lg">
+          <Button type="submit" bg="black" loading={isLoading} disabled={isLoading}>
+            Save
+          </Button>
+          <Button
+            variant="outline"
+            color='black'
+            onClick={closeModal}
+            disabled={isLoading}
+          >
+            Cancel
+          </Button>
+        </Group>
 
-        <Button type="submit" className="rounded-lg mt-6" bg="black">
-          Save
-        </Button>
       </form>
     </Paper>
   );

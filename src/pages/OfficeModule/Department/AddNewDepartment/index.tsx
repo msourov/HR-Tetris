@@ -64,7 +64,7 @@ const AddNewDepartment: React.FC<AddNewDepartmentProps> = ({ toggleModal }) => {
           />
           <div className="max-w-20 mt-4">
             <Switch
-              size="lg"
+              size="md"
               onLabel="Disable"
               offLabel="Activate"
               color="black"

@@ -9,7 +9,6 @@ import {
   Button,
   Divider,
   Timeline,
-  Pill,
   Loader,
   ScrollArea,
   Textarea,
@@ -185,7 +184,7 @@ const OvertimeDetail = ({
 
   return (
     <Card radius="md" p="lg" className="max-w-2xl mx-auto">
-      <h1 className="text-xl font-bold text-orange-400 mb-4 text-center">
+      <h1 className="text-xl font-bold text-orange-600 mb-4 text-center">
         Overtime Request
       </h1>
       <Group justify="space-between" mb="md">
@@ -211,7 +210,7 @@ const OvertimeDetail = ({
       </Group>
 
       <form onSubmit={handleSubmit(handleEditSubmit)}>
-        <Grid gutter="md">
+        <Grid gutter="md" className="text-sm">
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Group gap="xs">
               <IconUser size={16} className="text-blue-500" />
@@ -221,9 +220,9 @@ const OvertimeDetail = ({
             </Group>
           </Grid.Col>
           <Grid.Col span={{ base: 12, md: 6 }}>
-            <Pill bg="grape" c="white" size="md">
+            <div className="bg-blue-500 w-fit px-2 py-1 rounded-md text-white text-sm">
               {overtimeData.employee_id}
-            </Pill>
+            </div>
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 6 }}>
@@ -253,7 +252,7 @@ const OvertimeDetail = ({
                 className="w-[100%]"
               />
             ) : (
-              <Text className="px-3 py-1 bg-gray-100 rounded-md">
+              <Text className="px-3 py-1 border rounded-md text-sm">
                 {overtimeData.purpose}
               </Text>
             )}
@@ -284,7 +283,7 @@ const OvertimeDetail = ({
               />
             ) : (
               <div className="">
-                <Text className="font-mono bg-blue-100 text-blue-800 rounded-lg px-2">
+                <Text className="font-mono text-blue-600 rounded-lg px-2">
                   {formatDate(overtimeData.start_time)} -{" "}
                   {formatDate(overtimeData.end_time)}
                 </Text>
@@ -301,7 +300,7 @@ const OvertimeDetail = ({
             />
             <ScrollArea.Autosize
               mah={220}
-              className="pr-4 bg-blue-500 rounded-lg p-4"
+              className="pr-4 bg-blue-100 rounded-lg p-4"
             >
               <Timeline active={1} bulletSize={24} lineWidth={2}>
                 {/* Check if logs exist */}
@@ -313,12 +312,12 @@ const OvertimeDetail = ({
                           key={index}
                           bullet={<IconUser size={12} />}
                           title={`${log.admin}`}
-                          className="text-white"
+                          className="text-blue-800"
                         >
-                          <Text size="sm" className="text-gray-300">
+                          <Text size="sm" className="text-blue-600">
                             {log.message}
                           </Text>
-                          <Text size="xs" mt={2} c="yellow">
+                          <Text size="xs" mt={2} c="blue.6">
                             {formatDate(log.create_at, true)}
                           </Text>
                         </Timeline.Item>
@@ -372,7 +371,7 @@ const OvertimeDetail = ({
                 <>
                   <Button
                     variant="filled"
-                    color="red"
+                    color="red.6"
                     onClick={handleDeleteOvertime}
                     className="mt-4"
                     disabled={deleteLoading}

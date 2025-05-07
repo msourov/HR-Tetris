@@ -11,12 +11,12 @@ interface TableItemProps {
   data: User[];
   isLoading: boolean;
   error?:
-    | {
-        error: string;
-        status: string;
-      }
-    | FetchBaseQueryError
-    | SerializedError;
+  | {
+    error: string;
+    status: string;
+  }
+  | FetchBaseQueryError
+  | SerializedError;
 }
 
 const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
@@ -30,8 +30,8 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   return (
     <Table.Tbody>
       {data.map((item, index) => (
-        <Table.Tr>
-          <Table.Td style={{ width: "10%", paddingLeft: "32px" }}>
+        <Table.Tr key={item.mobile}>
+          <Table.Td style={{ width: "10%", paddingLeft: "32px", paddingBlock: '0.75rem' }}>
             {index + 1}
           </Table.Td>
           <Table.Td style={{ width: "25%" }}>{item.name}</Table.Td>

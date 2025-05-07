@@ -32,7 +32,7 @@ const AppModal = ({
                     fontWeight: 600,
                     color: 'gray',
                     margin: 'auto',
-                    marginBlock: '1rem'
+                    marginBlock: '0.75rem'
                 },
                 ...styles,
             }}

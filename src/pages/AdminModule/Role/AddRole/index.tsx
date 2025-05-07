@@ -97,7 +97,7 @@ const initialValues = [
   },
 ];
 
-const AddNewRole = () => {
+const AddRole = () => {
   const [values, handlers] = useListState(initialValues);
   const [createRole] = useCreateRoleMutation();
   const navigate = useNavigate();
@@ -220,4 +220,4 @@ const AddNewRole = () => {
   );
 };
 
-export default AddNewRole;
+export default AddRole;

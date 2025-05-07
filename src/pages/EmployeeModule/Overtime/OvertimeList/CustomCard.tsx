@@ -17,12 +17,12 @@ interface OvertimeData {
   end_time: string;
   is_approved: string;
   error?:
-    | {
-        error: string;
-        status: string;
-      }
-    | FetchBaseQueryError
-    | SerializedError;
+  | {
+    error: string;
+    status: string;
+  }
+  | FetchBaseQueryError
+  | SerializedError;
 }
 
 const CustomCard: React.FC<OvertimeData> = ({
@@ -48,7 +48,7 @@ const CustomCard: React.FC<OvertimeData> = ({
     <Card className="w-full px-6 border border-gray-200 rounded-lg shadow-lg flex flex-row">
       {/* Left section (80%) */}
       <div className="w-5/6 pr-4">
-        <Text className="text-lg font-semibold">{employee_name}</Text>
+        <Text className="text-lg">{employee_name}</Text>
         <Text className="mt-2 text-gray-500">{purpose}</Text>
         {dayjs(start_time).isSame(dayjs(end_time), "day") ? (
           <div className="flex flex-col text-gray-600 mt-2">

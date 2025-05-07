@@ -21,11 +21,13 @@ import {
 } from "@tabler/icons-react";
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import { IoMdReturnLeft } from "react-icons/io";
+import { useState } from "react";
 
 const DepartmentDetail = () => {
   const { id: uid } = useParams();
   const { formatDate } = useFormatDate();
   const { data, isLoading, error } = useGetDepartmentDetailQuery({ uid });
+  const [imageErrorMap, setImageErrorMap] = useState<Record<string, boolean>>({});
   const navigate = useNavigate();
 
   const departmentDetail = data?.data;
@@ -145,73 +147,92 @@ const DepartmentDetail = () => {
         </Text>
 
         <Stack gap="sm">
-          {departmentDetail?.employees.map((employee) => (
-            <Paper
-              key={employee.employee_id}
-              withBorder
-              p="md"
-              radius="md"
-              className="hover:shadow-md transition-shadow"
-            >
-              <Group justify="space-between" align="flex-start">
-                {/* Employee Info */}
-                <Group gap="md" align="flex-start">
-                  <Avatar color="blue" radius="xl" size="lg">
-                    {employee.name[0]}
-                  </Avatar>
+          {departmentDetail?.employees.map((employee) => {
+            const imageUrl = `https://api.hr-infozilion.pitetris.com/v1/mak/employee/show/file?employee_id=${employee?.employee_id}&is_image=true`;
+            const isError = imageErrorMap[employee.employee_id];
 
-                  <Stack gap={2}>
-                    <Text fw={600} className="text-gray-800">
-                      {employee.name}
-                    </Text>
-                    <Text size="sm" c="dimmed">
-                      {employee.designation}
-                    </Text>
+            return (
+              <Paper
+                key={employee.employee_id}
+                withBorder
+                p="md"
+                radius="md"
+                className="hover:shadow-md transition-shadow"
+              >
+                <Group justify="space-between" align="flex-start">
+                  {/* Employee Info */}
+                  <Group gap="md" align="flex-start">
+                    {!isError ? (
+                      <img
+                        src={imageUrl}
+                        alt="employee"
+                        className="w-16 h-16 object-cover rounded-full border"
+                        onError={() =>
+                          setImageErrorMap((prev) => ({
+                            ...prev,
+                            [employee.employee_id]: true,
+                          }))
+                        }
+                      />
+                    ) : (
+                      <Avatar color="blue" radius="xl" size="lg">
+                        {employee.name?.[0] ?? "?"}
+                      </Avatar>
+                    )}
 
-                    {/* Contact Info */}
-                    <Group gap="md" mt={4}>
-                      <Group gap={4}>
-                        <IconMail size={16} className="text-gray-500" />
-                        <Text size="sm" c="dimmed">
-                          {employee.email}
-                        </Text>
+                    <Stack gap={2}>
+                      <Text fw={600} className="text-gray-800">
+                        {employee.name}
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        {employee.designation}
+                      </Text>
+
+                      {/* Contact Info */}
+                      <Group gap="md" mt={4}>
+                        <Group gap={4}>
+                          <IconMail size={16} className="text-gray-500" />
+                          <Text size="sm" c="dimmed">
+                            {employee.email}
+                          </Text>
+                        </Group>
+
+                        <Group gap={4}>
+                          <IconPhone size={16} className="text-gray-500" />
+                          <Text size="sm" c="dimmed">
+                            {employee.phone}
+                          </Text>
+                        </Group>
                       </Group>
+                    </Stack>
+                  </Group>
 
-                      <Group gap={4}>
-                        <IconPhone size={16} className="text-gray-500" />
-                        <Text size="sm" c="dimmed">
-                          {employee.phone}
-                        </Text>
-                      </Group>
-                    </Group>
-                  </Stack>
+                  <Group gap="xs">
+                    {employee.supervisor && (
+                      <Badge
+                        color="teal"
+                        variant="light"
+                        leftSection={<IconUser size={12} />}
+                        radius="sm"
+                      >
+                        Supervisor
+                      </Badge>
+                    )}
+                    {employee.is_probation && (
+                      <Badge
+                        color="yellow"
+                        variant="light"
+                        leftSection={<IconAlertCircle size={12} />}
+                        radius="sm"
+                      >
+                        Probation
+                      </Badge>
+                    )}
+                  </Group>
                 </Group>
-
-                <Group gap="xs">
-                  {employee.supervisor && (
-                    <Badge
-                      color="teal"
-                      variant="light"
-                      leftSection={<IconUser size={12} />}
-                      radius="sm"
-                    >
-                      Supervisor
-                    </Badge>
-                  )}
-                  {employee.is_probation && (
-                    <Badge
-                      color="yellow"
-                      variant="light"
-                      leftSection={<IconAlertCircle size={12} />}
-                      radius="sm"
-                    >
-                      Probation
-                    </Badge>
-                  )}
-                </Group>
-              </Group>
-            </Paper>
-          ))}
+              </Paper>
+            );
+          })}
         </Stack>
       </Card>
     </>

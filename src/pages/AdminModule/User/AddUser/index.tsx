@@ -10,7 +10,6 @@ import {
   PasswordInput,
   Select,
   Switch,
-  Text,
   TextInput,
 } from "@mantine/core";
 import { IconX, IconCheck } from "@tabler/icons-react";
@@ -35,7 +34,7 @@ const schema = z.object({
 
 type AddUserRequest = z.infer<typeof schema>;
 
-const AddNewUser = () => {
+const AddUser = () => {
   const [addUser, { isLoading, error: createUserError }] =
     useCreateUserMutation();
   const navigate = useNavigate();
@@ -93,7 +92,9 @@ const AddNewUser = () => {
   const roleIdValue = watch("role");
 
   if (isLoading || isLoadingRoles) {
-    return <>Loading...</>;
+    return <div className="flex items-center justify-center h-[50vh] w-full">
+      <Loader color="blue" size={30} />
+    </div>;
   }
 
   if (rolesError || createUserError) {
@@ -105,7 +106,7 @@ const AddNewUser = () => {
   }
 
   return (
-    <Paper withBorder radius="md" p="md">
+    <Paper withBorder radius="md" className="px-16 py-12">
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           label="Name"
@@ -127,15 +128,16 @@ const AddNewUser = () => {
             }
           }}
           error={errors.role?.message as React.ReactNode}
-          mt={8}
+          mt={4}
         />
-        <Text c="dimmed" className="mt-6 mb-2">
-          Set Status
-        </Text>
-        <Box className="max-w-20">
+        <Box className="max-w-20 mt-1">
+          <label className="text-sm font-medium" htmlFor="active-switch">
+            Set Status
+          </label>
           <Switch
-            size="lg"
-            color="black"
+            id="active-switch"
+            size="md"
+            color="dark"
             {...register("active")}
             checked={activeValue}
             onChange={(e) => setValue("active", e.currentTarget.checked)}
@@ -166,4 +168,4 @@ const AddNewUser = () => {
   );
 };
 
-export default AddNewUser;
+export default AddUser;

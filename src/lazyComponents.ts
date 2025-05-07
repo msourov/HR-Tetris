@@ -6,7 +6,7 @@ export const Dashboard = lazy(() => import("./pages/Dashboard"));
 export const User = lazy(() => import("./pages/AdminModule/User"));
 export const EditUser = lazy(() => import("./pages/AdminModule/User/EditUser"));
 export const AddNewUser = lazy(
-  () => import("./pages/AdminModule/User/AddNewUser")
+  () => import("./pages/AdminModule/User/AddUser/index.tsx")
 );
 export const Role = lazy(() => import("./pages/AdminModule/Role"));
 export const EditDepartment = lazy(
@@ -22,7 +22,7 @@ export const UserTable = lazy(
   () => import("./pages/AdminModule/User/UserTable")
 );
 export const AddNewRole = lazy(
-  () => import("./pages/AdminModule/Role/AddNewRole")
+  () => import("./pages/AdminModule/Role/AddRole/index.tsx")
 );
 export const RoleTable = lazy(
   () => import("./pages/AdminModule/Role/RoleTable")

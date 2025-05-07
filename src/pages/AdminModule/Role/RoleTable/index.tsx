@@ -81,7 +81,7 @@ const RoleTable: React.FC = () => {
   }
 
   return (
-    <div className="flex gap-4 py-8 px-4">
+    <div className="flex flex-col xl:flex-row gap-4 py-8 px-4">
       <div className="flex-1 border">
         <Table>
           <TableHeading />

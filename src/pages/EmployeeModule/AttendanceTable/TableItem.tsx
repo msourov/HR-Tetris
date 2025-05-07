@@ -13,12 +13,12 @@ interface TableItemProps {
   data: Attendance[];
   isLoading: boolean;
   error?:
-    | {
-        error: string;
-        status: string;
-      }
-    | FetchBaseQueryError
-    | SerializedError;
+  | {
+    error: string;
+    status: string;
+  }
+  | FetchBaseQueryError
+  | SerializedError;
 }
 
 const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
@@ -75,7 +75,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
           onClick={() => handleAttendanceOpen(item?.uid)}
         >
           <Table.Td className="w-[5%] pl-[1rem]">{index + 1}</Table.Td>
-          <Table.Td className="w-[15%] border border-blue-300 bg-blue-100">
+          <Table.Td className="w-[15%] border">
             <img
               src={item.employee_image}
               alt={item.employee_name}
@@ -89,9 +89,8 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
           <Table.Td className="w-[10%]">
             {item.is_attend ? (
               <Pill
-                className={`text-white ${
-                  item.is_late ? "bg-yellow-600" : "bg-green-600"
-                }`}
+                className={`text-white ${item.is_late ? "bg-yellow-600" : "bg-green-600"
+                  }`}
               >
                 {item.is_late ? "Late" : "Present"}
               </Pill>
@@ -106,15 +105,14 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
             {formatDate(item.end_attended_time, true)}
           </Table.Td>
           <Table.Td
-            className={`w-[10%] font-semibold ${
-              item.is_home_office ? "text-orange-500" : "text-blue-500"
-            }`}
+            className={`w-[10%] font-semibold ${item.is_home_office ? "text-orange-500" : "text-blue-500"
+              }`}
           >
             {item.is_home_office === null
               ? "Office"
               : item.is_home_office
-              ? "Home"
-              : "Office"}
+                ? "Home"
+                : "Office"}
           </Table.Td>
         </Table.Tr>
       ))}
@@ -127,7 +125,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
           backgroundOpacity: 0.55,
           blur: 3,
         }}
-        //   scrollAreaComponent={ScrollArea.Autosize}
+      //   scrollAreaComponent={ScrollArea.Autosize}
       >
         <AttendanceDetail uid={selectedAttendance} />
       </Modal>

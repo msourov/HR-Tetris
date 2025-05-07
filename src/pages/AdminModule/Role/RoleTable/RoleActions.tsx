@@ -10,6 +10,7 @@ import {
   useGetRoleDetailQuery,
 } from "../../../../features/api/roleSlice";
 import { Role } from "../../../../features/types/role";
+import AppModal from "../../../../components/ui/AppModal";
 
 interface RoleActionProps {
   name: string;
@@ -87,7 +88,7 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
         </button>
       </div>
 
-      <Modal opened={editOpened} onClose={closeEdit} title="Edit Role">
+      <AppModal opened={editOpened} onClose={closeEdit} title="Edit Role" size='md'>
         {isDetailLoading ? (
           <div className="flex justify-center p-4">
             <Loader type="dots" />
@@ -100,7 +101,7 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
             roleData={roleDetail?.data ?? ({} as Role)}
           />
         )}
-      </Modal>
+      </AppModal>
 
       <Modal
         opened={deleteOpened}

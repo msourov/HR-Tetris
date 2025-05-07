@@ -8,11 +8,31 @@ export const attendanceApi = createApi({
   baseQuery: baseQuery,
   tagTypes: [tagTypes.ATTENDANCE],
   endpoints: (builder) => ({
-    getAllAttendance: builder.query<AttendanceResponse, void>({
-      query: () => ({
-        url: "attendance/all",
-        method: "GET",
-      }),
+    getAllAttendance: builder.query<
+      AttendanceResponse,
+      {
+        employee_name?: string;
+        attended_date?: string;
+        start_date?: string;
+        end_date?: string;
+      }
+    >({
+      query: (params) => {
+        const queryParams: Record<string, string> = {};
+
+        if (params.employee_name)
+          queryParams.employee_name = params.employee_name;
+        if (params.attended_date)
+          queryParams.attended_date = params.attended_date;
+        if (params.start_date) queryParams.start_date = params.start_date;
+        if (params.end_date) queryParams.end_date = params.end_date;
+
+        return {
+          url: "attendance/all",
+          method: "GET",
+          params: queryParams,
+        };
+      },
       providesTags: (result) =>
         result
           ? [
