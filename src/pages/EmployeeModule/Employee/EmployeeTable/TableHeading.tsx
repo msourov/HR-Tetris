@@ -7,9 +7,9 @@ const TableHeading = () => {
         <Table.Th style={{ width: "2%", paddingLeft: "1.5rem" }}>
           Serial
         </Table.Th>
-        <Table.Th style={{ width: "15%" }}>Name</Table.Th>
+        <Table.Th style={{ width: "23%" }}>Name</Table.Th>
         <Table.Th style={{ width: "5%" }}>EID</Table.Th>
-        <Table.Th style={{ width: "10%" }}>Phone</Table.Th>
+        <Table.Th style={{ width: "5%" }}>Phone</Table.Th>
         <Table.Th style={{ width: "15%" }}>Email</Table.Th>
         <Table.Th style={{ width: "8%" }}>Shift</Table.Th>
         <Table.Th style={{ width: "7%" }}>Department</Table.Th>

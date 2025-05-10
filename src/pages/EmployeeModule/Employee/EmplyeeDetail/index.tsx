@@ -1,8 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetEmployeeDetailQuery } from "../../../../features/api/employeeSlice";
 import {
   Avatar,
   Badge,
+  Button,
   Flex,
   Grid,
   Loader,
@@ -11,10 +12,19 @@ import {
   Text,
 } from "@mantine/core";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
-import { MdWork, MdPerson, MdEmergency, MdHistory } from "react-icons/md";
+import {
+  MdWork,
+  MdPerson,
+  MdEmergency,
+  MdHistory,
+  MdLockOpen,
+} from "react-icons/md";
 import { useState } from "react";
 import { IconType } from "react-icons";
 import useFormatDate from "../../../../services/utils/useFormatDate";
+import { getImageUrl } from "../../../../services/utils/getImageUrl";
+import { IconCheck, IconX } from "@tabler/icons-react";
+import InfoItem from "../../../../components/ui/InfoItem";
 
 const EmployeeDetail = () => {
   const { uid } = useParams();
@@ -25,6 +35,7 @@ const EmployeeDetail = () => {
   } = useGetEmployeeDetailQuery({ uid });
   const [activeTab, setActiveTab] = useState<string | null>("personal");
   const { formatDate } = useFormatDate();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -38,76 +49,93 @@ const EmployeeDetail = () => {
     return <ErrorAlert message="Error fetching employee details" />;
   }
 
-  const { personal, work, emergency_contact, logs } = employee.data;
+  const { personal, work, emergency_contact, employee_access, logs } =
+    employee.data;
 
   const SectionHeader = ({
     icon: Icon,
     title,
   }: {
-    icon: IconType;
+    icon?: IconType;
     title: string;
   }) => (
     <Flex gap="sm" align="center" mb="xl" className="border-b pb-2">
-      <Icon size={20} className="text-blue-600" />
+      {Icon && <Icon size={20} className="text-blue-600" />}
       <Text fw={600} size="lg" className="text-gray-700">
         {title}
       </Text>
     </Flex>
   );
 
-  const InfoItem = ({
-    label,
-    value,
-  }: {
-    label: string;
-    value?: string | number;
-  }) => (
-    <div className="mb-4">
-      <Text size="sm" className="text-gray-500 mb-1">
-        {label}
-      </Text>
-      <Text size="md" className="text-gray-800 font-medium">
-        {value || "N/A"}
-      </Text>
-    </div>
-  );
+  // const InfoItem = ({
+  //   label,
+  //   value,
+  // }: {
+  //   label: string;
+  //   value?: string | number;
+  // }) => (
+  //   <div className="mb-4">
+  //     <Text size="sm" className="text-gray-500 mb-1">
+  //       {label}
+  //     </Text>
+  //     <Text size="md" className="text-gray-800 font-medium">
+  //       {value || "N/A"}
+  //     </Text>
+  //   </div>
+  // );
 
   const ProfileCard = ({ children }: { children: React.ReactNode }) => (
-    <Paper withBorder p="lg" className="bg-gray-50 rounded-lg">
+    <Paper withBorder p="lg" className="bg-white rounded-lg shadow-sm">
       {children}
     </Paper>
   );
 
+  const formatLabel = (key: string) => {
+    return key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()); // e.g. "leave_management" → "Leave Management"
+  };
+
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="px-8 w-full pb-6 mx-auto">
       {/* Profile Header */}
       <Flex
+        justify="space-between"
         gap="xl"
         align="center"
-        mb="xl"
+        mb="lg"
         className="bg-white p-6 rounded-lg shadow-sm"
       >
-        <Avatar
-          size={120}
-          radius="100%"
-          src={`https://avatar.iran.liara.run/public`}
-        />
-        <div>
-          <Text fw={700} size="xl" className="text-gray-800 mb-1">
-            {personal.name}
-          </Text>
-          <Text size="md" className="text-gray-600 mb-2">
-            {work.designation.name} • {work.department.name}
-          </Text>
-          <Badge
-            variant="light"
-            color={personal.active ? "green" : "red"}
-            size="lg"
-            radius="sm"
-          >
-            {personal.active ? "Active" : "Inactive"}
-          </Badge>
-        </div>
+        {/* Left Section: Avatar + Info */}
+        <Flex gap="xl" align="center">
+          <Avatar
+            size={120}
+            radius="100%"
+            src={getImageUrl(work?.employee_id)}
+          />
+          <div>
+            <Text fw={700} size="xl" className="text-gray-800 mb-1">
+              {personal.name}
+            </Text>
+            <Text size="md" className="text-gray-600 mb-2">
+              {work.designation.name} • {work.department.name}
+            </Text>
+            <Badge
+              variant="light"
+              color={personal.active ? "green" : "red"}
+              size="lg"
+              radius="sm"
+            >
+              {personal.active ? "Active" : "Inactive"}
+            </Badge>
+          </div>
+        </Flex>
+
+        {/* Right Section: Edit Button */}
+        <Button
+          color="blue"
+          onClick={() => navigate(`/employees/${uid}/edit-employee`)}
+        >
+          Edit
+        </Button>
       </Flex>
 
       <Grid gutter="xl">
@@ -126,96 +154,225 @@ const EmployeeDetail = () => {
               <Tabs.Tab value="work" leftSection={<MdWork size={18} />}>
                 Work
               </Tabs.Tab>
-              <Tabs.Tab
-                value="emergency"
-                leftSection={<MdEmergency size={18} />}
-              >
+              <Tabs.Tab value="emergency" leftSection={<MdWork size={18} />}>
                 Emergency
+              </Tabs.Tab>
+              <Tabs.Tab value="access" leftSection={<MdLockOpen size={18} />}>
+                Accesses
               </Tabs.Tab>
             </Tabs.List>
 
             <ProfileCard>
               {activeTab === "personal" && (
-                <>
+                <div className="space-y-6">
                   <SectionHeader icon={MdPerson} title="Personal Information" />
                   <Grid gutter="xl">
                     <Grid.Col span={{ base: 12, md: 6 }}>
-                      <InfoItem label="Phone" value={`+88${personal.phone}`} />
-                      <InfoItem label="Email" value={personal.email} />
-                      <InfoItem
-                        label="Date of Birth"
-                        value={
-                          personal.bod ? formatDate(personal.bod) : undefined
-                        }
-                      />
+                      <div className="space-y-3">
+                        <InfoItem
+                          label="Phone"
+                          value={`+88${personal.phone}`}
+                          highlight
+                        />
+                        <InfoItem
+                          label="Email"
+                          value={personal.email}
+                          link={`mailto:${personal.email}`}
+                        />
+                        <InfoItem
+                          label="Date of Birth"
+                          value={
+                            personal.bod
+                              ? formatDate(personal.bod)
+                              : "Not specified"
+                          }
+                        />
+                      </div>
                     </Grid.Col>
                     <Grid.Col span={{ base: 12, md: 6 }}>
-                      <InfoItem label="Address" value={personal.address} />
-                      <InfoItem
-                        label="Marital Status"
-                        value={personal.marital_status}
-                      />
-                      <InfoItem
-                        label="Spouse Name"
-                        value={personal.spouse_name}
-                      />
+                      <div className="space-y-3">
+                        <InfoItem
+                          label="Address"
+                          value={personal.address || "No address provided"}
+                          multiline
+                        />
+                        <InfoItem
+                          label="Marital Status"
+                          value={personal.marital_status || "Not specified"}
+                        />
+                        {personal.marital_status === "Married" && (
+                          <InfoItem
+                            label="Spouse Name"
+                            value={personal.spouse_name}
+                          />
+                        )}
+                      </div>
                     </Grid.Col>
                   </Grid>
-                </>
+                </div>
               )}
 
               {activeTab === "work" && (
-                <>
+                <div className="space-y-6">
                   <SectionHeader icon={MdWork} title="Work Information" />
                   <Grid gutter="xl">
                     <Grid.Col span={{ base: 12, md: 6 }}>
-                      <InfoItem label="Employee ID" value={work.employee_id} />
-                      <InfoItem label="Company" value={work.company?.name} />
-                      <InfoItem
-                        label="Joining Date"
-                        value={
-                          work.joining_date
-                            ? formatDate(work.joining_date)
-                            : undefined
-                        }
-                      />
+                      <div className="space-y-3">
+                        <InfoItem
+                          label="Employee ID"
+                          value={work.employee_id}
+                          highlight
+                        />
+                        <InfoItem
+                          label="Joining Date"
+                          value={
+                            work.joining_date
+                              ? formatDate(work.joining_date)
+                              : "N/A"
+                          }
+                        />
+                        <InfoItem
+                          label="Department"
+                          value={work.department?.name || "N/A"}
+                        />
+                      </div>
                     </Grid.Col>
                     <Grid.Col span={{ base: 12, md: 6 }}>
-                      <InfoItem
-                        label="Salary"
-                        value={
-                          work.salary ? `$${work.salary.toFixed(2)}` : undefined
-                        }
-                      />
-                      <InfoItem
-                        label="Work Location"
-                        value={work.work_location}
-                      />
-                      <InfoItem label="Work Email" value={work.work_email} />
+                      <div className="space-y-3">
+                        <InfoItem
+                          label="Salary"
+                          value={
+                            work.salary
+                              ? `$${work.salary.toLocaleString()}`
+                              : "Confidential"
+                          }
+                          highlight
+                        />
+                        <InfoItem
+                          label="Work Location"
+                          value={work.work_location || "Not specified"}
+                        />
+                        <InfoItem
+                          label="Work Email"
+                          value={work.work_email}
+                          link={`mailto:${work.work_email}`}
+                        />
+                      </div>
                     </Grid.Col>
                   </Grid>
-                </>
+                </div>
               )}
 
               {activeTab === "emergency" && (
-                <>
+                <div className="space-y-6">
                   <SectionHeader icon={MdEmergency} title="Emergency Contact" />
-                  <Grid gutter="xl">
-                    <Grid.Col span={{ base: 12, md: 6 }}>
-                      <InfoItem label="Name" value={emergency_contact.name} />
-                      <InfoItem
-                        label="Relationship"
-                        value={emergency_contact.relationship}
-                      />
-                    </Grid.Col>
-                    <Grid.Col span={{ base: 12, md: 6 }}>
-                      <InfoItem label="Phone" value={emergency_contact.phone} />
-                      <InfoItem
-                        label="Address"
-                        value={emergency_contact.address}
-                      />
-                    </Grid.Col>
-                  </Grid>
+                  <div className="border-2 border-red-100 bg-red-50 rounded-lg p-4">
+                    <Grid gutter="xl">
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <div className="space-y-3">
+                          <InfoItem
+                            label="Contact Name"
+                            value={emergency_contact.name}
+                            highlight
+                          />
+                          <InfoItem
+                            label="Relationship"
+                            value={emergency_contact.relationship}
+                          />
+                        </div>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <div className="space-y-3">
+                          <InfoItem
+                            label="Phone"
+                            value={
+                              emergency_contact.phone
+                                ? `+88${emergency_contact.phone}`
+                                : "Not provided"
+                            }
+                            link={
+                              emergency_contact.phone
+                                ? `tel:${emergency_contact.phone}`
+                                : undefined
+                            }
+                            highlight
+                          />
+                          <InfoItem
+                            label="Address"
+                            value={
+                              emergency_contact.address || "No address provided"
+                            }
+                            multiline
+                          />
+                        </div>
+                      </Grid.Col>
+                    </Grid>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "access" && (
+                <>
+                  <SectionHeader icon={MdLockOpen} title="Employee Access" />
+                  <div className="w-full h-96 overflow-y-auto pr-4">
+                    <Grid gutter="lg">
+                      {Object.entries(employee_access).map(([key, value]) => {
+                        const isAllowed = value === "a";
+                        const isApproval = key.includes("_approve_");
+
+                        return (
+                          <Grid.Col
+                            key={key}
+                            span={{ base: 12, md: 6, lg: 4 }}
+                            className="group"
+                          >
+                            <div
+                              className={`p-4 rounded-lg border ${
+                                isAllowed
+                                  ? "border-green-100 bg-green-50 hover:bg-green-100"
+                                  : "border-red-100 bg-red-50 hover:bg-red-100"
+                              } transition-colors`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <Text
+                                    size="sm"
+                                    className="font-semibold text-gray-700"
+                                  >
+                                    {formatLabel(key)}
+                                  </Text>
+                                  {isApproval && (
+                                    <Badge
+                                      variant="light"
+                                      color="blue"
+                                      size="xs"
+                                      className="mt-1"
+                                    >
+                                      Approval Permission
+                                    </Badge>
+                                  )}
+                                </div>
+                                <Badge
+                                  leftSection={
+                                    isAllowed ? (
+                                      <IconCheck size={14} className="mr-1" />
+                                    ) : (
+                                      <IconX size={14} className="mr-1" />
+                                    )
+                                  }
+                                  color={isAllowed ? "green" : "red"}
+                                  variant="filled"
+                                  radius="sm"
+                                >
+                                  {isAllowed ? "Allowed" : "Unauthorized"}
+                                </Badge>
+                              </div>
+                            </div>
+                          </Grid.Col>
+                        );
+                      })}
+                    </Grid>
+                  </div>
                 </>
               )}
             </ProfileCard>
@@ -227,7 +384,7 @@ const EmployeeDetail = () => {
           <ProfileCard>
             <SectionHeader icon={MdHistory} title="Activity Log" />
             {Array.isArray(logs) && logs.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-4 max-h-96 overflow-y-auto">
                 {logs.map((log, index) => (
                   <div key={index} className="border-l-2 border-blue-200 pl-4">
                     <Text size="sm" className="text-gray-800 font-medium">

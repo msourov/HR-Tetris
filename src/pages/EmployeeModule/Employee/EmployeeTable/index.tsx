@@ -10,7 +10,7 @@ const EmplyeeTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch] = useDebouncedValue(searchTerm, 500);
 
-  const limit = 5;
+  const limit = 10;
 
   const {
     data: employees,

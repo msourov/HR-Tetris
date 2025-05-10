@@ -5,6 +5,7 @@ import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import EmployeeActions from "./EmployeeActions";
 import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
 import { Employee } from "../../../../features/types/employee";
+import { getImageUrl } from "../../../../services/utils/getImageUrl";
 
 interface TableItemProps {
   data: Employee[];
@@ -27,12 +28,6 @@ const TableItem: React.FC<TableItemProps> = ({
   page,
   limit,
 }) => {
-  const getImageUrl = (employeeId: string) => {
-    return `${
-      import.meta.env.VITE_APP_EMPLOYEE_IMAGE
-    }/${employeeId}_image.jpeg`;
-  };
-
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     e.currentTarget.src = "/assets/employee_avatar.png";
   };
@@ -53,7 +48,7 @@ const TableItem: React.FC<TableItemProps> = ({
           <Table.Td style={{ width: "2%", paddingLeft: "1.5rem" }}>
             {(page - 1) * limit + index + 1}
           </Table.Td>
-          <Table.Td style={{ width: "15%" }}>
+          <Table.Td style={{ width: "23%" }}>
             <img
               src={getImageUrl(item?.work?.employee_id)}
               alt={item.personal?.name}
@@ -65,7 +60,7 @@ const TableItem: React.FC<TableItemProps> = ({
           <Table.Td style={{ width: "5%" }}>
             {item.work?.employee_id || "N/A"}
           </Table.Td>
-          <Table.Td style={{ width: "10%" }} className="">
+          <Table.Td style={{ width: "5%" }} className="">
             {item.personal?.phone || "N/A"}
           </Table.Td>
           <Table.Td style={{ width: "10%" }}>
