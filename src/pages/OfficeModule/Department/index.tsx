@@ -30,7 +30,9 @@ const DepartmentLayout = () => {
 
   return (
     <div className="w-[95%] my-8 mx-auto bg-white rounded-lg drop-shadow-lg py-6 px-10">
-      {!isDetailPage && (
+      {isDetailPage ? (
+        <Outlet />
+      ) : (
         <Tabs radius="xs" value={activeTab} onChange={handleTabChange}>
           <Tabs.List>
             <Tabs.Tab value="list" leftSection={<IconList style={iconStyle} />}>
@@ -51,7 +53,6 @@ const DepartmentLayout = () => {
           </Tabs.Panel>
         </Tabs>
       )}
-      {isDetailPage && <Outlet />}{" "}
     </div>
   );
 };

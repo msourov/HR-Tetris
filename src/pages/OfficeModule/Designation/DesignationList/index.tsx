@@ -1,7 +1,9 @@
 import { Box, Card, Loader, Pill, SimpleGrid, Text } from "@mantine/core";
 import { useGetDesignationsQuery } from "../../../../features/api/designationSlice";
+import { useNavigate } from "react-router-dom";
 
 const DesignationList = () => {
+  const navigate = useNavigate();
   const {
     data: designationData,
     isLoading,
@@ -14,7 +16,7 @@ const DesignationList = () => {
   if (error) {
     <p>Something went wrong.</p>;
   }
-
+  console.log(designationData);
   return (
     <Box className="mt-6">
       <SimpleGrid
@@ -28,6 +30,7 @@ const DesignationList = () => {
             withBorder
             maw={250}
             className="text-center flex-auto p-4 max-w-full overflow-hidden py-6 gap-2"
+            onClick={() => navigate(`${item?.uid}/detail`)}
           >
             <Text fw={500} size="lg" className="truncate">
               {item?.name}

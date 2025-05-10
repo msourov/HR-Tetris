@@ -88,6 +88,7 @@ export const designationApi = createApi({
 
 export const {
   useGetDesignationsQuery,
+  useGetDesignationDetailQuery,
   useAddDesignationMutation,
   useEditDesignationMutation,
   useDeleteDesignationMutation,

@@ -104,6 +104,12 @@ export interface AllEmployeesResponse {
   status_code: number;
   success: boolean;
   data: Employee[];
+  pagination: {
+    page: number;
+    limit: number;
+    total_pages: number;
+    total_items: number;
+  };
 }
 
 // export interface CreateEmployeePayload {

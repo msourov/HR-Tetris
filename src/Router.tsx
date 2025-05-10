@@ -213,7 +213,7 @@ export const router = createBrowserRouter([
                 element: <EditDesignation />,
               },
               {
-                path: ":designationName/detail",
+                path: ":id/detail",
                 element: <DesignationDetail />,
               },
             ],

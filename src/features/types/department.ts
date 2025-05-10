@@ -17,6 +17,7 @@ interface Employee {
   supervisor: boolean;
   is_probation: boolean;
   designation: string;
+  department?: string;
 }
 
 interface DepartmentDetail {

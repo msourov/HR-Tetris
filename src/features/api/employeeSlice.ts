@@ -16,14 +16,15 @@ export const employeeApi = createApi({
   endpoints: (builder) => ({
     getEmployees: builder.query<
       AllEmployeesResponse,
-      { page: number; limit: number }
+      { page: number; limit: number; search?: string }
     >({
-      query: ({ page, limit }) => ({
+      query: ({ page, limit, search }) => ({
         url: "employee/all",
         method: "GET",
         params: {
           page,
           limit,
+          ...(search && { search }),
         },
       }),
       providesTags: (result) =>

@@ -8,6 +8,8 @@ import { Employee } from "../../../../features/types/employee";
 
 interface TableItemProps {
   data: Employee[];
+  page: number;
+  limit: number;
   isLoading: boolean;
   error?:
     | {
@@ -18,7 +20,23 @@ interface TableItemProps {
     | SerializedError;
 }
 
-const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
+const TableItem: React.FC<TableItemProps> = ({
+  data,
+  isLoading,
+  error,
+  page,
+  limit,
+}) => {
+  const getImageUrl = (employeeId: string) => {
+    return `${
+      import.meta.env.VITE_APP_EMPLOYEE_IMAGE
+    }/${employeeId}_image.jpeg`;
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/assets/employee_avatar.png";
+  };
+
   if (isLoading) {
     return <CommonSkeleton cols={9} rows={5} />;
   }
@@ -26,14 +44,22 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
     return <ErrorAlert message="Error fetching users" />;
   }
 
+  console.log(data);
+
   return (
     <Table.Tbody className="text-black font-medium border-b bg-gray-100">
       {data.map((item, index) => (
         <Table.Tr key={item.uid} className="hover:bg-white text-emerald-950">
           <Table.Td style={{ width: "2%", paddingLeft: "1.5rem" }}>
-            {index + 1}
+            {(page - 1) * limit + index + 1}
           </Table.Td>
           <Table.Td style={{ width: "15%" }}>
+            <img
+              src={getImageUrl(item?.work?.employee_id)}
+              alt={item.personal?.name}
+              className="w-10 h-10 rounded-full mr-2 inline-block"
+              onError={handleImageError}
+            />
             {item.personal?.name || "N/A"}
           </Table.Td>
           <Table.Td style={{ width: "5%" }}>
