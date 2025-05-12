@@ -70,7 +70,7 @@ const Tab1Fields: React.FC<Tab1FieldsProps> = ({
         label="Date of birth"
         placeholder="Pick date"
         {...register("bod")}
-        value={watch("bod") ? new Date(watch("bod")) : new Date()}
+        value={watch("bod") ? new Date(watch("bod")) : null}
         onChange={(value) => {
           if (value) setValue("bod", value.toISOString());
         }}

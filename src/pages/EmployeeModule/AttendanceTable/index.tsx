@@ -6,15 +6,19 @@ import { useState } from "react";
 import { DateInput } from "@mantine/dates";
 // import AppPageHeader from "../../../components/core/AppPageHeader";
 
-const EmplyeeTable = () => {
+const AttendanceTable = () => {
   const [searchParams, setSearchParams] = useState({
-    employee_name: '',
-    attended_date: '',
-    start_date: '',
-    end_date: ''
+    employee_name: "",
+    attended_date: "",
+    start_date: "",
+    end_date: "",
   });
 
-  const { data: attendance, isLoading, error } = useGetAllAttendanceQuery(searchParams);
+  const {
+    data: attendance,
+    isLoading,
+    error,
+  } = useGetAllAttendanceQuery(searchParams);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,11 +28,19 @@ const EmplyeeTable = () => {
   return (
     <>
       <div className="mb-4 p-4 bg-white rounded-lg">
-        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <form
+          onSubmit={handleSearch}
+          className="grid grid-cols-1 md:grid-cols-4 gap-4"
+        >
           <TextInput
             placeholder="Employee Name"
             value={searchParams.employee_name}
-            onChange={(e) => setSearchParams({ ...searchParams, employee_name: e.target.value })}
+            onChange={(e) =>
+              setSearchParams({
+                ...searchParams,
+                employee_name: e.target.value,
+              })
+            }
           />
           {/* <DateInput
             placeholder="Attended Date"
@@ -37,13 +49,27 @@ const EmplyeeTable = () => {
           /> */}
           <DateInput
             placeholder="Start Date"
-            value={searchParams.start_date ? new Date(searchParams.start_date) : null}
-            onChange={(date) => setSearchParams({ ...searchParams, start_date: date ? date.toISOString() : '' })}
+            value={
+              searchParams.start_date ? new Date(searchParams.start_date) : null
+            }
+            onChange={(date) =>
+              setSearchParams({
+                ...searchParams,
+                start_date: date ? date.toISOString() : "",
+              })
+            }
           />
           <DateInput
             placeholder="End Date"
-            value={searchParams.end_date ? new Date(searchParams.end_date) : null}
-            onChange={(date) => setSearchParams({ ...searchParams, end_date: date ? date.toISOString() : '' })}
+            value={
+              searchParams.end_date ? new Date(searchParams.end_date) : null
+            }
+            onChange={(date) =>
+              setSearchParams({
+                ...searchParams,
+                end_date: date ? date.toISOString() : "",
+              })
+            }
           />
           {/* <Button type="submit" className="md:col-span-4">
             Search
@@ -65,4 +91,4 @@ const EmplyeeTable = () => {
   );
 };
 
-export default EmplyeeTable;
+export default AttendanceTable;

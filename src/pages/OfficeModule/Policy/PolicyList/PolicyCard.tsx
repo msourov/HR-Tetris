@@ -17,9 +17,12 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
       className="flex flex-col bg-green-50 px-6 py-4"
       key={item?.id}
     >
-      <Text className="w-fit px-2 mx-auto font-bold text-green-900">
+      <div>
+        <Text className="w-fit px-2 mx-auto font-bold text-green-900">
         {item?.name}
       </Text>
+      </div>
+      
 
       <Text size="sm" className="leading-6 my-4 text-gray-500">
         {item?.descriptions?.length > 300 ? (

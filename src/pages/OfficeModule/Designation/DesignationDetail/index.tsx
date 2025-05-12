@@ -1,6 +1,5 @@
 import {
   Card,
-  Avatar,
   Group,
   Paper,
   Text,
@@ -20,19 +19,21 @@ import {
 } from "@tabler/icons-react";
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import { IoMdReturnLeft } from "react-icons/io";
-import { useState } from "react";
 import { useGetDesignationDetailQuery } from "../../../../features/api/designationSlice";
+import { getImageUrl } from "../../../../services/utils/getImageUrl";
 
 const DesignationDetail = () => {
   const { id: uid } = useParams();
   const { formatDate } = useFormatDate();
   const { data, isLoading, error } = useGetDesignationDetailQuery({ uid });
-  const [imageErrorMap, setImageErrorMap] = useState<Record<string, boolean>>(
-    {}
-  );
+
   const navigate = useNavigate();
 
   const designationDetail = data?.data;
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/assets/employee_avatar.png";
+  };
 
   if (isLoading) {
     return <Loader type="dots" />;
@@ -148,9 +149,6 @@ const DesignationDetail = () => {
 
         <Stack gap="sm">
           {designationDetail?.employees.map((employee) => {
-            const imageUrl = `https://api.hr-infozilion.pitetris.com/v1/mak/employee/show/file?employee_id=${employee?.employee_id}&is_image=true`;
-            const isError = imageErrorMap[employee.employee_id];
-
             return (
               <Paper
                 key={employee.employee_id}
@@ -162,24 +160,12 @@ const DesignationDetail = () => {
                 <Group justify="space-between" align="flex-start">
                   {/* Employee Info */}
                   <Group gap="md" align="flex-start">
-                    {!isError ? (
-                      <img
-                        src={imageUrl}
-                        alt="employee"
-                        className="w-16 h-16 object-cover rounded-full border"
-                        onError={() =>
-                          setImageErrorMap((prev) => ({
-                            ...prev,
-                            [employee.employee_id]: true,
-                          }))
-                        }
-                      />
-                    ) : (
-                      <Avatar color="blue" radius="xl" size="lg">
-                        {employee.name?.[0] ?? "?"}
-                      </Avatar>
-                    )}
-
+                    <img
+                      src={getImageUrl(employee?.employee_id)}
+                      alt="employee"
+                      className="w-16 h-16 object-cover rounded-full border"
+                      onError={handleImageError}
+                    />
                     <Stack gap={2}>
                       <Text fw={600} className="text-gray-800">
                         {employee.name}

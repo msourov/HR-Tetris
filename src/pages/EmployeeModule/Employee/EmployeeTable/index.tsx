@@ -4,6 +4,7 @@ import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
 import { useState } from "react";
 import { useDebouncedValue } from "@mantine/hooks";
+import { IconSearch } from "@tabler/icons-react";
 
 const EmplyeeTable = () => {
   const [page, setPage] = useState(1);
@@ -24,16 +25,19 @@ const EmplyeeTable = () => {
   });
 
   return (
-    <div className="space-y-4">
-      <TextInput
-        placeholder="Search employees..."
-        value={searchTerm}
-        onChange={(e) => {
-          setSearchTerm(e.currentTarget.value);
-          setPage(1); // Reset to first page when searching
-        }}
-        className="max-w-md mb-4"
-      />
+    <div className="space-y-4 w-full">
+      <div className="my-8 w-[90%] mx-auto">
+        <TextInput
+          placeholder="Search employees..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.currentTarget.value);
+            setPage(1);
+          }}
+          rightSection={<IconSearch />}
+          className="w-full h-[10]"
+        />
+      </div>
 
       <Table verticalSpacing="sm">
         <TableHeading />

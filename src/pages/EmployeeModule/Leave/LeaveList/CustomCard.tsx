@@ -4,6 +4,7 @@ import LeaveReviewModal from "./ReviewModal";
 import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
 import dayjs from "dayjs";
 import LeaveDetail from "../LeaveDetail";
+import { getImageUrl } from "../../../../services/utils/getImageUrl";
 
 interface LeaveData {
   employee_id: string;
@@ -17,6 +18,7 @@ interface LeaveData {
 }
 
 const CustomCard: React.FC<LeaveData> = ({
+  employee_id,
   employee_name,
   uid,
   purpose,
@@ -28,6 +30,10 @@ const CustomCard: React.FC<LeaveData> = ({
   const [opened, { open, close }] = useDisclosure(false);
   const [viewLeaveOpened, { open: viewOpen, close: viewClose }] =
     useDisclosure(false);
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/assets/employee_avatar.png";
+  };
 
   const formatDate = (dateString: string): string => {
     const date = dayjs(dateString);
@@ -47,8 +53,14 @@ const CustomCard: React.FC<LeaveData> = ({
       {/* Left section (80%) */}
       <div className="w-5/6 pr-4">
         <p className="text-lg font-medium">
+          <img
+            src={getImageUrl(employee_id)}
+            alt={employee_name}
+            className="w-10 h-10 rounded-full mr-2 inline-block"
+            onError={handleImageError}
+          />
           {employee_name}{" "}
-          <span className="mt-1 text-amber-600">{`(${leave_type})`}</span>
+          <span className="mt-1 text-lg text-amber-600">{`(${leave_type})`}</span>
         </p>
         <p className="mt-1 text-gray-500">{purpose}</p>
         <div>

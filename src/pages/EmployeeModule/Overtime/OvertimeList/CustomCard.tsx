@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import OvertimeDetail from "../OvertimeDetail";
+import { getImageUrl } from "../../../../services/utils/getImageUrl";
 
 interface OvertimeData {
   employee_id: string;
@@ -17,15 +18,16 @@ interface OvertimeData {
   end_time: string;
   is_approved: string;
   error?:
-  | {
-    error: string;
-    status: string;
-  }
-  | FetchBaseQueryError
-  | SerializedError;
+    | {
+        error: string;
+        status: string;
+      }
+    | FetchBaseQueryError
+    | SerializedError;
 }
 
 const CustomCard: React.FC<OvertimeData> = ({
+  employee_id,
   employee_name,
   uid,
   purpose,
@@ -36,6 +38,10 @@ const CustomCard: React.FC<OvertimeData> = ({
   const [opened, { open, close }] = useDisclosure(false);
   const [viewOvertimeOpened, { open: viewOpen, close: viewClose }] =
     useDisclosure(false);
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/assets/employee_avatar.png";
+  };
 
   const { formatDate } = useFormatDate();
 
@@ -48,7 +54,15 @@ const CustomCard: React.FC<OvertimeData> = ({
     <Card className="w-full px-6 border border-gray-200 rounded-lg shadow-lg flex flex-row">
       {/* Left section (80%) */}
       <div className="w-5/6 pr-4">
-        <Text className="text-lg">{employee_name}</Text>
+        <Text className="text-lg">
+          <img
+            src={getImageUrl(employee_id)}
+            alt={employee_name}
+            className="w-10 h-10 rounded-full mr-2 inline-block"
+            onError={handleImageError}
+          />
+          {employee_name}
+        </Text>
         <Text className="mt-2 text-gray-500">{purpose}</Text>
         {dayjs(start_time).isSame(dayjs(end_time), "day") ? (
           <div className="flex flex-col text-gray-600 mt-2">

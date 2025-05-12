@@ -13,7 +13,7 @@ import { z } from "zod";
 import { randomId, useListState } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { ErrorResponse, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import {
   CreateEmployeeProps,
@@ -58,7 +58,7 @@ const getSchema = (type: string) =>
     designation: z.string().min(1, "Designation is required"),
     shift_and_schedule: z.string().min(1, "Shift and schedule is required"),
     supervisor: z.boolean(),
-    executives: z.string(),
+    executives: z.array(z.string()),
     permissions: z.array(
       z.object({
         label: z.string(),
@@ -82,7 +82,7 @@ export type FormData = {
   designation: string;
   shift_and_schedule: string;
   supervisor: boolean;
-  executives: string;
+  executives: string[];
   permissions: {
     label: string;
     name: string;
@@ -162,7 +162,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
             designation: draftValues?.designation || "",
             shift_and_schedule: draftValues?.shift_and_schedule || "",
             supervisor: draftValues?.supervisor || false,
-            executives: draftValues?.executives || "",
+            executives: draftValues?.executives || null,
             permissions: draftValues?.permissions || initialPermissionValues,
           }
         : undefined,
@@ -213,8 +213,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         shift_and_schedule: editFormData?.work?.shift_and_schedule?.uid || "",
         supervisor: editFormData?.work?.supervisor || false,
         executives: editFormData?.work?.supervisor
-          ? editFormData?.work?.executives[0]
-          : "",
+          ? editFormData?.work?.executives
+          : null,
         permissions: transformPermissions(editFormData.employee_access),
       });
     }
@@ -244,6 +244,33 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       acc[item.name] = item.checked ? "a" : "i";
       return acc;
     }, {} as { [key: string]: string });
+  };
+
+  const handleCheckboxChange = (index: number, checked: boolean) => {
+    handlers.setItemProp(index, "checked", checked);
+    const updatedPermissions = getValues("permissions").map(
+      (permission: Permissions, i: number) =>
+        i === index ? { ...permission, checked } : permission
+    );
+    setValue("permissions", updatedPermissions);
+  };
+
+  const items = values.map((value, index) => (
+    <Checkbox
+      mt="xs"
+      ml={33}
+      label={value.label}
+      name={value.name}
+      key={value.key}
+      checked={value.checked}
+      onChange={(event) =>
+        handleCheckboxChange(index, event.currentTarget.checked)
+      }
+    />
+  ));
+  const getTabName = (tab: number) => {
+    const tabs = ["Personal Information", "Work Information", "Authority"];
+    return tabs[tab - 1];
   };
 
   const onSubmit = async (data: CreateEmployeeProps) => {
@@ -313,39 +340,14 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       console.error("Failed to submit employee data", error);
       notifications.show({
         title: "Error!",
-        message: "Couldn't process the request",
+        message:
+          (error as ErrorResponse).data?.detail ||
+          "Couldn't process the request",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
       });
     }
-  };
-
-  const handleCheckboxChange = (index: number, checked: boolean) => {
-    handlers.setItemProp(index, "checked", checked);
-    const updatedPermissions = getValues("permissions").map(
-      (permission: Permissions, i: number) =>
-        i === index ? { ...permission, checked } : permission
-    );
-    setValue("permissions", updatedPermissions);
-  };
-
-  const items = values.map((value, index) => (
-    <Checkbox
-      mt="xs"
-      ml={33}
-      label={value.label}
-      name={value.name}
-      key={value.key}
-      checked={value.checked}
-      onChange={(event) =>
-        handleCheckboxChange(index, event.currentTarget.checked)
-      }
-    />
-  ));
-  const getTabName = (tab: number) => {
-    const tabs = ["Personal Information", "Work Information", "Authority"];
-    return tabs[tab - 1];
   };
 
   return (

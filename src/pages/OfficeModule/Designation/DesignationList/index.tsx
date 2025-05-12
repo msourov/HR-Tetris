@@ -29,7 +29,7 @@ const DesignationList = () => {
             component="a"
             withBorder
             maw={250}
-            className="text-center flex-auto p-4 max-w-full overflow-hidden py-6 gap-2"
+            className="text-center flex-auto p-4 max-w-full overflow-hidden py-6 gap-2 cursor-pointer"
             onClick={() => navigate(`${item?.uid}/detail`)}
           >
             <Text fw={500} size="lg" className="truncate">

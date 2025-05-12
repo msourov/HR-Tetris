@@ -1,4 +1,4 @@
-import { Box, NumberInput, Select, Switch } from "@mantine/core";
+import { Box, MultiSelect, NumberInput, Select, Switch } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { FieldErrors, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { FormData } from "../EmployeeForm";
@@ -102,13 +102,14 @@ const Tab2Fields: React.FC<Tab2FieldsProps> = ({
         />
       </Box>
       {watch("supervisor") && (
-        <Select
+        <MultiSelect
           className="-my-5"
           variant="filled"
           label="Select Subordinates"
           data={employeeOptions}
-          value={watch("executives") || ""}
+          value={watch("executives") || []}
           multiple
+          searchable
           onChange={(value) => {
             if (value) {
               setValue("executives", value);
