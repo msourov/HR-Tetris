@@ -10,6 +10,7 @@ const UserTable = () => {
   const { data, isLoading, error } = useGetUsersQuery({ page: 1, limit: 10 });
   const { logout } = useAuth();
   const users: User[] = data?.data || [];
+
   if (error) {
     if ((error as FetchBaseQueryError).status === 401) {
       console.error("Unauthorized access - logging out");

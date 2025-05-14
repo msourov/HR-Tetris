@@ -18,6 +18,8 @@ import {
   CertificationLayout,
   CertificationTable,
   Company,
+  CompanyCredentialLayout,
+  CompanyCredentialList,
   ConsumablesInventory,
   CreateHomeOffice,
   Dashboard,
@@ -541,6 +543,20 @@ export const router = createBrowserRouter([
               {
                 path: "issued-equipment",
                 element: <Loan />,
+              },
+            ],
+          },
+          {
+            path: "certification-and-license",
+            element: (
+              <Suspense fallback={loader}>
+                <CompanyCredentialLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: <CompanyCredentialList />,
               },
             ],
           },

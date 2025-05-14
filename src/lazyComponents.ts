@@ -156,3 +156,12 @@ export const CategoryList = lazy(
 export const UpdateCategory = lazy(
   () => import("./pages/EmployeeModule/Category/UpdateCategory")
 );
+
+// Company Credential
+export const CompanyCredentialLayout = lazy(
+  () => import("./pages/CompanyCredentialModule/index.tsx")
+);
+
+export const CompanyCredentialList = lazy(
+  () => import("./pages/CompanyCredentialModule/CCList/index.tsx")
+);
