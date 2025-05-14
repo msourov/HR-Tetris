@@ -2,7 +2,7 @@ import { Table } from "@mantine/core";
 
 const TableHeading = () => {
   return (
-    <Table.Thead className="bg-[#2274A5] text-white px-4">
+    <Table.Thead className="bg-[#2274A5] text-white px-4 text-sm [&>tr>th]:py-2">
       <Table.Tr>
         <Table.Th style={{ width: "5%", paddingLeft: "16px" }}>Serial</Table.Th>
         <Table.Th style={{ width: "20%" }}>Employee</Table.Th>

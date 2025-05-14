@@ -1,18 +1,15 @@
-import { Loader, SimpleGrid, Title, Flex, Divider } from "@mantine/core";
+import { SimpleGrid, Title, Flex, Divider } from "@mantine/core";
 import { useGetShiftsQuery } from "../../../../features/api/shiftSlice";
 import ShiftCard from "./ShiftCard";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import { IconClock } from "@tabler/icons-react";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const ShiftList = () => {
   const { data, isLoading, error } = useGetShiftsQuery({ page: 1, limit: 10 });
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-32">
-        <Loader type="dots" />
-      </div>
-    );
+    <AppLoader />;
   }
 
   if (error) {

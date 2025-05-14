@@ -1,8 +1,9 @@
-import { Card, Loader, Pill, SimpleGrid } from "@mantine/core";
+import { Card, Pill, SimpleGrid } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useGetDepartmentsQuery } from "../../../../features/api/departmentSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../../../services/auth/useAuth";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const DepartmentList = () => {
   const {
@@ -14,7 +15,7 @@ const DepartmentList = () => {
   const navigate = useNavigate();
 
   if (isLoading) {
-    <Loader type="dots" />;
+    <AppLoader />;
   }
 
   if (error) {

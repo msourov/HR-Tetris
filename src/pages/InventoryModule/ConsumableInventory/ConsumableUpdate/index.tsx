@@ -82,7 +82,7 @@ const ConsumableUpdate = ({ uid, closeEdit }: ConsumableUpdateProps) => {
   }, [consumableDetail, reset]);
 
   const onSubmit: SubmitHandler<ConsumableUpdateRequest> = async (data) => {
-    console.log(data);
+
     try {
       const response = await updateConsumable({
         uid,

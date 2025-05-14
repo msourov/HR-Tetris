@@ -51,7 +51,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
           onClick={() => handleAttendanceOpen(item?.uid)}
         >
           <Table.Td className="w-[5%] pl-[1rem]">{index + 1}</Table.Td>
-          <Table.Td className="w-[15%] border">
+          <Table.Td className="w-[15%]">
             <img
               src={getImageUrl(item.employee_id)}
               alt={item.employee_name}

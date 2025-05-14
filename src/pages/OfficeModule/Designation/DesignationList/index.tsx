@@ -1,6 +1,7 @@
-import { Box, Card, Loader, Pill, SimpleGrid, Text } from "@mantine/core";
+import { Box, Card, Pill, SimpleGrid, Text } from "@mantine/core";
 import { useGetDesignationsQuery } from "../../../../features/api/designationSlice";
 import { useNavigate } from "react-router-dom";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const DesignationList = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const DesignationList = () => {
   } = useGetDesignationsQuery({ page: 1, limit: 10 });
 
   if (isLoading) {
-    <Loader type="dots" />;
+    <AppLoader />;
   }
   if (error) {
     <p>Something went wrong.</p>;

@@ -21,7 +21,7 @@ const CategoryList = () => {
       console.error("Error fetching roles:", error);
     }
   }
-  console.log(data);
+
   return (
     <>
       <div className="mb-4 flex justify-end">

@@ -10,13 +10,18 @@ export interface getDataResponse<T> {
   data: T;
 }
 
+interface Pagination {
+  page: number;
+  total_pages: number;
+  page_size: number;
+  total_records: number;
+}
+
 export interface PaginatedApiResponse<T> {
   status_code: number;
   success: boolean;
   data: T;
-  page: number;
-  limit: number;
-  total_items: number;
+  pagination: Pagination;
 }
 
 export interface Logs {

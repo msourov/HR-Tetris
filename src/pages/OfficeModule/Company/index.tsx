@@ -3,6 +3,7 @@ import { useGetCompanyQuery } from "../../../features/api/companySlice";
 import { IconMapPin, IconPhone } from "@tabler/icons-react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../../services/auth/useAuth";
+import AppLoader from "../../../components/ui/AppLoader";
 
 const Company = () => {
   const {
@@ -14,7 +15,7 @@ const Company = () => {
   console.log(getCompany);
 
   if (isLoading) {
-    return <div className="m-auto">...loading</div>;
+    <AppLoader />;
   }
 
   if (error) {

@@ -33,7 +33,12 @@ const AttendanceTable = () => {
           className="grid grid-cols-1 md:grid-cols-4 gap-4"
         >
           <TextInput
-            placeholder="Employee Name"
+            label={
+              <p className="text-gray-500 font-thin">
+                Search employees by Name
+              </p>
+            }
+            placeholder="Enter Name"
             value={searchParams.employee_name}
             onChange={(e) =>
               setSearchParams({
@@ -48,7 +53,8 @@ const AttendanceTable = () => {
             onChange={(date) => setSearchParams({...searchParams, attended_date: date ? date.toISOString() : ''})}
           /> */}
           <DateInput
-            placeholder="Start Date"
+            label={<p className="text-gray-500 font-thin">Start Date</p>}
+            placeholder="Enter Start Date"
             value={
               searchParams.start_date ? new Date(searchParams.start_date) : null
             }
@@ -60,7 +66,8 @@ const AttendanceTable = () => {
             }
           />
           <DateInput
-            placeholder="End Date"
+            label={<p className="text-gray-500 font-thin">End Date</p>}
+            placeholder="Enter End Date"
             value={
               searchParams.end_date ? new Date(searchParams.end_date) : null
             }
@@ -76,7 +83,7 @@ const AttendanceTable = () => {
           </Button> */}
         </form>
       </div>
-      <Table>
+      <Table striped highlightOnHover>
         <TableHeading />
         <TableItem
           data={attendance?.data || []}

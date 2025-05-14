@@ -26,9 +26,14 @@ const EmplyeeTable = () => {
 
   return (
     <div className="space-y-4 w-full">
-      <div className="my-8 w-[90%] mx-auto">
+      <div className="mt-4 mb-8 w-[90%] mx-auto">
         <TextInput
-          placeholder="Search employees..."
+          label={
+            <p className="text-gray-500 font-thin">
+              Search employees by Name, EID, Phone or Email
+            </p>
+          }
+          placeholder="Enter text to search"
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.currentTarget.value);
@@ -39,21 +44,21 @@ const EmplyeeTable = () => {
         />
       </div>
 
-      <Table verticalSpacing="sm">
+      <Table striped highlightOnHover>
         <TableHeading />
         <TableItem
-          page={employees?.pagination?.page ?? 0}
-          limit={employees?.pagination?.limit ?? 0}
+          page={employees?.pagination?.page ?? 1}
+          limit={employees?.pagination?.limit ?? 10}
           data={employees?.data || []}
           isLoading={isLoading || isFetching}
           error={error}
         />
       </Table>
 
-      {employees?.pagination?.total_pages && (
+      {employees?.pagination?.total_pages != 0 && (
         <div className="px-4 pt-8 pb-4 float-right">
           <Pagination
-            total={employees.pagination.total_pages}
+            total={employees?.pagination?.total_pages ?? 0}
             value={page}
             onChange={setPage}
             color="rgb(33, 41, 34)"

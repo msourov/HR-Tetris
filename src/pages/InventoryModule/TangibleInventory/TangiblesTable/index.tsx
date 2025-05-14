@@ -20,7 +20,7 @@ const TangibleTable = () => {
       console.error("Error fetching roles:", error);
     }
   }
-  console.log(data);
+
   return (
     <>
       <Table>

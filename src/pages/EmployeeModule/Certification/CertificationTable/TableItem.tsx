@@ -15,12 +15,12 @@ interface TableItemProps {
   data: Certification[];
   isLoading: boolean;
   error?:
-  | {
-    error: string;
-    status: string;
-  }
-  | FetchBaseQueryError
-  | SerializedError;
+    | {
+        error: string;
+        status: string;
+      }
+    | FetchBaseQueryError
+    | SerializedError;
 }
 
 const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
@@ -48,7 +48,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
               setCurrentUid(item.uid);
             }}
           >
-            <Table.Td style={{ width: "5%", paddingBlock: "0.5rem" }}>
+            <Table.Td style={{ width: "5%", paddingBlock: "0.85rem" }}>
               {index + 1}
             </Table.Td>
             <Table.Td style={{ width: "10%" }} className="text-sm">

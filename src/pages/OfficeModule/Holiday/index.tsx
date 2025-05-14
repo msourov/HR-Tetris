@@ -13,7 +13,6 @@ import {
   useMantineTheme,
   rem,
   Textarea,
-  LoadingOverlay,
   Group,
 } from "@mantine/core";
 import { IconCalendarEvent } from "@tabler/icons-react";
@@ -25,6 +24,7 @@ import {
   useGetHolidaysQuery,
 } from "../../../features/api/holidaySlice";
 import { Holiday } from "../../../features/types/holiday";
+import AppLoader from "../../../components/ui/AppLoader";
 
 interface CalendarEvent extends EventInput {
   id: string;
@@ -35,34 +35,40 @@ const HolidayCalendar = () => {
   const theme = useMantineTheme();
   const calendarRef = useRef<FullCalendar>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedHoliday, setSelectedHoliday] = useState<Partial<Holiday> | null>(null);
+  const [selectedHoliday, setSelectedHoliday] =
+    useState<Partial<Holiday> | null>(null);
 
   // API Hooks
-  const { data: holidaysResponse, isLoading, isError } = useGetHolidaysQuery({ page: 1, limit: 100 });
+  const {
+    data: holidaysResponse,
+    isLoading,
+    isError,
+  } = useGetHolidaysQuery({ page: 1, limit: 100 });
   const [createHoliday] = useCreateHolidayMutation();
   const [editHoliday] = useEditHolidayMutation();
   const [deleteHoliday] = useDeleteHolidayMutation();
 
   // Transform API data to calendar events
-  const calendarEvents: CalendarEvent[] = holidaysResponse?.data && Array.isArray(holidaysResponse.data)
-    ? holidaysResponse.data
-      .filter(holiday => holiday.is_approve === "approved") // Filter approved holidays
-      .map((holiday: Holiday) => ({
-        id: holiday.uid,
-        title: holiday.name,
-        start: holiday.holiday_start_at, // ✅ Correct start field
-        end: holiday.holiday_end_at,     // ✅ Add end field
-        description: holiday.descriptions,
-        allDay: true,
-        backgroundColor: theme.colors.blue[6],
-      }))
-    : [];
+  const calendarEvents: CalendarEvent[] =
+    holidaysResponse?.data && Array.isArray(holidaysResponse.data)
+      ? holidaysResponse.data
+          .filter((holiday) => holiday.is_approve === "approved") // Filter approved holidays
+          .map((holiday: Holiday) => ({
+            id: holiday.uid,
+            title: holiday.name,
+            start: holiday.holiday_start_at, // ✅ Correct start field
+            end: holiday.holiday_end_at, // ✅ Add end field
+            description: holiday.descriptions,
+            allDay: true,
+            backgroundColor: theme.colors.blue[6],
+          }))
+      : [];
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     setSelectedHoliday({
-      name: '',
+      name: "",
       holiday_start_at: selectInfo.startStr,
-      descriptions: '',
+      descriptions: "",
       active: true,
       is_approve: "false",
     });
@@ -72,7 +78,7 @@ const HolidayCalendar = () => {
   const handleEventClick = (clickInfo: EventClickArg) => {
     const eventId = clickInfo.event.id;
     const holiday = Array.isArray(holidaysResponse?.data)
-      ? holidaysResponse.data.find(h => h.uid === eventId)
+      ? holidaysResponse.data.find((h) => h.uid === eventId)
       : undefined;
     if (holiday) {
       setSelectedHoliday(holiday);
@@ -84,21 +90,21 @@ const HolidayCalendar = () => {
     try {
       const createPayload = {
         // ...(holidayData.uid && { uid: holidayData.uid }),
-        name: holidayData.name || '',
-        descriptions: holidayData.descriptions || '',
+        name: holidayData.name || "",
+        descriptions: holidayData.descriptions || "",
         active: holidayData.active || true,
-        holiday_start_at: holidayData.holiday_start_at || '',
-        holiday_end_at: holidayData.holiday_end_at || ''
+        holiday_start_at: holidayData.holiday_start_at || "",
+        holiday_end_at: holidayData.holiday_end_at || "",
       };
 
       if (holidayData.uid) {
         const editPayload = {
           uid: holidayData.uid,
-          name: holidayData.name || '',
-          descriptions: holidayData.descriptions || '',
+          name: holidayData.name || "",
+          descriptions: holidayData.descriptions || "",
           active: holidayData.active || true,
-          holiday_start_at: holidayData.holiday_start_at || '',
-          holiday_end_at: holidayData.holiday_end_at || ''
+          holiday_start_at: holidayData.holiday_start_at || "",
+          holiday_end_at: holidayData.holiday_end_at || "",
         };
         await editHoliday(editPayload).unwrap();
       } else {
@@ -110,8 +116,10 @@ const HolidayCalendar = () => {
     }
   };
 
-  console.log('holidaysResponse', JSON.stringify(holidaysResponse, undefined, 2));
-
+  console.log(
+    "holidaysResponse",
+    JSON.stringify(holidaysResponse, undefined, 2)
+  );
 
   const handleDelete = async () => {
     if (selectedHoliday?.uid) {
@@ -120,7 +128,7 @@ const HolidayCalendar = () => {
     }
   };
 
-  if (isLoading) return <LoadingOverlay visible={true} />;
+  if (isLoading) return <AppLoader />;
   if (isError) return <div>Error loading holidays</div>;
 
   return (
@@ -157,7 +165,9 @@ const HolidayCalendar = () => {
         select={handleDateSelect}
         eventClick={handleEventClick}
         eventContent={(eventInfo) => (
-          <div style={{ display: "flex", alignItems: "center", padding: rem(4) }}>
+          <div
+            style={{ display: "flex", alignItems: "center", padding: rem(4) }}
+          >
             <IconCalendarEvent size={14} style={{ marginRight: rem(5) }} />
             <span>{eventInfo.event.title}</span>
           </div>
@@ -183,7 +193,13 @@ interface HolidayModalProps {
   onDelete?: () => void;
 }
 
-const HolidayModal = ({ opened, onClose, holiday, onSubmit, onDelete }: HolidayModalProps) => {
+const HolidayModal = ({
+  opened,
+  onClose,
+  holiday,
+  onSubmit,
+  onDelete,
+}: HolidayModalProps) => {
   // const [name, setName] = useState(holiday?.name || '');
   // const [startDate, setStartDate] = useState(holiday?.holiday_start_at?.split('T')[0] || '');
   // const [endDate, setEndDate] = useState(holiday?.holiday_end_at?.split('T')[0] || '');
@@ -197,31 +213,37 @@ const HolidayModal = ({ opened, onClose, holiday, onSubmit, onDelete }: HolidayM
   //   }
   // }, [holiday]);
 
-  const [name, setName] = useState(holiday?.name || '');
+  const [name, setName] = useState(holiday?.name || "");
   const [startDate, setStartDate] = useState(
-    holiday?.holiday_start_at ? new Date(holiday.holiday_start_at).toISOString().split('T')[0] : ''
+    holiday?.holiday_start_at
+      ? new Date(holiday.holiday_start_at).toISOString().split("T")[0]
+      : ""
   );
   const [endDate, setEndDate] = useState(
-    holiday?.holiday_end_at ? new Date(holiday.holiday_end_at).toISOString().split('T')[0] : ''
+    holiday?.holiday_end_at
+      ? new Date(holiday.holiday_end_at).toISOString().split("T")[0]
+      : ""
   );
-  const [description, setDescription] = useState(holiday?.descriptions || '');
+  const [description, setDescription] = useState(holiday?.descriptions || "");
   const [isActive, setIsActive] = useState(holiday?.active ?? true);
 
   useEffect(() => {
     if (holiday) {
-      setName(holiday.name || '');
-      setDescription(holiday.descriptions || '');
+      setName(holiday.name || "");
+      setDescription(holiday.descriptions || "");
       setIsActive(holiday.active ?? true);
       setStartDate(
-        holiday.holiday_start_at ? new Date(holiday.holiday_start_at).toISOString().split('T')[0] : ''
+        holiday.holiday_start_at
+          ? new Date(holiday.holiday_start_at).toISOString().split("T")[0]
+          : ""
       );
       setEndDate(
-        holiday.holiday_end_at ? new Date(holiday.holiday_end_at).toISOString().split('T')[0] : ''
+        holiday.holiday_end_at
+          ? new Date(holiday.holiday_end_at).toISOString().split("T")[0]
+          : ""
       );
     }
   }, [holiday]);
-
-
 
   const handleSubmit = () => {
     onSubmit({
@@ -230,7 +252,7 @@ const HolidayModal = ({ opened, onClose, holiday, onSubmit, onDelete }: HolidayM
       descriptions: description,
       active: isActive,
       holiday_start_at: new Date(startDate).toISOString(),
-      holiday_end_at: new Date(endDate).toISOString()
+      holiday_end_at: new Date(endDate).toISOString(),
     });
   };
 
@@ -275,13 +297,13 @@ const HolidayModal = ({ opened, onClose, holiday, onSubmit, onDelete }: HolidayM
         mb="md"
       />
 
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         {onDelete && (
           <Button color="red" onClick={onDelete}>
             Delete
           </Button>
         )}
-        <div style={{ display: 'flex', gap: rem(8) }}>
+        <div style={{ display: "flex", gap: rem(8) }}>
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>

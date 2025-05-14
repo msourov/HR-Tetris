@@ -1,11 +1,10 @@
-import { Card, Group, Text, Badge, Button } from "@mantine/core";
+import { Card, Text, Badge } from "@mantine/core";
 import { IconClock, IconCalendar, IconSunOff } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 
 dayjs.extend(duration);
 import { Shift } from "../../../../features/types/shift";
-import { IoIosEye } from "react-icons/io";
 
 interface ShiftCardProps {
   shift: Shift;
@@ -28,91 +27,107 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
 
   return (
     <Card
-      padding="lg"
-      radius="md"
+      padding="md"
+      radius="lg"
       withBorder
-      className="hover:shadow-md transition-shadow duration-200 flex flex-col justify-between bg-gray-50"
+      className="hover:shadow-lg transition-all duration-200 flex flex-col justify-between bg-white"
+      shadow="sm"
     >
-      {/* Header */}
-      <Group justify="space-between" mb="xs">
-        <Text fw={600} size="lg">
-          {shift.name}
-        </Text>
-        <Group gap="xs">
-          <Badge color={shift.active ? "teal" : "red"} variant="filled">
+      {/* Header Section */}
+      <div className="flex flex-col gap-2 mb-4">
+        <div className="flex justify-between items-start">
+          <Text fw={700} size="lg" className="text-gray-800">
+            {shift.name}
+          </Text>
+          <Badge
+            color={shift.active ? "green" : "gray"}
+            variant="light"
+            radius="sm"
+            size="sm"
+          >
             {shift.active ? "Active" : "Inactive"}
           </Badge>
-          <Badge color="indigo" variant="light">
-            {shift.regular ? "Regular" : "Temporary"}
-          </Badge>
-        </Group>
-      </Group>
+        </div>
 
-      {/* Description */}
-      {shift.descriptions && (
-        <Text c="dimmed" size="sm" mb="md">
-          {shift.descriptions}
-        </Text>
-      )}
+        {shift.descriptions && (
+          <Text size="sm" className="text-gray-600">
+            {shift.descriptions}
+          </Text>
+        )}
+      </div>
 
-      {/* Details */}
-      <div className="flex flex-col gap-3 flex-1">
-        <Group gap="xs" className="text-blue-400">
-          <IconClock size={18} className="text-blue-500" />
-          <Text size="sm">
-            {shift.regular ? (
-              <>
-                Daily: {dayjs(shift.start_time).format("MMM D / YYYY")} -{" "}
-                {dayjs(shift.end_time).format()}
-                <Text span c="dimmed" mx={4}>
-                  (
+      {/* Time Details */}
+      <div className="flex flex-col gap-3 mb-4">
+        <div className="flex items-center gap-2">
+          <IconClock size={20} className="text-blue-600" />
+          <div className="flex flex-col">
+            <Text size="sm" fw={500} className="text-gray-700">
+              {shift.regular ? (
+                <>
+                  Daily Schedule ·{" "}
                   {calculateDuration(
                     shift.day_start_time,
                     shift.day_end_time,
                     true
                   )}
-                  )
-                </Text>
-              </>
-            ) : (
-              <>
-                {dayjs(shift.start_time).format(timeFormat)} -{" "}
-                {dayjs(shift.end_time).format(timeFormat)}
-                <Text span c="dimmed" mx={4}>
-                  ({calculateDuration(shift.start_time, shift.end_time, false)})
-                </Text>
-              </>
-            )}
-          </Text>
-        </Group>
+                </>
+              ) : (
+                <>
+                  {dayjs(shift.start_time).format(timeFormat)} –{" "}
+                  {dayjs(shift.end_time).format(timeFormat)}
+                </>
+              )}
+            </Text>
+            <Text size="xs" className="text-gray-500">
+              {shift.regular ? (
+                <>
+                  {dayjs(shift.start_time).format("MMM D / YYYY")} –{" "}
+                  {dayjs(shift.end_time).format("MMM D / YYYY")}
+                </>
+              ) : (
+                `Duration: ${calculateDuration(
+                  shift.start_time,
+                  shift.end_time,
+                  false
+                )}`
+              )}
+            </Text>
+          </div>
+        </div>
 
         {shift.off_day && (
-          <Group gap="xs">
-            <IconSunOff size={18} className="text-orange-500" />
-            <Text size="sm">
-              Off day: <span className="text-yellow-600">{shift.off_day}</span>
-            </Text>
-          </Group>
+          <div className="flex items-center gap-2">
+            <IconSunOff size={20} className="text-orange-600" />
+            <div>
+              <Text size="sm" className="text-gray-700">
+                Off Day:
+                <span className="ml-1 font-medium text-gray-900">
+                  {shift.off_day}
+                </span>
+              </Text>
+            </div>
+          </div>
         )}
       </div>
 
-      <Group justify="space-between" mt="md">
-        <Group gap="xs">
-          <IconCalendar size={18} className="text-purple-500" />
-          <Text size="sm" c="dimmed">
-            Created: {dayjs(shift.create_at).format("MMM D, YYYY")}
+      {/* Footer */}
+      <div className="flex justify-between items-center border-t pt-3">
+        <div className="flex items-center gap-2">
+          <IconCalendar size={18} className="text-gray-500" />
+          <Text size="xs" className="text-gray-600">
+            Created {dayjs(shift.create_at).format("MMM D, YYYY")}
           </Text>
-        </Group>
-        <Button
-          variant="light"
-          color="blue"
-          size="compact-md"
-          className="font-thin transition-colors hover:bg-blue-600 hover:text-white"
+        </div>
+
+        <Badge
+          variant="outline"
+          color="indigo"
+          radius="sm"
+          className="border-indigo-100 bg-indigo-50"
         >
-          <IoIosEye size={20} />
-          {/* View */}
-        </Button>
-      </Group>
+          {shift.regular ? "Regular Shift" : "Temporary Shift"}
+        </Badge>
+      </div>
     </Card>
   );
 };

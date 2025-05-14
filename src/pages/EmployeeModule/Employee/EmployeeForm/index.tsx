@@ -274,7 +274,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   };
 
   const onSubmit = async (data: CreateEmployeeProps) => {
-    console.log(data);
     const preparedData = data.permissions
       ? prepareRoleData(data.permissions)
       : {};

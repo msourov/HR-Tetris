@@ -22,7 +22,6 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   if (error) {
     return <ErrorAlert message="Error fetching tangible items" />;
   }
-  console.log(data);
 
   return (
     <Table.Tbody className="text-gray-800 font-medium border-b bg-gray-50">
