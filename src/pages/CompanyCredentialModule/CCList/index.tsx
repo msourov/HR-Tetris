@@ -10,7 +10,7 @@ import CreateCredentialModal from "../AddCLM.tsx";
 // Main list view component
 const CertificateList = () => {
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const limit = 5;
   const { data, isLoading, error } = useGetCredentialsQuery({
     page,
     limit,

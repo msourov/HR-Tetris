@@ -13,6 +13,8 @@ import AppModal from "../../../../components/ui/AppModal";
 
 interface TableItemProps {
   data: Certification[];
+  page: number;
+  limit: number;
   isLoading: boolean;
   error?:
     | {
@@ -23,7 +25,13 @@ interface TableItemProps {
     | SerializedError;
 }
 
-const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
+const TableItem: React.FC<TableItemProps> = ({
+  page,
+  limit,
+  data,
+  isLoading,
+  error,
+}) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [currentUid, setCurrentUid] = useState<string>("");
   const { formatDate } = useFormatDate();
@@ -49,7 +57,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
             }}
           >
             <Table.Td style={{ width: "5%", paddingBlock: "0.85rem" }}>
-              {index + 1}
+              {(page - 1) * limit + index + 1}
             </Table.Td>
             <Table.Td style={{ width: "10%" }} className="text-sm">
               {item.employee_name || "N/A"}

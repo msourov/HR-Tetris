@@ -1,15 +1,19 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useGetAllCategoriesQuery } from "../../../../features/api/categorySlice";
 import { useAuth } from "../../../../services/auth/useAuth";
-import { Table } from "@mantine/core";
+import { Pagination, Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
 import AddCategoryRow from "../AddCategory/AddCategoryRow";
+import { useState } from "react";
 
 const CategoryList = () => {
-  const { data, isLoading, error } = useGetAllCategoriesQuery({
-    page: 1,
-    limit: 10,
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
+  const { data, isLoading, isFetching, error } = useGetAllCategoriesQuery({
+    page,
+    limit,
   });
   const { logout } = useAuth();
 
@@ -29,8 +33,23 @@ const CategoryList = () => {
       </div>
       <Table>
         <TableHeading />
-        <TableItem data={data || []} isLoading={isLoading} error={error} />
+        <TableItem
+          page={data?.pagination?.page ?? 1}
+          limit={data?.pagination?.page_size ?? 10}
+          data={data?.data || []}
+          isLoading={isLoading}
+          error={error}
+        />
       </Table>
+      <div className="px-4 pt-8 pb-4 float-right">
+        <Pagination
+          total={data?.pagination?.total_pages ?? 0}
+          value={page}
+          onChange={setPage}
+          color="rgb(33, 41, 34)"
+          disabled={isFetching}
+        />
+      </div>
     </>
   );
 };

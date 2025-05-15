@@ -68,9 +68,9 @@ export interface AllEmployeesResponse {
   data: Employee[];
   pagination: {
     page: number;
-    limit: number;
+    page_size: number;
     total_pages: number;
-    total_items: number;
+    total_records: number;
   };
 }
 

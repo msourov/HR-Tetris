@@ -48,7 +48,7 @@ const EmplyeeTable = () => {
         <TableHeading />
         <TableItem
           page={employees?.pagination?.page ?? 1}
-          limit={employees?.pagination?.limit ?? 10}
+          limit={employees?.pagination?.page_size ?? 10}
           data={employees?.data || []}
           isLoading={isLoading || isFetching}
           error={error}

@@ -1,6 +1,7 @@
 import { Table } from "@mantine/core";
+import { IconArrowsDownUp } from "@tabler/icons-react";
 
-const TableHeading = () => {
+const TableHeading = ({ changeDateOrder }: { changeDateOrder: () => void }) => {
   return (
     <Table.Thead className="bg-[#2274A5] text-white px-4">
       <Table.Tr>
@@ -11,7 +12,14 @@ const TableHeading = () => {
         <Table.Th style={{ width: "5%" }}>Price</Table.Th>
         <Table.Th style={{ width: "10%" }}>Location</Table.Th>
         <Table.Th style={{ width: "5%" }}>Category</Table.Th>
-        <Table.Th style={{ width: "15%" }}>Created At</Table.Th>
+        <Table.Th style={{ width: "15%" }}>
+          <div className="flex items-center gap-1">
+            <button onClick={changeDateOrder}>
+              <IconArrowsDownUp size={15} />
+            </button>
+            <span>Created At</span>
+          </div>
+        </Table.Th>
         <Table.Th style={{ width: "5%" }}>Action</Table.Th>
       </Table.Tr>
     </Table.Thead>
