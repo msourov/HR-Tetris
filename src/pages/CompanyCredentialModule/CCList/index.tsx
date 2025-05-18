@@ -1,6 +1,6 @@
 import { Container, Stack, Pagination, Flex } from "@mantine/core";
 import CertificateCard from "./CCCard";
-import { useGetCredentialsQuery } from "../../../features/api/CLMSlice";
+import { useGetCredentialsQuery } from "../../../features/api/companyCredentialSlice.ts";
 import { useState } from "react";
 import AppLoader from "../../../components/ui/AppLoader";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";

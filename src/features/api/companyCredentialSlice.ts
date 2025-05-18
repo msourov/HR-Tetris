@@ -4,12 +4,13 @@ import {
   CreateCredential,
   CredentialsResponse,
   UpdateCredential,
-} from "../types/clm";
+} from "../types/companyCredentials";
+import { tagTypes } from "./tags";
 
 export const credentialApi = createApi({
   reducerPath: "credentialApi",
   baseQuery: baseQuery,
-  tagTypes: ["Credential"],
+  tagTypes: [tagTypes.CREDENTIALS],
   endpoints: (builder) => ({
     getCredentials: builder.query<
       CredentialsResponse,

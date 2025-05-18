@@ -165,3 +165,11 @@ export const CompanyCredentialLayout = lazy(
 export const CompanyCredentialList = lazy(
   () => import("./pages/CompanyCredentialModule/CCList/index.tsx")
 );
+
+export const PayrollLayout = lazy(
+  () => import("./pages/AccountsModule/Payroll/index.tsx")
+);
+
+export const PayrollList = lazy(
+  () => import("./pages/AccountsModule/Payroll/PayrollList/index.tsx")
+);

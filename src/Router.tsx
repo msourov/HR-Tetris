@@ -48,6 +48,8 @@ import {
   ManagePolicy,
   OtpPage,
   Overtime,
+  PayrollLayout,
+  PayrollList,
   PolicyDetail,
   PolicyLayout,
   PolicyList,
@@ -558,6 +560,21 @@ export const router = createBrowserRouter([
                 index: true,
                 element: <CompanyCredentialList />,
               },
+            ],
+          },
+          {
+            path: "payroll",
+            element: (
+              <Suspense fallback={loader}>
+                <PayrollLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: <PayrollList />,
+              },
+              {},
             ],
           },
         ],

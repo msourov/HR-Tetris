@@ -1,6 +1,6 @@
 import { Card, Container, Stack, Text, Timeline, Title } from "@mantine/core";
 import CertificateCard from "./CCCard";
-import { CompanyCredential } from "../../../features/types/clm";
+import { CompanyCredential } from "../../../features/types/companyCredentials";
 import useFormatDate from "../../../services/utils/useFormatDate";
 
 export function CertificateDetail({ item }: { item: CompanyCredential }) {

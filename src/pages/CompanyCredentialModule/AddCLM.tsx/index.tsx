@@ -15,7 +15,7 @@ import {
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import { IconCheck, IconPlus, IconX } from "@tabler/icons-react";
-import { useCreateCredentialMutation } from "../../../features/api/CLMSlice";
+import { useCreateCredentialMutation } from "../../../features/api/companyCredentialSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { DateInput } from "@mantine/dates";

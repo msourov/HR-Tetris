@@ -16,7 +16,7 @@ import {
   IconCheck,
   IconPhone,
 } from "@tabler/icons-react";
-import { CompanyCredential } from "../../../features/types/clm";
+import { CompanyCredential } from "../../../features/types/companyCredentials";
 import useFormatDate from "../../../services/utils/useFormatDate";
 
 export default function CertificateCard({ item }: { item: CompanyCredential }) {
