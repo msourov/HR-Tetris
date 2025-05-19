@@ -13,6 +13,7 @@ import {
   Badge,
   SimpleGrid,
   Select,
+  Pagination,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -33,6 +34,7 @@ import { PayrollRecord } from "../../../../features/types/payroll";
 import { getImageUrl } from "../../../../services/utils/getImageUrl";
 import { useGetEmployeeHelperQuery } from "../../../../features/api/employeeSlice";
 import AppLoader from "../../../../components/ui/AppLoader";
+import ErrorAlert from "../../../../components/shared/ErrorAlert";
 
 const createSchema = z.object({
   employee_id: z.string().min(1, "Employee ID is required"),
@@ -42,7 +44,12 @@ const createSchema = z.object({
 type CreatePayroll = z.infer<typeof createSchema>;
 
 const PayrollList = () => {
-  const { data, isLoading } = useGetPayrollsQuery({ page: 1, limit: 10 });
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  const { data, isLoading, isFetching, error } = useGetPayrollsQuery({
+    page,
+    limit,
+  });
   const { data: employees } = useGetEmployeeHelperQuery();
   const [addPayroll, { isLoading: isAdding }] = useAddPayrollMutation();
 
@@ -54,6 +61,8 @@ const PayrollList = () => {
     null
   );
   const theme = useMantineTheme();
+
+  const payrolls = data?.data || [];
 
   const employeeOptions = Array.isArray(employees?.data)
     ? employees?.data.map((item) => ({
@@ -91,6 +100,16 @@ const PayrollList = () => {
 
   if (isLoading) return <AppLoader />;
 
+  if (error) {
+    type ErrorWithDetail = { data?: { detail?: string } };
+    const err = error as ErrorWithDetail;
+    const errorMessage =
+      err.data && typeof err.data === "object" && "detail" in err.data
+        ? err.data.detail
+        : "Error fetching users";
+    return <ErrorAlert message={errorMessage || ""} />;
+  }
+
   const SalaryItem = ({ label, value }: { label: string; value: number }) => (
     <Group justify="space-between">
       <Text c="dimmed">{label}</Text>
@@ -114,10 +133,10 @@ const PayrollList = () => {
       </Group>
 
       <Stack gap="sm">
-        {data?.data?.map((item) => (
+        {payrolls?.map((item) => (
           <Card
             key={item.uid}
-            padding="lg"
+            padding="md"
             radius="md"
             withBorder
             onClick={() => handleViewDetail(item)}
@@ -140,7 +159,7 @@ const PayrollList = () => {
                 />
 
                 <Stack gap={2}>
-                  <Text fz="lg" fw={400} lineClamp={1}>
+                  <Text fz="md" fw={400} lineClamp={1}>
                     {item.employee_name}
                   </Text>
                   <Group gap="xs">
@@ -175,6 +194,15 @@ const PayrollList = () => {
           </Card>
         ))}
       </Stack>
+      <div className="px-4 pt-8 pb-4 float-right">
+        <Pagination
+          total={data?.pagination?.total_pages ?? 0}
+          value={page}
+          onChange={setPage}
+          color="rgb(33, 41, 34)"
+          disabled={isFetching}
+        />
+      </div>
 
       {/* Detail Modal */}
       <Modal opened={detailOpened} onClose={closeDetail} size="lg" radius="md">

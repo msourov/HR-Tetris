@@ -64,7 +64,18 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading }) => {
           <Table.Td style={{ width: "10%", paddingLeft: "32px" }}>
             {index + 1}
           </Table.Td>
-          <Table.Td style={{ width: "10%" }}>{item?.name}</Table.Td>
+          <Table.Td style={{ width: "10%" }}>
+            <div
+              className={`w-fit border p-1 rounded-full text-xs 
+    ${
+      item.name === "Super Admin"
+        ? "bg-red-500 text-white border-red-600"
+        : "bg-gray-500 text-white border-gray-500"
+    }`}
+            >
+              {item?.name}
+            </div>
+          </Table.Td>
           <Table.Td style={{ width: "40%" }}>
             <Pill.Group>
               {transformAccess(item?.access || {}).map(

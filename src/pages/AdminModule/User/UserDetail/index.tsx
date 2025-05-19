@@ -4,7 +4,6 @@ import {
   Card,
   Group,
   Badge,
-  Avatar,
   Title,
   Stepper,
 } from "@mantine/core";
@@ -13,12 +12,17 @@ import { useParams } from "react-router-dom";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useGetUserDetailQuery } from "../../../../features/api/userSlice";
 import { UserResponseData } from "../../../../features/types/user";
+import { getImageUrl } from "../../../../services/utils/getImageUrl";
 
 const UserDetail: React.FC = () => {
   const { uid } = useParams<{ uid: string }>();
   const { data, isLoading, error } = useGetUserDetailQuery(
     uid ? { uid } : skipToken
   );
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/assets/employee_avatar.png";
+  };
 
   if (isLoading) {
     return (
@@ -42,7 +46,9 @@ const UserDetail: React.FC = () => {
     .filter(Boolean)
     .map((log, index) => (
       <div key={index}>
-        <p className="text-sm font-small text-blue-800 mb-1">{log?.admin || log?.user || "N/A"}</p>
+        <p className="text-sm font-small text-blue-800 mb-1">
+          {log?.admin || log?.user || "N/A"}
+        </p>
         <p className="text-xs text-gray-500">{log?.message ?? "N/A"}</p>
         <p className="text-xs text-gray-500">
           <span className="font-bold">Created: </span>
@@ -60,10 +66,11 @@ const UserDetail: React.FC = () => {
       {/* Left Section: User Details */}
       <Card withBorder radius="md" className="w-full flex-1 md:w-1/3 bg-white">
         <Card.Section p="md" className="flex justify-center">
-          <Avatar
-            size={120}
-            radius="xl"
-            src={`https://avatar.iran.liara.run/public`}
+          <img
+            src={getImageUrl(user?.mobile || "")}
+            alt={user?.name}
+            className="w-40 h-40 rounded-full mr-2 inline-block"
+            onError={handleImageError}
           />
         </Card.Section>
 
@@ -71,10 +78,11 @@ const UserDetail: React.FC = () => {
           <p className="font-medium text-lg text-center">{user?.name}</p>
 
           <Badge
-            className={`${user?.active
-              ? "bg-green-200 text-green-700"
-              : "bg-red-200 text-red-700"
-              }`}
+            className={`${
+              user?.active
+                ? "bg-green-200 text-green-700"
+                : "bg-red-200 text-red-700"
+            }`}
           >
             {user?.active ? "Active" : "Inactive"}
           </Badge>

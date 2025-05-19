@@ -1,4 +1,12 @@
-import { Group, Box, UnstyledButton, Accordion, Divider, Burger, Drawer } from "@mantine/core";
+import {
+  Group,
+  Box,
+  UnstyledButton,
+  Accordion,
+  Divider,
+  Burger,
+  Drawer,
+} from "@mantine/core";
 import { GrUserManager } from "react-icons/gr";
 import { IconHome2 } from "@tabler/icons-react";
 
@@ -34,14 +42,15 @@ export function LinksGroup({
   isSingleGroup = false,
   icon,
 }: // link,
-  LinksGroupProps & { isActive: boolean; onClick: () => void }) {
+LinksGroupProps & { isActive: boolean; onClick: () => void }) {
   const handleClick: () => void = () => {
     onClick();
   };
   return (
     <UnstyledButton
-      className={`${classes.control} ${isActive ? classes.active : ""} ${isSingleGroup ? classes.singleGroup : ""
-        }`}
+      className={`${classes.control} ${isActive ? classes.active : ""} ${
+        isSingleGroup ? classes.singleGroup : ""
+      }`}
       onClick={handleClick}
     >
       <Group justify="space-between" gap={0} ml={10}>
@@ -79,10 +88,6 @@ const initialSidebarData = [
     permissionKey: "office_management",
     items: [
       {
-        label: "Company",
-        link: "/company",
-      },
-      {
         label: "Department",
         link: "/departments",
       },
@@ -101,6 +106,14 @@ const initialSidebarData = [
       {
         label: "Shift & Schedule",
         link: "/shift",
+      },
+      {
+        label: "Meetings",
+        link: "/meetings",
+      },
+      {
+        label: "Tasks",
+        link: "/tasks",
       },
     ],
   },
@@ -237,7 +250,7 @@ export function Sidebar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const isMobile = useMediaQuery('(max-width: 1023px)');
+  const isMobile = useMediaQuery("(max-width: 1023px)");
 
   useEffect(() => {
     const roleData = localStorage.getItem("role");
@@ -329,7 +342,9 @@ export function Sidebar() {
                     fontSize: "0.85rem",
                     fontWeight: 700,
                     transform: "translateY(-2px)",
-                    color: isGroupActive(group.items) ? "var(--mantine-color-green-9)" : "white",
+                    color: isGroupActive(group.items)
+                      ? "var(--mantine-color-green-9)"
+                      : "white",
                   }}
                   icon={group?.icon}
                   className={isGroupActive(group.items) ? "activeGroup" : ""}
@@ -375,7 +390,7 @@ export function Sidebar() {
           overlayProps={{ opacity: 0.5, blur: 1 }}
           withinPortal
           zIndex={1000}
-          classNames={{ content: 'h-full' }}
+          classNames={{ content: "h-full" }}
           className={classes.body}
         >
           {sidebarContent}

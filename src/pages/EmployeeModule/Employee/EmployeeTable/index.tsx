@@ -61,7 +61,7 @@ const EmplyeeTable = () => {
             total={employees?.pagination?.total_pages ?? 0}
             value={page}
             onChange={setPage}
-            color="rgb(33, 41, 34)"
+            color="blue"
             disabled={isFetching}
           />
         </div>

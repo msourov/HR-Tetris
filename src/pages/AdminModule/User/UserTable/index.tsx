@@ -1,13 +1,19 @@
-import { Table } from "@mantine/core";
+import { Pagination, Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
 import { User } from "../../../../features/api/typesOld";
 import { useGetUsersQuery } from "../../../../features/api/userSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../../../services/auth/useAuth";
+import { useState } from "react";
 
 const UserTable = () => {
-  const { data, isLoading, error } = useGetUsersQuery({ page: 1, limit: 10 });
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  const { data, isLoading, isFetching, error } = useGetUsersQuery({
+    page,
+    limit,
+  });
   const { logout } = useAuth();
   const users: User[] = data?.data || [];
 
@@ -21,10 +27,25 @@ const UserTable = () => {
   }
   return (
     <>
-      <Table>
+      <Table striped highlightOnHover>
         <TableHeading />
-        <TableItem data={users} isLoading={isLoading} error={error} />
+        <TableItem
+          page={data?.pagination?.page ?? 1}
+          limit={data?.pagination?.page_size ?? 10}
+          data={users}
+          isLoading={isLoading}
+          error={error}
+        />
       </Table>
+      <div className="px-4 pt-8 pb-4 float-right">
+        <Pagination
+          total={data?.pagination?.total_pages ?? 0}
+          value={page}
+          onChange={setPage}
+          color="blue"
+          disabled={isFetching}
+        />
+      </div>
     </>
   );
 };
