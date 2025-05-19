@@ -2,11 +2,15 @@ import { Pagination, Table } from "@mantine/core";
 import { useGetAllHomeOfficesQuery } from "../../../../features/api/homeOfficeSlice";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
+import { useState } from "react";
 
 const HomeOfficeTable = () => {
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
   const { data, isLoading, error } = useGetAllHomeOfficesQuery({
-    page: 1,
-    limit: 10,
+    page,
+    limit,
   });
 
   const HomeOfficeData = data?.data
@@ -26,7 +30,14 @@ const HomeOfficeTable = () => {
         />
       </Table>
       <div className="px-4 pt-8 pb-4 float-right">
-        <Pagination total={4} color="rgb(33, 41, 34)" />
+        <Pagination
+          value={data?.pagination.page ?? 1}
+          total={data?.pagination.total_pages ?? 1}
+          siblings={1}
+          boundaries={1}
+          color="blue"
+          onChange={setPage}
+        />
       </div>
     </>
   );

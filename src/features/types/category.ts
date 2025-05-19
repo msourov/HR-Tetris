@@ -1,4 +1,4 @@
-import { Log } from "./shared";
+import { Log, PaginatedApiResponse } from "./shared";
 
 export interface Category {
   id: number;
@@ -41,3 +41,6 @@ export interface CategoryUpdate {
   model_type: string;
   active: boolean;
 }
+
+export interface AllCategoriesResponse
+  extends PaginatedApiResponse<Category[]> {}

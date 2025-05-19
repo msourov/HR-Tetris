@@ -17,7 +17,8 @@ import {
   CertificationDetail,
   CertificationLayout,
   CertificationTable,
-  Company,
+  CompanyCredentialLayout,
+  CompanyCredentialList,
   ConsumablesInventory,
   CreateHomeOffice,
   Dashboard,
@@ -44,8 +45,12 @@ import {
   Loan,
   Login,
   ManagePolicy,
+  MeetingLayout,
+  MeetingList,
   OtpPage,
   Overtime,
+  PayrollLayout,
+  PayrollList,
   PolicyDetail,
   PolicyLayout,
   PolicyList,
@@ -54,6 +59,8 @@ import {
   ShiftLayout,
   ShiftList,
   TangiblesInventory,
+  TaskLayout,
+  TaskList,
   TicketLayout,
   TicketList,
   UpdateCategory,
@@ -155,14 +162,6 @@ export const router = createBrowserRouter([
                 element: <EditUser id="" closeModal={() => {}} />,
               },
             ],
-          },
-          {
-            path: "company",
-            element: (
-              <Suspense fallback={loader}>
-                <Company />
-              </Suspense>
-            ),
           },
           {
             path: "departments",
@@ -542,6 +541,65 @@ export const router = createBrowserRouter([
                 path: "issued-equipment",
                 element: <Loan />,
               },
+            ],
+          },
+          {
+            path: "certification-and-license",
+            element: (
+              <Suspense fallback={loader}>
+                <CompanyCredentialLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: <CompanyCredentialList />,
+              },
+            ],
+          },
+          {
+            path: "payroll",
+            element: (
+              <Suspense fallback={loader}>
+                <PayrollLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: <PayrollList />,
+              },
+              {},
+            ],
+          },
+          {
+            path: "meetings",
+            element: (
+              <Suspense fallback={loader}>
+                <MeetingLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: <MeetingList />,
+              },
+              {},
+            ],
+          },
+          {
+            path: "tasks",
+            element: (
+              <Suspense fallback={loader}>
+                <TaskLayout />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: <TaskList />,
+              },
+              {},
             ],
           },
         ],

@@ -5,9 +5,12 @@ import { Table } from "@mantine/core";
 import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import CategoryActions from "./CategoryActions";
+import { IconCategory } from "@tabler/icons-react";
 
 interface TableItemProps {
   data: Category[];
+  page: number;
+  limit: number;
   isLoading: boolean;
   error?:
     | { error: string; status: string }
@@ -15,7 +18,13 @@ interface TableItemProps {
     | SerializedError;
 }
 
-const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
+const TableItem: React.FC<TableItemProps> = ({
+  data,
+  page,
+  limit,
+  isLoading,
+  error,
+}) => {
   if (isLoading) {
     return <CommonSkeleton cols={6} rows={5} />;
   }
@@ -28,9 +37,16 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
       {data.map((item, index) => (
         <Table.Tr key={item.uid} className="hover:bg-gray-100">
           <Table.Td style={{ width: "5%", paddingLeft: "1.5rem" }}>
-            {index + 1}
+            {(page - 1) * limit + index + 1}
           </Table.Td>
-          <Table.Td style={{ width: "25%" }}>{item.name || "N/A"}</Table.Td>
+          <Table.Td style={{ width: "25%" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+            >
+              <IconCategory className="text-orange-400" size={20} />
+              <span>{item.name || "N/A"}</span>
+            </div>
+          </Table.Td>
           <Table.Td style={{ width: "25%" }}>{item.values || "N/A"}</Table.Td>
           <Table.Td style={{ width: "20%" }}>
             {item.model_type || "N/A"}

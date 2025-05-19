@@ -6,7 +6,6 @@ import { useGetRolesQuery } from "../../../../features/api/roleSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../../../services/auth/useAuth";
 
-
 export type ColorMap = {
   UM: string;
   OM: string;
@@ -31,7 +30,7 @@ const AcronymDetails = () => {
     EM: "Employee Management",
     IM: "Inventory Management",
     RM: "Recruitment Management",
-    ATM: "Announcement Management"
+    ATM: "Announcement Management",
   };
 
   const colors: ColorMap = {
@@ -52,13 +51,24 @@ const AcronymDetails = () => {
       {/* <h3 className="text-lg font-semibold mb-4">Acronym Definitions</h3> */}
       <div className="grid grid-cols-1 gap-2">
         {Object.entries(acronymMap).map(([acronym, fullName]) => (
-          <div key={acronym} className="flex items-center gap-2">
+          <div
+            key={acronym}
+            className="flex items-center gap-2 border-b p-1"
+            style={{
+              borderBottomColor: colors[acronym as keyof ColorMap],
+            }}
+          >
             <span
               className="w-4 h-4 rounded-sm"
               style={{ backgroundColor: colors[acronym as keyof ColorMap] }}
             ></span>
             <span className="font-medium">{acronym}:</span>
-            <span className="text-gray-600">{fullName}</span>
+            <span
+              className="text-gray-600"
+              style={{ color: colors[acronym as keyof ColorMap] }}
+            >
+              {fullName}
+            </span>
           </div>
         ))}
       </div>
@@ -83,7 +93,7 @@ const RoleTable: React.FC = () => {
   return (
     <div className="flex flex-col xl:flex-row gap-4 py-8 px-4">
       <div className="flex-1 border">
-        <Table>
+        <Table striped highlightOnHover>
           <TableHeading />
           <TableItem data={roles} loading={isLoading} />
         </Table>

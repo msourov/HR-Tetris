@@ -1,6 +1,5 @@
 import {
   Card,
-  Avatar,
   Group,
   Paper,
   Text,
@@ -21,16 +20,19 @@ import {
 } from "@tabler/icons-react";
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import { IoMdReturnLeft } from "react-icons/io";
-import { useState } from "react";
+import { getImageUrl } from "../../../../services/utils/getImageUrl";
 
 const DepartmentDetail = () => {
   const { id: uid } = useParams();
   const { formatDate } = useFormatDate();
   const { data, isLoading, error } = useGetDepartmentDetailQuery({ uid });
-  const [imageErrorMap, setImageErrorMap] = useState<Record<string, boolean>>({});
   const navigate = useNavigate();
 
   const departmentDetail = data?.data;
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/assets/employee_avatar.png";
+  };
 
   if (isLoading) {
     return <Loader type="dots" />;
@@ -109,36 +111,6 @@ const DepartmentDetail = () => {
           )}
         </Stack>
 
-        {/* <Divider my="md" /> */}
-
-        {/* Activity Log */}
-        {/* <Paper withBorder p="sm" radius="md" className="bg-gray-50">
-          <Group gap="xs">
-            <Text size="sm" c="dimmed">
-              Last Activity:
-            </Text>
-            <Text size="sm">
-              {Array.isArray(departmentDetail?.logs)
-                ? departmentDetail?.logs[0]?.message
-                : departmentDetail?.logs?.message}
-            </Text>
-          </Group>
-          <Group gap="xs">
-            <Text size="sm" c="dimmed">
-              By:
-            </Text>
-            <Text size="sm">{departmentDetail?.logs.admin}</Text>
-          </Group>
-          <Group gap="xs">
-            <Text size="sm" c="dimmed">
-              On:
-            </Text>
-            <Text size="sm">
-              {formatDate(departmentDetail?.logs.create_at, true)}
-            </Text>
-          </Group>
-        </Paper> */}
-
         <Divider my="md" />
 
         {/* Employees Section */}
@@ -148,9 +120,6 @@ const DepartmentDetail = () => {
 
         <Stack gap="sm">
           {departmentDetail?.employees.map((employee) => {
-            const imageUrl = `https://api.hr-infozilion.pitetris.com/v1/mak/employee/show/file?employee_id=${employee?.employee_id}&is_image=true`;
-            const isError = imageErrorMap[employee.employee_id];
-
             return (
               <Paper
                 key={employee.employee_id}
@@ -162,23 +131,12 @@ const DepartmentDetail = () => {
                 <Group justify="space-between" align="flex-start">
                   {/* Employee Info */}
                   <Group gap="md" align="flex-start">
-                    {!isError ? (
-                      <img
-                        src={imageUrl}
-                        alt="employee"
-                        className="w-16 h-16 object-cover rounded-full border"
-                        onError={() =>
-                          setImageErrorMap((prev) => ({
-                            ...prev,
-                            [employee.employee_id]: true,
-                          }))
-                        }
-                      />
-                    ) : (
-                      <Avatar color="blue" radius="xl" size="lg">
-                        {employee.name?.[0] ?? "?"}
-                      </Avatar>
-                    )}
+                    <img
+                      src={getImageUrl(employee?.employee_id)}
+                      alt="employee"
+                      className="w-16 h-16 object-cover rounded-full border"
+                      onError={handleImageError}
+                    />
 
                     <Stack gap={2}>
                       <Text fw={600} className="text-gray-800">

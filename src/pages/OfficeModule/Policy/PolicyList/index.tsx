@@ -22,6 +22,7 @@ import PolicyCard from "./PolicyCard";
 import axios from "axios";
 import { IoTextSharp } from "react-icons/io5";
 import { FaRegFileAlt } from "react-icons/fa";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 interface PolicyModalProps {
   opened: boolean;
@@ -94,11 +95,7 @@ const PolicyList = () => {
   }
 
   if (allPolicyLoading) {
-    return (
-      <div className="flex justify-center m-6">
-        <Loader color="blue" />
-      </div>
-    );
+    <AppLoader />;
   }
 
   const handlePolicyDetail = (id: string) => {
@@ -120,7 +117,7 @@ const PolicyList = () => {
         className="my-6"
       />
       <Tabs variant="outline" defaultValue="text">
-        <Tabs.List>
+        <Tabs.List className="mb-6">
           <Tabs.Tab value="text" leftSection={<IoTextSharp />}>
             Text
           </Tabs.Tab>
@@ -135,7 +132,7 @@ const PolicyList = () => {
             verticalSpacing={{ base: "md", sm: "xl" }}
           >
             {policyTexts?.map((item) => (
-              <div key={item?.id} className="flex justify-center bg-gray-200">
+              <div key={item?.id} className="flex justify-center w-fit">
                 <PolicyCard
                   key={item.id}
                   item={item}
@@ -146,16 +143,17 @@ const PolicyList = () => {
             ))}
           </SimpleGrid>
         </Tabs.Panel>
-        <Tabs.Panel value="file" className="p-4 my-6">
+        <Tabs.Panel value="file" className="p-6">
           <SimpleGrid
-            cols={{ base: 1, sm: 2, md: 3 }}
+            cols={{ base: 2, sm: 4, md: 6 }}
             spacing={{ base: 10, sm: "xl" }}
             verticalSpacing={{ base: "md", sm: "xl" }}
+            style={{ justifyItems: "flex-start" }}
           >
             {policyFiles?.map((item) => (
               <div
                 key={item?.id}
-                style={{ display: "flex", justifyContent: "center" }}
+                style={{ display: "flex", justifyContent: "flex-start" }}
               >
                 <PolicyCard
                   key={item?.id}

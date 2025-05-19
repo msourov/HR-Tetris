@@ -13,17 +13,25 @@ import AppModal from "../../../../components/ui/AppModal";
 
 interface TableItemProps {
   data: Certification[];
+  page: number;
+  limit: number;
   isLoading: boolean;
   error?:
-  | {
-    error: string;
-    status: string;
-  }
-  | FetchBaseQueryError
-  | SerializedError;
+    | {
+        error: string;
+        status: string;
+      }
+    | FetchBaseQueryError
+    | SerializedError;
 }
 
-const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
+const TableItem: React.FC<TableItemProps> = ({
+  page,
+  limit,
+  data,
+  isLoading,
+  error,
+}) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [currentUid, setCurrentUid] = useState<string>("");
   const { formatDate } = useFormatDate();
@@ -48,8 +56,8 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
               setCurrentUid(item.uid);
             }}
           >
-            <Table.Td style={{ width: "5%", paddingBlock: "0.5rem" }}>
-              {index + 1}
+            <Table.Td style={{ width: "5%", paddingBlock: "0.85rem" }}>
+              {(page - 1) * limit + index + 1}
             </Table.Td>
             <Table.Td style={{ width: "10%" }} className="text-sm">
               {item.employee_name || "N/A"}

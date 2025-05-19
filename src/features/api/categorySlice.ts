@@ -3,7 +3,12 @@ import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
 
 import { Response } from "../types/shared";
-import { Category, CategoryForm, CategoryUpdate } from "../types/category";
+import {
+  AllCategoriesResponse,
+  Category,
+  CategoryForm,
+  CategoryUpdate,
+} from "../types/category";
 
 export const categoryApi = createApi({
   reducerPath: "categoryApi",
@@ -11,7 +16,7 @@ export const categoryApi = createApi({
   tagTypes: [tagTypes.CATEGORY],
   endpoints: (builder) => ({
     getAllCategories: builder.query<
-      Category[],
+      AllCategoriesResponse,
       { page: number; limit: number }
     >({
       query: ({ page, limit }) => ({
@@ -22,7 +27,7 @@ export const categoryApi = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ uid }) => ({ type: "Category", id: uid })),
+              ...result.data.map(({ uid }) => ({ type: "Category", id: uid })),
               { type: "Category", id: "LIST" },
             ]
           : [{ type: "Category", id: "LIST" }],

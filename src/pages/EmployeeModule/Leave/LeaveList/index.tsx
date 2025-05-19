@@ -7,6 +7,7 @@ import CustomCard from "./CustomCard";
 const LeaveList = ({ data }: { data: Leave[] }) => {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -100, scrollBehavior: "smooth" }}

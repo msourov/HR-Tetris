@@ -24,6 +24,7 @@ import {
   useGetShiftsQuery,
 } from "../../../../features/api/shiftSlice";
 import AddShift from "../AddShift";
+import { ErrorResponse } from "react-router-dom";
 
 const schema = z
   .object({
@@ -108,7 +109,7 @@ const EditShift = () => {
           shiftDetail?.day_start_time || ""
         ),
         day_end_time: formatTimeWithoutSeconds(shiftDetail?.day_end_time || ""),
-        off_day: shiftDetail?.off_day || "",
+        off_day: Array.isArray(shiftDetail?.off_day) ? shiftDetail.off_day.join(", ") : shiftDetail?.off_day || "",
         start_date: new Date(shiftDetail?.start_time),
         end_date: new Date(shiftDetail?.end_time),
       });
@@ -135,7 +136,7 @@ const EditShift = () => {
       descriptions: data.descriptions,
       day_start_time: ensureSeconds(data.day_start_time),
       day_end_time: ensureSeconds(data.day_end_time),
-      off_day: data.off_day,
+      off_day: Array.isArray(data.off_day) ? data.off_day : [data.off_day],
       start_time: data.start_date ? data.start_date.toISOString() : "",
       end_time: data.end_date ? data.end_date.toISOString() : "",
     };
@@ -165,9 +166,12 @@ const EditShift = () => {
         setShiftUid("");
       }
     } catch (error) {
+      console.log(error);
       notifications.show({
         title: "Error!",
-        message: "Couldn't update shift",
+        message:
+          (error as ErrorResponse)?.data?.detail[0]?.msg ||
+          "Couldn't update shift",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
@@ -217,7 +221,7 @@ const EditShift = () => {
           Add
         </Button>
       </Box>
-      <Modal opened={addOpened} onClose={addClose} title="Add Shift" size="80%">
+      <Modal opened={addOpened} onClose={addClose} size="80%">
         <AddShift toggleModal={toggleModal} />
       </Modal>
       <Select

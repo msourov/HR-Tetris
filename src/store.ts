@@ -20,6 +20,8 @@ import { consumableApi } from "./features/api/consumableInventorySlice";
 import { categoryApi } from "./features/api/categorySlice";
 import { loanApi } from "./features/api/loanSlice";
 import { holidayApi } from "./features/api/holidaySlice";
+import { credentialApi } from "./features/api/companyCredentialSlice";
+import { payrollApi } from "./features/api/payrollSlice";
 
 const store = configureStore({
   reducer: {
@@ -44,6 +46,8 @@ const store = configureStore({
     [consumableApi.reducerPath]: consumableApi.reducer,
     [loanApi.reducerPath]: loanApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
+    [credentialApi.reducerPath]: credentialApi.reducer,
+    [payrollApi.reducerPath]: payrollApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -67,7 +71,9 @@ const store = configureStore({
       tangibleApi.middleware,
       consumableApi.middleware,
       loanApi.middleware,
-      categoryApi.middleware
+      categoryApi.middleware,
+      credentialApi.middleware,
+      payrollApi.middleware
     ),
 });
 

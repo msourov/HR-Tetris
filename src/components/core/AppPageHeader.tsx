@@ -34,7 +34,7 @@ const AppPageHeader: React.FC<PageHeaderProps> = ({
         w={"80px"}
         leftSection={<IoMdReturnLeft size={16} color="gray" />}
         onClick={() => navigate(-1)}
-        className="text-gray-600 hover:bg-gray-200 my-8"
+        className="text-gray-600 hover:bg-gray-200 my-6"
       >
         Back
       </Button>

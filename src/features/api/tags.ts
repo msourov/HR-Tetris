@@ -20,4 +20,6 @@ export const tagTypes = {
   TANGIBLE: "Tangible",
   CATEGORY: "Category",
   LOAN: "Loan",
+  CREDENTIALS: "Credentials",
+  PAYROLL: "Payroll",
 };

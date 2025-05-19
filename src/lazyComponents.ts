@@ -27,7 +27,7 @@ export const AddNewRole = lazy(
 export const RoleTable = lazy(
   () => import("./pages/AdminModule/Role/RoleTable")
 );
-export const Company = lazy(() => import("./pages/OfficeModule/Company"));
+
 export const CandidateDetail = lazy(
   () => import("./pages/RecruitmentModule/Candidates/CandidateDetail")
 );
@@ -155,4 +155,37 @@ export const CategoryList = lazy(
 );
 export const UpdateCategory = lazy(
   () => import("./pages/EmployeeModule/Category/UpdateCategory")
+);
+
+// Company Credential
+export const CompanyCredentialLayout = lazy(
+  () => import("./pages/CompanyCredentialModule/index.tsx")
+);
+
+export const CompanyCredentialList = lazy(
+  () => import("./pages/CompanyCredentialModule/CCList/index.tsx")
+);
+
+export const PayrollLayout = lazy(
+  () => import("./pages/AccountsModule/Payroll/index.tsx")
+);
+
+export const PayrollList = lazy(
+  () => import("./pages/AccountsModule/Payroll/PayrollList/index.tsx")
+);
+
+// Office / Meeting
+export const MeetingLayout = lazy(
+  () => import("./pages/OfficeModule/Meeting/index.tsx")
+);
+export const MeetingList = lazy(
+  () => import("./pages/OfficeModule/Meeting/MeetingList/index.tsx")
+);
+
+// Office / Task
+export const TaskLayout = lazy(
+  () => import("./pages/OfficeModule/Task/index.tsx")
+);
+export const TaskList = lazy(
+  () => import("./pages/OfficeModule/Task/TaskList/index.tsx")
 );

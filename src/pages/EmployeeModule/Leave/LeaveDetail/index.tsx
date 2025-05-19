@@ -218,7 +218,7 @@ const LeaveDetail = ({
       </Group>
 
       <form onSubmit={handleSubmit(handleEditSubmit)}>
-        <Grid gutter="md">
+        <Grid gutter="sm">
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Group gap="xs">
               <IconUser size={16} className="text-blue-500" />
@@ -228,7 +228,7 @@ const LeaveDetail = ({
             </Group>
           </Grid.Col>
           <Grid.Col span={{ base: 12, md: 6 }}>
-            <Pill bg="grape" c="white" size="md">
+            <Pill bg="blue" c="white" size="md">
               {leaveData.employee_id}
             </Pill>
           </Grid.Col>
@@ -250,7 +250,7 @@ const LeaveDetail = ({
                 error={errors.leave_type?.message}
               />
             ) : (
-              <Text className="px-3 py-1 bg-gray-100 rounded-md">
+              <Text className="px-3 py-1 border rounded-md">
                 {leaveData.leave_type}
               </Text>
             )}
@@ -277,7 +277,7 @@ const LeaveDetail = ({
                 }
               />
             ) : (
-              <Text className="px-3 py-1 bg-blue-100 rounded-md font-mono text-blue-800">
+              <Text className="py-1 rounded-md font-mono text-blue-800">
                 {formatDate(leaveData.leave_start_date)} -{" "}
                 {formatDate(leaveData.leave_end_date)}
               </Text>
@@ -300,7 +300,7 @@ const LeaveDetail = ({
                 error={errors.leave_preiod?.message}
               />
             ) : (
-              <Pill className="bg-sky-500 text-white">
+              <Pill className="bg-blue-500 text-white">
                 {leaveData.leave_preiod}
               </Pill>
             )}

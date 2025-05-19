@@ -12,7 +12,7 @@ const CommonSkeleton: React.FC<CommonSkeletonProps> = ({ cols, rows = 5 }) => {
         <Table.Tr key={rowIndex}>
           {Array.from({ length: cols }).map((_, colIndex) => (
             <Table.Td key={colIndex}>
-              <Skeleton height={20} width="100%" />
+              <Skeleton height={25} width="100%" />
             </Table.Td>
           ))}
         </Table.Tr>

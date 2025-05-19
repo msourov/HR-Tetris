@@ -16,11 +16,17 @@ import {
 import { IconX, IconCheck, IconLock, IconArrowDown } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import { User } from "../../../../features/types/user";
-import { useChangeUserPasswordMutation, useEditUserMutation } from "../../../../features/api/userSlice";
+import {
+  useChangeUserPasswordMutation,
+  useEditUserMutation,
+} from "../../../../features/api/userSlice";
 import { useGetRolesQuery } from "../../../../features/api/roleSlice";
-import { changePasswordSchema, ediUserSchema } from "../../../../features/schemas/userSchema";
+import {
+  changePasswordSchema,
+  ediUserSchema,
+} from "../../../../features/schemas/userSchema";
 import { z } from "zod";
-
+import { motion, AnimatePresence } from "framer-motion";
 
 type EditUserRequest = z.infer<typeof ediUserSchema>;
 type ChangePasswordRequest = z.infer<typeof changePasswordSchema>;
@@ -34,7 +40,8 @@ interface EditUserProps {
 const EditUser = ({ id, closeModal, userData }: EditUserProps) => {
   const [showPasswordFields, setShowPasswordFields] = useState(false);
   const [editUser, { isLoading }] = useEditUserMutation();
-  const [changePassword, { isLoading: isChangingPassword }] = useChangeUserPasswordMutation();
+  const [changePassword, { isLoading: isChangingPassword }] =
+    useChangeUserPasswordMutation();
   const {
     data: roles,
     // isLoading: isLoadingRoles,
@@ -145,13 +152,13 @@ const EditUser = ({ id, closeModal, userData }: EditUserProps) => {
     } catch (error) {
       notifications.show({
         title: "Error!",
-        message: (error as ErrorResponse).data?.detail || "Couldn't change password",
+        message:
+          (error as ErrorResponse).data?.detail || "Couldn't change password",
         icon: <IconX />,
         color: "red",
       });
     }
   };
-
 
   const activeValue = watch("active");
   const roleIdValue = watch("role");
@@ -182,7 +189,9 @@ const EditUser = ({ id, closeModal, userData }: EditUserProps) => {
 
           <Grid.Col span={12}>
             <Group justify="space-between">
-              <Text fw={500} size="sm">Account Status</Text>
+              <Text fw={500} size="sm">
+                Account Status
+              </Text>
               <Switch
                 size="md"
                 color="blue"
@@ -194,66 +203,83 @@ const EditUser = ({ id, closeModal, userData }: EditUserProps) => {
 
           <Grid.Col span={12} className="border-t py-4 mt-4">
             {/* <Divider my="sm" /> */}
-            <Group justify="center" mb="sm" className="bg-blue-500 p-2 text-white items-center cursor-pointer" onClick={() => setShowPasswordFields(prev => !prev)} >
+            <Group
+              justify="center"
+              mb="sm"
+              className="bg-blue-500 p-2 text-white items-center cursor-pointer"
+              onClick={() => setShowPasswordFields((prev) => !prev)}
+            >
               <Text size="md" fw={500}>
                 Change Password
               </Text>
-              <IconArrowDown className={`transition-transform duration-300 ${showPasswordFields ? 'rotate-180' : ''
-                }`} />
+              <IconArrowDown
+                className={`transition-transform duration-300 ${
+                  showPasswordFields ? "rotate-180" : ""
+                }`}
+              />
             </Group>
-            {showPasswordFields && (
-              <div className="bg-gray-200 p-4">
-                <TextInput
-                  type="password"
-                  label="New Password"
-                  {...registerPassword("new_password")}
-                  error={passwordErrors.new_password?.message}
-                  leftSection={<IconLock size={16} />}
-                  placeholder="Enter new password"
-                />
+            <AnimatePresence initial={false} mode="wait">
+              {showPasswordFields && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                  style={{ originY: 0 }} // Add this
+                >
+                  <div className="bg-gray-200 px-4 py-4">
+                    <div className="space-y-4">
+                      <TextInput
+                        type="password"
+                        label="New Password"
+                        {...registerPassword("new_password")}
+                        error={passwordErrors.new_password?.message}
+                        leftSection={<IconLock size={16} />}
+                        placeholder="Enter new password"
+                      />
 
-                <TextInput
-                  type="password"
-                  label="Confirm Password"
-                  {...registerPassword("confirm_password")}
-                  error={passwordErrors.confirm_password?.message}
-                  leftSection={<IconLock size={16} />}
-                  placeholder="Confirm new password"
-                  mt="sm"
-                />
-                <div className="min-h-14">
-                  {/* nothing */}
-                </div>
-                <Group justify="start" align="center" gap="sm" mt="lg">
-                  <Button color="blue" size="compact-sm" onClick={handlePasswordSubmit(onChangePassword)}
-                    loading={isChangingPassword} disabled={isChangingPassword}>
-
-                    Submit
-                  </Button>
-                  <Button
-                    variant="outline"
-                    color='black'
-                    size="compact-sm"
-                    onClick={() => setShowPasswordFields(prev => !prev)}
-                    disabled={isChangingPassword}
-                  >
-                    Cancel
-                  </Button>
-                </Group>
-
-              </div>
-            )}
-
-
+                      <TextInput
+                        type="password"
+                        label="Confirm Password"
+                        {...registerPassword("confirm_password")}
+                        error={passwordErrors.confirm_password?.message}
+                        leftSection={<IconLock size={16} />}
+                        placeholder="Confirm new password"
+                        mt="sm"
+                      />
+                      <Group justify="start" align="center" gap="sm" mt="xl">
+                        <Button
+                          color="blue"
+                          size="compact-md"
+                          onClick={handlePasswordSubmit(onChangePassword)}
+                          loading={isChangingPassword}
+                          disabled={isChangingPassword}
+                          className="text-sm"
+                        >
+                          Submit
+                        </Button>
+                        <Button
+                          variant="outline"
+                          color="black"
+                          size="compact-md"
+                          onClick={() => setShowPasswordFields((prev) => !prev)}
+                          disabled={isChangingPassword}
+                          className="text-sm"
+                        >
+                          Cancel
+                        </Button>
+                      </Group>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </Grid.Col>
         </Grid>
 
         <Group justify="flex-end" mt="xl">
-          <Button
-            variant="outline"
-            onClick={closeModal}
-            disabled={isLoading}
-          >
+          <Button variant="outline" onClick={closeModal} disabled={isLoading}>
             Cancel
           </Button>
           <Button

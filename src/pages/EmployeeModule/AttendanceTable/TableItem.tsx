@@ -8,6 +8,7 @@ import useFormatDate from "../../../services/utils/useFormatDate";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import AttendanceDetail from "./AttendanceDetail";
+import { getImageUrl } from "../../../services/utils/getImageUrl";
 
 interface TableItemProps {
   data: Attendance[];
@@ -31,11 +32,8 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
     open();
   };
 
-  const getImageUrl = (employeeId: string) => {
-    console.log("employeeId", employeeId);
-    return `${
-      import.meta.env.VITE_APP_EMPLOYEE_IMAGE
-    }/${employeeId}_image.jpeg`;
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/assets/employee_avatar.png";
   };
 
   if (isLoading) {
@@ -53,12 +51,12 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
           onClick={() => handleAttendanceOpen(item?.uid)}
         >
           <Table.Td className="w-[5%] pl-[1rem]">{index + 1}</Table.Td>
-          <Table.Td className="w-[15%] border">
+          <Table.Td className="w-[15%]">
             <img
               src={getImageUrl(item.employee_id)}
               alt={item.employee_name}
               className="w-10 h-10 rounded-full mr-2 inline-block"
-              onError={(e) => (e.currentTarget.src = "/default-avatar.png")}
+              onError={handleImageError}
             />
             {item.employee_name}
           </Table.Td>

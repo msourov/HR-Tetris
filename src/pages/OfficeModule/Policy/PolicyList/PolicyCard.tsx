@@ -13,13 +13,15 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
   return (
     <Card
       withBorder
-      w={400}
-      className="flex flex-col bg-green-50 px-6 py-4"
+      className="flex flex-col shadow-lg px-6 py-4 max-w-[400px]"
       key={item?.id}
     >
-      <Text className="w-fit px-2 mx-auto font-bold text-green-900">
-        {item?.name}
-      </Text>
+      <div className="flex justify-between items-center">
+        <Text className="w-fit font-bold text-green-900">{item?.name}</Text>
+        <Button variant="light" size="compact-sm" className="text-xs">
+          Review
+        </Button>
+      </div>
 
       <Text size="sm" className="leading-6 my-4 text-gray-500">
         {item?.descriptions?.length > 300 ? (
@@ -42,17 +44,14 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
 
       {isFile ? (
         <Button
-          leftSection={
-            <IconDownload className="size-6 animate-bounce transition-all duration-300 ease-in-out hover:scale-110" />
-          }
-          w={160}
           mx="auto"
           mt={16}
           variant="light"
           radius="md"
           onClick={() => onClick(item?.uid)}
+          className="w-full"
         >
-          Download
+          <IconDownload className="size-6 animate-bounce transition-all duration-300 ease-in-out hover:scale-110" />
         </Button>
       ) : (
         <Button

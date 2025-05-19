@@ -1,35 +1,94 @@
-import { Box, Text, Divider } from "@mantine/core";
-// import { Link } from "react-router-dom";
-
 const Footer = () => {
   return (
-    <Box component="footer" className="bg-[#102041] text-white">
-      <Divider className="border-gray-600" />
-      <Box className="max-w-7xl mx-auto px-6 py-4">
-        {/* Links Section */}
-        {/* <Box className="mb-4 flex gap-4 justify-center">
-          <Link
-            to="/privacy"
-            className="text-gray-300 hover:text-white text-sm"
-          >
-            Privacy Policy
-          </Link>
-          <Link to="/terms" className="text-gray-300 hover:text-white text-sm">
-            Terms of Service
-          </Link>
-          <Link
-            to="/contact"
-            className="text-gray-300 hover:text-white text-sm"
-          >
-            Contact Us
-          </Link>
-        </Box> */}
-        {/* Footer Text */}
-        <Text ta="center" className="text-gray-400 text-sm">
-          &copy; 2024-2025 Infozillion. All rights reserved.
-        </Text>
-      </Box>
-    </Box>
+    <footer className="bg-[#09152b] text-white pt-8">
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          {/* Logo Column */}
+          <div className="flex flex-col items-start">
+            <img
+              src="./assets/logo.jpg"
+              alt="Company Logo"
+              className="w-40 object-contain mb-4"
+            />
+            <p className="text-sm text-gray-400">
+              A tech company transforming ideas into digital reality
+            </p>
+          </div>
+
+          {/* Contact Column */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                />
+              </svg>
+              <div>
+                <p className="text-sm text-gray-400">Contact</p>
+                <p>+880-123456789</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              <div>
+                <p className="text-sm text-gray-400">Address</p>
+                <p>Dhaka, Bangladesh</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Description Column */}
+          <div className="space-y-2">
+            <p className="text-sm text-gray-400">About Us</p>
+            <p className="text-sm">
+              Lorem Ipsum is a piece of text used by designers to fill space
+              where content will eventually sit. It helps show how text will
+              look once finished.
+            </p>
+          </div>
+        </div>
+
+        {/* Copyright */}
+        <div className="text-center pt-8 border-t border-gray-600">
+          <p className="text-sm text-gray-400">
+            &copy; 2024-2025 Infozillion. All rights reserved |{" "}
+            <a
+              href="https://www.infotelebd.com/"
+              className="text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              https://www.infotelebd.com/
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
   );
 };
 
