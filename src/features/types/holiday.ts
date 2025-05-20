@@ -5,7 +5,7 @@ export interface Holiday {
   uid: string;
   name: string;
   active: boolean;
-  is_approve: string;
+  is_approved: string;
   holiday_start_at: string;
   holiday_end_at: string;
   descriptions: string;

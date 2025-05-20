@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
-    <footer className="bg-[#09152b] text-white pt-8">
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+    <footer className="bg-[#272929] text-white pt-8 border-white border-t">
+      <div className="mx-auto ">
+        <div className="max-w-[90vw] mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Logo Column */}
           <div className="flex flex-col items-start">
             <img
@@ -76,7 +76,7 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="text-center pt-8 border-t border-gray-600">
+        <div className="text-center py-6 border-t border-gray-600 bg-black">
           <p className="text-sm text-gray-400">
             &copy; 2024-2025 Infozillion. All rights reserved |{" "}
             <a

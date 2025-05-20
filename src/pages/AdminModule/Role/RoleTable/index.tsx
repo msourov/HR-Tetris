@@ -24,7 +24,7 @@ const AcronymDetails = () => {
     UM: "User Management",
     OM: "Office Management",
     AUM: "App User Management",
-    CM: "CLM Management", // CLM might need full form if available
+    CM: "CLM Management",
     TM: "Ticket Management",
     AM: "Accounts Management",
     EM: "Employee Management",
@@ -47,28 +47,28 @@ const AcronymDetails = () => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg border">
+    <div className="p-4 bg-gray-100 rounded-lg border">
       {/* <h3 className="text-lg font-semibold mb-4">Acronym Definitions</h3> */}
       <div className="grid grid-cols-1 gap-2">
         {Object.entries(acronymMap).map(([acronym, fullName]) => (
           <div
             key={acronym}
-            className="flex items-center gap-2 border-b p-1"
+            className="flex items-center gap-2 border-b p-1 text-sm"
             style={{
               borderBottomColor: colors[acronym as keyof ColorMap],
             }}
           >
-            <span
+            <p
               className="w-4 h-4 rounded-sm"
               style={{ backgroundColor: colors[acronym as keyof ColorMap] }}
-            ></span>
+            ></p>
             <span className="font-medium">{acronym}:</span>
-            <span
+            <p
               className="text-gray-600"
               style={{ color: colors[acronym as keyof ColorMap] }}
             >
               {fullName}
-            </span>
+            </p>
           </div>
         ))}
       </div>
@@ -91,7 +91,7 @@ const RoleTable: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col xl:flex-row gap-4 py-8 px-4">
+    <div className="flex flex-col xl:flex-row gap-8 xl:gap-4 py-8 px-4">
       <div className="flex-1 border">
         <Table striped highlightOnHover>
           <TableHeading />
