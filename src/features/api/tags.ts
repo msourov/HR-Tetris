@@ -22,4 +22,6 @@ export const tagTypes = {
   LOAN: "Loan",
   CREDENTIALS: "Credentials",
   PAYROLL: "Payroll",
+  TASK: "Task",
+  MEETING: "Meeting",
 };

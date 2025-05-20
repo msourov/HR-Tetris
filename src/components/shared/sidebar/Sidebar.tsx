@@ -3,7 +3,6 @@ import {
   Box,
   UnstyledButton,
   Accordion,
-  Divider,
   Burger,
   Drawer,
 } from "@mantine/core";
@@ -296,7 +295,7 @@ export function Sidebar() {
           color: activeLink === "/" ? "var(--mantine-color-green-5)" : "white",
           fontSize: "0.8rem",
           fontWeight: 700,
-          paddingBlock: "0.75rem",
+          padding: "1rem 1rem 0.5rem 1rem",
           borderRadius: "1rem",
           display: "flex",
           paddingLeft: "1rem",
@@ -316,7 +315,6 @@ export function Sidebar() {
         <IconHome2 style={{ marginRight: "8px", width: "16px" }} />
         <span>Dashboard</span>
       </UnstyledButton>
-      <Divider />
       <Accordion
         transitionDuration={500}
         variant="filled"

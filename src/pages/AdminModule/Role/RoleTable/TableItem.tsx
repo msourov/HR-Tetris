@@ -62,11 +62,8 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading }) => {
       {data.map((item, index) => (
         <Table.Tr key={index}>
           <Table.Td style={{ width: "10%", paddingLeft: "32px" }}>
-            {index + 1}
-          </Table.Td>
-          <Table.Td style={{ width: "10%" }}>
             <div
-              className={`w-fit border p-1 rounded-full text-xs 
+              className={`w-fit border p-1 rounded-full text-xs text-center 
     ${
       item.name === "Super Admin"
         ? "bg-red-500 text-white border-red-600"
