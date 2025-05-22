@@ -284,8 +284,7 @@ export function Sidebar() {
   const sidebarContent = (
     <Box
       m="0"
-      p="0"
-      className="overflow-y-auto h-[100%] flex flex-col w-[15vw] bg-[#102041]"
+      className="overflow-y-auto h-[100%] flex flex-col w-[15vw] bg-[#102041] pb-8"
       style={{ minWidth: "240px" }}
     >
       <UnstyledButton
