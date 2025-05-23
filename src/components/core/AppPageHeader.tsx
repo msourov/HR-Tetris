@@ -10,12 +10,14 @@ type PageHeaderProps = {
     module: string;
     page: string;
   };
+  ShowAddButton?: boolean;
 };
 
 const AppPageHeader: React.FC<PageHeaderProps> = ({
   Operation = "Add",
   Heading,
   Breadcrumb,
+  ShowAddButton=true,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,6 +46,7 @@ const AppPageHeader: React.FC<PageHeaderProps> = ({
       Operation={Operation}
       Heading={Heading}
       Breadcrumb={Breadcrumb}
+      ShowAddButton={ShowAddButton}
     />
   );
 };

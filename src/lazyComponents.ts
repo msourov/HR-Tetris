@@ -186,6 +186,3 @@ export const MeetingList = lazy(
 export const TaskLayout = lazy(
   () => import("./pages/OfficeModule/Task/index.tsx")
 );
-export const TaskList = lazy(
-  () => import("./pages/OfficeModule/Task/TaskList/index.tsx")
-);

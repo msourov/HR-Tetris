@@ -5,6 +5,7 @@ import {
   AllEmployeesResponse,
   EmployeeHelperResponse,
   SingleEmployeeResponse,
+  SupervisorOptionsResponse,
   UnifiedEmployeePayload,
 } from "../types/employee";
 import { Response } from "../types/shared";
@@ -81,6 +82,12 @@ export const employeeApi = createApi({
         method: "GET",
       }),
     }),
+    getSupervisorOptions: builder.query<SupervisorOptionsResponse, void>({
+      query: () => ({
+        url: "employee/supervisor/helper-web",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -91,4 +98,5 @@ export const {
   useEditEmployeeMutation,
   useDeleteEmployeeMutation,
   useGetEmployeeHelperQuery,
+  useGetSupervisorOptionsQuery,
 } = employeeApi;
