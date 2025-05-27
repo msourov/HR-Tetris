@@ -11,12 +11,14 @@ type PageHeaderProps = {
     module: string;
     page: string;
   };
+  ShowAddButton?: boolean;
 };
 
 const PageHeader: React.FC<PageHeaderProps> = ({
   Operation = "Add",
   Heading,
   Breadcrumb,
+  ShowAddButton,
 }) => {
   const navigate = useNavigate();
   const route = Heading?.toLowerCase();
@@ -25,7 +27,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     <Box
       w={"100%"}
       px={"2.25rem"}
-      className="flex justify-between items-center mb-6 py-4"
+      className="flex justify-between items-center mb-4 py-4"
     >
       <div className="space-y-4">
         {Breadcrumb && (
@@ -52,18 +54,19 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           Back
         </Button>
       </div>
-
-      <Button
-        variant="filled"
-        color="white"
-        c="blue"
-        size="sm"
-        className="shadow-md text-sm hover:bg-blue-100 hover:text-white border-blue-300"
-        leftSection={Operation === "Add" && <IconPlus size={16} />}
-        onClick={() =>
-          navigate(`${Heading !== "Home Office" ? `add-${route}` : "create"}`)
-        }
-      >{`${Operation} ${Heading}`}</Button>
+      {ShowAddButton && (
+        <Button
+          variant="filled"
+          color="white"
+          c="blue"
+          size="sm"
+          className="shadow-md text-sm hover:bg-blue-100 hover:text-white border-blue-300"
+          leftSection={Operation === "Add" && <IconPlus size={16} />}
+          onClick={() =>
+            navigate(`${Heading !== "Home Office" ? `add-${route}` : "create"}`)
+          }
+        >{`${Operation} ${Heading}`}</Button>
+      )}
     </Box>
   );
 };

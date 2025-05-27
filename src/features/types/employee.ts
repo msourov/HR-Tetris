@@ -158,9 +158,6 @@ export interface employeeHelperInterface {
   department: string;
 }
 
-export interface EmployeeHelperResponse
-  extends getDataResponse<employeeHelperInterface[]> {}
-
 export type AccessLevel = "a" | "i";
 
 export interface EmployeeAccess {
@@ -225,3 +222,25 @@ interface DocumentExtensions {
   image: string | null;
   other_extensions: string | null;
 }
+export interface EmployeeHelperResponse
+  extends getDataResponse<employeeHelperInterface[]> {}
+
+// Supervisor employee options
+
+export interface Executive {
+  uid: string;
+  employee_id: string;
+  name: string;
+}
+
+export interface Supervisor {
+  uid: string;
+  name: string;
+  employee_id: string;
+  designation: string;
+  department: string;
+  executives: Executive[];
+}
+
+export interface SupervisorOptionsResponse
+  extends getDataResponse<Supervisor[]> {}

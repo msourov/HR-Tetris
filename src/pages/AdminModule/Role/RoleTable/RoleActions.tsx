@@ -52,14 +52,6 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <>
-        <Loader type="dots" />
-      </>
-    );
-  }
-
   return (
     <>
       <div className="flex items-center gap-3 text-gray-600">
@@ -74,10 +66,9 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
         >
           <CiEdit className="w-5 h-5" />
         </button>
-
         <button
           onClick={openDelete}
-          disabled={disabled}
+          disabled={disabled || isLoading}
           className={`
             p-1.5 rounded-md transition-all
             text-red-600 hover:bg-red-50 hover:text-red-700
@@ -88,7 +79,12 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
         </button>
       </div>
 
-      <AppModal opened={editOpened} onClose={closeEdit} title="Edit Role" size='md'>
+      <AppModal
+        opened={editOpened}
+        onClose={closeEdit}
+        title="Edit Role"
+        size="md"
+      >
         {isDetailLoading ? (
           <div className="flex justify-center p-4">
             <Loader type="dots" />

@@ -204,7 +204,7 @@ const AddRole = () => {
         <p className="mt-6 mb-2 text-gray-500">Set Status</p>
         <div className="max-w-20">
           <Switch
-            size="lg"
+            size="md"
             onLabel="Disable"
             offLabel="Activate"
             color="black"

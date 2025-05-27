@@ -92,7 +92,7 @@ const LeaveSection: FC<LeaveSectionProps> = ({ data, loading, error }) => {
                   <Loader type="dots" color="orange" size="sm" />
                 </Box>
               ) : (
-                <Text c="dimmed" my={10}>
+                <Text c="dimmed" ta="center" my={10}>
                   No data available
                 </Text>
               )

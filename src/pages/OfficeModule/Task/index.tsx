@@ -1,5 +1,12 @@
-const TaskLayout = () => {
-  return <div>TaskLayout</div>;
+import { TaskDrawerProvider } from "../../../features/task/context/TaskDrawerContext";
+import { TaskLayout } from "./TaskLayout";
+
+const Task = () => {
+  return (
+    <TaskDrawerProvider>
+      <TaskLayout />
+    </TaskDrawerProvider>
+  );
 };
 
-export default TaskLayout;
+export default Task;

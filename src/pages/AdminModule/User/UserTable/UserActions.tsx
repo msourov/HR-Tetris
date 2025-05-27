@@ -12,7 +12,6 @@ import {
   useGetUserDetailQuery,
 } from "../../../../features/api/userSlice";
 import EditUser from "../EditUser";
-import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import AppModal from "../../../../components/ui/AppModal";
 
 interface RoleActionProps {
@@ -24,11 +23,8 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
   const [editOpened, { open: openEdit, close: closeEdit }] =
     useDisclosure(false);
 
-  const {
-    data: userDetail,
-    isLoading: isLoadingDetail,
-    error: detailError,
-  } = useGetUserDetailQuery({ uid: id });
+  const { data: userDetail, isLoading: isLoadingDetail } =
+    useGetUserDetailQuery({ uid: id });
 
   const [deleteUser, { isLoading }] = useDeleteUserMutation();
   const navigate = useNavigate();
@@ -65,10 +61,6 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
     );
   }
 
-  if (detailError) {
-    return <ErrorAlert message="Error fetching user detail" />;
-  }
-
   return (
     <>
       <Menu transitionProps={{ transition: "rotate-right", duration: 150 }}>
@@ -96,7 +88,12 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
-      <AppModal opened={editOpened} onClose={closeEdit} size='lg' title="Edit User">
+      <AppModal
+        opened={editOpened}
+        onClose={closeEdit}
+        size="lg"
+        title="Edit User"
+      >
         {isLoadingDetail ? (
           <div className="flex justify-center p-4">
             <Loader type="dots" />
@@ -109,7 +106,7 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
           />
         )}
       </AppModal>
-      <AppModal opened={opened} onClose={close} size='md'>
+      <AppModal opened={opened} onClose={close} size="md">
         <p className="text-center">Are you sure you want to delete?</p>
         <div className="flex gap-2 justify-center mt-4">
           <Button color="red" onClick={DeleteUser}>

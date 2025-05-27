@@ -18,7 +18,7 @@ const AppLayout: React.FC = () => {
         <div className="w-2/8 h-auto">
           <Sidebar />
         </div>
-        <div className="content flex-1 flex flex-col min-h-0 overflow-x-hidden">
+        <div className="content flex-1 flex flex-col min-h-[calc(100vh-160px)] overflow-x-hidden">
           <Outlet />
         </div>
       </div>

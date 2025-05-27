@@ -13,8 +13,8 @@ export interface TaskResponse {
   estimated_time: number;
   actual_time_spent: number;
   active: boolean;
-  reporter: Employee;
-  assignees: Employee[];
+  reporter: TaskEmployee;
+  assignees: TaskEmployee[];
   comments: Comment[];
   tags: string[];
   attachments: unknown[];
@@ -49,7 +49,7 @@ export interface TaskUpdatePayload extends TaskCreatePayload {
   updated_at: string;
 }
 
-export interface Employee {
+export interface TaskEmployee {
   employee_id: string;
   name: string;
   department: string;

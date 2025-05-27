@@ -59,8 +59,7 @@ import {
   ShiftLayout,
   ShiftList,
   TangiblesInventory,
-  TaskLayout,
-  TaskList,
+  Task,
   TicketLayout,
   TicketList,
   UpdateCategory,
@@ -591,15 +590,14 @@ export const router = createBrowserRouter([
             path: "tasks",
             element: (
               <Suspense fallback={loader}>
-                <TaskLayout />
+                <Task />
               </Suspense>
             ),
             children: [
-              {
-                index: true,
-                element: <TaskList />,
-              },
-              {},
+              // {
+              //   path: ":taskId",
+              //   element: <TaskDetails />, // Add detail view if needed
+              // },
             ],
           },
         ],

@@ -92,16 +92,16 @@ const AddUser = () => {
   const roleIdValue = watch("role");
 
   if (isLoading || isLoadingRoles) {
-    return <div className="flex items-center justify-center h-[50vh] w-full">
-      <Loader color="blue" size={30} />
-    </div>;
+    return (
+      <div className="flex items-center justify-center h-[50vh] w-full">
+        <Loader color="blue" size={30} />
+      </div>
+    );
   }
 
   if (rolesError || createUserError) {
     return (
-      <ErrorAlert
-        message={rolesError ? "Error fetching roles" : "Error creating user"}
-      />
+      <ErrorAlert message={(rolesError && "Error fetching roles") || ""} />
     );
   }
 
