@@ -308,7 +308,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
           ...updatedPayload,
         }).unwrap();
         sessionStorage.removeItem(draftKey);
-        console.log(response);
 
         notifications.show({
           title: "Success!",

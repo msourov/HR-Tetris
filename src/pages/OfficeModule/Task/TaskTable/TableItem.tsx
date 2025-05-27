@@ -1,12 +1,8 @@
-import { ActionIcon, Avatar, Badge, Group, Table, Text } from "@mantine/core";
-import {
-  IconAlertCircle,
-  IconClock,
-  IconPencil,
-  IconTrash,
-} from "@tabler/icons-react";
+import { Avatar, Badge, Group, Table, Text } from "@mantine/core";
+import { IconAlertCircle, IconClock } from "@tabler/icons-react";
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import { TaskResponse } from "../../../../features/types/task";
+import TaskActions from "./TaskActions";
 
 type TaskItemProps = {
   item: TaskResponse;
@@ -132,14 +128,19 @@ const TableItem: React.FC<TaskItemProps> = ({ item, index }) => {
       </Table.Td>
 
       <Table.Td className="pr-6 py-4">
-        <Group gap={4} justify="right">
+        {/* <Group gap={4} justify="right">
           <ActionIcon color="blue" variant="subtle">
             <IconPencil size="1.25rem" />
           </ActionIcon>
           <ActionIcon color="red" variant="subtle">
             <IconTrash size="1.25rem" />
           </ActionIcon>
-        </Group>
+        </Group> */}
+        <TaskActions
+          taskId={item.uid}
+          taskTitle={item.name}
+          disabled={item.status === "COMPLETED"}
+        />
       </Table.Td>
     </Table.Tr>
   );

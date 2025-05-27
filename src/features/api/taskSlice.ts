@@ -7,6 +7,7 @@ import {
   TaskDetailResponse,
   TaskUpdatePayload,
 } from "../types/task";
+import { Response } from "../types/shared";
 
 export const taskApi = createApi({
   reducerPath: "taskApi",

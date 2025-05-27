@@ -23,7 +23,7 @@ const TaskTable = ({
 
   return (
     <Card withBorder radius="md" className="p-4">
-      <div className="flex gap-4 mb-4">
+      <div className="flex gap-4 mt-2 mb-6">
         <Select
           placeholder="Filter by priority"
           data={["All", "High", "Medium", "Low"]}
@@ -44,18 +44,20 @@ const TaskTable = ({
             <TableItem
               key={item.uid}
               item={item}
-              index={(page - 1) * limit + index + 1}
+              index={(page - 1) * limit + index}
             />
           ))}
         </Table.Tbody>
       </Table>
-
-      <Pagination
-        total={totalPages}
-        value={page}
-        onChange={setPage}
-        className="mt-4 justify-center"
-      />
+      <div className="ml-auto mt-4">
+        <Pagination
+          color="blue"
+          total={totalPages}
+          value={page}
+          onChange={setPage}
+          className="mt-4 justify-center"
+        />
+      </div>
     </Card>
   );
 };

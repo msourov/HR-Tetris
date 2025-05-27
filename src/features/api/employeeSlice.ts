@@ -78,7 +78,7 @@ export const employeeApi = createApi({
     }),
     getEmployeeHelper: builder.query<EmployeeHelperResponse, void>({
       query: () => ({
-        url: "employee/helper",
+        url: "employee/helper-web",
         method: "GET",
       }),
     }),
