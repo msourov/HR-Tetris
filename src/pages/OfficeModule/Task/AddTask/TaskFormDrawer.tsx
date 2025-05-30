@@ -127,7 +127,6 @@ const TaskFormDrawer = ({
   }, [taskDetail, reset]);
 
   const reporterId = watch("reporter_id");
-  console.log(reporterId, taskDetail?.reporter?.employee_id);
 
   useEffect(() => {
     if (reporterId && data?.data) {

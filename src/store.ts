@@ -23,6 +23,7 @@ import { holidayApi } from "./features/api/holidaySlice";
 import { credentialApi } from "./features/api/companyCredentialSlice";
 import { payrollApi } from "./features/api/payrollSlice";
 import { taskApi } from "./features/api/taskSlice";
+import { meetingApi } from "./features/api/meetingSlice";
 
 const store = configureStore({
   reducer: {
@@ -50,6 +51,7 @@ const store = configureStore({
     [credentialApi.reducerPath]: credentialApi.reducer,
     [payrollApi.reducerPath]: payrollApi.reducer,
     [taskApi.reducerPath]: taskApi.reducer,
+    [meetingApi.reducerPath]: meetingApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -76,7 +78,8 @@ const store = configureStore({
       categoryApi.middleware,
       credentialApi.middleware,
       payrollApi.middleware,
-      taskApi.middleware
+      taskApi.middleware,
+      meetingApi.middleware
     ),
 });
 

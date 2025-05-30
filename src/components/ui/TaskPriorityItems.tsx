@@ -1,6 +1,6 @@
 import { Box, SelectProps, Text } from "@mantine/core";
 
-const colorMap = {
+export const colorMap = {
   high: { label: "High", color: "red" },
   medium: { label: "Medium", color: "orange" },
   low: { label: "Low", color: "green" },
