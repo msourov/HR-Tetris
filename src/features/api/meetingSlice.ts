@@ -14,7 +14,10 @@ export const meetingApi = createApi({
   baseQuery: baseQuery,
   tagTypes: [tagTypes.MEETING],
   endpoints: (builder) => ({
-    getMeetings: builder.query<AllMeetingsResponse, { page: number; limit: number }>({
+    getMeetings: builder.query<
+      AllMeetingsResponse,
+      { page: number; limit: number }
+    >({
       query: ({ page, limit }) => ({
         url: `meeting/all?page=${page}&limit=${limit}`,
         method: "GET",
@@ -36,7 +39,9 @@ export const meetingApi = createApi({
         url: `meeting/${uid}`,
         method: "GET",
       }),
-      providesTags: (_result, _error, { uid }) => [{ type: "Meeting", id: uid }],
+      providesTags: (_result, _error, { uid }) => [
+        { type: "Meeting", id: uid },
+      ],
     }),
 
     createMeeting: builder.mutation<Response, MeetingCreatePayload>({
@@ -48,11 +53,14 @@ export const meetingApi = createApi({
       invalidatesTags: [{ type: "Meeting", id: "LIST" }],
     }),
 
-    updateMeeting: builder.mutation<Response, MeetingUpdatePayload & { uid: string }>({
-      query: ({ uid, ...rest }) => ({
-        url: `meeting/update/${uid}`,
+    updateMeeting: builder.mutation<
+      Response,
+      MeetingUpdatePayload & { uid: string }
+    >({
+      query: ({ uid, ...data }) => ({
+        url: "meeting/update",
         method: "PUT",
-        body: rest,
+        body: { uid, ...data },
       }),
       invalidatesTags: (_result, _error, { uid }) => [
         { type: "Meeting", id: uid },

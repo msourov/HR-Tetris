@@ -4,52 +4,38 @@ import {
   Card,
   Group,
   Text,
-  Button,
-  Modal,
-  Stack,
-  Divider,
   Avatar,
-  Anchor,
   Title,
   ThemeIcon,
-  Paper,
   ActionIcon,
-  Box,
+  Button,
+  Modal,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   IconCalendarEvent,
-  IconChevronRight,
+  IconCheck,
   IconClock,
+  IconEdit,
   IconMapPin,
   IconStarFilled,
+  IconTrash,
   IconUsers,
   IconVideo,
+  IconX,
 } from "@tabler/icons-react";
-import { IconClipboardList } from "@tabler/icons-react";
-import { useGetMeetingsQuery } from "../../../../features/api/meetingSlice";
-import { colorMap } from "../../../../components/ui/TaskPriorityItems";
-
-interface MeetingPerson {
-  employee_id: string;
-  name: string;
-  department: string;
-  designation: string;
-}
-
-interface MeetingData {
-  id: number;
-  name: string;
-  descriptions: string;
-  meeting_type: string;
-  online_link: string;
-  priority: string;
-  location: string | null;
-  duration: string | null;
-  agenda: string | null;
-  meeting_at: string;
-  meeting_person: MeetingPerson[];
-}
+import {
+  useDeleteMeetingMutation,
+  useGetMeetingsQuery,
+} from "../../../../features/api/meetingSlice";
+import AppModal from "../../../../components/ui/AppModal";
+import MeetingDetail from "./MeetingDetail";
+import { FaRegEye } from "react-icons/fa6";
+import { Meeting } from "../../../../features/types/meeting";
+import EditMeeting from "../EditMeeting";
+import { notifications } from "@mantine/notifications";
+import { ErrorResponse } from "react-router-dom";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const priorityColors: Record<string, string> = {
   high: "red",
@@ -84,7 +70,7 @@ const getPriorityIcon = (priority: string) => {
 };
 
 export default function MeetingList() {
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
   const limit = 10;
 
   const { data, isLoading } = useGetMeetingsQuery({
@@ -92,16 +78,55 @@ export default function MeetingList() {
     limit,
   });
 
+  const [deleteMeeting, { isLoading: deleteLoading }] =
+    useDeleteMeetingMutation();
+
   const meetings = data?.data;
 
-  const [selectedMeeting, setSelectedMeeting] = useState<MeetingData | null>(
-    null
-  );
+  const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
+  const [editOpened, { open: editOpen, close: editClose }] =
+    useDisclosure(false);
+  const [deleteModalOpened, { open: openDelete, close: closeDelete }] =
+    useDisclosure(false);
 
-  const handleCardClick = (meeting: MeetingData) => {
+  const handleCardClick = (meeting: Meeting) => {
     setSelectedMeeting(meeting);
     open();
+  };
+
+  const handleEdit = (meeting: Meeting) => {
+    editOpen();
+    setSelectedMeeting(meeting);
+  };
+
+  const handleDelete = async () => {
+    try {
+      if (!selectedMeeting?.uid) return;
+      const response = await deleteMeeting({
+        uid: selectedMeeting.uid,
+      }).unwrap();
+      console.log(response);
+      notifications.show({
+        title: "Deleted",
+        message: response.message || "Consumable deleted successfully",
+        icon: <IconCheck />,
+        color: "green",
+        autoClose: 3000,
+      });
+    } catch (error) {
+      console.error(error);
+      notifications.show({
+        title: "Error",
+        message:
+          (error as ErrorResponse).data.detail || "Couldn't delete consumable",
+        icon: <IconX />,
+        color: "red",
+        autoClose: 3000,
+      });
+    } finally {
+      closeDelete();
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -113,6 +138,10 @@ export default function MeetingList() {
       minute: "2-digit",
     });
   };
+
+  if (isLoading) {
+    <AppLoader />;
+  }
 
   return (
     <div className="px-4 max-w-6xl mx-auto">
@@ -187,7 +216,7 @@ export default function MeetingList() {
                 </Text>
               </Group>
 
-              <Group gap="xs" wrap="nowrap" mt="xs">
+              <Group gap="xs" wrap="nowrap">
                 <ThemeIcon variant="light" color="gray" size="sm" radius="xl">
                   <IconUsers size={14} />
                 </ThemeIcon>
@@ -206,37 +235,52 @@ export default function MeetingList() {
               </Group>
             </div>
 
-            <Card
-              mt="sm"
-              p="md"
-              withBorder
-              bg="gray.0"
-              className="cursor-pointer"
-              onClick={() => handleCardClick(meeting)}
-            >
-              <Group justify="space-between">
-                <Text size="sm" c="dimmed">
-                  View details
-                </Text>
-                <ActionIcon variant="subtle" color="gray">
-                  <IconChevronRight size={18} />
-                </ActionIcon>
+            <Card mt="sm" p="md" withBorder bg="gray.0">
+              <Group justify="space-between" align="center">
+                <Button
+                  size="xs"
+                  variant="light"
+                  color="blue"
+                  onClick={() => handleCardClick(meeting)}
+                  leftSection={<FaRegEye size={16} />}
+                >
+                  View
+                </Button>
+                <Group gap={4}>
+                  <ActionIcon
+                    color="blue"
+                    variant="light"
+                    onClick={() => handleEdit(meeting)}
+                  >
+                    <IconEdit size={16} />
+                  </ActionIcon>
+                  <ActionIcon
+                    color="red"
+                    variant="light"
+                    onClick={() => {
+                      setSelectedMeeting(meeting);
+                      openDelete();
+                    }}
+                  >
+                    <IconTrash size={16} />
+                  </ActionIcon>
+                </Group>
               </Group>
             </Card>
           </div>
         ))}
       </div>
-
-      <Modal
+      {/* View Modal */}
+      <AppModal
         opened={opened}
         onClose={close}
+        size="lg"
         title={
-          <Title order={3} fw={700} className="flex items-center gap-2">
+          <Title order={4} fw={700} className="flex items-center gap-2">
             <IconCalendarEvent size={20} />
             Meeting Details
           </Title>
         }
-        size="lg"
         transitionProps={{ duration: 300 }}
         radius="lg"
         overlayProps={{
@@ -245,165 +289,57 @@ export default function MeetingList() {
         }}
       >
         {selectedMeeting && (
-          <Stack gap="lg">
-            <Paper p="md" withBorder radius="md" bg="gray.0">
-              <Group justify="space-between">
-                <Text fw={700} size="xl">
-                  {selectedMeeting.name}
-                </Text>
-                <Box
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: "50%",
-                      backgroundColor:
-                        selectedMeeting.priority in colorMap
-                          ? colorMap[
-                              selectedMeeting.priority as keyof typeof colorMap
-                            ].color
-                          : "gray",
-                    }}
-                  />
-                  <Text>{selectedMeeting.priority}</Text>
-                </Box>
-                {/* <Badge
-                  color={priorityColors[selectedMeeting.priority]}
-                  variant="light"
-                  size="lg"
-                  leftSection={getPriorityIcon(selectedMeeting.priority)}
-                >
-                  {selectedMeeting.priority} priority
-                </Badge> */}
-              </Group>
-              <Text mt="xs" c="dimmed">
-                {selectedMeeting.descriptions}
-              </Text>
-            </Paper>
-
-            <Divider />
-
-            <Group wrap="nowrap" align="flex-start">
-              <ThemeIcon variant="light" color="blue" size="lg" radius="xl">
-                <IconClock size={20} />
-              </ThemeIcon>
-              <div>
-                <Text fw={600} c="gray">
-                  Date & Time
-                </Text>
-                <Text>{formatDate(selectedMeeting.meeting_at)}</Text>
-                {getTimeUntilMeeting(selectedMeeting.meeting_at) && (
-                  <Badge variant="light" color="blue" mt="xs">
-                    Starting in{" "}
-                    {getTimeUntilMeeting(selectedMeeting.meeting_at)}
-                  </Badge>
-                )}
-              </div>
-            </Group>
-
-            <Group wrap="nowrap" align="flex-start">
-              {selectedMeeting.meeting_type === "online" ? (
-                <ThemeIcon variant="light" color="blue" size="lg" radius="xl">
-                  <IconVideo size={20} />
-                </ThemeIcon>
-              ) : (
-                <ThemeIcon variant="light" color="teal" size="lg" radius="xl">
-                  <IconMapPin size={20} />
-                </ThemeIcon>
-              )}
-              <div>
-                <Text fw={600} c="gray">
-                  Meeting Type
-                </Text>
-                <Text>
-                  {selectedMeeting.meeting_type === "online"
-                    ? "Online Meeting"
-                    : "In-person"}
-                </Text>
-                {selectedMeeting.meeting_type === "online" ? (
-                  <Anchor
-                    href={selectedMeeting.online_link}
-                    target="_blank"
-                    mt="xs"
-                  >
-                    {selectedMeeting.online_link}
-                  </Anchor>
-                ) : (
-                  <Text mt="xs">
-                    {selectedMeeting.location || "Location not specified"}
-                  </Text>
-                )}
-              </div>
-            </Group>
-
-            <Divider />
-
-            <Group wrap="nowrap" align="flex-start">
-              <ThemeIcon variant="light" color="blue" size="lg" radius="xl">
-                <IconUsers size={20} />
-              </ThemeIcon>
-              <div>
-                <Text fw={600} c="gray">
-                  Participants{" "}
-                  <span className="text-blue-400">
-                    ({selectedMeeting.meeting_person.length})
-                  </span>
-                </Text>
-                <Stack gap="xs" mt="xs">
-                  {selectedMeeting.meeting_person.map((person) => (
-                    <Group key={person.employee_id} wrap="nowrap">
-                      <Avatar size="md" radius="xl">
-                        {person.name.charAt(0)}
-                      </Avatar>
-                      <div>
-                        <Text fw={500}>{person.name}</Text>
-                        <Text size="sm" c="dimmed">
-                          {person.designation} • {person.department}
-                        </Text>
-                      </div>
-                    </Group>
-                  ))}
-                </Stack>
-              </div>
-            </Group>
-
-            {selectedMeeting.agenda && (
-              <>
-                <Divider />
-                <Group wrap="nowrap" align="flex-start">
-                  <ThemeIcon variant="light" color="blue" size="lg" radius="xl">
-                    <IconClipboardList size={20} />
-                  </ThemeIcon>
-                  <div>
-                    <Text fw={600}>Agenda</Text>
-                    <Paper p="md" mt="xs" withBorder radius="md">
-                      <Text>{selectedMeeting.agenda}</Text>
-                    </Paper>
-                  </div>
-                </Group>
-              </>
-            )}
-
-            <Group justify="flex-end" mt="lg">
-              <Button variant="outline" color="gray" onClick={close}>
-                Close
-              </Button>
-              <Button
-                color="blue"
-                leftSection={<IconVideo size={18} />}
-                radius="md"
-              >
-                Join Meeting
-              </Button>
-            </Group>
-          </Stack>
+          <MeetingDetail selectedMeeting={selectedMeeting} close={close} />
         )}
+      </AppModal>
+      {/* Edit Modal */}
+      <AppModal
+        opened={editOpened}
+        onClose={close}
+        size="lg"
+        title={
+          <Title order={4} fw={700} className="flex items-center gap-2">
+            <IconCalendarEvent size={20} />
+            Edit Meeting
+          </Title>
+        }
+        transitionProps={{ duration: 300 }}
+        radius="lg"
+        overlayProps={{
+          backgroundOpacity: 0.25,
+          blur: 3,
+        }}
+      >
+        {selectedMeeting && (
+          <EditMeeting
+            selectedMeeting={selectedMeeting.uid}
+            close={editClose}
+          />
+        )}
+      </AppModal>
+      {/* Delete Modal */}
+      <Modal
+        opened={deleteModalOpened}
+        onClose={closeDelete}
+        centered
+        withCloseButton={false}
+      >
+        <p className="text-lg font-thin text-gray-500 mb-4 text-center">
+          Are you sure you want to delete this consumable?
+        </p>
+        <div className="flex gap-2 justify-center mt-4">
+          <Button
+            color="red"
+            onClick={handleDelete}
+            loading={deleteLoading}
+            disabled={deleteLoading}
+          >
+            Confirm
+          </Button>
+          <Button color="gray" onClick={closeDelete} disabled={deleteLoading}>
+            Cancel
+          </Button>
+        </div>
       </Modal>
     </div>
   );
