@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
 import { PolicyResponse } from "./typesOld";
+import { Response } from "../types/shared";
 
 export const policyApi = createApi({
   reducerPath: "policyApi",
@@ -98,6 +99,23 @@ export const policyApi = createApi({
         method: "GET",
       }),
     }),
+    approvePolicy: builder.mutation<
+      Response,
+      {
+        uid: string;
+        is_approved: "approved" | "rejected";
+        reject_purpose?: string;
+      }
+    >({
+      query: (data) => ({
+        url: "policy/approval",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: (_result, _error, { uid }) => [
+        { type: "Policy", id: uid },
+      ],
+    }),
   }),
 });
 
@@ -110,4 +128,5 @@ export const {
   useEditPolicyMutation,
   useDeletePolicyMutation,
   useShowPolicyFileQuery,
+  useApprovePolicyMutation,
 } = policyApi;

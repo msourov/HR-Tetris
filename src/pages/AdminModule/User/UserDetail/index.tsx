@@ -1,21 +1,15 @@
-import {
-  Loader,
-  Alert,
-  Card,
-  Group,
-  Badge,
-  Title,
-  Stepper,
-} from "@mantine/core";
+import { Loader, Alert, Card, Group, Badge } from "@mantine/core";
 import { FaPhoneAlt } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useGetUserDetailQuery } from "../../../../features/api/userSlice";
 import { UserResponseData } from "../../../../features/types/user";
 import { getImageUrl } from "../../../../services/utils/getImageUrl";
+import useFormatDate from "../../../../services/utils/useFormatDate";
 
 const UserDetail: React.FC = () => {
   const { uid } = useParams<{ uid: string }>();
+  const { formatDate } = useFormatDate();
   const { data, isLoading, error } = useGetUserDetailQuery(
     uid ? { uid } : skipToken
   );
@@ -45,15 +39,14 @@ const UserDetail: React.FC = () => {
   const logsSteps = (Array.isArray(user?.logs) ? user.logs : [])
     .filter(Boolean)
     .map((log, index) => (
-      <div key={index}>
+      <div key={index} className="border-b-2 pb-2">
         <p className="text-sm font-small text-blue-800 mb-1">
           {log?.admin || log?.user || "N/A"}
         </p>
         <p className="text-xs text-gray-500">{log?.message ?? "N/A"}</p>
         <p className="text-xs text-gray-500">
-          <span className="font-bold">Created: </span>
           <span className="text-blue-500">
-            {log?.create_at ? new Date(log.create_at).toLocaleString() : "N/A"}
+            {log?.create_at ? formatDate(log.create_at, true) : "N/A"}
           </span>
         </p>
       </div>
@@ -100,26 +93,20 @@ const UserDetail: React.FC = () => {
       </Card>
 
       {/* Right Section: Activity Logs */}
-      <div
-        className="bg-blue-50 w-[260px] rounded-lg border p-6 mx-auto"
-        style={{ minHeight: "400px" }}
-      >
-        <Title order={4} mb="md" c="gray" ta="center">
+      <div className="bg-gray-50 shadow-md w-[260px] border mx-auto h-[460px] flex flex-col relative">
+        <p className="text-center mb-2 bg-blue-900 text-white p-2">
           Activity Logs
-        </Title>
+        </p>
+
         {logsSteps.length > 0 ? (
-          <Stepper
-            orientation="vertical"
-            size="xs"
-            active={logsSteps.length - 1}
-            styles={{
-              stepIcon: { fontSize: "12px" },
-              step: { marginBottom: "1rem" },
-              stepBody: { paddingLeft: "0.5rem" },
-            }}
-          >
-            {logsSteps}
-          </Stepper>
+          <>
+            <div className="flex-1 overflow-y-auto px-4 py-2 relative z-0">
+              {logsSteps}
+            </div>
+
+            {/* Fade Overlay */}
+            <div className="absolute bottom-0 left-0 w-full h-10 z-10 pointer-events-none bg-gradient-to-t from-gray-50 to-transparent" />
+          </>
         ) : (
           <p className="text-sm text-center text-gray-500">
             No activity logs available.

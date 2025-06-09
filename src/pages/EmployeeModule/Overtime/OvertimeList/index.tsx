@@ -13,9 +13,24 @@ const OvertimeList = ({ data }: { data: Overtime[] }) => {
       initial={{ opacity: 0, x: -100, scrollBehavior: "smooth" }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="py-4 sm:max-h-[80vh] md:max-h-[80vh] lg:max-h-[80vh]"
+      className="py-4 h-[70vh] sm:h-[75vh] md:h-[78vh] lg:h-[82vh] xl:h-[85vh]"
     >
-      <ScrollArea offsetScrollbars style={{ overflowY: "hidden" }}>
+      <ScrollArea
+        offsetScrollbars
+        className="relative h-full"
+        styles={{
+          viewport: {
+            height: "100%",
+          },
+          scrollbar: {
+            backgroundColor: "#e5e7eb",
+          },
+          thumb: {
+            backgroundColor: "#4b5563",
+            borderRadius: "4px",
+          },
+        }}
+      >
         <Box className="mb-10 gap-4 flex flex-col">
           {data.map((item, index) => (
             <motion.div
@@ -33,6 +48,7 @@ const OvertimeList = ({ data }: { data: Overtime[] }) => {
             </motion.div>
           ))}
         </Box>
+        <div className="pointer-events-none absolute bottom-0 left-0 w-full h-8 z-10 bg-gradient-to-t from-white to-transparent" />
       </ScrollArea>
     </motion.div>
   );

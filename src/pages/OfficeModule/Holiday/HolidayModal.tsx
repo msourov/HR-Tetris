@@ -60,7 +60,7 @@ const HolidayModal = ({
           : ""
       );
     }
-  }, [holiday]);
+  }, [opened, holiday?.uid]);
 
   const handleSubmit = () => {
     onSubmit({
@@ -68,8 +68,8 @@ const HolidayModal = ({
       name,
       descriptions: description,
       active: isActive,
-      holiday_start_at: new Date(startDate).toISOString(),
-      holiday_end_at: new Date(endDate).toISOString(),
+      holiday_start_at: new Date(`${startDate}T00:00`).toISOString(),
+      holiday_end_at: new Date(`${endDate}T00:00`).toISOString(),
     });
   };
 

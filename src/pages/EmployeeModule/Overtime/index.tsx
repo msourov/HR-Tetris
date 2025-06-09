@@ -198,7 +198,9 @@ const Overtime = () => {
       </div>
       <>
         {data && Array.isArray(data?.data) && data?.data.length > 0 ? (
-          <OvertimeList data={data?.data ?? []} />
+          <div className="my-6">
+            <OvertimeList data={data?.data ?? []} />
+          </div>
         ) : (
           <p className="text-center text-gray-500 mt-12 text-lg">
             No data found

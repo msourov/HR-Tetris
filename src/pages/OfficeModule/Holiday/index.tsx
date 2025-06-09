@@ -41,6 +41,10 @@ const HolidayCalendar = () => {
   const [editHoliday] = useEditHolidayMutation();
   const [deleteHoliday] = useDeleteHolidayMutation();
 
+  const pendingHolidays = Array.isArray(holidaysResponse?.data)
+    ? holidaysResponse.data.filter((h) => h.is_approved === "pending")
+    : [];
+
   // Transform API data to calendar events
   const calendarEvents: CalendarEvent[] =
     holidaysResponse?.data && Array.isArray(holidaysResponse.data)
@@ -114,11 +118,6 @@ const HolidayCalendar = () => {
     }
   };
 
-  console.log(
-    "holidaysResponse",
-    JSON.stringify(holidaysResponse, undefined, 2)
-  );
-
   const handleDelete = async () => {
     if (selectedHoliday?.uid) {
       await deleteHoliday({ id: selectedHoliday.uid }).unwrap();
@@ -138,7 +137,7 @@ const HolidayCalendar = () => {
         color="blue"
       >
         <Tabs.List mb="md">
-          <Tabs.Tab value="calendar">Calendar View</Tabs.Tab>
+          <Tabs.Tab value="calendar">Calendar</Tabs.Tab>
           <Tabs.Tab value="approvals">Pending Approvals</Tabs.Tab>
         </Tabs.List>
 
@@ -191,9 +190,7 @@ const HolidayCalendar = () => {
 
         <Tabs.Panel value="approvals" pt="md">
           <HolidayApproval
-            holidays={
-              Array.isArray(holidaysResponse?.data) ? holidaysResponse.data : []
-            }
+            holidays={pendingHolidays || []}
             // onApprove={handleApprove}
             // onReject={handleReject}
           />

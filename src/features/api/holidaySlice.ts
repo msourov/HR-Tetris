@@ -72,6 +72,27 @@ export const holidayApi = createApi({
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: "Holiday", id }],
     }),
+    approveHoliday: builder.mutation<
+      Response,
+      {
+        uid: string;
+        is_approved: "approved" | "rejected";
+        reject_purpose?: string;
+      }
+    >({
+      query: ({ uid, is_approved, reject_purpose }) => ({
+        url: `holidays/approval`,
+        method: "PUT",
+        body: {
+          uid,
+          is_approved,
+          reject_purpose,
+        },
+      }),
+      invalidatesTags: (_result, _error, { uid }) => [
+        { type: "Holiday", id: uid },
+      ],
+    }),
   }),
 });
 
@@ -81,4 +102,5 @@ export const {
   useCreateHolidayMutation,
   useEditHolidayMutation,
   useDeleteHolidayMutation,
+  useApproveHolidayMutation,
 } = holidayApi;
