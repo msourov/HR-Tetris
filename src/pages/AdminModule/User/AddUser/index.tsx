@@ -22,7 +22,7 @@ import ErrorAlert from "../../../../components/shared/ErrorAlert";
 const schema = z.object({
   active: z.boolean(),
   name: z.string().min(2),
-  mobile: z.string().min(10).max(15),
+  mobile: z.string().regex(/^01[0-9]{9}$/, "Invalid Bangladeshi phone number"),
   password: z
     .string()
     .min(8, "Password must be at least 8 characters long")

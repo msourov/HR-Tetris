@@ -36,11 +36,7 @@ import Tab2Fields from "../AddEmployee/Tab2Fields";
 const getSchema = (type: string) =>
   z.object({
     name: z.string().min(1, "Name is required"),
-    phone: z
-      .string()
-      .min(10, "Phone number must be at least 10 digits")
-      .max(15, "Phone number must be at most 15 digits")
-      .regex(/^\d+$/, "Phone number must contain only digits"),
+    phone: z.string().regex(/^01[0-9]{9}$/, "Invalid Bangladeshi phone number"),
     email: z.string().email("Invalid email address"),
     bod: z.string(),
     marital_status: z.enum(["Married", "Single"]),
