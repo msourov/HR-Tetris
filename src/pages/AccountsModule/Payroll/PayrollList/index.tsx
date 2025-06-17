@@ -133,66 +133,77 @@ const PayrollList = () => {
       </Group>
 
       <Stack gap="sm">
-        {payrolls?.map((item) => (
-          <Card
-            key={item.uid}
-            padding="md"
-            radius="md"
-            withBorder
-            onClick={() => handleViewDetail(item)}
-            style={{
-              cursor: "pointer",
-              transition: "transform 0.2s, box-shadow 0.2s",
-              ":hover": {
-                transform: "translateY(-2px)",
-                boxShadow: theme.shadows.md,
-              },
-            }}
-          >
-            <Group justify="space-between" wrap="nowrap">
-              <Group gap="sm" wrap="nowrap">
-                <img
-                  src={getImageUrl(item?.employee_id)}
-                  alt={item?.employee_name}
-                  className="w-10 h-10 rounded-full mr-2 inline-block"
-                  onError={handleImageError}
-                />
+        {payrolls && payrolls.length > 0 ? (
+          payrolls?.map((item) => (
+            <Card
+              key={item.uid}
+              padding="md"
+              radius="md"
+              withBorder
+              onClick={() => handleViewDetail(item)}
+              style={{
+                cursor: "pointer",
+                transition: "transform 0.2s, box-shadow 0.2s",
+                ":hover": {
+                  transform: "translateY(-2px)",
+                  boxShadow: theme.shadows.md,
+                },
+              }}
+            >
+              <Group justify="space-between" wrap="nowrap">
+                <Group gap="sm" wrap="nowrap">
+                  <img
+                    src={getImageUrl(item?.employee_id)}
+                    alt={item?.employee_name}
+                    className="w-10 h-10 rounded-full mr-2 inline-block"
+                    onError={handleImageError}
+                  />
 
-                <Stack gap={2}>
-                  <Text fz="md" fw={400} lineClamp={1}>
-                    {item.employee_name}
+                  <Stack gap={2}>
+                    <Text fz="md" fw={400} lineClamp={1}>
+                      {item.employee_name}
+                    </Text>
+                    <Group gap="xs">
+                      <Badge
+                        variant="light"
+                        color="blue"
+                        leftSection={<IconId size={14} />}
+                      >
+                        {item.employee_id}
+                      </Badge>
+                      <Badge
+                        variant="light"
+                        color="orange"
+                        leftSection={<IconCalendar size={14} />}
+                      >
+                        {item.month}
+                      </Badge>
+                    </Group>
+                  </Stack>
+                </Group>
+
+                <Stack align="end" gap={2}>
+                  <Text
+                    fz="xl"
+                    fw={700}
+                    c="green"
+                    className="flex items-center"
+                  >
+                    <IconCurrencyTaka size={20} style={{ marginRight: 4 }} />
+                    {item.net_salary?.toLocaleString()}
                   </Text>
-                  <Group gap="xs">
-                    <Badge
-                      variant="light"
-                      color="blue"
-                      leftSection={<IconId size={14} />}
-                    >
-                      {item.employee_id}
-                    </Badge>
-                    <Badge
-                      variant="light"
-                      color="orange"
-                      leftSection={<IconCalendar size={14} />}
-                    >
-                      {item.month}
-                    </Badge>
-                  </Group>
+                  <Text fz="sm" c="dimmed">
+                    Net Salary
+                  </Text>
                 </Stack>
               </Group>
-
-              <Stack align="end" gap={2}>
-                <Text fz="xl" fw={700} c="green" className="flex items-center">
-                  <IconCurrencyTaka size={20} style={{ marginRight: 4 }} />
-                  {item.net_salary?.toLocaleString()}
-                </Text>
-                <Text fz="sm" c="dimmed">
-                  Net Salary
-                </Text>
-              </Stack>
-            </Group>
-          </Card>
-        ))}
+            </Card>
+          ))
+        ) : (
+          <Text c="dimmed" ta="center" mt="xl">
+            No payroll records found.
+          </Text>
+        )}
       </Stack>
       <div className="px-4 pt-8 pb-4 float-right">
         <Pagination

@@ -1,5 +1,9 @@
 import { Card, Text, Badge } from "@mantine/core";
-import { IconClock, IconCalendar, IconSunOff } from "@tabler/icons-react";
+import {
+  IconClock,
+  IconCalendar,
+  IconZzz,
+} from "@tabler/icons-react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 
@@ -64,7 +68,11 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
             <Text size="sm" fw={500} className="text-gray-700">
               {shift.regular ? (
                 <>
-                  Daily Schedule ·{" "}
+                  <span className="text-xs font-semibold">
+                    {" "}
+                    Daily Schedule ·{" "}
+                  </span>
+
                   {calculateDuration(
                     shift.day_start_time,
                     shift.day_end_time,
@@ -95,14 +103,16 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
           </div>
         </div>
 
-        {shift.off_day && (
+        {shift.off_day && shift.off_day.length > 0 && (
           <div className="flex items-center gap-2">
-            <IconSunOff size={20} className="text-orange-600" />
+            <IconZzz size={20} className="font-thin text-gray-500" />
             <div>
               <Text size="sm" className="text-gray-700">
-                Off Day:
+                <span className="text-xs font-semibold">
+                  Off Day{shift.off_day.length > 1 ? "s" : ""}:{" "}
+                </span>
                 <span className="ml-1 font-medium text-gray-900">
-                  {shift.off_day}
+                  {shift.off_day.join(", ")}
                 </span>
               </Text>
             </div>

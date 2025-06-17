@@ -1,16 +1,18 @@
 import { Menu } from "@mantine/core";
-import { IconUserFilled } from "@tabler/icons-react";
 import { LuLogOut } from "react-icons/lu";
 import { useAuth } from "../../services/auth/useAuth";
 import { RiSettings2Line } from "react-icons/ri";
 import { FaRegCircleUser } from "react-icons/fa6";
 // import "../../styles.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { getImageUrl } from "../../services/utils/getImageUrl";
 
 const Topbar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const mobile = localStorage.getItem("userId") ?? "";
 
   return (
     <div className="bg-white text-black px-6 flex justify-between items-center border-b-2 relative">
@@ -24,23 +26,35 @@ const Topbar = () => {
         <Menu transitionProps={{ transition: "rotate-right", duration: 150 }}>
           <Menu.Target>
             <button>
-              <IconUserFilled color="black" stroke={1} />
+              <LazyLoadImage
+                src={`${getImageUrl(mobile)}?t=${Date.now()}`}
+                alt="Profile Picture"
+                effect="blur"
+                className="w-9 h-9 object-cover rounded-full"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null;
+                  target.src = "/assets/profile-picture.png";
+                }}
+              />
             </button>
           </Menu.Target>
           <Menu.Dropdown className="bg-white shadow-md rounded-lg text-xs">
             <Menu.Item
               leftSection={<FaRegCircleUser size={16} />}
               onClick={() => navigate("/profile")}
-              className={`cursor-pointer ${pathname === "/profile" ? "text-blue-500" : "text-gray-500"
-                }`}
+              className={`cursor-pointer ${
+                pathname === "/profile" ? "text-blue-500" : "text-gray-500"
+              }`}
             >
               Profile
             </Menu.Item>
             <Menu.Item
               leftSection={<RiSettings2Line size={16} />}
               onClick={() => navigate("/settings")}
-              className={`cursor-pointer ${pathname === "/settings" ? "text-blue-500" : "text-gray-500"
-                }`}
+              className={`cursor-pointer ${
+                pathname === "/settings" ? "text-blue-500" : "text-gray-500"
+              }`}
             >
               Settings
             </Menu.Item>

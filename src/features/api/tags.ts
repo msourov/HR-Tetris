@@ -9,6 +9,7 @@ export const tagTypes = {
   HOLIDAY: "Holiday",
   EMPLOYEE: "Employee",
   OVERTIME: "Overtime",
+  OVERTIME_PAYMENT: 'OVERTIME_PAYMENT',
   LEAVE: "Leave",
   TICKET: "Ticket",
   ANNOUNCEMENT: "Announcement",

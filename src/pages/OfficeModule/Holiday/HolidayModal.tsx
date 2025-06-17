@@ -68,8 +68,8 @@ const HolidayModal = ({
       name,
       descriptions: description,
       active: isActive,
-      holiday_start_at: new Date(`${startDate}T00:00`).toISOString(),
-      holiday_end_at: new Date(`${endDate}T00:00`).toISOString(),
+      holiday_start_at: new Date(startDate).toISOString(),
+      holiday_end_at: new Date(endDate).toISOString(),
     });
   };
 
@@ -92,14 +92,14 @@ const HolidayModal = ({
       <Group grow mb="sm">
         <TextInput
           label="Start Date"
-          type="datetime-local"
+          type="date"
           value={startDate}
           onChange={(e) => setStartDate(e.currentTarget.value)}
           required
         />
         <TextInput
           label="End Date"
-          type="datetime-local"
+          type="date"
           value={endDate}
           onChange={(e) => setEndDate(e.currentTarget.value)}
           required

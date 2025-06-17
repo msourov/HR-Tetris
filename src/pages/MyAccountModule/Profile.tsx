@@ -1,47 +1,19 @@
-import { useEffect, useState } from "react";
-import { Button, Card, Group, Loader, Stack } from "@mantine/core";
+import { useState } from "react";
+import { Button, Card, Group, Stack } from "@mantine/core";
 import { IconCamera, IconCheck, IconX } from "@tabler/icons-react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
+import { getImageUrl } from "../../services/utils/getImageUrl";
 
 const Profile = () => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
   const [imageKey, setImageKey] = useState(Date.now());
 
   const mobile = localStorage.getItem("userId") ?? "";
-
-  const fetchImage = async () => {
-    try {
-      setIsLoading(true);
-      const timestamp = new Date().getTime();
-      const response = await axios.get(
-        `${
-          import.meta.env.VITE_APP_BASE_URL
-        }role-user/show/file/${mobile}?t=${timestamp}`,
-        {
-          responseType: "blob",
-        }
-      );
-
-      const blob = response.data;
-      const url = URL.createObjectURL(blob);
-      setImageUrl(url);
-    } catch (error) {
-      console.error("Error fetching image:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchImage();
-  }, [imageKey]); // Refetch when imageKey changes
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -96,16 +68,17 @@ const Profile = () => {
         <form onSubmit={handleUpload}>
           <Stack gap="lg">
             <div className="relative w-36 h-36">
-              {isLoading ? (
-                <Loader size={20} />
-              ) : (
-                <LazyLoadImage
-                  src={preview || imageUrl || ""}
-                  alt="Profile Picture"
-                  effect="blur"
-                  className="w-full h-full object-fit rounded-full"
-                />
-              )}
+              <LazyLoadImage
+                src={preview || `${getImageUrl(mobile)}?t=${imageKey}`}
+                alt="Profile Picture"
+                effect="blur"
+                className="w-36 h-36 object-cover rounded-full"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null;
+                  target.src = "/assets/profile-picture.png";
+                }}
+              />
 
               <label
                 htmlFor="file-upload"
@@ -128,7 +101,7 @@ const Profile = () => {
                 type="submit"
                 color="blue"
                 loading={isUploading}
-                disabled={!file}
+                disabled={!file || isUploading}
               >
                 Update Profile
               </Button>

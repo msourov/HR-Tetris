@@ -71,17 +71,20 @@ const TableItem: React.FC<TableItemProps> = ({
             <Table.Td style={{ width: "10%" }}>
               {item.personal?.email || "N/A"}
             </Table.Td>
+
             <Table.Td style={{ width: "10%" }}>
-              <Pill
-                className={`${
-                  item.work?.shift_and_schedule?.name.split(" ")[0] ===
-                  "Morning"
-                    ? "bg-yellow-500"
-                    : "bg-orange-700"
-                } text-white`}
-              >
-                {item.work?.shift_and_schedule?.name.split(" ")[0] || "N/A"}
-              </Pill>
+              {item?.work?.shift_and_schedule?.name ? (
+                <Pill
+                  className={`${
+                    item?.work?.shift_and_schedule?.name.split(" ")[0] ===
+                    "Morning"
+                      ? "bg-yellow-500"
+                      : "bg-orange-700"
+                  } text-white`}
+                >
+                  {item?.work?.shift_and_schedule?.name.split(" ")[0] || "N/A"}
+                </Pill>
+              ) : null}
             </Table.Td>
             <Table.Td style={{ width: "10%" }}>
               <Pill className="bg-white">

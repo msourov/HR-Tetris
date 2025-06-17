@@ -24,7 +24,7 @@ const HolidayReviewModal = ({ uid, close }: HolidayReviewModalProps) => {
         reject_purpose: "",
       });
 
-      if (!res.data || res.data.status_code !== 200) {
+      if (!res.data || res.data.status_code !== 201) {
         throw new Error(res.data?.message || "Failed to approve holiday");
       }
 

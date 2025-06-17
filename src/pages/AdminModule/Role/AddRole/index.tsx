@@ -72,12 +72,6 @@ const initialValues = [
     key: randomId(),
   },
   {
-    label: "Employee Management",
-    name: "employee_management",
-    checked: false,
-    key: randomId(),
-  },
-  {
     label: "Inventory Management",
     name: "inventory_management",
     checked: false,

@@ -19,30 +19,36 @@ const HolidayApproval = ({ holidays }: { holidays: Holiday[] }) => {
   return (
     <>
       <Stack gap="md">
-        {holidays.map((holiday) => (
-          <Card key={holiday.uid} withBorder shadow="xs" p="md">
-            <Group justify="space-between" align="flex-start">
-              <div>
-                <Text fw={600} size="md">
-                  {holiday.name}
-                </Text>
-                <Text size="sm" c="dimmed">
-                  {formatDate(holiday.holiday_start_at)} -{" "}
-                  {formatDate(holiday.holiday_end_at)}
-                </Text>
-              </div>
-              <Button
-                variant="light"
-                size="compact-sm"
-                color="green"
-                className="my-auto text-xs"
-                onClick={() => handleReview(holiday.uid)}
-              >
-                Review
-              </Button>
-            </Group>
-          </Card>
-        ))}
+        {!holidays || holidays.length === 0 ? (
+          <Text c="dimmed" ta="center">
+            No pending holiday requests found.
+          </Text>
+        ) : (
+          holidays.map((holiday) => (
+            <Card key={holiday.uid} withBorder shadow="xs" p="md">
+              <Group justify="space-between" align="flex-start">
+                <div>
+                  <Text fw={600} size="md">
+                    {holiday.name}
+                  </Text>
+                  <Text size="sm" c="dimmed">
+                    {formatDate(holiday.holiday_start_at)} -{" "}
+                    {formatDate(holiday.holiday_end_at)}
+                  </Text>
+                </div>
+                <Button
+                  variant="light"
+                  size="compact-sm"
+                  color="green"
+                  className="my-auto text-xs"
+                  onClick={() => handleReview(holiday.uid)}
+                >
+                  Review
+                </Button>
+              </Group>
+            </Card>
+          ))
+        )}
       </Stack>
       {selectedUid && (
         <AppModal

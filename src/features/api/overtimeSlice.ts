@@ -103,6 +103,54 @@ export const overtimeApi = createApi({
         { type: tagTypes.OVERTIME, id: "LIST" },
       ],
     }),
+
+    // Overtime Payment
+    getOvertimePayments: builder.query<
+      OvertimeResponse,
+      {
+        employee_id?: string;
+        employee_name?: string;
+        start_date?: string;
+        end_date?: string;
+        page?: number;
+        limit?: number;
+      }
+    >({
+      query: ({
+        employee_id,
+        employee_name,
+        start_date,
+        end_date,
+        page = 1,
+        limit = 10,
+      }) => ({
+        url: "overtime-payment/allemployee_id",
+        method: "GET",
+        params: {
+          ...(employee_id && { employee_id }),
+          ...(employee_name && { employee_name }),
+          ...(start_date && { start_date }),
+          ...(end_date && { end_date }),
+          page,
+          limit,
+        },
+      }),
+      providesTags: [{ type: tagTypes.OVERTIME_PAYMENT, id: "PAYMENT_LIST" }],
+    }),
+
+    createOvertimePayment: builder.mutation<
+      Response,
+      { data: { overtime_uid: string } }
+    >({
+      query: ({ data }) => ({
+        url: "overtime-payment/create",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [
+        { type: tagTypes.OVERTIME_PAYMENT, id: "PAYMENT_LIST" },
+      ],
+    }),
   }),
 });
 

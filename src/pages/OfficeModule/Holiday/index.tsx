@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import momentPlugin from "@fullcalendar/moment";
 import { Box, useMantineTheme, rem, Tabs } from "@mantine/core";
-import { IconCalendarEvent } from "@tabler/icons-react";
+import { IconCalendarEvent, IconX } from "@tabler/icons-react";
 import { EventClickArg, EventInput, DateSelectArg } from "@fullcalendar/core";
 import {
   useCreateHolidayMutation,
@@ -18,6 +18,7 @@ import { Holiday } from "../../../features/types/holiday";
 import AppLoader from "../../../components/ui/AppLoader";
 import HolidayModal from "./HolidayModal";
 import HolidayApproval from "./HolidayApproval";
+import { notifications } from "@mantine/notifications";
 
 interface CalendarEvent extends EventInput {
   id: string;
@@ -27,6 +28,7 @@ interface CalendarEvent extends EventInput {
 const HolidayCalendar = () => {
   const theme = useMantineTheme();
   const calendarRef = useRef<FullCalendar>(null);
+  const [activeTab, setActiveTab] = useState<string | null>("calendar");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedHoliday, setSelectedHoliday] =
     useState<Partial<Holiday> | null>(null);
@@ -40,6 +42,14 @@ const HolidayCalendar = () => {
   const [createHoliday] = useCreateHolidayMutation();
   const [editHoliday] = useEditHolidayMutation();
   const [deleteHoliday] = useDeleteHolidayMutation();
+
+  useEffect(() => {
+    if (activeTab === "calendar") {
+      setTimeout(() => {
+        calendarRef.current?.getApi().updateSize();
+      }, 50); // slight delay ensures tab is fully visible before resizing
+    }
+  }, [activeTab]);
 
   const pendingHolidays = Array.isArray(holidaysResponse?.data)
     ? holidaysResponse.data.filter((h) => h.is_approved === "pending")
@@ -115,6 +125,14 @@ const HolidayCalendar = () => {
       setModalOpen(false);
     } catch (error) {
       console.error("Failed to save holiday:", error);
+      const err = error as { data?: { detail?: string; message?: string } };
+      notifications.show({
+        title: "Error",
+        message:
+          err.data?.detail || err.data?.message || "Failed to save holiday",
+        color: "red",
+        icon: <IconX />,
+      });
     }
   };
 
@@ -131,6 +149,8 @@ const HolidayCalendar = () => {
   return (
     <Box p="md">
       <Tabs
+        value={activeTab}
+        onChange={setActiveTab}
         defaultValue="calendar"
         variant="default"
         className="mx-10"

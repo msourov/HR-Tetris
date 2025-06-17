@@ -30,7 +30,7 @@ const schema = z.object({
 type EditDepartmentType = z.infer<typeof schema>;
 
 const EditDepartment = () => {
-  const [dept, setDept] = useState<string>("");
+  const [dept, setDept] = useState<string | null>(null);
   const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
@@ -81,7 +81,7 @@ const EditDepartment = () => {
   const text = <p className="font-medium">Select Department</p>;
 
   const onSubmit = async (data: EditDepartmentType) => {
-    console.log("submitted data", data);
+    if (!dept) return;
     const obj = {
       ...data,
       uid: dept,
@@ -108,7 +108,7 @@ const EditDepartment = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await deleteDepartment({ id: dept }).unwrap();
+      const response = await deleteDepartment({ id: dept as string }).unwrap();
       notifications.show({
         title: "Success!",
         message: response.message || "Department deleted",
@@ -116,6 +116,7 @@ const EditDepartment = () => {
         color: "green",
         autoClose: 3000,
       });
+      setDept(null);
     } catch (error) {
       notifications.show({
         title: "Error!",
