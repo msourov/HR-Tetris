@@ -1,4 +1,4 @@
-import { SimpleGrid, Title, Flex, Divider } from "@mantine/core";
+import { SimpleGrid, Flex, Divider } from "@mantine/core";
 import { useGetShiftsQuery } from "../../../../features/api/shiftSlice";
 import ShiftCard from "./ShiftCard";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
@@ -21,10 +21,10 @@ const ShiftList = () => {
       <Divider
         label={
           <Flex align="center" gap="sm" className="items-center my-8">
-            <IconClock size={24} className="text-blue-600" />
-            <Title order={3} className="text-gray-500 font-thin">
+            <IconClock size={20} className="text-blue-500" />
+            <span className="uppercase tracking-wide text-sm text-gray-600">
               Work Shifts
-            </Title>
+            </span>
           </Flex>
         }
         labelPosition="center"

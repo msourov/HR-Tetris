@@ -1,14 +1,11 @@
-import { Card, Text, Badge } from "@mantine/core";
-import {
-  IconClock,
-  IconCalendar,
-  IconZzz,
-} from "@tabler/icons-react";
+import { Text, Badge } from "@mantine/core";
+import { IconClock, IconCalendar, IconZzz } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 
 dayjs.extend(duration);
 import { Shift } from "../../../../features/types/shift";
+import CardGlass from "../../../../components/ui/CardGlass";
 
 interface ShiftCardProps {
   shift: Shift;
@@ -30,19 +27,11 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
   const timeFormat = shift.regular ? "HH:mm" : "MMM D, YYYY HH:mm";
 
   return (
-    <Card
-      padding="md"
-      radius="lg"
-      withBorder
-      className="hover:shadow-lg transition-all duration-200 flex flex-col justify-between bg-white"
-      shadow="sm"
-    >
+    <CardGlass className="hover:shadow-lg transition-all duration-200 flex flex-col justify-between">
       {/* Header Section */}
       <div className="flex flex-col gap-2 mb-4">
         <div className="flex justify-between items-start">
-          <Text fw={700} size="lg" className="text-gray-800">
-            {shift.name}
-          </Text>
+          <Text className="text-gray-800 text-lg font-thin">{shift.name}</Text>
           <Badge
             color={shift.active ? "green" : "gray"}
             variant="light"
@@ -54,7 +43,10 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
         </div>
 
         {shift.descriptions && (
-          <Text size="sm" className="text-gray-600">
+          <Text
+            size="sm"
+            className="text-gray-600 w-fit px-2 shadow-sm rounded-md"
+          >
             {shift.descriptions}
           </Text>
         )}
@@ -63,9 +55,9 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
       {/* Time Details */}
       <div className="flex flex-col gap-3 mb-4">
         <div className="flex items-center gap-2">
-          <IconClock size={20} className="text-blue-600" />
+          <IconClock size={18} className="text-blue-600" />
           <div className="flex flex-col">
-            <Text size="sm" fw={500} className="text-gray-700">
+            <Text size="xs" fw={500} className="text-gray-700">
               {shift.regular ? (
                 <>
                   <span className="text-xs font-semibold">
@@ -105,13 +97,11 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
 
         {shift.off_day && shift.off_day.length > 0 && (
           <div className="flex items-center gap-2">
-            <IconZzz size={20} className="font-thin text-gray-500" />
+            <IconZzz size={18} className="font-thin text-blue-500" />
             <div>
-              <Text size="sm" className="text-gray-700">
-                <span className="text-xs font-semibold">
-                  Off Day{shift.off_day.length > 1 ? "s" : ""}:{" "}
-                </span>
-                <span className="ml-1 font-medium text-gray-900">
+              <Text size="xs" className="text-gray-500">
+                <span className="text-xs font-thin">Weekend:</span>
+                <span className="ml-1 font-medium text-gray-700">
                   {shift.off_day.join(", ")}
                 </span>
               </Text>
@@ -123,8 +113,8 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
       {/* Footer */}
       <div className="flex justify-between items-center border-t pt-3">
         <div className="flex items-center gap-2">
-          <IconCalendar size={18} className="text-gray-500" />
-          <Text size="xs" className="text-gray-600">
+          <IconCalendar size={18} className="text-amber-700" />
+          <Text size="xs" className="text-amber-700">
             Created {dayjs(shift.create_at).format("MMM D, YYYY")}
           </Text>
         </div>
@@ -133,12 +123,12 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
           variant="outline"
           color="indigo"
           radius="sm"
-          className="border-indigo-100 bg-indigo-50"
+          className="border-blue-100 bg-blue-50"
         >
           {shift.regular ? "Regular Shift" : "Temporary Shift"}
         </Badge>
       </div>
-    </Card>
+    </CardGlass>
   );
 };
 
