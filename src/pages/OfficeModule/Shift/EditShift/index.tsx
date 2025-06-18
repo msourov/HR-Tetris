@@ -3,6 +3,7 @@ import {
   Button,
   Loader,
   Modal,
+  MultiSelect,
   Paper,
   Select,
   Switch,
@@ -13,7 +14,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { LuPlusCircle } from "react-icons/lu";
 import { useState, useEffect } from "react";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
@@ -41,7 +42,9 @@ const schema = z
     day_end_time: z
       .string()
       .regex(/^\d{2}:\d{2}$/, "End time must be in the format HH:mm"),
-    off_day: z.string().nonempty({ message: "Off day is required" }),
+    off_day: z
+      .array(z.string())
+      .nonempty({ message: "At least one off day is required" }),
     start_date: z.date({ required_error: "Start date is required" }),
     end_date: z.date({ required_error: "End date is required" }),
   })
@@ -71,6 +74,7 @@ const EditShift = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    control,
     setValue,
     watch,
   } = useForm<EditShiftType>({
@@ -82,7 +86,7 @@ const EditShift = () => {
       descriptions: "",
       day_start_time: "",
       day_end_time: "",
-      off_day: "",
+      off_day: [],
       start_date: undefined,
       end_date: undefined,
     },
@@ -109,7 +113,7 @@ const EditShift = () => {
           shiftDetail?.day_start_time || ""
         ),
         day_end_time: formatTimeWithoutSeconds(shiftDetail?.day_end_time || ""),
-        off_day: Array.isArray(shiftDetail?.off_day) ? shiftDetail.off_day.join(", ") : shiftDetail?.off_day || "",
+        off_day: Array.isArray(shiftDetail?.off_day) ? shiftDetail.off_day : [],
         start_date: new Date(shiftDetail?.start_time),
         end_date: new Date(shiftDetail?.end_time),
       });
@@ -159,7 +163,7 @@ const EditShift = () => {
           descriptions: "",
           day_start_time: "",
           day_end_time: "",
-          off_day: "",
+          off_day: [],
           start_date: undefined,
           end_date: undefined,
         });
@@ -274,12 +278,41 @@ const EditShift = () => {
               required
               mt={4}
             />
-            <TextInput
-              label="Off Day"
-              {...register("off_day")}
-              error={errors.off_day?.message}
-              mt={4}
+            <Controller
+              name="off_day"
+              control={control}
+              render={({ field }) => (
+                <MultiSelect
+                  label="Off Days"
+                  data={[
+                    "Sunday",
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                  ]}
+                  placeholder="Select off days"
+                  value={field.value || []} // 👈 prefilled here
+                  onChange={field.onChange}
+                  error={errors.off_day?.message}
+                  mt="sm"
+                  comboboxProps={{
+                    transitionProps: { transition: "pop", duration: 200 },
+                  }}
+                  styles={{
+                    dropdown: {
+                      backdropFilter: "blur(8px)",
+                      backgroundColor: "rgba(255, 255, 255, 0.6)", // more opaque for white background
+                      border: "1px solid rgba(0, 0, 0, 0.1)",
+                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    },
+                  }}
+                />
+              )}
             />
+
             <DatePickerInput
               type="range"
               label="Pick dates range"
