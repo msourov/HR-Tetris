@@ -1,5 +1,4 @@
 import {
-  Card,
   Text,
   Group,
   Stack,
@@ -35,6 +34,7 @@ import { getImageUrl } from "../../../../services/utils/getImageUrl";
 import { useGetEmployeeHelperQuery } from "../../../../features/api/employeeSlice";
 import AppLoader from "../../../../components/ui/AppLoader";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
+import CardGlass from "../../../../components/ui/CardGlass";
 
 const createSchema = z.object({
   employee_id: z.string().min(1, "Employee ID is required"),
@@ -135,20 +135,10 @@ const PayrollList = () => {
       <Stack gap="sm">
         {payrolls && payrolls.length > 0 ? (
           payrolls?.map((item) => (
-            <Card
+            <CardGlass
               key={item.uid}
-              padding="md"
-              radius="md"
-              withBorder
+              className="cursor-pointer transition-transform duration-200 hover:-translate-y-[2px] hover:shadow-lg"
               onClick={() => handleViewDetail(item)}
-              style={{
-                cursor: "pointer",
-                transition: "transform 0.2s, box-shadow 0.2s",
-                ":hover": {
-                  transform: "translateY(-2px)",
-                  boxShadow: theme.shadows.md,
-                },
-              }}
             >
               <Group justify="space-between" wrap="nowrap">
                 <Group gap="sm" wrap="nowrap">
@@ -197,7 +187,7 @@ const PayrollList = () => {
                   </Text>
                 </Stack>
               </Group>
-            </Card>
+            </CardGlass>
           ))
         ) : (
           <Text c="dimmed" ta="center" mt="xl">

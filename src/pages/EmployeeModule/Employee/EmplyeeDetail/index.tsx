@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetEmployeeDetailQuery } from "../../../../features/api/employeeSlice";
 import {
-  Avatar,
   Badge,
   Button,
   Flex,
@@ -90,6 +89,10 @@ const EmployeeDetail = () => {
     </Paper>
   );
 
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/assets/employee_avatar.png";
+  };
+
   const formatLabel = (key: string) => {
     return key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()); // e.g. "leave_management" → "Leave Management"
   };
@@ -106,10 +109,18 @@ const EmployeeDetail = () => {
       >
         {/* Left Section: Avatar + Info */}
         <Flex gap="xl" align="center">
-          <Avatar
-            size={120}
-            radius="100%"
-            src={getImageUrl(work?.employee_id)}
+          <img
+            src={
+              getImageUrl(work?.employee_id) || "/assets/employee_avatar.png"
+            }
+            onError={handleImageError}
+            alt="Employee"
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
           />
           <div>
             <Text fw={700} size="xl" className="text-gray-800 mb-1">

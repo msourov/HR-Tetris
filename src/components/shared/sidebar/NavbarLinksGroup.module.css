@@ -4,7 +4,7 @@
 .control:focus,
 .control:active {
   /* background-color: var(--mantine-color-dark-7); */
-  color: #102041;
+  color: #0f2d53;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 .control.active {
@@ -46,7 +46,7 @@
 .customAccordionItem {
   position: relative;
   padding-left: 1rem;
-  background-color: #102041;
+  background-color: #0f2d53;
 }
 .label {
   font-weight: 700;

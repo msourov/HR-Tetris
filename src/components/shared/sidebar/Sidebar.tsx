@@ -184,10 +184,10 @@ const initialSidebarData = [
     icon: <MdOutlineAccountBalance />,
     permissionKey: "accounts_management",
     items: [
-      {
-        label: "Accounts",
-        link: "/account",
-      },
+      // {
+      //   label: "Accounts",
+      //   link: "/account",
+      // },
       {
         label: "Payroll",
         link: "/payroll",
@@ -293,7 +293,7 @@ export function Sidebar() {
   const sidebarContent = (
     <Box
       m="0"
-      className="overflow-y-auto h-[100%] flex flex-col w-[15vw] bg-[#102041] pb-8"
+      className="overflow-y-auto h-[100%] flex flex-col w-[15vw] bg-[#0f2d53] pb-8"
       style={{ minWidth: "240px" }}
     >
       <UnstyledButton
