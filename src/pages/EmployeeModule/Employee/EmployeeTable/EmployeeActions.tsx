@@ -11,6 +11,7 @@ import ErrorAlert from "../../../../components/shared/ErrorAlert";
 
 interface EmplyeeActionProp {
   id: string;
+  eid: string;
   name: string;
   department: string;
   designation: string;
@@ -18,6 +19,7 @@ interface EmplyeeActionProp {
 
 const EmployeeActions: React.FC<EmplyeeActionProp> = ({
   id,
+  eid,
   name,
   department,
   designation,
@@ -99,7 +101,7 @@ const EmployeeActions: React.FC<EmplyeeActionProp> = ({
           <div className="text-left text-gray-900 mb-2">
             <p className="mb-1">
               <span className="font-medium text-gray-500">🧑</span> {name}{" "}
-              <span className="text-gray-500">({id}</span>)
+              <span className="text-gray-500">({eid}</span>)
             </p>
             <p className="mb-1">
               <span className="font-medium text-gray-500">🏢</span> {department}

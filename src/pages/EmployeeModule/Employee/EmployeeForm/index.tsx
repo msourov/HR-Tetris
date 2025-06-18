@@ -54,7 +54,7 @@ const getSchema = (type: string) =>
     designation: z.string().min(1, "Designation is required"),
     shift_and_schedule: z.string().min(1, "Shift and schedule is required"),
     supervisor: z.boolean(),
-    executives: z.array(z.string()),
+    executives: z.array(z.string()).nullable().default([]),
     permissions: z.array(
       z.object({
         label: z.string(),
@@ -158,7 +158,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
             designation: draftValues?.designation || "",
             shift_and_schedule: draftValues?.shift_and_schedule || "",
             supervisor: draftValues?.supervisor || false,
-            executives: draftValues?.executives || null,
+            executives: draftValues?.executives || [],
             permissions: draftValues?.permissions || initialPermissionValues,
           }
         : undefined,
@@ -210,7 +210,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         supervisor: editFormData?.work?.supervisor || false,
         executives: editFormData?.work?.supervisor
           ? editFormData?.work?.executives
-          : null,
+          : [],
         permissions: transformPermissions(editFormData.employee_access),
       });
     }

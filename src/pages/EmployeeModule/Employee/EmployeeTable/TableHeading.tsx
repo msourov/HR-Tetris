@@ -4,9 +4,7 @@ const TableHeading = () => {
   return (
     <Table.Thead className="bg-[#2274A5] text-white px-4">
       <Table.Tr>
-        <Table.Th style={{ width: "2%", paddingLeft: "1.5rem" }}>
-          Serial
-        </Table.Th>
+        <Table.Th style={{ width: "2%", paddingLeft: "1rem" }}>Serial</Table.Th>
         <Table.Th style={{ width: "23%" }}>Name</Table.Th>
         <Table.Th style={{ width: "5%" }}>EID</Table.Th>
         <Table.Th style={{ width: "5%" }}>Phone</Table.Th>

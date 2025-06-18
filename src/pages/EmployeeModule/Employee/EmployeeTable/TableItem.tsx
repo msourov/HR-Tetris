@@ -40,7 +40,10 @@ const TableItem: React.FC<TableItemProps> = ({
   }
 
   return (
-    <Table.Tbody className="text-black font-medium border-b bg-gray-100">
+    <Table.Tbody
+      className="text-gray-700 font-medium border-b bg-gray-100"
+      style={{ fontSize: "13px" }}
+    >
       {data.length === 0 ? (
         <Table.Tr>
           <Table.Td colSpan={9} className="text-center py-6 text-gray-500">
@@ -49,8 +52,8 @@ const TableItem: React.FC<TableItemProps> = ({
         </Table.Tr>
       ) : (
         data.map((item, index) => (
-          <Table.Tr key={item.uid} className="hover:bg-white text-emerald-950">
-            <Table.Td style={{ width: "2%", paddingLeft: "1.5rem" }}>
+          <Table.Tr key={item.uid} className="hover:bg-white">
+            <Table.Td style={{ width: "2%", paddingLeft: "1rem" }}>
               {(page - 1) * limit + index + 1}
             </Table.Td>
             <Table.Td style={{ width: "23%" }}>
@@ -88,15 +91,20 @@ const TableItem: React.FC<TableItemProps> = ({
             </Table.Td>
             <Table.Td style={{ width: "10%" }}>
               <Pill className="bg-white">
-                {item.work?.department?.name || "N/A"}
+                <span style={{ fontSize: "12px" }}>
+                  {item.work?.department?.name || "N/A"}
+                </span>
               </Pill>
             </Table.Td>
             <Table.Td style={{ width: "15%" }}>
-              {item.work?.designation?.name || "N/A"}
+              <span style={{ fontSize: "12px" }}>
+                {item.work?.designation?.name || "N/A"}
+              </span>
             </Table.Td>
             <Table.Td style={{ width: "5%", paddingRight: "1.5rem" }}>
               <EmployeeActions
                 id={item.uid}
+                eid={item.work.employee_id}
                 name={item.personal?.name}
                 department={item.work?.department?.name}
                 designation={item.work?.designation?.name}
