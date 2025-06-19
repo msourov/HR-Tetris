@@ -166,7 +166,15 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
-      console.log("Validation errors:", errors);
+      const error = Object.entries(errors)[0][1].message;
+      console.log(error);
+      notifications.show({
+        title: "Error!",
+        message: typeof error === "string" ? error : "Fields missing",
+        icon: <IconX />,
+        color: "red",
+        autoClose: 3000,
+      });
     }
   }, [errors]);
 
@@ -330,13 +338,13 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
 
       // Redirect after success
       navigate(-1);
-    } catch (error) {
-      console.error("Failed to submit employee data", error);
+    } catch (err) {
+      console.error("Failed to submit employee data", err);
       notifications.show({
         title: "Error!",
         message:
-          (error as ErrorResponse).data?.detail ||
-          "Couldn't process the request",
+          (err as ErrorResponse).data?.detail?.[0]?.msg ||
+          "Couldn't create employee",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
