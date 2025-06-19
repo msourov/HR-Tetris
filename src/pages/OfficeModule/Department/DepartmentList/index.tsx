@@ -1,9 +1,10 @@
-import { Card, Pill, SimpleGrid } from "@mantine/core";
+import { Pill, SimpleGrid } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useGetDepartmentsQuery } from "../../../../features/api/departmentSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../../../services/auth/useAuth";
 import AppLoader from "../../../../components/ui/AppLoader";
+import CardGlass from "../../../../components/ui/CardGlass";
 
 const DepartmentList = () => {
   const {
@@ -35,11 +36,10 @@ const DepartmentList = () => {
         verticalSpacing={{ base: "md", sm: "xl" }}
       >
         {departmentData?.data?.map((item) => (
-          <Card
+          <CardGlass
             key={item?.uid}
-            component="a"
-            withBorder
-            maw={250}
+            // component="a"
+            // maw={250}
             className="text-center flex-auto max-w-full overflow-hidden py-6 gap-2 cursor-pointer"
             onClick={() => navigate(`${item?.uid}/detail`)}
           >
@@ -54,7 +54,7 @@ const DepartmentList = () => {
                 {`${item?.active ? "Active" : "Inactive"}`}
               </Pill>
             </span>
-          </Card>
+          </CardGlass>
         ))}
       </SimpleGrid>
     </div>

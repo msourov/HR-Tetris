@@ -1,7 +1,8 @@
-import { Box, Card, Pill, SimpleGrid, Text } from "@mantine/core";
+import { Box, Pill, SimpleGrid, Text } from "@mantine/core";
 import { useGetDesignationsQuery } from "../../../../features/api/designationSlice";
 import { useNavigate } from "react-router-dom";
 import AppLoader from "../../../../components/ui/AppLoader";
+import CardGlass from "../../../../components/ui/CardGlass";
 
 const DesignationList = () => {
   const navigate = useNavigate();
@@ -17,7 +18,6 @@ const DesignationList = () => {
   if (error) {
     <p>Something went wrong.</p>;
   }
-  console.log(designationData);
   return (
     <Box className="mt-6">
       <SimpleGrid
@@ -26,10 +26,8 @@ const DesignationList = () => {
         verticalSpacing={{ base: "md", sm: "xl" }}
       >
         {designationData?.data?.map((item) => (
-          <Card
-            component="a"
-            withBorder
-            maw={250}
+          <CardGlass
+            key={item?.uid}
             className="text-center flex-auto p-4 max-w-full overflow-hidden py-6 gap-2 cursor-pointer"
             onClick={() => navigate(`${item?.uid}/detail`)}
           >
@@ -45,7 +43,7 @@ const DesignationList = () => {
                 {`${item?.active ? "Active" : "Inactive"}`}
               </Pill>
             </Text>
-          </Card>
+          </CardGlass>
         ))}
       </SimpleGrid>
     </Box>

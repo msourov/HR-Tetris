@@ -20,7 +20,7 @@ const CardGlass = ({
       radius="lg"
       withBorder={false}
       onClick={onClick}
-      className={`bg-white/30 backdrop-blur-lg border border-white/30 shadow-xl ${className}`}
+      className={`bg-transparent backdrop-blur-xl border border-white/20 shadow-lg ${className}`}
       {...props}
     >
       {children}

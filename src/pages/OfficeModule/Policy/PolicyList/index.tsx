@@ -95,7 +95,7 @@ const PolicyList = () => {
   }
 
   if (allPolicyLoading) {
-    <AppLoader />;
+    return <AppLoader />;
   }
 
   const handlePolicyDetail = (id: string) => {
@@ -127,14 +127,13 @@ const PolicyList = () => {
         </Tabs.List>
         <Tabs.Panel value="text" className="p-6">
           <SimpleGrid
-            cols={{ base: 1, sm: 2, md: 3 }}
+            cols={{ base: 1, sm: 2, md: 2, xl: 3 }}
             spacing={{ base: 10, sm: "xl" }}
             verticalSpacing={{ base: "md", sm: "xl" }}
           >
             {policyTexts?.map((item) => (
               <div key={item?.id} className="flex justify-center w-fit">
                 <PolicyCard
-                  key={item.id}
                   item={item}
                   onClick={handlePolicyDetail}
                   isFile={false}
@@ -145,7 +144,7 @@ const PolicyList = () => {
         </Tabs.Panel>
         <Tabs.Panel value="file" className="p-6">
           <SimpleGrid
-            cols={{ base: 2, sm: 4, md: 6 }}
+            cols={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
             spacing={{ base: 10, sm: "xl" }}
             verticalSpacing={{ base: "md", sm: "xl" }}
             style={{ justifyItems: "flex-start" }}
@@ -156,7 +155,6 @@ const PolicyList = () => {
                 style={{ display: "flex", justifyContent: "flex-start" }}
               >
                 <PolicyCard
-                  key={item?.id}
                   item={item}
                   onClick={handleDownload}
                   isFile={true}

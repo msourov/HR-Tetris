@@ -54,6 +54,12 @@ const initialValues = [
     key: randomId(),
   },
   {
+    label: "Account Management",
+    name: "accounts_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
     label: "App User Management",
     name: "app_user_management",
     checked: false,
@@ -129,6 +135,7 @@ const AddRole = () => {
         app_user_management: "a" | "i";
         employee_management: "a" | "i";
         user_management: "a" | "i";
+        accounts_management: "a" | "i";
         office_management: "a" | "i";
         clm_management: "a" | "i";
         ticket_management: "a" | "i";

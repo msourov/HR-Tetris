@@ -61,7 +61,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading }) => {
     <Table.Tbody>
       {data.map((item, index) => (
         <Table.Tr key={index}>
-          <Table.Td style={{ width: "10%", paddingLeft: "32px" }}>
+          <Table.Td className="w-[20%] pl-4 lg:pl-8">
             <div
               className={`w-fit border p-1 rounded-full text-xs text-center 
     ${
@@ -73,7 +73,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading }) => {
               {item?.name}
             </div>
           </Table.Td>
-          <Table.Td style={{ width: "40%" }}>
+          <Table.Td className="w-[40%]">
             <Pill.Group>
               {transformAccess(item?.access || {}).map(
                 ([shortName, fullName], index) => (
@@ -92,12 +92,12 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading }) => {
               )}
             </Pill.Group>
           </Table.Td>
-          <Table.Td style={{ width: "10%" }}>
+          <Table.Td className="w-[10%]">
             <Pill className={item?.active ? "pill-active" : "pill-inactive"}>
               {item?.active ? "Active" : "Inactive"}
             </Pill>
           </Table.Td>
-          <Table.Td style={{ width: "5%", paddingRight: "32px" }}>
+          <Table.Td className="w-[10%] pr-4 lg:pr-8">
             <RoleActions
               id={item?.uid}
               name={item?.name}

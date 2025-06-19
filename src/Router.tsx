@@ -267,20 +267,6 @@ export const router = createBrowserRouter([
                 <Holiday />
               </Suspense>
             ),
-            children: [
-              {
-                index: true,
-                element: <PolicyList />,
-              },
-              {
-                path: "edit",
-                element: <ManagePolicy />,
-              },
-              {
-                path: ":policyName/detail",
-                element: <PolicyDetail />,
-              },
-            ],
           },
           {
             path: "employees",

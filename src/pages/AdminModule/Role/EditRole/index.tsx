@@ -14,15 +14,16 @@ import { ErrorResponse } from "react-router-dom";
 type Permissions = {
   label: string;
   name:
-  | "user_management"
-  | "office_management"
-  | "app_user_management"
-  | "employee_management"
-  | "clm_management"
-  | "ticket_management"
-  | "inventory_management"
-  | "anouncement_management"
-  | "recruitment_management";
+    | "user_management"
+    | "office_management"
+    | "app_user_management"
+    | "employee_management"
+    | "accounts_management"
+    | "clm_management"
+    | "ticket_management"
+    | "inventory_management"
+    | "anouncement_management"
+    | "recruitment_management";
   checked: boolean;
   key: string;
 };
@@ -46,6 +47,7 @@ const schema = z.object({
         z.literal("office_management"),
         z.literal("app_user_management"),
         z.literal("employee_management"),
+        z.literal("accounts_management"),
         z.literal("clm_management"),
         z.literal("ticket_management"),
         z.literal("inventory_management"),
@@ -74,6 +76,12 @@ const initialValues: Permissions[] = [
   {
     label: "User Management",
     name: "user_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Account Management",
+    name: "accounts_management",
     checked: false,
     key: randomId(),
   },
@@ -168,6 +176,7 @@ const EditRole = ({ id: uid, name, closeModal, roleData }: EditRoleProps) => {
       ...(preparedData as {
         app_user_management: "a" | "i";
         employee_management: "a" | "i";
+        accounts_management: "a" | "i";
         user_management: "a" | "i";
         office_management: "a" | "i";
         clm_management: "a" | "i";
@@ -239,19 +248,23 @@ const EditRole = ({ id: uid, name, closeModal, roleData }: EditRoleProps) => {
           />
         </div>
         <Group justify="end" align="center" gap="sm" mt="lg">
-          <Button type="submit" bg="black" loading={isLoading} disabled={isLoading}>
+          <Button
+            type="submit"
+            bg="black"
+            loading={isLoading}
+            disabled={isLoading}
+          >
             Save
           </Button>
           <Button
             variant="outline"
-            color='black'
+            color="black"
             onClick={closeModal}
             disabled={isLoading}
           >
             Cancel
           </Button>
         </Group>
-
       </form>
     </Paper>
   );
