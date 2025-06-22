@@ -14,7 +14,6 @@ import {
   useGetPoliciesQuery,
   useGetPolicyDetailQuery,
 } from "../../../../features/api/policySlice";
-import { useAuth } from "../../../../services/auth/useAuth";
 import "../../../../styles.css";
 import PDFViewer from "./PDFViewer";
 import { AllPolicy } from "../../../../features/api/typesOld";
@@ -35,7 +34,6 @@ const PolicyList = () => {
   const [opened, setOpened] = useState(false);
   const [selectedUid, setSelectedUid] = useState<string | null>(null);
   const [policyUid, setPolicyUid] = useState("");
-  const { logout } = useAuth();
   const {
     data: policies,
     isLoading: allPolicyLoading,
@@ -44,6 +42,8 @@ const PolicyList = () => {
     page: 1,
     limit: 100,
   });
+
+  console.log(allPolicyError, "allPolicyError");
 
   useEffect(() => {
     if (selectedUid) {
@@ -85,14 +85,6 @@ const PolicyList = () => {
 
   const { data: policyDetail, isLoading: policyDetailLoading } =
     useGetPolicyDetailQuery({ uid: policyUid }, { skip: !policyUid });
-
-  if (
-    allPolicyError &&
-    "status" in allPolicyError &&
-    allPolicyError.status === 401
-  ) {
-    logout();
-  }
 
   if (allPolicyLoading) {
     return <AppLoader />;

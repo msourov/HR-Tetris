@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { getToken } from "../utils/getToken";
+import { getToken } from "./services/utils/getToken";
 
 const PublicRoute = () => {
   const token = getToken();

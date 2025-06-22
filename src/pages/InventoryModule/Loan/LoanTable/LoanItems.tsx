@@ -1,6 +1,5 @@
 import { Avatar, Badge, Table } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useAuth } from "../../../../services/auth/useAuth";
 import { SerializedError } from "@reduxjs/toolkit";
 import LoanActions from "./LoanActions";
 import { LoanWithGuarantorObj } from "../../../../features/types/inventory";
@@ -20,17 +19,8 @@ interface TableItemProps {
 }
 
 const LoanTableItems = ({ data, isLoading, error }: TableItemProps) => {
-  const { logout } = useAuth();
-
-  if (error) {
-    if ((error as FetchBaseQueryError).status === 401) {
-      console.error("Unauthorized access - logging out");
-      logout();
-    }
-    return <Table.Td colSpan={9}>Error loading data</Table.Td>;
-  }
-
   if (isLoading) return <CommonSkeleton cols={8} rows={5} />;
+  console.log(error, "error");
 
   return (
     <Table.Tbody>

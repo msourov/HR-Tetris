@@ -4,18 +4,20 @@ import { useGetCredentialsQuery } from "../../../features/api/companyCredentialS
 import { useState } from "react";
 import AppLoader from "../../../components/ui/AppLoader";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useAuth } from "../../../services/auth/useAuth";
 import CreateCredentialModal from "../AddCLM.tsx";
+import { logout } from "../../../features/auth/authSlice.ts";
+import { useDispatch } from "react-redux";
 
 // Main list view component
 const CertificateList = () => {
   const [page, setPage] = useState(1);
+  const dispatch = useDispatch();
   const limit = 5;
   const { data, isLoading, error } = useGetCredentialsQuery({
     page,
     limit,
   });
-  const { logout } = useAuth();
+  // const { logout } = useAuth();
 
   if (isLoading) {
     return <AppLoader />;
@@ -24,7 +26,7 @@ const CertificateList = () => {
   if (error) {
     if ((error as FetchBaseQueryError).status === 401) {
       console.error("Unauthorized access - logging out");
-      logout();
+      dispatch(logout());
     } else {
       console.error("Error fetching roles:", error);
     }

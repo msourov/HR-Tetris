@@ -3,6 +3,7 @@ import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
 import { useGetCertificationsQuery } from "../../../../features/api/certificationSlice";
 import { useState } from "react";
+import NoDataMessage from "../../../../components/ui/NoDataMessage";
 
 const CertificationTable = () => {
   const [page, setPage] = useState(1);
@@ -11,10 +12,17 @@ const CertificationTable = () => {
     data: certifications,
     isLoading,
     error,
+    refetch,
   } = useGetCertificationsQuery({
     page,
     limit,
   });
+
+  if (!isLoading && certifications?.data?.length === 0) {
+    return (
+      <NoDataMessage message="certifications" onRefresh={() => refetch()} />
+    );
+  }
 
   return (
     <>

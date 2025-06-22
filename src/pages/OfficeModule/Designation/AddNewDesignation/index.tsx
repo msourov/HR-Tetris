@@ -66,10 +66,9 @@ const AddNewDesignation: React.FC<AddNewDesignationProps> = ({
           />
           <Box className="max-w-20 mt-4">
             <Switch
-              size="lg"
-              onLabel="Disable"
-              offLabel="Activate"
-              color="black"
+              defaultChecked={true}
+              size="md"
+              color="blue"
               checked={activeStatus}
               {...register("active")}
             />

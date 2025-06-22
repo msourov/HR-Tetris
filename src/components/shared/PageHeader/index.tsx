@@ -43,16 +43,15 @@ const PageHeader: React.FC<PageHeaderProps> = ({
             </Text>
           </Group>
         )}
-        <Button
-          variant="outline"
-          color="black"
-          size="compact-sm"
-          leftSection={<IoMdReturnLeft size={16} color="gray" />}
+        <div
+          className="flex items-center border px-2 py-1 text-sm border-gray-400 gap-2 w-fit rounded-lg  hover:bg-gray-200"
           onClick={() => navigate(-1)}
-          className="text-gray-500 hover:bg-gray-200 border-gray-400"
         >
-          Back
-        </Button>
+          <span>
+            <IoMdReturnLeft size={16} color="gray" />
+          </span>
+          <button className="text-gray-500">Back</button>
+        </div>
       </div>
       {ShowAddButton && (
         <Button

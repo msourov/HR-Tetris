@@ -1,13 +1,6 @@
-import {
-  Group,
-  Box,
-  UnstyledButton,
-  Accordion,
-  Burger,
-  Drawer,
-} from "@mantine/core";
+import { Group, Box, UnstyledButton, Accordion, Drawer } from "@mantine/core";
 import { GrUserManager } from "react-icons/gr";
-import { IconHome2 } from "@tabler/icons-react";
+import { IconArrowLeft, IconHome2 } from "@tabler/icons-react";
 
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -19,6 +12,7 @@ import { PiCertificate } from "react-icons/pi";
 import { LuMailbox } from "react-icons/lu";
 import classes from "./NavbarLinksGroup.module.css";
 import { useMediaQuery } from "@mantine/hooks";
+import { RiMenu2Fill } from "react-icons/ri";
 
 interface IconProps {
   className?: string;
@@ -384,12 +378,12 @@ export function Sidebar() {
   return (
     <>
       {isMobile && (
-        <Burger
-          opened={isDrawerOpen}
+        <div
           onClick={() => setIsDrawerOpen((o) => !o)}
-          className="z-50 p-4"
-          size="sm"
-        />
+          className="z-50 p-4 cursor-pointer"
+        >
+          <RiMenu2Fill size={20} />
+        </div>
       )}
 
       {isMobile ? (
@@ -400,10 +394,20 @@ export function Sidebar() {
           overlayProps={{ opacity: 0.5, blur: 1 }}
           withinPortal
           zIndex={1000}
-          classNames={{ content: "h-full" }}
+          withCloseButton={false}
+          classNames={{ content: "h-full bg-[#0f2d53]", body: "p-0" }}
           className={classes.body}
+          style={{ padding: 0 }}
         >
-          {sidebarContent}
+          <div
+            className="flex justify-center bg-white py-3 cursor-pointer"
+            onClick={() => setIsDrawerOpen(false)}
+          >
+            {/* <Button variant="default" className="w-full rounded-none"> */}
+            <IconArrowLeft size={20} />
+            {/* </Button> */}
+          </div>
+          <div className="p-0 m-0 h-full w-full">{sidebarContent}</div>
         </Drawer>
       ) : (
         sidebarContent

@@ -3,8 +3,6 @@ import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
 import { User } from "../../../../features/api/typesOld";
 import { useGetUsersQuery } from "../../../../features/api/userSlice";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useAuth } from "../../../../services/auth/useAuth";
 import { useState } from "react";
 
 const UserTable = () => {
@@ -14,17 +12,8 @@ const UserTable = () => {
     page,
     limit,
   });
-  const { logout } = useAuth();
   const users: User[] = data?.data || [];
 
-  if (error) {
-    if ((error as FetchBaseQueryError).status === 401) {
-      console.error("Unauthorized access - logging out");
-      logout();
-    } else {
-      console.error("Error fetching roles:", error);
-    }
-  }
   return (
     <>
       <Table striped highlightOnHover>

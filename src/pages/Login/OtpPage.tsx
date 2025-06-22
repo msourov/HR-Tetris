@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { TextInput, Button, Paper, Container, Loader } from "@mantine/core";
-import Cookies from "js-cookie";
 import { useLoginMutation } from "../../features/api/userSlice";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../features/auth/authSlice";
 
 interface OtpFormFields {
   otp: number;
@@ -16,6 +17,7 @@ const OtpPage: React.FC = () => {
     formState: { errors },
   } = useForm<OtpFormFields>();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [error, setError] = useState<string | null>(null);
   const [login, { isLoading }] = useLoginMutation();
 
@@ -37,9 +39,17 @@ const OtpPage: React.FC = () => {
         };
 
         const response = await login(loginData).unwrap();
-        console.log("response of login", response);
         if (response.access_token) {
-          Cookies.set("token", response.access_token);
+          dispatch(
+            setAuth({
+              token: response.access_token,
+              user: {
+                id: response.mobile,
+                name: response.name,
+              },
+            })
+          );
+
           localStorage.removeItem("OtpPending");
           localStorage.removeItem("mobile");
           localStorage.removeItem("password");
@@ -47,7 +57,10 @@ const OtpPage: React.FC = () => {
           localStorage.setItem("userId", response.mobile);
           localStorage.setItem("uid", response.uid);
           localStorage.setItem("name", response.name);
-          navigate("/", { replace: true });
+
+          setTimeout(() => {
+            navigate("/", { replace: true });
+          }, 50);
         } else {
           setError("OTP verification failed");
         }

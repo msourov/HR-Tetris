@@ -1,7 +1,5 @@
 // AnnouncementList.tsx
 import { Card, Loader, Modal, Pill, SimpleGrid } from "@mantine/core";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useAuth } from "../../../services/auth/useAuth";
 import {
   useApproveAnnouncementMutation,
   useGetAllAnnouncementsQuery,
@@ -28,22 +26,13 @@ const AnnouncementList = () => {
     isLoading,
     error,
   } = useGetAllAnnouncementsQuery();
-  const { logout } = useAuth();
 
   if (isLoading || approveAnnLoading) {
     return <Loader type="dots" />;
   }
 
-  if (error) {
-    if ((error as FetchBaseQueryError).status === 401) {
-      console.error("Unauthorized access - logging out");
-      logout();
-    } else {
-      console.error(error);
-    }
-  }
-
   console.log(approveAnnError);
+  console.log(error);
 
   const handleApproveAnnouncement = async (uid: string) => {
     try {

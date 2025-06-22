@@ -55,14 +55,19 @@ const TableItem: React.FC<TableItemProps> = ({
             {(page - 1) * limit + index + 1}
           </Table.Td>
           <Table.Td style={{ width: "25%" }}>
-            <img
-              src={getImageUrl(item?.mobile)}
-              alt={item?.name}
-              className="w-10 h-10 rounded-full mr-2 inline-block"
-              onError={handleImageError}
-            />
-            {item.name}
+            <div className="flex items-center gap-3">
+              <img
+                src={getImageUrl(item?.mobile)}
+                alt={item?.name}
+                className="w-10 h-10 rounded-full object-cover border"
+                onError={handleImageError}
+              />
+              <span className="text-sm font-medium text-gray-800 truncate">
+                {item.name}
+              </span>
+            </div>
           </Table.Td>
+
           <Table.Td style={{ width: "25%" }}>
             <a
               href={`tel:${item.mobile}`}

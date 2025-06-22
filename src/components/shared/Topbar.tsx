@@ -1,16 +1,17 @@
 import { Menu } from "@mantine/core";
 import { LuLogOut } from "react-icons/lu";
-import { useAuth } from "../../services/auth/useAuth";
 import { RiSettings2Line } from "react-icons/ri";
 import { FaRegCircleUser } from "react-icons/fa6";
 // import "../../styles.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { getImageUrl } from "../../services/utils/getImageUrl";
+import { logout } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const Topbar = () => {
-  const { logout } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
   const mobile = localStorage.getItem("userId") ?? "";
 
@@ -60,7 +61,7 @@ const Topbar = () => {
             </Menu.Item>
             <Menu.Item
               leftSection={<LuLogOut size={16} />}
-              onClick={logout}
+              onClick={() => dispatch(logout())}
               className="cursor-pointer text-red-500 hover:bg-red-100"
             >
               Logout

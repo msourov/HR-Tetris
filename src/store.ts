@@ -24,9 +24,11 @@ import { credentialApi } from "./features/api/companyCredentialSlice";
 import { payrollApi } from "./features/api/payrollSlice";
 import { taskApi } from "./features/api/taskSlice";
 import { meetingApi } from "./features/api/meetingSlice";
+import authReducer from "./features/auth/authSlice";
 
 const store = configureStore({
   reducer: {
+    auth: authReducer,
     [userApi.reducerPath]: userApi.reducer,
     [roleApi.reducerPath]: roleApi.reducer,
     [departmentApi.reducerPath]: departmentApi.reducer,

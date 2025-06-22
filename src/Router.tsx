@@ -67,12 +67,13 @@ import {
   UserDetail,
   UserTable,
 } from "./lazyComponents";
-import ProtectedRoute from "./services/auth/ProtectedRoutes";
+
 import Settings from "./pages/MyAccountModule/Settings";
 import Profile from "./pages/MyAccountModule/Profile";
-import PublicRoute from "./services/auth/PublicRoute";
+import PublicRoute from "./PublicRoute";
 import InventoryLayout from "./pages/InventoryModule";
 import RoleTable from "./pages/AdminModule/Role/RoleTable";
+import ProtectedRoute from "./ProtectedRoutes";
 
 const loader = (
   <div className="flex justify-center items-center">

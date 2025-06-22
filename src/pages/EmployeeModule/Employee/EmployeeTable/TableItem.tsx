@@ -56,15 +56,20 @@ const TableItem: React.FC<TableItemProps> = ({
             <Table.Td style={{ width: "2%", paddingLeft: "1rem" }}>
               {(page - 1) * limit + index + 1}
             </Table.Td>
-            <Table.Td style={{ width: "23%" }}>
-              <img
-                src={getImageUrl(item?.work?.employee_id)}
-                alt={item.personal?.name}
-                className="w-10 h-10 rounded-full mr-2 inline-block"
-                onError={handleImageError}
-              />
-              {item.personal?.name || "N/A"}
+            <Table.Td style={{ width: "25%" }}>
+              <div className="flex items-center gap-3">
+                <img
+                  src={getImageUrl(item?.work?.employee_id)}
+                  alt={item.personal?.name}
+                  className="w-10 h-10 rounded-full object-cover border"
+                  onError={handleImageError}
+                />
+                <span className="text-sm font-medium text-gray-800 truncate">
+                  {item.personal?.name}
+                </span>
+              </div>
             </Table.Td>
+
             <Table.Td style={{ width: "5%" }}>
               {item.work?.employee_id || "N/A"}
             </Table.Td>

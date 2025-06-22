@@ -32,7 +32,7 @@ const schema = z.object({
 type EditDesignationType = z.infer<typeof schema>;
 
 const EditDesignation = () => {
-  const [des, setDes] = useState<string>("");
+  const [des, setDes] = useState<string | null>(null);
   const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
@@ -81,9 +81,19 @@ const EditDesignation = () => {
   const text = <Text fw={500}>Select Designation</Text>;
 
   const onSubmit = async (data: EditDesignationType) => {
+    if (!des) {
+      notifications.show({
+        title: "Error!",
+        message: "No designation selected",
+        icon: <IconX />,
+        color: "red",
+        autoClose: 3000,
+      });
+      return;
+    }
     const obj = {
       ...data,
-      uid: des,
+      uid: des as string,
     };
     try {
       await editDesignation(obj).unwrap();
@@ -107,8 +117,7 @@ const EditDesignation = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await deleteDesignation({ id: des }).unwrap();
-      setDes("");
+      const response = await deleteDesignation({ id: des as string }).unwrap();
       notifications.show({
         title: "Success!",
         message: response.message || "Designation deleted",
@@ -116,6 +125,7 @@ const EditDesignation = () => {
         color: "green",
         autoClose: 3000,
       });
+      setDes(null);
     } catch (error) {
       notifications.show({
         title: "Error!",
@@ -132,13 +142,7 @@ const EditDesignation = () => {
   return (
     <Box className="my-6">
       <Box className="flex justify-end">
-        <Button
-          leftSection={<LuPlusCircle />}
-          color="black"
-          variant="filled"
-          bg="orange"
-          onClick={addOpen}
-        >
+        <Button leftSection={<LuPlusCircle />} onClick={addOpen}>
           Add
         </Button>
       </Box>
@@ -169,20 +173,19 @@ const EditDesignation = () => {
               />
               <Box className="max-w-20 mt-4">
                 <Switch
-                  size="lg"
-                  onLabel="Disable"
-                  offLabel="Activate"
-                  color="black"
+                  size="md"
+                  color="blue"
                   checked={activeStatus}
                   {...register("active")}
                 />
               </Box>
 
               <Button
+                size="compact-md"
                 type="submit"
-                className="rounded-lg mt-6"
+                className="rounded-lg mt-6 text-xs w-[80px]"
                 disabled={editDesLoading}
-                bg="black"
+                bg="blue"
               >
                 {editDesLoading ? <Loader type="dots" size="sm" /> : "Save"}
               </Button>

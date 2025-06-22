@@ -1,7 +1,5 @@
 import { Pagination, Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useAuth } from "../../../../services/auth/useAuth";
 import TableItem from "./TableItem";
 import { useGetAllConsumablesQuery } from "../../../../features/api/consumableInventorySlice";
 import { useState } from "react";
@@ -14,16 +12,6 @@ const ConsumableTable = () => {
     page,
     limit,
   });
-  const { logout } = useAuth();
-
-  if (error) {
-    if ((error as FetchBaseQueryError).status === 401) {
-      console.error("Unauthorized access - logging out");
-      logout();
-    } else {
-      console.error("Error fetching roles:", error);
-    }
-  }
 
   return (
     <>

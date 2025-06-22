@@ -1,8 +1,6 @@
 import { Pill, SimpleGrid } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useGetDepartmentsQuery } from "../../../../features/api/departmentSlice";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useAuth } from "../../../../services/auth/useAuth";
 import AppLoader from "../../../../components/ui/AppLoader";
 import CardGlass from "../../../../components/ui/CardGlass";
 
@@ -12,21 +10,13 @@ const DepartmentList = () => {
     isLoading,
     error,
   } = useGetDepartmentsQuery({ page: 1, limit: 10 });
-  const { logout } = useAuth();
   const navigate = useNavigate();
 
   if (isLoading) {
     <AppLoader />;
   }
 
-  if (error) {
-    if ((error as FetchBaseQueryError).status === 401) {
-      console.error("Unauthorized access - logging out");
-      logout();
-    } else {
-      console.error("Error fetching roles:", error);
-    }
-  }
+  console.log(error, "error");
 
   return (
     <div className="mt-6">

@@ -16,6 +16,7 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useGetEmployeeHelperQuery } from "../../../features/api/employeeSlice";
 import OvertimeLeaveSkeleton from "../../../components/shared/Skeletons/OvertimeLeaveSkeleton";
+import NoDataMessage from "../../../components/ui/NoDataMessage";
 
 const schema = z.object({
   purpose: z.string().min(1, "Purpose is required"),
@@ -101,7 +102,7 @@ const Overtime = () => {
       start_time: data.start_time.toISOString(),
       end_time: data.end_time.toISOString(),
     };
-    console.log(payload);
+
     try {
       const response = await createOvertime(payload).unwrap();
       notifications.show({
@@ -199,12 +200,10 @@ const Overtime = () => {
       <>
         {data && Array.isArray(data?.data) && data?.data.length > 0 ? (
           <div className="my-6">
-            <OvertimeList data={data?.data ?? []} />
+            <OvertimeList data={data?.data ?? []} refetch={refetch} />
           </div>
         ) : (
-          <p className="text-center text-gray-500 mt-12 text-lg">
-            No data found
-          </p>
+          <NoDataMessage message="overtime" onRefresh={refetch} />
         )}
       </>
       <Modal opened={modalOpened} onClose={modalClose} withCloseButton={false}>

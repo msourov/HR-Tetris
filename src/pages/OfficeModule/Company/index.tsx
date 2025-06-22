@@ -1,8 +1,6 @@
 import { Image } from "@mantine/core";
 import { useGetCompanyQuery } from "../../../features/api/companySlice";
 import { IconMapPin, IconPhone } from "@tabler/icons-react";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useAuth } from "../../../services/auth/useAuth";
 import AppLoader from "../../../components/ui/AppLoader";
 
 const Company = () => {
@@ -11,21 +9,14 @@ const Company = () => {
     isLoading,
     error,
   } = useGetCompanyQuery({ page: 1, limit: 10 });
-  const { logout } = useAuth();
   console.log(getCompany);
 
   if (isLoading) {
     <AppLoader />;
   }
 
-  if (error) {
-    if ((error as FetchBaseQueryError).status === 401) {
-      console.error("Unauthorized access - logging out");
-      logout();
-    } else {
-      console.error("Error fetching roles:", error);
-    }
-  }
+  console.log(error, "error");
+
   return (
     <div className="relative w-[95%] my-8 mx-auto bg-white rounded-lg drop-shadow-lg border-2 border-[#d4af37] p-10 mt-[5rem]">
       <div className="top-8 left-4 flex z-10 justify-between">

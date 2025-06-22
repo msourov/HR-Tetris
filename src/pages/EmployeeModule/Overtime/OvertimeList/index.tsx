@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Overtime } from "../../../../features/api/typesOld";
 
-const OvertimeList = ({ data }: { data: Overtime[] }) => {
+const OvertimeList = ({ data }: { data: Overtime[]; refetch: () => void }) => {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
 

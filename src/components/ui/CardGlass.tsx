@@ -20,10 +20,16 @@ const CardGlass = ({
       radius="lg"
       withBorder={false}
       onClick={onClick}
-      className={`bg-transparent backdrop-blur-xl border border-white/20 shadow-lg ${className}`}
+      className={`relative isolate bg-gradient-to-br from-[rgba(255,255,255,0.15)] to-[rgba(255,255,255,0.05)] 
+                 backdrop-blur-xl border border-white/20 shadow-lg
+                 ${className}`}
       {...props}
     >
-      {children}
+      {/* Frosted glass base layer */}
+      <div className="absolute inset-0 bg-white/5 backdrop-blur-2xl -z-10 rounded-xl" />
+
+      {/* Inner content container */}
+      <div className="relative z-10">{children}</div>
     </Card>
   );
 };

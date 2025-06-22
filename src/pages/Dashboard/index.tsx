@@ -1,9 +1,8 @@
 import { useGetDashboardResponseQuery } from "../../features/api/companySlice";
-import { Alert, Title, Card, Image, Divider, Skeleton } from "@mantine/core";
+import { Title, Card, Image, Divider, Skeleton } from "@mantine/core";
 import { LineChart } from "@mantine/charts";
 import { biaxialData } from "./DummyData";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useAuth } from "../../services/auth/useAuth";
 import { Leave, Overtime } from "../../features/api/typesOld";
 import { useAllLeaveQuery } from "../../features/api/leaveSlice";
 import { lazy, Suspense } from "react";
@@ -52,7 +51,7 @@ const Dashboard = () => {
     ? leaves.data.filter((item: Leave) => item.is_approved === "pending")
     : leaves?.data.is_approved === "pending"
     ? leaves?.data
-    : null;
+    : [];
 
   const pendingOvertime = Array.isArray(overtimeData?.data)
     ? overtimeData.data.filter(
@@ -60,23 +59,13 @@ const Dashboard = () => {
       )
     : overtimeData?.data.is_approved === "pending"
     ? overtimeData?.data
-    : null;
+    : [];
 
-  const { logout } = useAuth();
   // if (isLoading) {
   //   return <div className="flex justify-center items-center">loading...</div>;
   // }
-  if (dashboardError) {
-    if ((dashboardError as FetchBaseQueryError).status === 401) {
-      console.error("Unauthorized access - logging out");
-      logout();
-    } else {
-      console.error("Error fetching dashboard data:", dashboardError);
-      <Alert color="red">Error loading dashboard data</Alert>;
-    }
-  }
-
   const { department } = dashboardData?.data || {};
+  console.log(dashboardError, "dashboardError");
 
   return (
     <div className="flex gap-4 my-6 lg:my-12 md:gap-6 lg:mx-8 mx-4 w-[95%] overflow-x-hidden">
@@ -203,28 +192,24 @@ const Dashboard = () => {
       </div>
       <div className="w-[35%]">
         <div className="mb-6 w-full bg-white">
-          {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 && (
-            <Suspense fallback={skeleton}>
-              <LeaveSection
-                data={pendingLeaves ?? []}
-                loading={leavesLoading}
-                error={leavesError as FetchBaseQueryError}
-              />
-            </Suspense>
-          )}
+          {/* {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 && ( */}
+          <Suspense fallback={skeleton}>
+            <LeaveSection
+              data={pendingLeaves ?? []}
+              loading={leavesLoading}
+              error={leavesError as FetchBaseQueryError}
+            />
+          </Suspense>
+          {/* )} */}
         </div>
         <div className="mb-6 w-full bg-white">
-          {overtimeData &&
-            Array.isArray(overtimeData?.data) &&
-            overtimeData?.data.length > 0 && (
-              <Suspense fallback={skeleton}>
-                <OvertimeSection
-                  data={pendingOvertime ?? []}
-                  loading={overtimeLoading}
-                  error={overtimeError as FetchBaseQueryError}
-                />
-              </Suspense>
-            )}
+          <Suspense fallback={skeleton}>
+            <OvertimeSection
+              data={pendingOvertime ?? []}
+              loading={overtimeLoading}
+              error={overtimeError as FetchBaseQueryError}
+            />
+          </Suspense>
         </div>
       </div>
     </div>
