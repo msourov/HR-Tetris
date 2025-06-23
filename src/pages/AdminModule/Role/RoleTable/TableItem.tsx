@@ -61,7 +61,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading }) => {
     <Table.Tbody>
       {data.map((item, index) => (
         <Table.Tr key={index}>
-          <Table.Td className="w-[20%] pl-4 lg:pl-8">
+          <Table.Td className="w-[25%] pl-4 lg:pl-6">
             <div
               className={`w-fit border p-1 rounded-full text-xs text-center 
     ${
@@ -92,12 +92,12 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading }) => {
               )}
             </Pill.Group>
           </Table.Td>
-          <Table.Td className="w-[10%]">
+          <Table.Td className="w-[15%]">
             <Pill className={item?.active ? "pill-active" : "pill-inactive"}>
               {item?.active ? "Active" : "Inactive"}
             </Pill>
           </Table.Td>
-          <Table.Td className="w-[10%] pr-4 lg:pr-8">
+          <Table.Td className="w-[20%] pr-4 lg:pr-6">
             <RoleActions
               id={item?.uid}
               name={item?.name}

@@ -17,13 +17,13 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
 
   return (
     <CardGlass
-      className={`flex flex-col px-4 py-4 ${
+      className={`flex flex-col px-4 py-4 h-full ${
         isFile ? "w-[200px]" : "w-[340px]"
       }`}
       key={item?.id}
     >
       <div className="flex justify-between items-center">
-        <Text className="max-w-[75%] font-bold text-green-900 leading-6 truncate ">
+        <Text className="max-w-[75%] font-bold text-green-900 leading-6 truncate">
           {item?.name}
         </Text>
         <Button
@@ -71,7 +71,7 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
         </Button>
       ) : (
         <Button
-          size="xs"
+          w="100%"
           mt={4}
           onClick={() => onClick(item?.uid)}
           className="mt-auto"

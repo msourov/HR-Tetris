@@ -46,9 +46,9 @@ const TicketLayout = () => {
   });
   const employeeOptions = Array.isArray(employees?.data)
     ? employees?.data.map((item) => ({
-      label: item?.name,
-      value: item?.employee_id,
-    }))
+        label: item?.name,
+        value: item?.employee_id,
+      }))
     : [];
 
   const onSubmit = async (data: TicketFormType) => {
@@ -84,7 +84,9 @@ const TicketLayout = () => {
       console.log(error);
       notifications.show({
         title: "Error!",
-        message: (error as { data?: { detail?: string } })?.data?.detail || "An error occurred while creating the ticket",
+        message:
+          (error as { data?: { detail?: string } })?.data?.detail ||
+          "An error occurred while creating the ticket",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,

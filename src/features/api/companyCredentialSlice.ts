@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
 import {
   CreateCredential,
+  CredentialDetailResponse,
   CredentialsResponse,
   UpdateCredential,
 } from "../types/companyCredentials";
@@ -32,7 +33,10 @@ export const credentialApi = createApi({
           : [{ type: "Credential", id: "LIST" }],
     }),
 
-    getCredentialDetail: builder.query<Credential, { uid: string }>({
+    getCredentialDetail: builder.query<
+      CredentialDetailResponse,
+      { uid: string }
+    >({
       query: ({ uid }) => ({
         url: `/credential/${uid}`,
         method: "GET",

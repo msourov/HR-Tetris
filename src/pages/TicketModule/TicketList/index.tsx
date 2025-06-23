@@ -28,13 +28,18 @@ export default function TicketList() {
 
   const openTickets = tickets.filter((t) => t.status === "open");
   const archivedTickets = tickets.filter((t) => t.status === "resolved");
-  if (isLoading) return <div className="flex justify-center"><Loader className="mx-auto" /></div>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center">
+        <Loader className="mx-auto" />
+      </div>
+    );
 
   return (
-    <Group align="start" className="gap-4" wrap="nowrap">
+    <Group align="start" className="gap-4 h-full" wrap="nowrap">
       {/* Ticket Thread List */}
-      <Stack className="w-80 flex items-center p-4 " gap="sm" bg='blue'>
-        <Text size="lg" fw='bold' className=" text-white text-center">
+      <Stack className="w-80 flex items-center p-4 " gap="sm" bg="blue">
+        <Text size="lg" fw="bold" className=" text-white text-center">
           Open Tickets
         </Text>
         <List spacing="sm">
@@ -43,8 +48,9 @@ export default function TicketList() {
               <Card
                 // withBorder
                 onClick={() => setSelectedTicket(ticket)}
-                className={`cursor-pointer w-[300px] ${selectedTicket?.id === ticket.id ? "border-blue-500" : ""
-                  }`}
+                className={`cursor-pointer w-[300px] ${
+                  selectedTicket?.id === ticket.id ? "border-blue-500" : ""
+                }`}
               >
                 <Group justify="space-between" className="w-full">
                   <Text fw={500} className="truncate text-blue-500">
@@ -96,7 +102,7 @@ export default function TicketList() {
       >
         <Stack gap="sm">
           {archivedTickets.map((ticket) => (
-            <Card key={ticket.id} withBorder className='bg-gray-200'>
+            <Card key={ticket.id} withBorder className="bg-gray-200">
               <Text fw={500}>{ticket.name}</Text>
               <Text size="sm" c="dimmed" lineClamp={2}>
                 {ticket.chat[0]?.message}

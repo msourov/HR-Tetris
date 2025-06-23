@@ -1,18 +1,62 @@
 import { useGetDashboardResponseQuery } from "../../features/api/companySlice";
-import { Title, Card, Image, Divider, Skeleton } from "@mantine/core";
+import { Card, Divider, Skeleton, Text, Badge } from "@mantine/core";
 import { LineChart } from "@mantine/charts";
 import { biaxialData } from "./DummyData";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Leave, Overtime } from "../../features/api/typesOld";
 import { useAllLeaveQuery } from "../../features/api/leaveSlice";
 import { lazy, Suspense } from "react";
-import { IoCloudOffline } from "react-icons/io5";
-import { MdNetworkCell } from "react-icons/md";
 import { IoIosPeople } from "react-icons/io";
 import { useGetAllOvertimeQuery } from "../../features/api/overtimeSlice";
+import {
+  IconCalendarEvent,
+  IconCalendarStats,
+  IconClock,
+  IconClockFilled,
+} from "@tabler/icons-react";
 
 const LeaveSection = lazy(() => import("./LeaveSection"));
 const OvertimeSection = lazy(() => import("./OvertimeSection"));
+const NoticeSection = lazy(() => import("./NoticeSection"));
+
+const upcomingEvents = [
+  {
+    title: "Team Building Retreat",
+    date: "June 28, 2025",
+    time: "10:00 AM",
+    type: "Company Event",
+  },
+  {
+    title: "Independence Day",
+    date: "July 4, 2025",
+    time: "-",
+    type: "Holiday",
+  },
+  {
+    title: "Monthly Townhall",
+    date: "July 12, 2025",
+    time: "4:00 PM",
+    type: "Meeting",
+  },
+  {
+    title: "Monthly Townhall",
+    date: "July 12, 2025",
+    time: "4:00 PM",
+    type: "Meeting",
+  },
+  {
+    title: "Monthly Townhall",
+    date: "July 12, 2025",
+    time: "4:00 PM",
+    type: "Meeting",
+  },
+  {
+    title: "Monthly Townhall",
+    date: "July 12, 2025",
+    time: "4:00 PM",
+    type: "Meeting",
+  },
+];
 
 const skeleton = (
   <div className="p-4">
@@ -64,102 +108,136 @@ const Dashboard = () => {
   // if (isLoading) {
   //   return <div className="flex justify-center items-center">loading...</div>;
   // }
-  const { department } = dashboardData?.data || {};
   console.log(dashboardError, "dashboardError");
+  console.log(dashboardData, "dashboardData");
 
   return (
     <div className="flex gap-4 my-6 lg:my-12 md:gap-6 lg:mx-8 mx-4 w-[95%] overflow-x-hidden">
       <div className="w-[65%]">
-        <div className="flex flex-col justify-evenly mb-6 gap-8 rounded-md">
+        <div className="flex flex-col xl:flex-row justify-evenly mb-6 gap-4 rounded-md">
           <Card
             withBorder
-            className=" shadow-lg 
-           flex flex-col md:flex-row justify-center gap-2 rounded-md hover:shadow-md transition-shadow"
+            className="flex-1 min-w-[280px] shadow-lg w-full h-fit 
+            justify-center gap-2 rounded-xl hover:shadow-md transition-shadow"
           >
-            {/* Employee Info */}
-            <div className="border border-green-200 flex flex-col items-center sm:justify-around gap-2 w-[270px] p-4">
-              <div className="flex justify-between gap-4">
-                <Image
-                  src="/assets/team.png"
-                  fit="contain"
-                  className="min-w-10 w-8 h-8"
-                  alt="Employee Icon"
-                />
-                <Title className="flex flex-row gap-2 items-center text-gray-500 text-lg">
-                  {/* <span className="font-semibold text-[1rem]"> */}
-                  Employees
-                  {/* </span> */}
-                </Title>
-              </div>
-              <Divider size="xs" w="100%" color="blue" />
+            <div className="flex items-center gap-2 mb-2">
+              <IconCalendarStats size={20} className="text-blue-600" />
+              <Text className="text-gray-600 font-semibold">Today's Stats</Text>
+            </div>
 
-              <div className="flex items-center justify-between gap-6">
-                <div className="flex gap-4 items-center text-center">
-                  <div className="flex gap-2 text-gray-500 items-center">
-                    <IoIosPeople className="text-green-500" size={28} />
-                    <p className="font-bold text-green-500">{60}</p>
+            <div className="flex flex-col gap-3 w-full items-center">
+              {/* Attendance Info */}
+              <div className="border h-[160px] w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3 py-2">
+                {/* Header */}
+                <div className="flex items-center gap-2">
+                  <IconClockFilled color="#2563eb" size={24} />
+                  <Text className="text-gray-700 text-md font-thin">
+                    Attendance
+                  </Text>
+                </div>
+
+                <Divider size="xs" w="100%" color="blue" />
+
+                {/* Dummy Attendance Stats */}
+                <div className="w-full flex flex-col gap-2 text-sm text-gray-600">
+                  <div className="flex justify-between items-center">
+                    <Text>Present</Text>
+                    <Text fw={600} className="text-green-600">
+                      18
+                    </Text>
                   </div>
-                  <div className="flex gap-2 text-blue-500 items-center">
-                    <MdNetworkCell size={20} />
-                    <p className="font-bold text-green-400">
-                      {/* {employee?.active_employee || 0} */}
+                  <div className="flex justify-between items-center">
+                    <Text>Absent</Text>
+                    <Text fw={600} className="text-red-500">
+                      3
+                    </Text>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <Text>On Leave</Text>
+                    <Text fw={600} className="text-yellow-500">
+                      2
+                    </Text>
+                  </div>
+                </div>
+              </div>
+
+              {/* Employees Info */}
+              <div className="border h-[160px] w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3 py-2">
+                {/* Header */}
+                <div className="flex items-center gap-2">
+                  <IoIosPeople color="#2563eb" size={24} />
+                  <Text className="text-gray-700 text-md font-thin">
+                    Employees
+                  </Text>
+                </div>
+
+                <Divider size="xs" w="100%" color="blue" />
+
+                {/* Employee Stats */}
+                <div className="w-full flex flex-col gap-2 text-sm text-gray-600">
+                  <div className="flex justify-between items-center">
+                    <Text>Total</Text>
+                    <Text fw={600} className="text-green-600">
+                      60
+                    </Text>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <Text>Active</Text>
+                    <Text fw={600} className="text-blue-500">
                       55
-                    </p>
+                    </Text>
                   </div>
-                  {/* {employee?.inactive_employee !== 0 && (
-                    <div className="flex gap-2 text-blue-300">
-                      <Text c="dimmed">Inactive</Text>
-                      <Text c="black" fw={700}>
-                        {employee?.inactive_employee || 0}
-                      </Text>
-                    </div>
-                  )} */}
-                  <div className="flex gap-2 text-gray-400 items-center">
-                    <IoCloudOffline size={24} />
-                    <p className="font-bold">5</p>
+                  <div className="flex justify-between items-center">
+                    <Text>Inactive</Text>
+                    <Text fw={600} className="text-gray-500">
+                      5
+                    </Text>
                   </div>
                 </div>
               </div>
             </div>
-            {/* Department Info */}
-            <div className="border border-green-200 flex flex-col items-center sm:justify-around gap-2 w-[270px] p-4">
-              <div className="flex justify-between gap-4">
-                <Image
-                  src="/assets/department.png"
-                  fit="contain"
-                  className="min-w-10 w-8 h-8"
-                  alt="Employee Icon"
-                />
-                <Title className="flex flex-row gap-2 items-center text-lg text-gray-500">
-                  {/* <span className="font-semibold text-[1rem]"> */}
-                  Departments
-                  {/* </span> */}
-                </Title>
-              </div>
-              <Divider size="xs" w="100%" color="blue" />
+          </Card>
+          <Card
+            withBorder
+            radius="lg"
+            shadow="sm"
+            className="w-full max-h-[410px] overflow-y-auto pr-2 lg:w-full xl:w-[440px] h-[460px] bg-white hover:shadow-md transition-all duration-300"
+          >
+            <div className="flex items-center gap-2 mb-4 ">
+              <IconCalendarEvent size={20} className="text-blue-600" />
+              <Text className="text-md font-semibold text-gray-700">
+                Upcoming Events
+              </Text>
+            </div>
+            <Divider mb="sm" />
 
-              {/* Department Info */}
-
-              <div className="flex items-center justify-between gap-6">
-                <div className="flex gap-4 items-center text-center">
-                  <div className="flex gap-2 text-gray-500 items-center">
-                    <IoIosPeople className="text-green-500" size={28} />
-                    <p className="font-bold text-green-500">
-                      {department?.total || 0}
-                    </p>
+            <div className="flex flex-col gap-3">
+              {upcomingEvents.map((event, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col border-l-4 pl-3 border-blue-200"
+                >
+                  <Text className="font-medium text-gray-800">
+                    {event.title}
+                  </Text>
+                  <div className="flex justify-between text-sm text-gray-500">
+                    <span>{event.date}</span>
+                    {event.time !== "-" && (
+                      <span className="flex items-center gap-1">
+                        <IconClock size={14} />
+                        {event.time}
+                      </span>
+                    )}
                   </div>
-                  <div className="flex gap-2 text-blue-500 items-center">
-                    <MdNetworkCell size={20} />
-                    <p className="font-bold">{department?.active || 0}</p>
-                  </div>
-                  {department?.inactive !== 0 && (
-                    <div className="flex gap-2 text-gray-400 items-center">
-                      <IoCloudOffline size={24} />
-                      <p className="font-bold">{department?.inactive || 0}</p>
-                    </div>
-                  )}
+                  <Badge
+                    color={event.type === "Holiday" ? "red" : "blue"}
+                    size="xs"
+                    className="w-fit mt-1"
+                  >
+                    {event.type}
+                  </Badge>
                 </div>
-              </div>
+              ))}
             </div>
           </Card>
         </div>
@@ -209,6 +287,11 @@ const Dashboard = () => {
               loading={overtimeLoading}
               error={overtimeError as FetchBaseQueryError}
             />
+          </Suspense>
+        </div>
+        <div className="mb-6 w-full bg-white">
+          <Suspense fallback={skeleton}>
+            <NoticeSection />
           </Suspense>
         </div>
       </div>

@@ -42,11 +42,11 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
   }
 
   return (
-    <div className="rounded-md w-full shadow-lg">
+    <div className="w-full shadow-lg border border-green-300">
       <ScrollArea type="scroll" style={{ overflowY: "hidden" }}>
         <Box className="flex flex-col items-center">
           <Box w="100%" className="bg-green-100 text-green-800">
-            <Text fw={600} size="lg" ta="center" my={6}>
+            <Text fw={600} size="md" ta="center" my={6}>
               Overtime Requests
             </Text>
           </Box>
@@ -72,8 +72,8 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
                             )
                               ? dayjs(item?.start_time).format("DD/MM/YYYY")
                               : dayjs(item?.start_time).format(
-                                "DD/MM/YYYY"
-                              )}{" "}
+                                  "DD/MM/YYYY"
+                                )}{" "}
                             - {dayjs(item?.end_time).format("DD/MM/YYYY")}
                             {/* {new Date(item?.start_time).toLocaleDateString()} -{" "}
                             {new Date(item?.end_time).toLocaleDateString()} */}
@@ -99,7 +99,7 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
                   <Loader type="dots" color="orange" size="sm" />
                 </Box>
               ) : (
-                <Text c="dimmed" my={10} ta='center'>
+                <Text c="dimmed" my={10} ta="center">
                   No data available
                 </Text>
               )
@@ -108,7 +108,7 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
           <Button
             variant="outline"
             c="blue"
-            size="sm"
+            size="compact-sm"
             my={10}
             onClick={() => navigate("/overtime")}
           >

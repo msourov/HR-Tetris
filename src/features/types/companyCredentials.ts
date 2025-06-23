@@ -1,4 +1,4 @@
-import { Log, PaginatedApiResponse } from "./shared";
+import { getDataResponse, Log, PaginatedApiResponse } from "./shared";
 
 export interface CompanyCredential {
   id: number;
@@ -27,6 +27,8 @@ export interface CreateCredential {
 
 export interface CredentialsResponse
   extends PaginatedApiResponse<CompanyCredential[]> {}
+export interface CredentialDetailResponse
+  extends getDataResponse<CompanyCredential> {}
 
 export interface UpdateCredential extends CreateCredential {
   uid: string;

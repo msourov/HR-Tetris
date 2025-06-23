@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="bg-[#272929] text-white pt-8 border-white border-t">
+    <footer className="bg-[#dee2e2] pt-8 border-white border-t">
       <div className="mx-auto ">
         <div className="max-w-[90vw] mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Logo Column */}
@@ -10,7 +10,7 @@ const Footer = () => {
               alt="Company Logo"
               className="w-40 object-contain mb-4"
             />
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-600">
               A tech company transforming ideas into digital reality
             </p>
           </div>
@@ -32,7 +32,7 @@ const Footer = () => {
                 />
               </svg>
               <div>
-                <p className="text-sm text-gray-400">Contact</p>
+                <p className="text-sm text-gray-600">Contact</p>
                 <p>+880-123456789</p>
               </div>
             </div>
@@ -58,7 +58,7 @@ const Footer = () => {
                 />
               </svg>
               <div>
-                <p className="text-sm text-gray-400">Address</p>
+                <p className="text-sm text-gray-600">Address</p>
                 <p>Dhaka, Bangladesh</p>
               </div>
             </div>
@@ -66,7 +66,7 @@ const Footer = () => {
 
           {/* Description Column */}
           <div className="space-y-2">
-            <p className="text-sm text-gray-400">About Us</p>
+            <p className="text-sm text-gray-600">About Us</p>
             <p className="text-sm">
               Lorem Ipsum is a piece of text used by designers to fill space
               where content will eventually sit. It helps show how text will
@@ -76,8 +76,8 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="text-center py-6 border-t border-gray-600 bg-black">
-          <p className="text-sm text-gray-400">
+        <div className="text-center py-4 border-t border-gray-600 bg-black">
+          <p className="text-sm text-gray-600">
             &copy; 2024-2025 Infozillion. All rights reserved |{" "}
             <a
               href="https://www.infotelebd.com/"
