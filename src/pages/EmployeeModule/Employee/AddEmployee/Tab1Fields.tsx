@@ -70,7 +70,11 @@ const Tab1Fields: React.FC<Tab1FieldsProps> = ({
         label="Date of birth"
         placeholder="Pick date"
         {...register("bod")}
-        value={watch("bod") ? new Date(watch("bod")) : null}
+        value={
+          watch("bod") && !isNaN(new Date(watch("bod")).getTime())
+            ? new Date(watch("bod"))
+            : undefined
+        }
         onChange={(value) => {
           if (value) setValue("bod", value.toISOString());
         }}
