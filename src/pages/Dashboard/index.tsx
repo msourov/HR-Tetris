@@ -14,6 +14,14 @@ import {
   IconClock,
   IconClockFilled,
 } from "@tabler/icons-react";
+import {
+  Cell,
+  LabelList,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 
 const LeaveSection = lazy(() => import("./LeaveSection"));
 const OvertimeSection = lazy(() => import("./OvertimeSection"));
@@ -105,6 +113,19 @@ const Dashboard = () => {
     ? overtimeData?.data
     : [];
 
+  const attendanceData = [
+    { name: "Present", value: 18, color: "#16a34a" }, // green
+    { name: "Absent", value: 3, color: "#ef4444" }, // red
+    { name: "On Leave", value: 2, color: "#eab308" }, // yellow
+  ];
+  const ATT_COLORS = ["#22c55e", "#ef4444", "#eab308"];
+  const EMP_COLORS = ["#2563eb", "#d946ef"];
+
+  const employeeData = [
+    { name: "Active", value: 55, color: "#3b82f6" }, // blue
+    { name: "Inactive", value: 5, color: "#6b7280" }, // gray
+  ];
+
   // if (isLoading) {
   //   return <div className="flex justify-center items-center">loading...</div>;
   // }
@@ -117,7 +138,7 @@ const Dashboard = () => {
         <div className="flex flex-col xl:flex-row justify-evenly mb-6 gap-4 rounded-md">
           <Card
             withBorder
-            className="flex-1 min-w-[280px] shadow-lg w-full h-fit 
+            className="flex-1 min-w-[320px] shadow-lg w-full h-fit 
             justify-center gap-2 rounded-xl hover:shadow-md transition-shadow"
           >
             <div className="flex items-center gap-2 mb-2">
@@ -127,7 +148,7 @@ const Dashboard = () => {
 
             <div className="flex flex-col gap-3 w-full items-center">
               {/* Attendance Info */}
-              <div className="border h-[160px] w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3 py-2">
+              <div className="border w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3 py-2">
                 {/* Header */}
                 <div className="flex items-center gap-2">
                   <IconClockFilled color="#2563eb" size={24} />
@@ -139,61 +160,79 @@ const Dashboard = () => {
                 <Divider size="xs" w="100%" color="blue" />
 
                 {/* Dummy Attendance Stats */}
-                <div className="w-full flex flex-col gap-2 text-sm text-gray-600">
-                  <div className="flex justify-between items-center">
-                    <Text>Present</Text>
-                    <Text fw={600} className="text-green-600">
-                      18
-                    </Text>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <Text>Absent</Text>
-                    <Text fw={600} className="text-red-500">
-                      3
-                    </Text>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <Text>On Leave</Text>
-                    <Text fw={600} className="text-yellow-500">
-                      2
-                    </Text>
-                  </div>
-                </div>
+                <ResponsiveContainer width="100%" height={160}>
+                  <PieChart>
+                    <Pie
+                      data={attendanceData}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={60}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name }) => name} // label outside the pie
+                      labelLine={true}
+                    >
+                      {attendanceData.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={ATT_COLORS[index % ATT_COLORS.length]}
+                        />
+                      ))}
+                      <LabelList
+                        dataKey="value"
+                        position="inside"
+                        fill="#fff"
+                        fontSize={12}
+                        fontWeight={600}
+                      />
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
               </div>
 
               {/* Employees Info */}
-              <div className="border h-[160px] w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3 py-2">
+              <div className="border w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3 py-2">
                 {/* Header */}
                 <div className="flex items-center gap-2">
                   <IoIosPeople color="#2563eb" size={24} />
                   <Text className="text-gray-700 text-md font-thin">
-                    Employees
+                    Employee
                   </Text>
                 </div>
 
                 <Divider size="xs" w="100%" color="blue" />
 
                 {/* Employee Stats */}
-                <div className="w-full flex flex-col gap-2 text-sm text-gray-600">
-                  <div className="flex justify-between items-center">
-                    <Text>Total</Text>
-                    <Text fw={600} className="text-green-600">
-                      60
-                    </Text>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <Text>Active</Text>
-                    <Text fw={600} className="text-blue-500">
-                      55
-                    </Text>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <Text>Inactive</Text>
-                    <Text fw={600} className="text-gray-500">
-                      5
-                    </Text>
-                  </div>
-                </div>
+                <ResponsiveContainer width="100%" height={160}>
+                  <PieChart>
+                    <Pie
+                      data={employeeData}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={60}
+                      // fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, value }) => `${name}: ${value}`}
+                      labelLine={true}
+                    >
+                      {employeeData.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={EMP_COLORS[index % EMP_COLORS.length]}
+                        />
+                      ))}
+                      <LabelList
+                        dataKey="value"
+                        position="inside"
+                        fill="#fff"
+                        fontSize={12}
+                        fontWeight={600}
+                      />
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
               </div>
             </div>
           </Card>
@@ -201,7 +240,7 @@ const Dashboard = () => {
             withBorder
             radius="lg"
             shadow="sm"
-            className="w-full max-h-[410px] overflow-y-auto pr-2 lg:w-full xl:w-[440px] h-[460px] bg-white hover:shadow-md transition-all duration-300"
+            className="w-full overflow-y-auto pr-2 lg:w-full xl:w-[440px] max-h-[525px] bg-white hover:shadow-md transition-all duration-300"
           >
             <div className="flex items-center gap-2 mb-4 ">
               <IconCalendarEvent size={20} className="text-blue-600" />

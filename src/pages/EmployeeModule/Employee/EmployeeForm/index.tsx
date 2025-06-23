@@ -54,7 +54,15 @@ const getSchema = (type: string) =>
     designation: z.string().min(1, "Designation is required"),
     shift_and_schedule: z.string().min(1, "Shift and schedule is required"),
     supervisor: z.boolean(),
-    executives: z.array(z.string()).nullable().default([]),
+    executives: z
+      .array(
+        z.object({
+          value: z.string(),
+          label: z.string(),
+        })
+      )
+      .nullable()
+      .default([]),
     permissions: z.array(
       z.object({
         label: z.string(),
@@ -78,7 +86,7 @@ export type FormData = {
   designation: string;
   shift_and_schedule: string;
   supervisor: boolean;
-  executives: string[];
+  executives: { value: string; label: string }[];
   permissions: {
     label: string;
     name: string;
@@ -109,6 +117,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   } = useOptions();
 
   const editFormData = data?.data;
+
+  console.log(data, "data");
 
   const navigate = useNavigate();
 
@@ -194,6 +204,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       handlers.setState(transformPermissions(editFormData.employee_access));
   }, [editFormData]);
 
+  console.log(editFormData, "editFormData");
+
   useEffect(() => {
     if (type === "edit" && editFormData) {
       reset({
@@ -217,8 +229,20 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         shift_and_schedule: editFormData?.work?.shift_and_schedule?.uid || "",
         supervisor: editFormData?.work?.supervisor || false,
         executives: editFormData?.work?.supervisor
-          ? editFormData?.work?.executives
+          ? (editFormData?.work?.executives ?? [])
+              .filter(
+                (ex) =>
+                  typeof ex === "object" &&
+                  ex !== null &&
+                  "uid" in ex &&
+                  "name" in ex
+              )
+              .map((ex) => ({
+                value: (ex as { uid: string }).uid,
+                label: (ex as { name: string }).name,
+              }))
           : [],
+
         permissions: transformPermissions(editFormData.employee_access),
       });
     }
@@ -290,9 +314,11 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       bod: data.bod,
       joining_date: data.joining_date,
       executives: data?.supervisor
-        ? typeof data?.executives === "string"
-          ? [data?.executives]
-          : data?.executives
+        ? data?.executives
+            ?.filter(
+              (ex) => typeof ex === "object" && ex !== null && "value" in ex
+            )
+            .map((ex: { label: string; value: string }) => ex.value)
         : [],
     };
     const payload = { ...formattedData, ...preparedData };

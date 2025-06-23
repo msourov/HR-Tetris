@@ -22,6 +22,9 @@ const Tab2Fields: React.FC<Tab2FieldsProps> = ({
   shiftOptions,
   employeeOptions,
 }) => {
+  console.log("executives", JSON.stringify(watch("executives"), undefined, 2));
+  console.log("employeeOptions", JSON.stringify(employeeOptions, undefined, 2));
+
   return (
     <>
       <DatePickerInput
@@ -107,12 +110,22 @@ const Tab2Fields: React.FC<Tab2FieldsProps> = ({
           variant="filled"
           label="Select Subordinates"
           data={employeeOptions}
-          value={watch("executives") || []}
+          value={(watch("executives") ?? []).map((ex) => ex.value)}
           multiple
           searchable
           onChange={(value) => {
             if (value) {
-              setValue("executives", value);
+              const selectedExecutives = value
+                .map((val) => {
+                  const found = employeeOptions.find(
+                    (opt) => opt.value === val
+                  );
+                  return found
+                    ? { value: found.value, label: found.label }
+                    : undefined;
+                })
+                .filter(Boolean) as { value: string; label: string }[];
+              setValue("executives", selectedExecutives);
             }
           }}
           error={

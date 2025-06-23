@@ -22,11 +22,44 @@ import { useState } from "react";
 import { IconType } from "react-icons";
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import { getImageUrl } from "../../../../services/utils/getImageUrl";
-import { IconCheck, IconX } from "@tabler/icons-react";
+import { IconCamera, IconCheck, IconX } from "@tabler/icons-react";
 import InfoItem from "../../../../components/ui/InfoItem";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { notifications } from "@mantine/notifications";
+import axios from "axios";
+
+const SectionHeader = ({
+  icon: Icon,
+  title,
+}: {
+  icon?: IconType;
+  title: string;
+}) => (
+  <Flex gap="sm" align="center" mb="xl" className="border-b pb-2">
+    {Icon && <Icon size={20} className="text-blue-600" />}
+    <Text fw={600} size="lg" className="text-gray-700">
+      {title}
+    </Text>
+  </Flex>
+);
+
+const ProfileCard = ({ children }: { children: React.ReactNode }) => (
+  <Paper withBorder p="lg" className="bg-white rounded-lg shadow-sm">
+    {children}
+  </Paper>
+);
+
+const formatLabel = (key: string) => {
+  return key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()); // e.g. "leave_management" → "Leave Management"
+};
 
 const EmployeeDetail = () => {
   const { uid } = useParams();
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [imageKey, setImageKey] = useState(Date.now());
+  const [isUploading, setIsUploading] = useState(false);
+
   const {
     data: employee,
     isLoading,
@@ -35,6 +68,14 @@ const EmployeeDetail = () => {
   const [activeTab, setActiveTab] = useState<string | null>("personal");
   const { formatDate } = useFormatDate();
   const navigate = useNavigate();
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      const selectedFile = e.target.files[0];
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile));
+    }
+  };
 
   if (isLoading) {
     return (
@@ -51,50 +92,43 @@ const EmployeeDetail = () => {
   const { personal, work, emergency_contact, employee_access, logs } =
     employee.data;
 
-  const SectionHeader = ({
-    icon: Icon,
-    title,
-  }: {
-    icon?: IconType;
-    title: string;
-  }) => (
-    <Flex gap="sm" align="center" mb="xl" className="border-b pb-2">
-      {Icon && <Icon size={20} className="text-blue-600" />}
-      <Text fw={600} size="lg" className="text-gray-700">
-        {title}
-      </Text>
-    </Flex>
-  );
+  const handleUpload = async () => {
+    if (!file || !uid) return;
+    setIsUploading(true);
 
-  // const InfoItem = ({
-  //   label,
-  //   value,
-  // }: {
-  //   label: string;
-  //   value?: string | number;
-  // }) => (
-  //   <div className="mb-4">
-  //     <Text size="sm" className="text-gray-500 mb-1">
-  //       {label}
-  //     </Text>
-  //     <Text size="md" className="text-gray-800 font-medium">
-  //       {value || "N/A"}
-  //     </Text>
-  //   </div>
-  // );
+    try {
+      const formData = new FormData();
+      formData.append("employee_id", work?.employee_id);
+      formData.append("upload_file", file);
 
-  const ProfileCard = ({ children }: { children: React.ReactNode }) => (
-    <Paper withBorder p="lg" className="bg-white rounded-lg shadow-sm">
-      {children}
-    </Paper>
-  );
+      await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}employee/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = "/assets/employee_avatar.png";
-  };
+      notifications.show({
+        title: "Success",
+        message: "Profile image updated successfully",
+        color: "green",
+      });
 
-  const formatLabel = (key: string) => {
-    return key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()); // e.g. "leave_management" → "Leave Management"
+      setPreview(null);
+      setFile(null);
+      setImageKey(Date.now()); // triggers LazyLoadImage refresh
+    } catch (error) {
+      notifications.show({
+        title: "Error",
+        message: "Failed to upload image",
+        color: "red",
+      });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -109,19 +143,33 @@ const EmployeeDetail = () => {
       >
         {/* Left Section: Avatar + Info */}
         <Flex gap="xl" align="center">
-          <img
-            src={
-              getImageUrl(work?.employee_id) || "/assets/employee_avatar.png"
-            }
-            onError={handleImageError}
-            alt="Employee"
-            style={{
-              width: 120,
-              height: 120,
-              borderRadius: "50%",
-              objectFit: "cover",
-            }}
-          />
+          <div className="relative w-[120px] h-[120px]">
+            <LazyLoadImage
+              src={preview || `${getImageUrl(work?.employee_id)}?t=${imageKey}`}
+              alt="Profile Picture"
+              effect="blur"
+              className="aspect-square w-36 rounded-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.onerror = null;
+                target.src = "/assets/employee_avatar.png";
+              }}
+            />
+            <label
+              htmlFor="file-upload"
+              className="absolute bottom-0 right-0 flex items-center justify-center bg-blue-500 text-white rounded-full p-1 cursor-pointer shadow-md hover:bg-blue-600 transition-colors"
+            >
+              <IconCamera size={18} />
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/png,image/jpeg"
+              className="hidden"
+              onChange={handleImageChange}
+            />
+          </div>
+
           <div>
             <Text fw={700} size="xl" className="text-gray-800 mb-1">
               {personal.name}
@@ -141,12 +189,24 @@ const EmployeeDetail = () => {
         </Flex>
 
         {/* Right Section: Edit Button */}
-        <Button
-          color="blue"
-          onClick={() => navigate(`/employees/${uid}/edit-employee`)}
-        >
-          Edit
-        </Button>
+        <div className="flex flex-col gap-2">
+          <Button
+            color="blue"
+            onClick={() => navigate(`/employees/${uid}/edit-employee`)}
+          >
+            Edit
+          </Button>
+          {file && (
+            <Button
+              color="blue"
+              variant="light"
+              onClick={handleUpload}
+              loading={isUploading}
+            >
+              Upload Image
+            </Button>
+          )}
+        </div>
       </Flex>
 
       <Grid gutter="xl">

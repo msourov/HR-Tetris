@@ -21,17 +21,17 @@ const DesignationList = () => {
   return (
     <Box className="mt-6">
       <SimpleGrid
-        cols={{ base: 1, sm: 2, md: 3, xl: 4 }}
+        cols={{ base: 1, sm: 2, md: 4, xl: 5 }}
         spacing={{ base: 10, sm: "xl" }}
         verticalSpacing={{ base: "md", sm: "xl" }}
       >
         {designationData?.data?.map((item) => (
           <CardGlass
             key={item?.uid}
-            className="text-center flex-auto p-4 max-w-full overflow-hidden py-6 gap-2 cursor-pointer"
+            className="w-full hover:cursor-pointer"
             onClick={() => navigate(`${item?.uid}/detail`)}
           >
-            <Text fw={500} size="lg" className="truncate">
+            <Text fw={500} size="md" className="truncate">
               {item?.name}
             </Text>
             <Text component="span">

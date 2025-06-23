@@ -21,20 +21,17 @@ const DepartmentList = () => {
   return (
     <div className="mt-6">
       <SimpleGrid
-        cols={{ sm: 3, md: 5, xl: 6 }}
+        cols={{ sm: 2, md: 4, xl: 5 }}
         spacing={{ base: 10, sm: "xl" }}
         verticalSpacing={{ base: "md", sm: "xl" }}
       >
         {departmentData?.data?.map((item) => (
           <CardGlass
-            key={item?.uid}
-            // component="a"
-            // maw={250}
-            className="text-center flex-auto max-w-full overflow-hidden py-6 gap-2 cursor-pointer"
-            onClick={() => navigate(`${item?.uid}/detail`)}
+            key={item.uid}
+            className="w-full hover:cursor-pointer"
+            onClick={() => navigate(`${item.uid}/detail`)}
           >
             <p className="font-medium text-md truncate">{item?.name}</p>
-            {/* <Card.Section className="flex py-4 px-2 justify-end"> */}
             <span>
               <Pill
                 size="sm"

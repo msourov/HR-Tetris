@@ -1,4 +1,3 @@
-import { Card } from "@mantine/core";
 import React from "react";
 
 interface CardGlassProps {
@@ -7,32 +6,18 @@ interface CardGlassProps {
   onClick?: () => void;
 }
 
-const CardGlass = ({
-  children,
-  className = "",
-  onClick,
-  ...props
-}: CardGlassProps) => {
+const CardGlass = ({ children, className = "", onClick }: CardGlassProps) => {
   return (
-    <Card
-      padding="md"
-      radius="lg"
-      withBorder={false}
+    <div
       onClick={onClick}
-      className={`relative bg-gradient-to-br from-[rgba(255,255,255,0.15)] to-[rgba(255,255,255,0.05)] 
-                 backdrop-blur-xl border border-white/20 shadow-lg
-                 overflow-visible ${className}`} // Added overflow-visible
-      {...props}
+      className={`relative rounded-lg border border-white/20 shadow-md overflow-hidden ${className}`}
     >
-      {/* Frosted glass base layer */}
-      <div
-        className="absolute inset-0 bg-white/5 backdrop-blur-2xl rounded-xl"
-        style={{ zIndex: -1 }} // Explicit z-index
-      />
+      {/* Glass effect layer */}
+      <div className="absolute bg-white/10 backdrop-blur-md shadow-md" />
 
-      {/* Inner content container */}
-      <div className="relative z-10">{children}</div>
-    </Card>
+      {/* Content container */}
+      <div className=" z-10 p-4">{children}</div>
+    </div>
   );
 };
 
