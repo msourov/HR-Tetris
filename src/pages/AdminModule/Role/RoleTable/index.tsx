@@ -1,8 +1,9 @@
-import { Table } from "@mantine/core";
+import { Pagination, Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
 import { Role } from "../../../../features/api/typesOld";
 import TableItem from "./TableItem";
 import { useGetRolesQuery } from "../../../../features/api/roleSlice";
+import { useState } from "react";
 
 export type ColorMap = {
   UM: string;
@@ -75,7 +76,12 @@ const AcronymDetails = () => {
 };
 
 const RoleTable: React.FC = () => {
-  const { data, isLoading, error } = useGetRolesQuery({ page: 1, limit: 10 });
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  const { data, isLoading, isFetching, error } = useGetRolesQuery({
+    page: page,
+    limit: limit,
+  });
   const roles: Role[] = data?.data || [];
   console.log(error, "error");
   return (
@@ -83,8 +89,17 @@ const RoleTable: React.FC = () => {
       <div className="flex-1 border">
         <Table striped highlightOnHover>
           <TableHeading />
-          <TableItem data={roles} loading={isLoading} />
+          <TableItem data={roles} loading={isLoading} error={error} />
         </Table>
+        <div className="px-4 pt-8 pb-4 flex justify-end">
+          <Pagination
+            total={data?.pagination?.total_pages ?? 0}
+            value={page}
+            onChange={setPage}
+            color="blue"
+            disabled={isFetching}
+          />
+        </div>
       </div>
 
       <AcronymDetails />

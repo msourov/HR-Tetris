@@ -1,4 +1,4 @@
-import { Pagination, Table, TextInput } from "@mantine/core";
+import { Pagination, Select, Table, TextInput } from "@mantine/core";
 import { useGetEmployeesQuery } from "../../../../features/api/employeeSlice";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
@@ -10,6 +10,7 @@ const EmplyeeTable = () => {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch] = useDebouncedValue(searchTerm, 500);
+  const [selectedShift, setSelectedShift] = useState<string | null>(null);
 
   const limit = 10;
 
@@ -24,24 +25,60 @@ const EmplyeeTable = () => {
     search: debouncedSearch,
   });
 
+  // useEffect(() => {
+  //   const filteredData =
+  //     employees?.data?.filter((emp) => {
+  //       const matchedShift = selectedShift
+  //         ? emp.work.shift_and_schedule?.name.split(" ")[0].toLowerCase() ===
+  //           selectedShift
+  //         : true;
+
+  //       return matchedShift;
+  //     }) ?? [];
+  //   setData(filteredData || employees?.data);
+  // }, [selectedShift]);
+
+  const paginatedData = employees?.data;
+
   return (
-    <div className="space-y-4 w-full">
-      <div className="mt-4 mb-8 w-[90%] mx-auto">
-        <TextInput
-          label={
-            <p className="text-gray-500 font-thin">
-              Search employees by Name, EID, Phone or Email
-            </p>
-          }
-          placeholder="Enter text to search"
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.currentTarget.value);
-            setPage(1);
-          }}
-          rightSection={<IconSearch />}
-          className="w-full h-[10]"
-        />
+    <div className="space-y-2 w-full">
+      <div className="mt-2 mb-4 flex justify-start mx-6 gap-4">
+        <div className="w-[50%]">
+          <TextInput
+            label={
+              <p className="text-gray-500 font-thin">
+                Search employees by Name, EID, Phone or Email
+              </p>
+            }
+            placeholder="Enter text to search"
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.currentTarget.value);
+              setPage(1);
+            }}
+            rightSection={<IconSearch />}
+            className="w-full h-[10]"
+          />
+        </div>
+
+        <div className="w-[30%]">
+          <Select
+            label={<p className="text-gray-500 font-thin">Filter by Shift</p>}
+            placeholder="All Shifts"
+            value={selectedShift}
+            onChange={(value) => {
+              setSelectedShift(value);
+              setPage(1);
+            }}
+            data={[
+              { value: "morning", label: "Morning" },
+              { value: "evening", label: "Evening" },
+              { value: "day", label: "Day" },
+            ]}
+            clearable
+            className="w-[200px]"
+          />
+        </div>
       </div>
 
       <Table striped highlightOnHover>
@@ -49,7 +86,7 @@ const EmplyeeTable = () => {
         <TableItem
           page={employees?.pagination?.page ?? 1}
           limit={employees?.pagination?.page_size ?? 10}
-          data={employees?.data || []}
+          data={paginatedData || []}
           isLoading={isLoading || isFetching}
           error={error}
         />

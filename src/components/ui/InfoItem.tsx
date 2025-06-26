@@ -27,7 +27,7 @@ const InfoItem = ({
       >
         <Text
           className={`${multiline ? "whitespace-pre-wrap" : ""} ${
-            highlight ? "font-semibold text-gray-900" : "text-gray-700"
+            highlight ? "text-sm font-semibold text-gray-900" : "text-gray-700"
           }`}
         >
           {value || "--"}
@@ -36,7 +36,7 @@ const InfoItem = ({
     ) : (
       <Text
         className={`${multiline ? "whitespace-pre-wrap" : ""} ${
-          highlight ? "font-semibold text-gray-900" : "text-gray-700"
+          highlight ? "text-sm text-gray-900" : "text-gray-700"
         }`}
       >
         {value || "--"}

@@ -27,7 +27,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     <Box
       w={"100%"}
       px={"2.25rem"}
-      className="flex justify-between items-center mb-4 py-4"
+      className="flex justify-between items-center mb-2 py-3"
     >
       <div className="space-y-4">
         {Breadcrumb && (
@@ -43,15 +43,14 @@ const PageHeader: React.FC<PageHeaderProps> = ({
             </Text>
           </Group>
         )}
-        <div
-          className="flex items-center border px-2 py-1 text-sm border-gray-400 gap-2 w-fit rounded-lg  hover:bg-gray-200"
+
+        <button
           onClick={() => navigate(-1)}
+          className="flex items-center shadow-md bg-white justify-center gap-1 border border-white/20 text-gray-600 hover:bg-gray-200 rounded py-[4px] text-xs w-[65px] my-6"
         >
-          <span>
-            <IoMdReturnLeft size={16} color="gray" />
-          </span>
-          <button className="text-gray-500">Back</button>
-        </div>
+          <IoMdReturnLeft size={16} color="gray" />
+          Back
+        </button>
       </div>
       {ShowAddButton && (
         <Button
@@ -59,7 +58,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           color="white"
           c="blue"
           size="sm"
-          className="shadow-md text-sm hover:bg-blue-100 hover:text-white border-blue-300"
+          className="shadow-md text-sm hover:shadow-lg border-blue-300"
           leftSection={Operation === "Add" && <IconPlus size={16} />}
           onClick={() =>
             navigate(`${Heading !== "Home Office" ? `add-${route}` : "create"}`)

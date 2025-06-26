@@ -10,7 +10,7 @@ import { useState } from "react";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import { IconCamera, IconCheck, IconX } from "@tabler/icons-react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import UserImage from "../../../../components/core/UserImage";
 
 const UserDetail: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -22,8 +22,6 @@ const UserDetail: React.FC = () => {
   const { data, isLoading, error } = useGetUserDetailQuery(
     uid ? { uid } : skipToken
   );
-
-  console.log(data, "data");
 
   const mobile = data?.data[0]?.mobile ?? "";
 
@@ -113,7 +111,7 @@ const UserDetail: React.FC = () => {
       <Card withBorder radius="md" className="w-full flex-1 md:w-1/3 bg-white">
         <Card.Section p="md" className="flex flex-col items-center">
           <div className="relative w-36 h-36 mb-4">
-            <LazyLoadImage
+            {/* <LazyLoadImage
               src={preview || `${getImageUrl(mobile)}?t=${imageKey}`}
               alt="Profile Picture"
               effect="blur"
@@ -123,6 +121,11 @@ const UserDetail: React.FC = () => {
                 target.onerror = null;
                 target.src = "/assets/profile-picture.png";
               }}
+            /> */}
+            <UserImage
+              src={preview || getImageUrl(mobile)}
+              imageKey={imageKey}
+              className="w-full h-full mb-4"
             />
 
             <label

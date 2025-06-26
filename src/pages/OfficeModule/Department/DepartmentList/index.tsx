@@ -28,7 +28,7 @@ const DepartmentList = () => {
         {departmentData?.data?.map((item) => (
           <CardGlass
             key={item.uid}
-            className="w-full hover:cursor-pointer"
+            className="w-full hover:cursor-pointer bg-white/80"
             onClick={() => navigate(`${item.uid}/detail`)}
           >
             <p className="font-medium text-md truncate">{item?.name}</p>

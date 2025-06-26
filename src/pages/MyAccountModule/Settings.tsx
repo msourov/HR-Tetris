@@ -43,11 +43,11 @@ const Settings = () => {
     console.log("Form submitted:", data);
     const uid = localStorage.getItem("uid") || "";
     const payload: { uid: string; old_password: string; new_password: string } =
-    {
-      uid: uid,
-      old_password: data.currentPassword,
-      new_password: data.password.newPassword,
-    };
+      {
+        uid: uid,
+        old_password: data.currentPassword,
+        new_password: data.password.newPassword,
+      };
     try {
       const response = await changeOwnPassword(payload).unwrap();
       console.log(response);
@@ -135,44 +135,3 @@ const Settings = () => {
 };
 
 export default Settings;
-
-// const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-//   e.preventDefault();
-//   if (!file) {
-//     alert("Please select a file to upload.");
-//     return;
-//   }
-
-//   const formData = new FormData();
-//   formData.append("mobile", mobile);
-//   formData.append("upload_file", file);
-
-//   try {
-//     const response = await axios.post(
-//       `${import.meta.env.VITE_APP_BASE_URL}role-user/upload`,
-//       formData
-//     );
-//     console.log(response);
-//     notifications.show({
-//       title: "Success!",
-//       message: response.data.message || "Image uploaded succesfully",
-//       icon: <IconCheck />,
-//       color: "green",
-//       autoClose: 3000,
-//     });
-
-//     setPreview(URL.createObjectURL(file));
-//     refetch();
-//   } catch (error) {
-//     console.error(error);
-//     console.error(error);
-//     notifications.show({
-//       title: "Error!",
-//       message:
-//         (error as ErrorResponse).data.detail || "Couldn't update password",
-//       icon: <IconX />,
-//       color: "red",
-//       autoClose: 3000,
-//     });
-//   }
-// };

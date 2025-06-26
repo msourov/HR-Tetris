@@ -35,6 +35,7 @@ import { useGetEmployeeHelperQuery } from "../../../../features/api/employeeSlic
 import AppLoader from "../../../../components/ui/AppLoader";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import CardGlass from "../../../../components/ui/CardGlass";
+import AppModal from "../../../../components/ui/AppModal";
 
 const createSchema = z.object({
   employee_id: z.string().min(1, "Employee ID is required"),
@@ -137,7 +138,7 @@ const PayrollList = () => {
           payrolls?.map((item) => (
             <CardGlass
               key={item.uid}
-              className="cursor-pointer transition-transform duration-200 hover:-translate-y-[2px] hover:shadow-lg"
+              className="cursor-pointer hover:shadow-md bg-slate-200"
               onClick={() => handleViewDetail(item)}
             >
               <Group justify="space-between" wrap="nowrap">
@@ -206,7 +207,12 @@ const PayrollList = () => {
       </div>
 
       {/* Detail Modal */}
-      <Modal opened={detailOpened} onClose={closeDetail} size="lg" radius="md">
+      <AppModal
+        opened={detailOpened}
+        onClose={closeDetail}
+        size="lg"
+        radius="md"
+      >
         {selectedPayroll && (
           <Stack gap="lg">
             {/* Employee Info Section */}
@@ -301,7 +307,7 @@ const PayrollList = () => {
             </Paper>
           </Stack>
         )}
-      </Modal>
+      </AppModal>
 
       {/* Create Modal */}
       <Modal

@@ -8,11 +8,7 @@ const Loan = () => {
   const [opened, { open, close }] = useDisclosure(false);
   return (
     <div>
-      <Box
-        w={"100%"}
-        px={"2.25rem"}
-        className="flex justify-end mb-6 py-4 mt-6"
-      >
+      <Box w={"100%"} px={"2.25rem"} className="flex justify-end py-4 my-2">
         <Button
           variant="filled"
           color="white"
@@ -27,7 +23,7 @@ const Loan = () => {
       </Box>
 
       <div className="flex flex-col">
-        <div className="w-[95%] mb-8 mx-auto max-h-fit bg-white rounded-lg drop-shadow-lg flex-1 overflow-auto">
+        <div className="w-[95%] mb-8 mx-auto max-h-fit bg-white flex-1 overflow-auto">
           <LoanTable />
         </div>
       </div>

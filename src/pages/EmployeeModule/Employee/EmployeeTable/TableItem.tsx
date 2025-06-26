@@ -6,6 +6,7 @@ import EmployeeActions from "./EmployeeActions";
 import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
 import { Employee } from "../../../../features/types/employee";
 import { getImageUrl } from "../../../../services/utils/getImageUrl";
+import UserImage from "../../../../components/core/UserImage";
 
 interface TableItemProps {
   data: Employee[];
@@ -28,10 +29,6 @@ const TableItem: React.FC<TableItemProps> = ({
   page,
   limit,
 }) => {
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = "/assets/employee_avatar.png";
-  };
-
   if (isLoading) {
     return <CommonSkeleton cols={9} rows={5} />;
   }
@@ -39,9 +36,11 @@ const TableItem: React.FC<TableItemProps> = ({
     return <ErrorAlert message="Error fetching users" />;
   }
 
+  console.log(data, data?.length);
+
   return (
     <Table.Tbody
-      className="text-gray-700 font-medium border-b bg-gray-100"
+      className="text-gray-700 font-medium border-b bg-gray-100 overflow-x-auto"
       style={{ fontSize: "13px" }}
     >
       {data.length === 0 ? (
@@ -58,15 +57,24 @@ const TableItem: React.FC<TableItemProps> = ({
             </Table.Td>
             <Table.Td style={{ width: "25%" }}>
               <div className="flex items-center gap-3">
-                <img
-                  src={getImageUrl(item?.work?.employee_id)}
-                  alt={item.personal?.name}
-                  className="w-10 h-10 rounded-full object-cover border"
-                  onError={handleImageError}
-                />
-                <span className="text-sm font-medium text-gray-800 truncate">
-                  {item.personal?.name}
-                </span>
+                <div style={{ width: 40, height: 40 }}>
+                  <UserImage
+                    src={getImageUrl(item?.work?.employee_id)}
+                    size={40}
+                    className="border"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-sm font-medium text-gray-800 truncate min-w-[80px]">
+                    {item.personal?.name}
+                  </span>
+                  {item?.work?.supervisor && (
+                    <span className="text-xs text-green-500 font-semibold w-[80px] text-center px-1 py-0.5 rounded-md ring-1 ring-green-300 shadow-[0_0_6px_#22c55e]">
+                      {item?.work?.supervisor ? "Supervisor" : ""}
+                    </span>
+                  )}
+                </div>
               </div>
             </Table.Td>
 
@@ -80,7 +88,7 @@ const TableItem: React.FC<TableItemProps> = ({
               {item.personal?.email || "N/A"}
             </Table.Td>
 
-            <Table.Td style={{ width: "10%" }}>
+            <Table.Td style={{ width: "5%" }}>
               {item?.work?.shift_and_schedule?.name ? (
                 <Pill
                   className={`${

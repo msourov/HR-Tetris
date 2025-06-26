@@ -103,7 +103,7 @@ const PolicyList = () => {
     <Box className="mt-6">
       <Divider
         label={
-          <Text className="font-bold text-xl text-gray-500">Policies</Text>
+          <Text className="font-semibold text-lg text-gray-500">Policies</Text>
         }
         labelPosition="center"
         className="my-6"

@@ -8,6 +8,7 @@ import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
 import { getImageUrl } from "../../../../services/utils/getImageUrl";
 import { IconPhone } from "@tabler/icons-react";
+import UserImage from "../../../../components/core/UserImage";
 
 interface TableItemProps {
   page: number;
@@ -30,10 +31,6 @@ const TableItem: React.FC<TableItemProps> = ({
   isLoading,
   error,
 }) => {
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = "/assets/employee_avatar.png";
-  };
-
   if (isLoading) {
     return <CommonSkeleton cols={6} rows={5} />;
   }
@@ -56,11 +53,9 @@ const TableItem: React.FC<TableItemProps> = ({
           </Table.Td>
           <Table.Td style={{ width: "25%" }}>
             <div className="flex items-center gap-3">
-              <img
+              <UserImage
                 src={getImageUrl(item?.mobile)}
-                alt={item?.name}
                 className="w-10 h-10 rounded-full object-cover border"
-                onError={handleImageError}
               />
               <span className="text-sm font-medium text-gray-800 truncate">
                 {item.name}

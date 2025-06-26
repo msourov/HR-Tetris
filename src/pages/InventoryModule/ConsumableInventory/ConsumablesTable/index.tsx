@@ -15,7 +15,7 @@ const ConsumableTable = () => {
 
   return (
     <>
-      <Table>
+      <Table striped highlightOnHover>
         <TableHeading />
         <TableItem
           page={data?.pagination?.page ?? 1}

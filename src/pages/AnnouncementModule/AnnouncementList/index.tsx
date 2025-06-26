@@ -1,5 +1,5 @@
 // AnnouncementList.tsx
-import { Card, Loader, Modal, Pill, SimpleGrid } from "@mantine/core";
+import { Card, Loader, Pill, SimpleGrid } from "@mantine/core";
 import {
   useApproveAnnouncementMutation,
   useGetAllAnnouncementsQuery,
@@ -8,9 +8,11 @@ import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
-import { Response, Announcement } from "../../../features/api/typesOld";
 import AppApprovalStatus from "../../../components/core/AppApprovalStatus";
 import AnnouncementDetails from "./AnnouncementDetail";
+import { Announcement } from "../../../features/types/announcement";
+import { Response } from "../../../features/types/shared";
+import AppModal from "../../../components/ui/AppModal";
 
 const AnnouncementList = () => {
   const [value, setValue] = useState("");
@@ -38,7 +40,7 @@ const AnnouncementList = () => {
     try {
       const response = await approveAnnouncement({
         uid,
-        is_approve: "approved",
+        is_approved: "approved",
         reject_purpose: value,
       });
       if ("data" in response) {
@@ -70,7 +72,7 @@ const AnnouncementList = () => {
     try {
       const response = await approveAnnouncement({
         uid,
-        is_approve: "rejected",
+        is_approved: "rejected",
         reject_purpose: value,
       });
       if ("data" in response) {
@@ -110,7 +112,7 @@ const AnnouncementList = () => {
             component="a"
             withBorder
             maw={450}
-            className="text-center border-blue-200 flex-auto max-w-full overflow-hidden gap-2 cursor-pointer bg-gray-50"
+            className="text-center bg-[#FFFFE0] border-blue-200 flex-auto max-w-full overflow-hidden gap-2 cursor-pointer"
             onClick={() => {
               setSelectedAnnouncement(announcement);
               open();
@@ -122,7 +124,7 @@ const AnnouncementList = () => {
                 {announcement.name}
               </p>
               <p className="text-right">
-                <AppApprovalStatus status={announcement.is_approve} />
+                <AppApprovalStatus status={announcement.is_approved} />
               </p>
             </div>
 
@@ -147,15 +149,11 @@ const AnnouncementList = () => {
         ))}
       </SimpleGrid>
       {selectedAnnouncement && (
-        <Modal
+        <AppModal
           opened={opened}
           onClose={close}
           size="xl"
-          withCloseButton={false}
-          overlayProps={{
-            backgroundOpacity: 0.55,
-            blur: 3,
-          }}
+          withCloseButton={true}
         >
           <AnnouncementDetails
             announcement={selectedAnnouncement}
@@ -164,7 +162,7 @@ const AnnouncementList = () => {
             handleApproveAnnouncement={handleApproveAnnouncement}
             handleRejectAnnouncement={handleRejectAnnouncement}
           />
-        </Modal>
+        </AppModal>
       )}
     </div>
   );

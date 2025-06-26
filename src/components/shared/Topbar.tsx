@@ -35,8 +35,8 @@ const Topbar = () => {
             </div>
           </Menu.Target>
           <Menu.Dropdown className="shadow-none bg-transparent border-none p-0">
-            <CardGlass className="w-[260px] p-4">
-              <div className="flex flex-col gap-2 text-sm text-gray-700">
+            <CardGlass className="w-[260px] p-4 bg-black/40 border text-white">
+              <div className="flex flex-col gap-2 text-sm">
                 <Text fw={600}>Notifications</Text>
                 <Divider />
                 <Text>No new notifications</Text>
@@ -61,22 +61,26 @@ const Topbar = () => {
               />
             </button>
           </Menu.Target>
-          <Menu.Dropdown className="bg-white shadow-md rounded-lg text-xs">
-            <div className="w-[160px]">
+          <Menu.Dropdown className="bg-transparent rounded-lg text-xs border-none">
+            <CardGlass className="w-[260px] bg-black/60 border text-white">
               <Menu.Item
                 leftSection={<FaRegCircleUser size={16} />}
                 onClick={() => navigate("/profile")}
                 className={`cursor-pointer ${
-                  pathname === "/profile" ? "text-blue-500" : "text-gray-500"
+                  pathname === "/profile"
+                    ? "text-blue-400"
+                    : "text-white  hover:text-black"
                 }`}
               >
                 Profile
               </Menu.Item>
               <Menu.Item
+                disabled={true}
                 leftSection={<RiSettings2Line size={16} />}
-                onClick={() => navigate("/settings")}
-                className={`cursor-pointer ${
-                  pathname === "/settings" ? "text-blue-500" : "text-gray-500"
+                className={`${
+                  pathname === "/settings"
+                    ? "text-blue-500"
+                    : "text-white  hover:text-black"
                 }`}
               >
                 Settings
@@ -88,7 +92,7 @@ const Topbar = () => {
               >
                 Logout
               </Menu.Item>
-            </div>
+            </CardGlass>
           </Menu.Dropdown>
         </Menu>
 

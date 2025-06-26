@@ -1,6 +1,6 @@
 // AnnouncementDetails.tsx
 import { Button, Card, Pill, Textarea } from "@mantine/core";
-import { Announcement } from "../../../features/api/typesOld";
+import { Announcement } from "../../../features/types/announcement";
 
 interface AnnouncementDetailsProps {
   announcement: Announcement;
@@ -19,23 +19,29 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({
 }) => {
   return (
     <>
-      <Card>
+      <Card className="p-0">
         <p className="font-medium text-xl text-center mb-4 text-[#212922]">
           {announcement.name}
         </p>
-        <p className="font-medium text-md text-gray-500 text-left mb-6 border px-2 py-4 text-[#212922]">
+        <Textarea
+          autosize
+          minRows={2}
+          maxRows={8}
+          className="font-medium text-md text-gray-600 text-left mb-4 py-4"
+        >
           {announcement.descriptions}
-        </p>
-        <p className="text-left text-sm">
-          Created By {announcement.creator_name}
+        </Textarea>
+        <p className="text-left text-sm text-gray-500">
+          Created by{" "}
+          <span className="text-blue-600">{announcement.creator_name}</span>
         </p>
         <p>
-          <Pill size="md" className="text-gray-500 my-10">
+          <Pill size="md" className="text-gray-500 my-4">
             {announcement.department_name}
           </Pill>
         </p>
       </Card>
-      {announcement.is_approve === "pending" && (
+      {announcement.is_approved === "pending" && (
         <Textarea
           variant="filled"
           placeholder="Reason for rejection"
@@ -45,7 +51,7 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({
           onChange={(event) => setValue(event.currentTarget.value)}
         />
       )}
-      {announcement.is_approve === "pending" ? (
+      {announcement.is_approved === "pending" ? (
         <div className="flex justify-end gap-4">
           <Button
             variant="filled"

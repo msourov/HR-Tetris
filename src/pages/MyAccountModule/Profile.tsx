@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Group, Text } from "@mantine/core";
+import { Button, Card, Grid, Group, PasswordInput, Text } from "@mantine/core";
 import {
   IconCamera,
   IconCheck,
@@ -15,23 +15,99 @@ import axios from "axios";
 import { getImageUrl } from "../../services/utils/getImageUrl";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { useDisclosure } from "@mantine/hooks";
+import AppModal from "../../components/ui/AppModal";
+import { MdOutlineLock } from "react-icons/md";
+import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useChangeOwnPasswordMutation } from "../../features/api/userSlice";
+import { ErrorResponse } from "react-router-dom";
+
+const schema = z.object({
+  currentPassword: z
+    .string()
+    .min(6, "Current password must be at least 6 characters long"),
+  password: z
+    .object({
+      newPassword: z
+        .string()
+        .min(6, "New password must be at least 6 characters long"),
+      confirmPassword: z.string().min(6, "Confirm password is required"),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: "Passwords do not match",
+      path: ["confirmPassword"],
+    }),
+});
+
+type SettingsFormValues = z.infer<typeof schema>;
 
 const Profile = () => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [imageKey, setImageKey] = useState(Date.now());
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const [changeOwnPassword, { isLoading, error }] =
+    useChangeOwnPasswordMutation();
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SettingsFormValues>({
+    resolver: zodResolver(schema),
+  });
+
+  console.error(error);
 
   const { name, id: mobile } = useSelector(
     (state: RootState) => state.auth.user
   );
-  // const mobile = localStorage.getItem("userId") ?? "";
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
       setPreview(URL.createObjectURL(selectedFile));
+    }
+  };
+
+  const onSubmit: SubmitHandler<SettingsFormValues> = async (data) => {
+    console.log("Form submitted:", data);
+    const uid = localStorage.getItem("uid") || "";
+    const payload: { uid: string; old_password: string; new_password: string } =
+      {
+        uid: uid,
+        old_password: data.currentPassword,
+        new_password: data.password.newPassword,
+      };
+    try {
+      const response = await changeOwnPassword(payload).unwrap();
+      console.log(response);
+      notifications.show({
+        title: "Success!",
+        message: response.message || "Succesfully updated password",
+        icon: <IconCheck />,
+        color: "green",
+        autoClose: 3000,
+      });
+    } catch (error) {
+      console.error(error);
+      notifications.show({
+        title: "Error!",
+        message:
+          (error as ErrorResponse).data.detail || "Couldn't update password",
+        icon: <IconX />,
+        color: "red",
+        autoClose: 3000,
+      });
+    } finally {
+      reset();
+      close();
     }
   };
 
@@ -77,17 +153,18 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4">
       <div className="max-w-3xl mx-auto">
-        <div className="bg-gradient-to-r from-blue-600 to-orange-500 p-0.5 rounded-2xl shadow-xl mb-10">
+        <div className="rounded-2xl shadow-lg mb-10">
           <Card
-            padding="xl"
+            px="xl"
+            py="lg"
             radius="lg"
             className="bg-white relative overflow-visible"
           >
             {/* Decorative elements */}
             {/* <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-orange-500 w-24 h-1.5 rounded-full"></div> */}
 
-            <div className="text-center mb-6">
-              <Text size="xl" fw={700} className="text-blue-800">
+            <div className="text-left mb-6">
+              <Text size="lg" fw={700} className="text-blue-800">
                 Your Profile
               </Text>
               <Text size="sm" className="text-gray-500">
@@ -100,7 +177,7 @@ const Profile = () => {
                 {/* Profile picture section */}
                 <div className="flex flex-col items-center md:items-start">
                   <div className="relative">
-                    <div className="relative w-40 h-40 rounded-full shadow-lg">
+                    <div className="relative w-36 h-36 rounded-full shadow-lg">
                       <div className="w-full h-full bg-white rounded-full">
                         {preview || mobile ? (
                           <LazyLoadImage
@@ -110,7 +187,7 @@ const Profile = () => {
                             }
                             alt="Profile Picture"
                             effect="blur"
-                            className="aspect-square w-40 object-cover rounded-full"
+                            className="aspect-square w-36 object-cover rounded-full"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               target.onerror = null;
@@ -119,7 +196,7 @@ const Profile = () => {
                           />
                         ) : (
                           <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
-                            <IconUser size={80} className="text-gray-400" />
+                            <IconUser size={60} className="text-gray-400" />
                           </div>
                         )}
                       </div>
@@ -127,9 +204,9 @@ const Profile = () => {
 
                     <label
                       htmlFor="file-upload"
-                      className="absolute -bottom-2 -right-2 flex items-center justify-center bg-white text-blue-600 rounded-full p-2 cursor-pointer shadow-lg hover:bg-blue-50 transition-all border-2 border-blue-100"
+                      className="absolute -bottom-1 -right-1 flex items-center justify-center bg-white text-blue-600 rounded-full p-2 cursor-pointer shadow-lg hover:bg-blue-50 transition-all border-2 border-blue-100"
                     >
-                      <IconCamera size={24} />
+                      <IconCamera size={18} />
                     </label>
 
                     <input
@@ -153,7 +230,7 @@ const Profile = () => {
 
                 {/* Profile information */}
                 <div className="flex-1">
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     <div>
                       <Text size="sm" className="text-gray-500 mb-1">
                         Full Name
@@ -210,13 +287,13 @@ const Profile = () => {
 
         {/* Additional profile info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="border border-blue-100 bg-white rounded-xl shadow-sm">
+          <Card className="border shadow-lg border-blue-100 bg-white rounded-xl">
             <Text
               size="lg"
-              fw={600}
+              fw={500}
               className="text-gray-800 mb-4 flex items-center gap-2"
             >
-              <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+              <div className="w-7 h-7 rounded-lg bg-orange-100 flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 text-orange-500"
@@ -254,13 +331,13 @@ const Profile = () => {
             </div>
           </Card>
 
-          <Card className="border border-blue-100 bg-white rounded-xl shadow-sm">
+          <Card className="border shadow-lg border-blue-100 bg-white rounded-xl">
             <Text
               size="lg"
-              fw={600}
+              fw={500}
               className="text-gray-800 mb-4 flex items-center gap-2"
             >
-              <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+              <div className="w-7 h-7 rounded-lg bg-blue-100 flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 text-blue-500"
@@ -286,7 +363,7 @@ const Profile = () => {
                     Last changed 3 months ago
                   </Text>
                 </div>
-                <Button variant="outline" color="blue" size="sm">
+                <Button variant="outline" color="blue" size="sm" onClick={open}>
                   Change
                 </Button>
               </div>
@@ -308,6 +385,55 @@ const Profile = () => {
           </Card>
         </div>
       </div>
+      <AppModal opened={opened} onClose={close} size="lg" padding={30}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="space-y-4">
+            <PasswordInput
+              label="Current Password"
+              placeholder="Enter Current Password"
+              leftSection={<MdOutlineLock />}
+              {...register("currentPassword")}
+              error={errors.currentPassword?.message}
+            />
+
+            <Grid>
+              <Grid.Col span={6}>
+                <PasswordInput
+                  label="New Password"
+                  placeholder="Enter new Password"
+                  leftSection={<MdOutlineLock />}
+                  {...register("password.newPassword")}
+                  error={errors.password?.newPassword?.message}
+                />
+              </Grid.Col>
+
+              <Grid.Col span={6}>
+                <PasswordInput
+                  label="Confirm New Password"
+                  placeholder="Confirm new Password"
+                  leftSection={<MdOutlineLock />}
+                  {...register("password.confirmPassword")}
+                  error={errors.password?.confirmPassword?.message}
+                />
+              </Grid.Col>
+            </Grid>
+            <div className="flex justify-end gap-2 mt-4">
+              <Button variant="outline" onClick={close}>
+                Cancel
+              </Button>
+              <Button
+                disabled={isLoading}
+                type="submit"
+                size="sm"
+                color="blue"
+                w={100}
+              >
+                Update
+              </Button>
+            </div>
+          </div>
+        </form>
+      </AppModal>
     </div>
   );
 };

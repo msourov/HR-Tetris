@@ -7,7 +7,6 @@ import {
   Divider,
   Stack,
   Loader,
-  Button,
 } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetDepartmentDetailQuery } from "../../../../features/api/departmentSlice";
@@ -44,17 +43,14 @@ const DepartmentDetail = () => {
 
   return (
     <>
-      <Button
-        variant="outline"
-        color="black"
-        size="compact-sm"
-        leftSection={<IoMdReturnLeft size={16} color="gray" />}
+      <button
         onClick={() => navigate(-1)}
-        className="text-gray-500 hover:bg-gray-200 border-gray-400"
+        className="flex items-center shadow-md bg-white justify-center gap-1 border border-white/20 text-gray-600 hover:bg-gray-200 rounded py-[4px] text-xs w-[65px]"
       >
+        <IoMdReturnLeft size={16} color="gray" />
         Back
-      </Button>
-      <Card withBorder radius="md" p="lg" className="bg-white my-8">
+      </button>
+      <Card withBorder radius="md" p="lg" className="bg-white my-6">
         <Group justify="space-between" align="center">
           <Group gap="sm">
             <IconBuilding size={24} className="text-blue-600" />
@@ -111,14 +107,14 @@ const DepartmentDetail = () => {
           )}
         </Stack>
 
-        <Divider my="md" />
+        <Divider my="sm" />
 
         {/* Employees Section */}
         <Text size="lg" fw={600} className="mb-4">
           Employees
         </Text>
 
-        <Stack gap="sm">
+        <div className="overflow-y-auto space-y-2">
           {departmentDetail?.employees.map((employee) => {
             return (
               <Paper
@@ -126,7 +122,7 @@ const DepartmentDetail = () => {
                 withBorder
                 p="md"
                 radius="md"
-                className="hover:shadow-md transition-shadow"
+                className="hover:shadow-md transition-shadow "
               >
                 <Group justify="space-between" align="flex-start">
                   {/* Employee Info */}
@@ -191,7 +187,7 @@ const DepartmentDetail = () => {
               </Paper>
             );
           })}
-        </Stack>
+        </div>
       </Card>
     </>
   );

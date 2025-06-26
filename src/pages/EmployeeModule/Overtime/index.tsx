@@ -174,6 +174,8 @@ const Overtime = () => {
               color="blue"
               size="compact-sm"
               onClick={handleSearch}
+              className="border border-white/20"
+              disabled={!query && !startDate && !endDate}
             >
               Apply
             </Button>

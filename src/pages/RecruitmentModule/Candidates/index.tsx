@@ -3,7 +3,6 @@ import {
   Card,
   Divider,
   Loader,
-  Pill,
   Popover,
   Select,
   SimpleGrid,
@@ -12,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { useGetCandidatesQuery } from "../../../features/api/recruitmentSlice";
 import { IoFilter } from "react-icons/io5";
 import { useState } from "react";
+import AppApprovalStatus from "../../../components/core/AppApprovalStatus";
+import { IoMdReturnLeft } from "react-icons/io";
 
 const Candidates = () => {
   const { data: allCandidates, isLoading, error } = useGetCandidatesQuery();
@@ -46,6 +47,13 @@ const Candidates = () => {
   }
   return (
     <>
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center shadow-md bg-white justify-center gap-1 border border-white/20 text-gray-600 hover:bg-gray-200 rounded py-[4px] text-xs w-[65px]"
+      >
+        <IoMdReturnLeft size={16} color="gray" />
+        Back
+      </button>
       <div className="flex justify-end">
         <Popover
           opened={opened}
@@ -114,7 +122,7 @@ const Candidates = () => {
             component="a"
             withBorder
             maw={350}
-            className="text-center flex-auto p-4 max-w-full overflow-hidden py-6"
+            className="text-center bg-transparent flex-auto p-4 max-w-full overflow-hidden py-6"
           >
             <p className="text-lg font-medium truncate">{item?.name}</p>
             <p className="text-sm truncate mb-2">{item?.email}</p>
@@ -127,9 +135,7 @@ const Candidates = () => {
                   {item?.create_at.substring(0, 10)}
                 </span>
               </p>
-              <Pill size="sm" c="dimmed">
-                {item?.state}
-              </Pill>
+              <AppApprovalStatus status={item?.state} />
             </Card.Section>
             <p className="line-clamp-2">{item?.cover_letter}</p>
             <Card.Section>

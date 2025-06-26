@@ -55,32 +55,34 @@ const AddNewDepartment: React.FC<AddNewDepartmentProps> = ({ toggleModal }) => {
 
   return (
     <>
-      <Paper withBorder shadow="md" radius="md" p="md">
+      <Paper radius="md" p="md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
             label="Name"
             {...register("name")}
             error={errors.name?.message as React.ReactNode}
           />
-          <div className="max-w-20 mt-4">
+          <div className="max-w-20 mt-2">
+            <label className="text-sm">Status</label>
             <Switch
-              size="md"
-              onLabel="Disable"
-              offLabel="Activate"
-              color="black"
+              size="sm"
+              color="blue"
               checked={activeStatus}
               {...register("active")}
             />
           </div>
-
-          <Button
-            type="submit"
-            className="rounded-lg mt-6"
-            disabled={isLoading}
-            bg="black"
-          >
-            {isLoading ? <Loader type="dots" size="sm" /> : "Save"}
-          </Button>
+          <div className="flex items-center justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={toggleModal}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={isLoading}
+              // bg="black"
+            >
+              {isLoading ? <Loader type="dots" size="sm" /> : "Save"}
+            </Button>
+          </div>
         </form>
       </Paper>
     </>

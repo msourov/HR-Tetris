@@ -59,6 +59,24 @@ const initialPermissionValues = [
     key: randomId(),
   },
   {
+    label: "Consumable",
+    name: "consumable_management",
+    checked: true,
+    key: randomId(),
+  },
+  {
+    label: "Holiday",
+    name: "holiday_management",
+    checked: true,
+    key: randomId(),
+  },
+  {
+    label: "Reports",
+    name: "reports_admin_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
     label: "Ticket",
     name: "ticket_management",
     checked: true,
@@ -101,27 +119,20 @@ const initialPermissionValues = [
     key: randomId(),
   },
   {
-    label: "Announcement Approval",
-    name: "announcement_approve_management",
-    checked: false,
-    key: randomId(),
-  },
-
-  {
-    label: "Certification Approval",
-    name: "certification_approve_management",
-    checked: false,
-    key: randomId(),
-  },
-  {
     label: "Loan Equipments Approval",
     name: "loan_equipment_approve_management",
     checked: false,
     key: randomId(),
   },
   {
-    label: "Reports",
-    name: "reports_admin_management",
+    label: "Announcement Approval",
+    name: "announcement_approve_management",
+    checked: false,
+    key: randomId(),
+  },
+  {
+    label: "Certification Approval",
+    name: "certification_approve_management",
     checked: false,
     key: randomId(),
   },
@@ -131,18 +142,7 @@ const initialPermissionValues = [
     checked: false,
     key: randomId(),
   },
-  {
-    label: "Consumable",
-    name: "consumable_management",
-    checked: true,
-    key: randomId(),
-  },
-  {
-    label: "Holiday",
-    name: "holiday_management",
-    checked: true,
-    key: randomId(),
-  },
+
   {
     label: "Holiday Approval",
     name: "holiday_approve_management",

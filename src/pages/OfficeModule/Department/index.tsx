@@ -1,12 +1,22 @@
-import { rem, Tabs } from "@mantine/core";
+import { Button, rem, Tabs } from "@mantine/core";
 import { IconList, IconSettings } from "@tabler/icons-react";
 import { Outlet, useNavigate, useLocation, matchPath } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { LuPlusCircle } from "react-icons/lu";
+import { useDisclosure } from "@mantine/hooks";
+import AppModal from "../../../components/ui/AppModal";
+import AddNewDepartment from "./AddNewDepartment";
+import { IoMdReturnLeft } from "react-icons/io";
 
 const DepartmentLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>("list");
+  const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
+
+  const toggleModal = () => {
+    addClose();
+  };
 
   useEffect(() => {
     if (location.pathname.includes("edit")) {
@@ -29,29 +39,63 @@ const DepartmentLayout = () => {
   const isDetailPage = matchPath("/departments/:id/detail", location.pathname);
 
   return (
-    <div className="w-[95%] my-8 mx-auto bg-white rounded-lg drop-shadow-lg py-6 px-10">
+    <div className="w-[95%] h-[calc(90vh-80px)] flex flex-col my-6 mx-auto rounded-lg drop-shadow-lg py-6 px-4">
       {isDetailPage ? (
         <Outlet />
       ) : (
-        <Tabs radius="xs" value={activeTab} onChange={handleTabChange}>
-          <Tabs.List>
-            <Tabs.Tab value="list" leftSection={<IconList style={iconStyle} />}>
-              List
-            </Tabs.Tab>
-            <Tabs.Tab
-              value="manage"
-              leftSection={<IconSettings style={iconStyle} />}
+        <>
+          <div className="flex justify-between md:mr-8 mb-6">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center shadow-md bg-white justify-center gap-1 border border-white/20 text-gray-600 hover:bg-gray-200 rounded py-[4px] text-xs w-[65px]"
             >
-              Manage
-            </Tabs.Tab>
-          </Tabs.List>
-          <Tabs.Panel value="list">
-            <Outlet />
-          </Tabs.Panel>
-          <Tabs.Panel value="manage">
-            <Outlet />
-          </Tabs.Panel>
-        </Tabs>
+              <IoMdReturnLeft size={16} color="gray" />
+              Back
+            </button>
+            <Button
+              leftSection={<LuPlusCircle />}
+              variant="filled"
+              onClick={addOpen}
+            >
+              Add
+            </Button>
+          </div>
+          <AppModal
+            opened={addOpened}
+            onClose={addClose}
+            size="xl"
+            title="Add Department"
+          >
+            <AddNewDepartment toggleModal={toggleModal} />
+          </AppModal>
+          <Tabs
+            radius="xs"
+            variant="pills"
+            value={activeTab}
+            onChange={handleTabChange}
+          >
+            <Tabs.List>
+              <Tabs.Tab
+                value="list"
+                leftSection={<IconList style={iconStyle} />}
+              >
+                Departments
+              </Tabs.Tab>
+              <Tabs.Tab
+                value="manage"
+                leftSection={<IconSettings style={iconStyle} />}
+              >
+                Manage
+              </Tabs.Tab>
+            </Tabs.List>
+            <Tabs.Panel value="list">
+              <Outlet />
+            </Tabs.Panel>
+            <Tabs.Panel value="manage">
+              <Outlet />
+            </Tabs.Panel>
+          </Tabs>
+        </>
       )}
     </div>
   );

@@ -30,7 +30,6 @@ import {
 } from "../../../../features/api/meetingSlice";
 import AppModal from "../../../../components/ui/AppModal";
 import MeetingDetail from "./MeetingDetail";
-import { FaRegEye } from "react-icons/fa6";
 import { Meeting } from "../../../../features/types/meeting";
 import EditMeeting from "../EditMeeting";
 import { notifications } from "@mantine/notifications";
@@ -43,20 +42,20 @@ const priorityColors: Record<string, string> = {
   low: "green",
 };
 
-const getTimeUntilMeeting = (dateString: string) => {
-  const now = new Date();
-  const meetingDate = new Date(dateString);
-  const diff = meetingDate.getTime() - now.getTime();
+// const getTimeUntilMeeting = (dateString: string) => {
+//   const now = new Date();
+//   const meetingDate = new Date(dateString);
+//   const diff = meetingDate.getTime() - now.getTime();
 
-  if (diff < 0) return null;
+//   if (diff < 0) return null;
 
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+//   const hours = Math.floor(diff / (1000 * 60 * 60));
+//   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-  if (hours > 24) return `${Math.floor(hours / 24)} days`;
-  if (hours > 0) return `${hours}h ${minutes}m`;
-  return `${minutes}m`;
-};
+//   if (hours > 24) return `${Math.floor(hours / 24)} days`;
+//   if (hours > 0) return `${hours}h ${minutes}m`;
+//   return `${minutes}m`;
+// };
 
 const getPriorityIcon = (priority: string) => {
   switch (priority) {
@@ -156,9 +155,9 @@ export default function MeetingList() {
         {meetings?.map((meeting) => (
           <div
             key={meeting.id}
-            className="p-lg rounded-lg border border-gray-100 bg-gradient-to-br from-white to-gray-50 hover:from-gray-50 hover:to-white transition-colors"
+            className="p-lg min-w-[320px] rounded-lg border border-gray-100 bg-gradient-to-br from-white to-gray-50 hover:from-gray-50 hover:to-white transition-colors"
           >
-            <Card withBorder p="md" bg="gray.0">
+            <Card withBorder p="sm" bg="gray.0">
               <Group justify="space-between">
                 <Group gap={4}>
                   <ThemeIcon variant="light" color="blue" size="sm" radius="xl">
@@ -172,6 +171,7 @@ export default function MeetingList() {
                   color={priorityColors[meeting.priority]}
                   variant="light"
                   leftSection={getPriorityIcon(meeting.priority)}
+                  size="sm"
                 >
                   {meeting.priority}
                 </Badge>
@@ -179,37 +179,41 @@ export default function MeetingList() {
             </Card>
 
             <div className="px-4 flex flex-col gap-2">
-              <Text fw={700} className="text-lg mt-4" lineClamp={1}>
+              <Text fw={500} className="text-lg mt-2" lineClamp={1}>
                 {meeting.name}
               </Text>
 
-              <Text size="sm" c="dimmed" lineClamp={2}>
+              <Text
+                size="sm"
+                lineClamp={2}
+                className="bg-gray-400 text-white px-2 py-1 rounded-md"
+              >
                 {meeting.descriptions}
               </Text>
 
               <Group gap="xs" wrap="nowrap">
                 <ThemeIcon variant="light" color="gray" size="sm" radius="xl">
-                  <IconClock size={14} />
+                  <IconClock size={12} />
                 </ThemeIcon>
-                <Text size="sm" fw={500} c="dark">
+                <Text size="xs" fw={500} c="dark">
                   {formatDate(meeting.meeting_at)}
                 </Text>
-                <Text size="sm" c="dimmed">
+                {/* <Text size="sm" c="dimmed">
                   • {getTimeUntilMeeting(meeting.meeting_at)}
-                </Text>
+                </Text> */}
               </Group>
 
               <Group gap="xs" wrap="nowrap">
                 {meeting.meeting_type === "online" ? (
                   <ThemeIcon variant="light" color="blue" size="sm" radius="xl">
-                    <IconVideo size={14} />
+                    <IconVideo size={12} />
                   </ThemeIcon>
                 ) : (
                   <ThemeIcon variant="light" color="teal" size="sm" radius="xl">
-                    <IconMapPin size={14} />
+                    <IconMapPin size={12} />
                   </ThemeIcon>
                 )}
-                <Text size="sm" c="dark">
+                <Text size="xs" c="dark">
                   {meeting.meeting_type === "online"
                     ? "Online Meeting"
                     : "In-person"}
@@ -218,7 +222,7 @@ export default function MeetingList() {
 
               <Group gap="xs" wrap="nowrap">
                 <ThemeIcon variant="light" color="gray" size="sm" radius="xl">
-                  <IconUsers size={14} />
+                  <IconUsers size={12} />
                 </ThemeIcon>
                 <Group gap={4}>
                   {meeting.meeting_person.slice(0, 3).map((person) => (
@@ -238,11 +242,9 @@ export default function MeetingList() {
             <Card mt="sm" p="md" withBorder bg="gray.0">
               <Group justify="space-between" align="center">
                 <Button
-                  size="xs"
                   variant="light"
                   color="blue"
                   onClick={() => handleCardClick(meeting)}
-                  leftSection={<FaRegEye size={16} />}
                 >
                   View
                 </Button>
@@ -275,12 +277,6 @@ export default function MeetingList() {
         opened={opened}
         onClose={close}
         size="lg"
-        title={
-          <Title order={4} fw={700} className="flex items-center gap-2">
-            <IconCalendarEvent size={20} />
-            Meeting Details
-          </Title>
-        }
         transitionProps={{ duration: 300 }}
         radius="lg"
         overlayProps={{

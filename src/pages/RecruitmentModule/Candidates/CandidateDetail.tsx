@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetCandidateDetailQuery } from "../../../features/api/recruitmentSlice";
 import {
   Badge,
@@ -10,6 +10,7 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import axios from "axios";
+import { IoMdReturnLeft } from "react-icons/io";
 
 const CandidateDetail = () => {
   const { id: uid } = useParams<{ id?: string }>();
@@ -18,6 +19,7 @@ const CandidateDetail = () => {
     isLoading,
     error,
   } = useGetCandidateDetailQuery({ uid: uid || "" });
+  const navigate = useNavigate();
 
   const candidateData = candidate?.data[0];
 
@@ -48,7 +50,11 @@ const CandidateDetail = () => {
   };
 
   if (isLoading) {
-    return <div className="text-center"><Loader /></div>
+    return (
+      <div className="text-center">
+        <Loader />
+      </div>
+    );
   }
 
   if (error) {
@@ -57,17 +63,35 @@ const CandidateDetail = () => {
 
   return (
     <>
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center mb-6 shadow-md bg-white justify-center gap-1 border border-white/20 text-gray-600 hover:bg-gray-200 rounded py-[4px] text-xs w-[65px]"
+      >
+        <IoMdReturnLeft size={16} color="gray" />
+        Back
+      </button>
       <Grid>
         <Grid.Col span={12}>
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <p className="text-lg font-medium">Profile</p>
-            <Divider my="sm" />
-            <p>Name: {candidateData?.name}</p>
-            <p>Email: {candidateData?.email}</p>
-            <p>Department: {candidateData?.department}</p>
-            <p>Application Date: {applicationDate}</p>
-            <p>
-              State:{" "}
+            <Divider mb="sm" />
+            <p className="text-gray-500">
+              Name: <span className="text-blue-700">{candidateData?.name}</span>
+            </p>
+            <p className="text-gray-500">
+              Email:{" "}
+              <span className="text-blue-700">{candidateData?.email}</span>
+            </p>
+            <p className="text-gray-500">
+              Department:{" "}
+              <span className="text-blue-700">{candidateData?.department}</span>
+            </p>
+            <p className="text-gray-500">
+              Application Date:{" "}
+              <span className="text-blue-700">{applicationDate}</span>
+            </p>
+            <p className="text-gray-500">
+              Status:{" "}
               <Badge
                 color={candidateData?.state === "pending" ? "yellow" : "green"}
               >

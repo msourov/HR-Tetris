@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="bg-[#dee2e2] pt-8 border-white border-t">
+    <footer className="pt-8 border-t border-black/20 backdrop-blur-xl bg-white shadow-lg">
       <div className="mx-auto ">
         <div className="max-w-[90vw] mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Logo Column */}
@@ -10,14 +10,14 @@ const Footer = () => {
               alt="Company Logo"
               className="w-40 object-contain mb-4"
             />
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 drop-shadow-md">
               A tech company transforming ideas into digital reality
             </p>
           </div>
 
           {/* Contact Column */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
+          <div className="space-y-4 drop-shadow-md">
+            <div className="flex items-center gap-3 drop-shadow-md">
               <svg
                 className="w-5 h-5"
                 fill="none"
@@ -33,7 +33,7 @@ const Footer = () => {
               </svg>
               <div>
                 <p className="text-sm text-gray-600">Contact</p>
-                <p>+880-123456789</p>
+                <p className="text-sm">+880-123456789</p>
               </div>
             </div>
 
@@ -57,15 +57,15 @@ const Footer = () => {
                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              <div>
+              <div className="drop-shadow-md">
                 <p className="text-sm text-gray-600">Address</p>
-                <p>Dhaka, Bangladesh</p>
+                <p className="text-sm">Dhaka, Bangladesh</p>
               </div>
             </div>
           </div>
 
           {/* Description Column */}
-          <div className="space-y-2">
+          <div className="space-y-2 drop-shadow-md">
             <p className="text-sm text-gray-600">About Us</p>
             <p className="text-sm">
               Lorem Ipsum is a piece of text used by designers to fill space

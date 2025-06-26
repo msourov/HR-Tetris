@@ -1,14 +1,25 @@
 import React from "react";
 import { Pill, Table, Tooltip } from "@mantine/core";
-import { AccessPermissions, Role } from "../../../../features/api/typesOld";
 import RoleActions from "./RoleActions";
 import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
 import "../../../../styles.css";
 import { ColorMap } from ".";
+import { Role } from "../../../../features/types/role";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
+import { AccessPermissions } from "../../../../features/types/shared";
+import ErrorAlert from "../../../../components/shared/ErrorAlert";
 
 interface TableItemProps {
   data: Role[];
   loading: boolean;
+  error?:
+    | {
+        error: string;
+        status: string;
+      }
+    | FetchBaseQueryError
+    | SerializedError;
 }
 
 const transformAccess = (access: AccessPermissions): [string, string][] => {
@@ -39,7 +50,7 @@ const transformAccess = (access: AccessPermissions): [string, string][] => {
     });
 };
 
-const TableItem: React.FC<TableItemProps> = ({ data, loading }) => {
+const TableItem: React.FC<TableItemProps> = ({ data, loading, error }) => {
   const colors: ColorMap = {
     UM: "#f44336",
     OM: "#2196f3",
@@ -55,6 +66,10 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading }) => {
 
   if (loading) {
     return <CommonSkeleton cols={5} rows={5} />;
+  }
+
+  if (error) {
+    <ErrorAlert message="Error fetching users" />;
   }
 
   return (

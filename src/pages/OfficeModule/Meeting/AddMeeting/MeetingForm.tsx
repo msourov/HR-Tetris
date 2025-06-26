@@ -20,12 +20,8 @@ import {
   useUpdateMeetingMutation,
   useGetMeetingDetailQuery,
 } from "../../../../features/api/meetingSlice";
-import {
-  useGetEmployeeHelperQuery,
-  useGetSupervisorOptionsQuery,
-} from "../../../../features/api/employeeSlice";
+import { useGetEmployeeHelperQuery } from "../../../../features/api/employeeSlice";
 import { MeetingCreatePayload } from "../../../../features/types/meeting";
-
 
 // Zod Validation Schema
 const schema = z
@@ -86,24 +82,21 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
   // Meeting mutations
   const [createMeeting, { isLoading: isCreating }] = useCreateMeetingMutation();
   const [updateMeeting, { isLoading: isUpdating }] = useUpdateMeetingMutation();
-  
+
   // Fetch meeting details for edit mode
   const {
     data: meetingData,
     isLoading: isLoadingMeeting,
     error: meetingError,
-  } = useGetMeetingDetailQuery(
-    { uid: meetingId! },
-    { skip: !meetingId }
-  );
-  
+  } = useGetMeetingDetailQuery({ uid: meetingId! }, { skip: !meetingId });
+
   // Fetch supervisors and persons
-  const {
-    data: supervisors,
-    isLoading: loadingSupervisors,
-    error: supervisorsError,
-  } = useGetSupervisorOptionsQuery();
-  
+  // const {
+  //   data: supervisors,
+  //   isLoading: loadingSupervisors,
+  //   error: supervisorsError,
+  // } = useGetSupervisorOptionsQuery();
+
   const {
     data: persons,
     isLoading: loadingPersons,
@@ -191,14 +184,14 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
   // Watch meeting type to conditionally render fields
   const meetingType = watch("meeting_type");
-  const activeStatus = watch("active");
+  const activeStatus = watch("active") || true;
 
   // Prepare supervisor options
-  const supervisorOptions =
-    supervisors?.data.map((supervisor) => ({
-      value: supervisor.employee_id,
-      label: supervisor.name,
-    })) || [];
+  // const supervisorOptions =
+  //   supervisors?.data.map((supervisor) => ({
+  //     value: supervisor.employee_id,
+  //     label: supervisor.name,
+  //   })) || [];
 
   // Prepare person options
   const personOptions =
@@ -207,15 +200,14 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
       label: person.name,
     })) || [];
 
-  const isLoading = isCreating || isUpdating || loadingSupervisors || loadingPersons || isLoadingMeeting;
+  const isLoading =
+    isCreating || isUpdating || loadingPersons || isLoadingMeeting;
 
-  if (supervisorsError || personsError || meetingError) {
+  if (personsError || meetingError) {
     return (
       <div className="text-red-500 text-center py-10">
         Error loading data:{" "}
-        {supervisorsError
-          ? "Supervisors: " + JSON.stringify(supervisorsError)
-          : personsError
+        {personsError
           ? "Persons: " + JSON.stringify(personsError)
           : meetingError
           ? "Meeting: " + JSON.stringify(meetingError)
@@ -227,7 +219,7 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <Loader size="lg" />
+        <Loader size="sm" />
       </div>
     );
   }
@@ -235,9 +227,10 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
   return (
     <Paper withBorder radius="md" p="xl" className="max-w-3xl mx-auto">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           {/* Name Field */}
           <TextInput
+            size="xs"
             label="Meeting Name"
             required
             {...register("name")}
@@ -246,10 +239,11 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
           {/* Supervisor Field */}
           <Select
+            size="xs"
             label="Supervisor"
-            disabled={loadingSupervisors}
+            disabled={loadingPersons}
             required
-            data={supervisorOptions}
+            data={personOptions}
             value={watch("supervisor_id")}
             onChange={(value) => setValue("supervisor_id", value || "")}
             error={errors.supervisor_id?.message}
@@ -257,6 +251,7 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
           {/* Meeting Type */}
           <Select
+            size="xs"
             label="Meeting Type"
             required
             data={[
@@ -272,6 +267,7 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
           {/* Priority */}
           <Select
+            size="xs"
             label="Priority"
             required
             data={[
@@ -289,6 +285,7 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
           {/* Online Link (Conditional) */}
           {meetingType === "online" && (
             <TextInput
+              size="xs"
               label="Online Meeting Link"
               required
               {...register("online_link")}
@@ -300,6 +297,7 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
           {/* Location (Conditional) */}
           {meetingType === "offline" && (
             <TextInput
+              size="xs"
               label="Location"
               required
               {...register("location")}
@@ -310,6 +308,7 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
           {/* Meeting Date/Time */}
           <TextInput
+            size="xs"
             label="Meeting Date & Time"
             type="datetime-local"
             required
@@ -318,10 +317,11 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
           />
 
           {/* Active Status */}
-          <Box>
+          <Box className="flex gap-2 items-center">
+            <label className="text-xs">Status</label>
             <Switch
+              size="sm"
               color="blue"
-              label={activeStatus ? "Active" : "Inactive"}
               checked={activeStatus}
               onChange={(e) => setValue("active", e.currentTarget.checked)}
             />
@@ -330,6 +330,7 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
         {/* Participants */}
         <MultiSelect
+          size="xs"
           label="Participants"
           disabled={loadingPersons}
           required
@@ -337,22 +338,24 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
           value={watch("meeting_person")}
           onChange={(values) => setValue("meeting_person", values)}
           error={errors.meeting_person?.message}
-          className="mb-6"
+          className="mb-4"
         />
 
         {/* Agenda */}
         <Textarea
+          size="xs"
           label="Agenda"
           required
           minRows={3}
           {...register("agenda")}
           error={errors.agenda?.message}
-          className="mb-6"
+          className="mb-4"
           value={watch("agenda")}
         />
 
         {/* Description */}
         <Textarea
+          size="xs"
           label="Description"
           minRows={3}
           {...register("descriptions")}
@@ -363,6 +366,14 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
         <div className="flex items-center justify-end gap-2">
           <Button
+            variant="outline"
+            size="compact-md"
+            color="black"
+            onClick={close}
+          >
+            Cancel
+          </Button>
+          <Button
             type="submit"
             color="blue"
             size="compact-md"
@@ -371,14 +382,6 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
             className="text-sm"
           >
             {isEditMode ? "Update" : "Create"}
-          </Button>
-          <Button
-            variant="outline"
-            size="compact-md"
-            color="black"
-            onClick={close}
-          >
-            Cancel
           </Button>
         </div>
       </form>

@@ -29,9 +29,9 @@ const theme = createTheme({
       styles: {
         root: {
           minWidth: "90px",
-          height: "36px",
+          height: "32px",
           fontWeight: 500,
-          fontSize: "14px",
+          fontSize: "12px",
           transition: "all 0.2s ease",
           // Add any other global styles here
         },

@@ -17,16 +17,18 @@ import {
   MdEmergency,
   MdHistory,
   MdLockOpen,
+  MdWorkOutline,
 } from "react-icons/md";
 import { useState } from "react";
 import { IconType } from "react-icons";
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import { getImageUrl } from "../../../../services/utils/getImageUrl";
-import { IconCamera, IconCheck, IconX } from "@tabler/icons-react";
+import { IconCamera, IconEdit } from "@tabler/icons-react";
 import InfoItem from "../../../../components/ui/InfoItem";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
+import { IoAlertCircleOutline } from "react-icons/io5";
 
 const SectionHeader = ({
   icon: Icon,
@@ -35,9 +37,9 @@ const SectionHeader = ({
   icon?: IconType;
   title: string;
 }) => (
-  <Flex gap="sm" align="center" mb="xl" className="border-b pb-2">
-    {Icon && <Icon size={20} className="text-blue-600" />}
-    <Text fw={600} size="lg" className="text-gray-700">
+  <Flex gap="sm" align="center" mb="lg" className="border-b pb-2">
+    {Icon && <Icon size={18} className="text-blue-600" />}
+    <Text fw={500} size="lg" className="text-blue-600">
       {title}
     </Text>
   </Flex>
@@ -143,7 +145,7 @@ const EmployeeDetail = () => {
       >
         {/* Left Section: Avatar + Info */}
         <Flex gap="xl" align="center">
-          <div className="relative w-[120px] h-[120px]">
+          <div className="relative w-[100px] h-[100px]">
             <LazyLoadImage
               src={preview || `${getImageUrl(work?.employee_id)}?t=${imageKey}`}
               alt="Profile Picture"
@@ -171,16 +173,16 @@ const EmployeeDetail = () => {
           </div>
 
           <div>
-            <Text fw={700} size="xl" className="text-gray-800 mb-1">
+            <Text fw={700} size="lg" className="text-gray-800 mb-1">
               {personal.name}
             </Text>
-            <Text size="md" className="text-gray-600 mb-2">
+            <Text size="sm" className="text-gray-600 mb-2">
               {work.designation.name} • {work.department.name}
             </Text>
             <Badge
               variant="light"
               color={personal.active ? "green" : "red"}
-              size="lg"
+              size="sm"
               radius="sm"
             >
               {personal.active ? "Active" : "Inactive"}
@@ -191,8 +193,10 @@ const EmployeeDetail = () => {
         {/* Right Section: Edit Button */}
         <div className="flex flex-col gap-2">
           <Button
-            color="blue"
+            color="orange"
+            variant="light"
             onClick={() => navigate(`/employees/${uid}/edit-employee`)}
+            leftSection={<IconEdit size={16} />}
           >
             Edit
           </Button>
@@ -215,17 +219,20 @@ const EmployeeDetail = () => {
           <Tabs
             value={activeTab}
             onChange={setActiveTab}
-            variant="pills"
+            variant="default"
             color="blue"
           >
             <Tabs.List mb="xl">
               <Tabs.Tab value="personal" leftSection={<MdPerson size={18} />}>
                 Personal
               </Tabs.Tab>
-              <Tabs.Tab value="work" leftSection={<MdWork size={18} />}>
+              <Tabs.Tab value="work" leftSection={<MdWorkOutline size={18} />}>
                 Work
               </Tabs.Tab>
-              <Tabs.Tab value="emergency" leftSection={<MdWork size={18} />}>
+              <Tabs.Tab
+                value="emergency"
+                leftSection={<IoAlertCircleOutline size={18} />}
+              >
                 Emergency
               </Tabs.Tab>
               <Tabs.Tab value="access" leftSection={<MdLockOpen size={18} />}>
@@ -239,7 +246,7 @@ const EmployeeDetail = () => {
                   <SectionHeader icon={MdPerson} title="Personal Information" />
                   <Grid gutter="xl">
                     <Grid.Col span={{ base: 12, md: 6 }}>
-                      <div className="space-y-3">
+                      <div className="space-y-2">
                         <InfoItem
                           label="Phone"
                           value={`+88${personal.phone}`}
@@ -261,7 +268,7 @@ const EmployeeDetail = () => {
                       </div>
                     </Grid.Col>
                     <Grid.Col span={{ base: 12, md: 6 }}>
-                      <div className="space-y-3">
+                      <div className="space-y-2">
                         <InfoItem
                           label="Address"
                           value={personal.address || "No address provided"}
@@ -407,7 +414,7 @@ const EmployeeDetail = () => {
                               <div className="flex items-center justify-between">
                                 <div>
                                   <Text
-                                    size="sm"
+                                    size="xs"
                                     className="font-semibold text-gray-700"
                                   >
                                     {formatLabel(key)}
@@ -424,16 +431,10 @@ const EmployeeDetail = () => {
                                   )}
                                 </div>
                                 <Badge
-                                  leftSection={
-                                    isAllowed ? (
-                                      <IconCheck size={14} className="mr-1" />
-                                    ) : (
-                                      <IconX size={14} className="mr-1" />
-                                    )
-                                  }
                                   color={isAllowed ? "green" : "red"}
                                   variant="filled"
                                   radius="sm"
+                                  size="xs"
                                 >
                                   {isAllowed ? "Allowed" : "Unauthorized"}
                                 </Badge>

@@ -5,12 +5,12 @@ const TableHeading = () => {
     <Table.Thead className="bg-[#2274A5] text-white px-4">
       <Table.Tr>
         <Table.Th style={{ width: "2%", paddingLeft: "1rem" }}>Sl</Table.Th>
-        <Table.Th style={{ width: "23%" }}>Name</Table.Th>
+        <Table.Th style={{ width: "25%" }}>Name</Table.Th>
         <Table.Th style={{ width: "5%" }}>EID</Table.Th>
         <Table.Th style={{ width: "5%" }}>Phone</Table.Th>
-        <Table.Th style={{ width: "15%" }}>Email</Table.Th>
-        <Table.Th style={{ width: "8%" }}>Shift</Table.Th>
-        <Table.Th style={{ width: "7%" }}>Department</Table.Th>
+        <Table.Th style={{ width: "10%" }}>Email</Table.Th>
+        <Table.Th style={{ width: "5%" }}>Shift</Table.Th>
+        <Table.Th style={{ width: "10%" }}>Department</Table.Th>
         <Table.Th style={{ width: "15%" }}>Designation</Table.Th>
         <Table.Th style={{ width: "5%", paddingRight: "1.5rem" }}>
           Action

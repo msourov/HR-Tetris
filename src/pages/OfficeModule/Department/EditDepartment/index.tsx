@@ -8,8 +8,6 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { LuPlusCircle } from "react-icons/lu";
-import AddNewDepartment from "../AddNewDepartment";
 import {
   useDeleteDepartmentMutation,
   useEditDepartmentMutation,
@@ -31,7 +29,6 @@ type EditDepartmentType = z.infer<typeof schema>;
 
 const EditDepartment = () => {
   const [dept, setDept] = useState<string | null>(null);
-  const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
   const { data: departments } = useGetDepartmentsQuery({ page: 1, limit: 10 });
@@ -46,9 +43,6 @@ const EditDepartment = () => {
   // } = useGetDepartmentDetailQuery({
   //   uid: dept,
   // });
-  const toggleModal = () => {
-    addClose();
-  };
 
   const deptOptions = departments?.data.map((item) => ({
     value: item?.uid,
@@ -78,7 +72,7 @@ const EditDepartment = () => {
 
   const activeStatus = watch("active");
 
-  const text = <p className="font-medium">Select Department</p>;
+  const text = <p className="font-medium text-gray-600">Select Department</p>;
 
   const onSubmit = async (data: EditDepartmentType) => {
     if (!dept) return;
@@ -132,21 +126,6 @@ const EditDepartment = () => {
 
   return (
     <div className="my-6">
-      <div className="flex justify-end">
-        <Button
-          leftSection={<LuPlusCircle />}
-          color="black"
-          bg="orange"
-          variant="filled"
-          // mt={-24}
-          onClick={addOpen}
-        >
-          Add
-        </Button>
-      </div>
-      <Modal opened={addOpened} onClose={addClose} title="Add Department">
-        <AddNewDepartment toggleModal={toggleModal} />
-      </Modal>
       <Select
         label={text}
         data={deptOptions}

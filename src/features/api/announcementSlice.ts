@@ -81,7 +81,7 @@ export const announcementApi = createApi({
     }),
     approveAnnouncement: builder.mutation<
       Response,
-      { uid: string; is_approve: string; reject_purpose: string }
+      { uid: string; is_approved: string; reject_purpose: string }
     >({
       query: (data) => ({
         url: "announcements/approval",

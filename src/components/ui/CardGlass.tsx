@@ -10,7 +10,7 @@ const CardGlass = ({ children, className = "", onClick }: CardGlassProps) => {
   return (
     <div
       onClick={onClick}
-      className={`relative rounded-lg border border-white/20 shadow-md overflow-hidden ${className}`}
+      className={`relative rounded-lg border border-gray-300 shadow-sm overflow-hidden ${className}`}
     >
       {/* Glass effect layer */}
       <div className="absolute bg-white/10 backdrop-blur-md shadow-md" />

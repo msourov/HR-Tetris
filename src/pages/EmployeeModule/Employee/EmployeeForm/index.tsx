@@ -118,8 +118,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
 
   const editFormData = data?.data;
 
-  console.log(data, "data");
-
   const navigate = useNavigate();
 
   const draftKey =
@@ -203,8 +201,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     if (editFormData)
       handlers.setState(transformPermissions(editFormData.employee_access));
   }, [editFormData]);
-
-  console.log(editFormData, "editFormData");
 
   useEffect(() => {
     if (type === "edit" && editFormData) {

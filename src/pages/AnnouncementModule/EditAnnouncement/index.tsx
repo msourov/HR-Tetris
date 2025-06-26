@@ -10,7 +10,6 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { LuPlusCircle } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -23,7 +22,6 @@ import {
   useUpdateAnnouncementMutation,
 } from "../../../features/api/announcementSlice";
 import ErrorAlert from "../../../components/shared/ErrorAlert";
-import AddNewAnnouncement from "../AddNewAnnouncement";
 
 // Define the schema with z.object() and correct fields
 const schema = z.object({
@@ -39,7 +37,6 @@ type EditAnnouncementType = z.infer<typeof schema>;
 
 const EditAnnouncement = () => {
   const [anmt, setAnmt] = useState<string>("");
-  const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
   const { data: announcements } = useGetAllAnnouncementsQuery();
@@ -47,10 +44,6 @@ const EditAnnouncement = () => {
     useUpdateAnnouncementMutation();
   const [deleteAnnouncement, { isLoading: deleteAnmtLoading }] =
     useDeleteAnnouncementMutation();
-
-  const toggleModal = () => {
-    addClose();
-  };
 
   const announcementOptions = announcements?.data.map((item) => ({
     value: item?.uid,
@@ -79,7 +72,11 @@ const EditAnnouncement = () => {
     }
   }, [announcementDetail, reset]);
 
-  const text = <Text fw={500}>Select Announcement</Text>;
+  const text = (
+    <Text fw={500} size="sm" c="gray">
+      Select Announcement
+    </Text>
+  );
 
   const onSubmit = async (data: EditAnnouncementType) => {
     const obj = {
@@ -137,25 +134,6 @@ const EditAnnouncement = () => {
 
   return (
     <Box className="my-6">
-      <Box className="flex justify-end">
-        <Button
-          leftSection={<LuPlusCircle />}
-          color="black"
-          bg="orange"
-          variant="filled"
-          onClick={addOpen}
-        >
-          Add
-        </Button>
-      </Box>
-      <Modal
-        opened={addOpened}
-        onClose={addClose}
-        size="xl"
-        title="Create Announcement"
-      >
-        <AddNewAnnouncement toggleModal={toggleModal} />
-      </Modal>
       <Select
         label={text}
         data={announcementOptions}

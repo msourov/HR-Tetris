@@ -6,7 +6,7 @@ export interface Announcement {
   name: string;
   descriptions: string;
   active: boolean;
-  is_approve: "pending" | "approved" | "rejected";
+  is_approved: "pending" | "approved" | "rejected";
   assignee: string | null;
   creator_name: string;
   department_name: string;

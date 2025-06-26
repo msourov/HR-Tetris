@@ -1,4 +1,3 @@
-// src/api/baseApi.ts
 import {
   fetchBaseQuery,
   type BaseQueryFn,

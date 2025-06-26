@@ -27,11 +27,16 @@ const PolicyLayout = () => {
 
   const iconStyle = { width: rem(12), height: rem(12) };
   return (
-    <Box className="w-[95%] my-8 mx-auto bg-white rounded-lg drop-shadow-lg py-6 px-10">
-      <Tabs radius="xs" value={activeTab} onChange={handleTabChange}>
+    <Box className="w-[95%] my-8 mx-auto rounded-lg drop-shadow-lg py-6 px-10">
+      <Tabs
+        radius="xs"
+        value={activeTab}
+        onChange={handleTabChange}
+        variant="pills"
+      >
         <Tabs.List>
           <Tabs.Tab value="list" leftSection={<IconList style={iconStyle} />}>
-            List
+            Policy
           </Tabs.Tab>
           <Tabs.Tab
             value="manage"

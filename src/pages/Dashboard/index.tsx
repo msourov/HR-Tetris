@@ -133,26 +133,28 @@ const Dashboard = () => {
   console.log(dashboardData, "dashboardData");
 
   return (
-    <div className="flex gap-4 my-6 lg:my-12 md:gap-6 lg:mx-8 mx-4 w-[95%] overflow-x-hidden">
-      <div className="w-[65%]">
+    <div className="flex gap-6 my-4 lg:my-8 md:gap-6 lg:mx-8 mx-4 w-[95%] overflow-x-hidden">
+      <div className="w-[70%]">
         <div className="flex flex-col xl:flex-row justify-evenly mb-6 gap-4 rounded-md">
           <Card
+            py={8}
+            pb={10}
             withBorder
-            className="flex-1 min-w-[320px] shadow-lg w-full h-fit 
-            justify-center gap-2 rounded-xl hover:shadow-md transition-shadow"
+            className="flex-1 min-w-[360px] shadow-lg w-full h-fit 
+            justify-center gap-1 hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-1">
               <IconCalendarStats size={20} className="text-blue-600" />
               <Text className="text-gray-600 font-semibold">Today's Stats</Text>
             </div>
 
-            <div className="flex flex-col gap-3 w-full items-center">
+            <div className="flex flex-col gap-2 w-full items-center">
               {/* Attendance Info */}
-              <div className="border w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3 py-2">
+              <div className="border w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3">
                 {/* Header */}
                 <div className="flex items-center gap-2">
-                  <IconClockFilled color="#2563eb" size={24} />
-                  <Text className="text-gray-700 text-md font-thin">
+                  <IconClockFilled color="#2563eb" size={18} />
+                  <Text className="text-gray-700 text-sm font-thin">
                     Attendance
                   </Text>
                 </div>
@@ -192,11 +194,11 @@ const Dashboard = () => {
               </div>
 
               {/* Employees Info */}
-              <div className="border w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3 py-2">
+              <div className="border w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3">
                 {/* Header */}
                 <div className="flex items-center gap-2">
-                  <IoIosPeople color="#2563eb" size={24} />
-                  <Text className="text-gray-700 text-md font-thin">
+                  <IoIosPeople color="#2563eb" size={18} />
+                  <Text className="text-gray-700 text-SM font-thin">
                     Employee
                   </Text>
                 </div>
@@ -237,12 +239,12 @@ const Dashboard = () => {
             </div>
           </Card>
           <Card
+            py={8}
             withBorder
-            radius="lg"
             shadow="sm"
-            className="w-full overflow-y-auto pr-2 lg:w-full xl:w-[440px] max-h-[525px] bg-white hover:shadow-md transition-all duration-300"
+            className="w-full overflow-y-auto pr-2 lg:w-full xl:w-[440px] max-h-[460px] bg-white hover:shadow-md transition-all duration-300"
           >
-            <div className="flex items-center gap-2 mb-4 ">
+            <div className="flex items-center gap-2 mb-1 ">
               <IconCalendarEvent size={20} className="text-blue-600" />
               <Text className="text-md font-semibold text-gray-700">
                 Upcoming Events
@@ -307,7 +309,7 @@ const Dashboard = () => {
           </Card>
         </>
       </div>
-      <div className="w-[35%]">
+      <div className="w-[30%]">
         <div className="mb-6 w-full bg-white">
           {/* {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 && ( */}
           <Suspense fallback={skeleton}>
