@@ -4,7 +4,6 @@ import {
   Accordion,
   Box,
   Button,
-  Loader,
   Modal,
   ScrollArea,
   Text,
@@ -13,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import LeaveReviewModal from "../EmployeeModule/Leave/LeaveList/ReviewModal";
 import { useDisclosure } from "@mantine/hooks";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import AppLoader from "../../components/ui/AppLoader";
 
 type LeaveSectionProps = {
   data: Leave | Leave[];
@@ -89,7 +89,7 @@ const LeaveSection: FC<LeaveSectionProps> = ({ data, loading, error }) => {
                 ))
               ) : loading ? (
                 <Box className="flex justify-center items-center">
-                  <Loader type="dots" color="orange" size="sm" />
+                  <AppLoader />
                 </Box>
               ) : (
                 <Text c="dimmed" ta="center" my={10}>

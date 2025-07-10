@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   FileButton,
-  Loader,
   Paper,
   Text,
   TextInput,
@@ -17,6 +16,7 @@ import { ContextModalProps } from "@mantine/modals";
 import axios, { AxiosError } from "axios";
 import { getToken } from "../../../../services/utils/getToken";
 import { MdOutlineFileUpload } from "react-icons/md";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const schema = z.object({
   name: z.string().min(2),
@@ -154,7 +154,7 @@ const UploadPolicyFile = ({ context, id }: UploadPolicyFileProps) => {
           bg="black"
           disabled={isLoading}
         >
-          {isLoading ? <Loader type="dots" size="sm" /> : "Save"}
+          {isLoading ? <AppLoader /> : "Save"}
         </Button>
       </form>
     </Paper>

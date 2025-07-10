@@ -10,9 +10,9 @@ import { MdOutlineAccountBalance, MdOutlineInventory2 } from "react-icons/md";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { PiCertificate } from "react-icons/pi";
 import { LuMailbox } from "react-icons/lu";
-import classes from "./NavbarLinksGroup.module.css";
 import { useMediaQuery } from "@mantine/hooks";
 import { RiMenu2Fill } from "react-icons/ri";
+import classes from "./NavbarLinksGroup.module.css";
 
 interface IconProps {
   className?: string;

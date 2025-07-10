@@ -9,7 +9,6 @@ import {
   Button,
   Divider,
   Timeline,
-  Loader,
   ScrollArea,
   Textarea,
   Grid,
@@ -34,6 +33,7 @@ import {
   useUpdateOvertimeMutation,
 } from "../../../../features/api/overtimeSlice";
 import { Log } from "../../../../features/types/shared";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 // Define the schema
 const overtimeSchema = z.object({
@@ -171,11 +171,7 @@ const OvertimeDetail = ({
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-32">
-        <Loader type="dots" />
-      </div>
-    );
+    return <AppLoader />;
   }
 
   if (error) return <ErrorAlert message="Error fetching overtime detail" />;

@@ -1,4 +1,4 @@
-import { Button, Loader, Menu } from "@mantine/core";
+import { Button, Menu } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CiEdit } from "react-icons/ci";
@@ -13,6 +13,7 @@ import {
 } from "../../../../features/api/userSlice";
 import EditUser from "../EditUser";
 import AppModal from "../../../../components/ui/AppModal";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 interface RoleActionProps {
   id: string;
@@ -55,9 +56,7 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
 
   if (isLoading) {
     return (
-      <>
-        <Loader type="dots" />
-      </>
+      <AppLoader />
     );
   }
 
@@ -96,7 +95,7 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
       >
         {isLoadingDetail ? (
           <div className="flex justify-center p-4">
-            <Loader type="dots" />
+            <AppLoader />
           </div>
         ) : (
           <EditUser

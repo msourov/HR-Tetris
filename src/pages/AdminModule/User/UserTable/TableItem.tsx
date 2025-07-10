@@ -53,10 +53,14 @@ const TableItem: React.FC<TableItemProps> = ({
           </Table.Td>
           <Table.Td style={{ width: "25%" }}>
             <div className="flex items-center gap-3">
-              <UserImage
-                src={getImageUrl(item?.mobile)}
-                className="w-10 h-10 rounded-full object-cover border"
-              />
+              <div style={{ width: 40, height: 40 }}>
+                <UserImage
+                  src={getImageUrl(item?.mobile)}
+                  size={40}
+                  className="border"
+                />
+              </div>
+
               <span className="text-sm font-medium text-gray-800 truncate">
                 {item.name}
               </span>

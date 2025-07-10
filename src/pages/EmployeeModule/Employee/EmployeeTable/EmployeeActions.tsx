@@ -1,4 +1,4 @@
-import { Button, Loader, Modal } from "@mantine/core";
+import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { CiEdit } from "react-icons/ci";
 import { IoEyeOutline } from "react-icons/io5";
@@ -8,6 +8,7 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useDeleteEmployeeMutation } from "../../../../features/api/employeeSlice";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 interface EmplyeeActionProp {
   id: string;
@@ -57,7 +58,7 @@ const EmployeeActions: React.FC<EmplyeeActionProp> = ({
   if (isLoading) {
     return (
       <>
-        <Loader type="dots" />
+        <AppLoader />
       </>
     );
   }

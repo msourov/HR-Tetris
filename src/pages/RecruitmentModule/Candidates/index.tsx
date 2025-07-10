@@ -2,7 +2,6 @@ import {
   Button,
   Card,
   Divider,
-  Loader,
   Popover,
   Select,
   SimpleGrid,
@@ -13,6 +12,7 @@ import { IoFilter } from "react-icons/io5";
 import { useState } from "react";
 import AppApprovalStatus from "../../../components/core/AppApprovalStatus";
 import { IoMdReturnLeft } from "react-icons/io";
+import AppLoader from "../../../components/ui/AppLoader";
 
 const Candidates = () => {
   const { data: allCandidates, isLoading, error } = useGetCandidatesQuery();
@@ -40,7 +40,7 @@ const Candidates = () => {
     );
   }
   if (isLoading) {
-    <Loader type="dots" />;
+    <AppLoader />;
   }
   if (error) {
     <p>{`Something went wrong. ${error}`}</p>;

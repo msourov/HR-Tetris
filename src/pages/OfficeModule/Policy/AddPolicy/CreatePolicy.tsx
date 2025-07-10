@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Loader, Paper, TextInput } from "@mantine/core";
+import { Box, Button, Paper, TextInput } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { RichTextEditor } from "@mantine/tiptap";
 import Highlight from "@tiptap/extension-highlight";
@@ -15,6 +15,7 @@ import { z } from "zod";
 import { useCreatePolicyMutation } from "../../../../features/api/policySlice";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { ContextModalProps } from "@mantine/modals";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const schema = z.object({
   name: z.string().min(2),
@@ -142,7 +143,7 @@ const CreatePolicy = ({ context, id }: AddPolicyProps) => {
           bg="black"
           disabled={isLoading}
         >
-          {isLoading ? <Loader type="dots" size="sm" /> : "Save"}
+          {isLoading ? <AppLoader /> : "Save"}
         </Button>
       </form>
     </Paper>

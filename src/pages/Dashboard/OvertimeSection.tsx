@@ -1,19 +1,12 @@
 import { FC, useState } from "react";
 import { Overtime } from "../../features/api/typesOld";
-import {
-  Accordion,
-  Box,
-  Button,
-  Loader,
-  Modal,
-  ScrollArea,
-  Text,
-} from "@mantine/core";
+import { Accordion, Box, Button, Modal, ScrollArea, Text } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useDisclosure } from "@mantine/hooks";
 import OvertimeReviewModal from "../EmployeeModule/Overtime/OvertimeList/ReviewModal";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import dayjs from "dayjs";
+import AppLoader from "../../components/ui/AppLoader";
 
 type OvertimeSectionProps = {
   data: Overtime | Overtime[];
@@ -96,7 +89,7 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
                 ))
               ) : loading ? (
                 <Box className="flex justify-center items-center">
-                  <Loader type="dots" color="orange" size="sm" />
+                  <AppLoader />
                 </Box>
               ) : (
                 <Text c="dimmed" my={10} ta="center">

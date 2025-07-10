@@ -230,7 +230,6 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           {/* Name Field */}
           <TextInput
-            size="xs"
             label="Meeting Name"
             required
             {...register("name")}
@@ -239,7 +238,6 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
           {/* Supervisor Field */}
           <Select
-            size="xs"
             label="Supervisor"
             disabled={loadingPersons}
             required
@@ -251,7 +249,6 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
           {/* Meeting Type */}
           <Select
-            size="xs"
             label="Meeting Type"
             required
             data={[
@@ -267,7 +264,6 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
           {/* Priority */}
           <Select
-            size="xs"
             label="Priority"
             required
             data={[
@@ -285,7 +281,6 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
           {/* Online Link (Conditional) */}
           {meetingType === "online" && (
             <TextInput
-              size="xs"
               label="Online Meeting Link"
               required
               {...register("online_link")}
@@ -297,7 +292,6 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
           {/* Location (Conditional) */}
           {meetingType === "offline" && (
             <TextInput
-              size="xs"
               label="Location"
               required
               {...register("location")}
@@ -308,7 +302,6 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
           {/* Meeting Date/Time */}
           <TextInput
-            size="xs"
             label="Meeting Date & Time"
             type="datetime-local"
             required
@@ -330,7 +323,6 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
         {/* Participants */}
         <MultiSelect
-          size="xs"
           label="Participants"
           disabled={loadingPersons}
           required
@@ -343,7 +335,6 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
         {/* Agenda */}
         <Textarea
-          size="xs"
           label="Agenda"
           required
           minRows={3}
@@ -355,7 +346,6 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
 
         {/* Description */}
         <Textarea
-          size="xs"
           label="Description"
           minRows={3}
           {...register("descriptions")}

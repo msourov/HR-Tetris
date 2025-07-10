@@ -377,7 +377,7 @@ const Profile = () => {
                     Add an extra layer of security
                   </Text>
                 </div>
-                <Button variant="outline" color="orange" size="sm">
+                <Button variant="outline" color="orange" size="sm" disabled>
                   Enable
                 </Button>
               </div>

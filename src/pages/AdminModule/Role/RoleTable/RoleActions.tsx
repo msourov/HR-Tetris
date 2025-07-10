@@ -1,4 +1,4 @@
-import { Button, Loader, Modal } from "@mantine/core";
+import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
@@ -11,6 +11,7 @@ import {
 } from "../../../../features/api/roleSlice";
 import { Role } from "../../../../features/types/role";
 import AppModal from "../../../../components/ui/AppModal";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 interface RoleActionProps {
   name: string;
@@ -87,7 +88,7 @@ const RoleActions: React.FC<RoleActionProps> = ({ name, id, disabled }) => {
       >
         {isDetailLoading ? (
           <div className="flex justify-center p-4">
-            <Loader type="dots" />
+            <AppLoader />
           </div>
         ) : (
           <EditRole

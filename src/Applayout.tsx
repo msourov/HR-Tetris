@@ -2,14 +2,11 @@ import { Outlet } from "react-router-dom";
 import { Sidebar } from "./components/shared/sidebar/Sidebar";
 import Topbar from "./components/shared/Topbar";
 import Footer from "./components/shared/Footer";
+import { useAttendancePolling } from "./hooks/useAttendancePolling";
+
 
 const AppLayout: React.FC = () => {
-  // useEffect(() => {
-  //   console.log("AppLayout mounted");
-  //   return () => {
-  //     console.log("AppLayout unmounted");
-  //   };
-  // }, []);
+  useAttendancePolling();
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">

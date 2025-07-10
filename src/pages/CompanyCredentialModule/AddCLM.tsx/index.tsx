@@ -19,6 +19,7 @@ import { useCreateCredentialMutation } from "../../../features/api/companyCreden
 import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { DateInput } from "@mantine/dates";
+import { ErrorResponse } from "react-router-dom";
 
 // Zod schema validation
 const schema = z
@@ -125,7 +126,9 @@ const CreateCredentialModal = () => {
     } catch (error) {
       notifications.show({
         title: "Error!",
-        message: "Failed to create credential",
+        message:
+          (error as ErrorResponse)?.data?.detail ||
+          "Failed to create credential",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,

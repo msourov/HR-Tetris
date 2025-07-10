@@ -55,9 +55,9 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
       {/* Time Details */}
       <div className="flex flex-col gap-3 mb-4">
         <div className="flex items-center gap-2">
-          <IconClock size={18} className="text-blue-600" />
+          <IconClock size={18} className="text-gray-400" />
           <div className="flex flex-col">
-            <Text size="xs" fw={500} className="text-gray-700">
+            <Text fw={500} className="text-gray-700">
               {shift.regular ? (
                 <>
                   <span className="text-xs font-semibold">
@@ -78,7 +78,7 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
                 </>
               )}
             </Text>
-            <Text size="xs" className="text-gray-500">
+            <Text className="text-gray-500">
               {shift.regular ? (
                 <>
                   {dayjs(shift.start_time).format("MMM D / YYYY")} –{" "}
@@ -97,9 +97,9 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
 
         {shift.off_day && shift.off_day.length > 0 && (
           <div className="flex items-center gap-2">
-            <IconZzz size={18} className="font-thin text-blue-500" />
+            <IconZzz size={18} className="font-thin text-gray-400" />
             <div>
-              <Text size="xs" className="text-gray-500">
+              <Text className="text-gray-600">
                 <span className="text-xs font-thin">Weekend:</span>
                 <span className="ml-1 font-medium text-gray-700">
                   {shift.off_day.join(", ")}
@@ -114,16 +114,17 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
       <div className="flex justify-between items-center border-t pt-3">
         <div className="flex items-center gap-2">
           <IconCalendar size={18} className="text-amber-700" />
-          <Text size="xs" className="text-amber-700">
+          <Text className="text-amber-700">
             Created {dayjs(shift.create_at).format("MMM D, YYYY")}
           </Text>
         </div>
 
         <Badge
           variant="outline"
-          color="indigo"
           radius="sm"
-          className="border-blue-100 bg-blue-50"
+          className={`border-blue-100 bg-blue-50 ${
+            shift?.regular && "text-amber-600 bg-amber-200"
+          }`}
         >
           {shift.regular ? "Regular Shift" : "Temporary Shift"}
         </Badge>

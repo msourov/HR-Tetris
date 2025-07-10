@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Loader, Paper, Switch, TextInput } from "@mantine/core";
+import { Box, Button, Paper, Switch, TextInput } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useAddDesignationMutation } from "../../../../features/api/designationSlice";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const schema = z.object({
   active: z.boolean(),
@@ -80,7 +81,7 @@ const AddNewDesignation: React.FC<AddNewDesignationProps> = ({
             bg="black"
             disabled={isLoading}
           >
-            {isLoading ? <Loader type="dots" size="sm" /> : "Save"}
+            {isLoading ? <AppLoader /> : "Save"}
           </Button>
         </form>
       </Paper>

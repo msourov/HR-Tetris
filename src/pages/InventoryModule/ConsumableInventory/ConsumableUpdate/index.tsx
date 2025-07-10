@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import {
   Button,
-  Loader,
   NumberInput,
   Textarea,
   TextInput,
@@ -16,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { ErrorResponse } from "react-router-dom";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 // Schema for updating a consumable
 const schema = z.object({
@@ -63,7 +63,7 @@ const ConsumableUpdate = ({ uid, closeEdit }: ConsumableUpdateProps) => {
   });
   console.log(consumableDetail);
   if (isLoading) {
-    <Loader type="dots" />;
+    <AppLoader />;
   }
 
   useEffect(() => {

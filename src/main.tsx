@@ -20,7 +20,39 @@ import "@mantine/charts/styles.css";
 const theme = createTheme({
   fontFamily: "Inter, Open Sans, sans-serif",
   primaryColor: "blue",
+  fontSizes: {
+    xs: "10px",
+    sm: "13px", // default size
+    md: "13px",
+    lg: "14px",
+    xl: "16px",
+  },
   components: {
+    Text: {
+      defaultProps: {
+        size: "sm", // 12px
+      },
+    },
+    Input: {
+      defaultProps: {
+        size: "sm",
+      },
+    },
+    Select: {
+      defaultProps: {
+        size: "sm",
+      },
+    },
+    TextInput: {
+      defaultProps: {
+        size: "sm",
+      },
+    },
+    Textarea: {
+      defaultProps: {
+        size: "sm",
+      },
+    },
     Button: {
       defaultProps: {
         radius: "md",

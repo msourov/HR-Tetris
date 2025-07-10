@@ -4,7 +4,6 @@ import {
   Group,
   Text,
   Stack,
-  Loader,
   Grid,
   Divider,
 } from "@mantine/core";
@@ -16,6 +15,7 @@ import {
   IconHome,
   IconMapPin,
 } from "@tabler/icons-react";
+import AppLoader from "../../../components/ui/AppLoader";
 
 const AttendanceDetail = ({ uid }: { uid: string }) => {
   const { formatDate } = useFormatDate();
@@ -28,11 +28,7 @@ const AttendanceDetail = ({ uid }: { uid: string }) => {
     : null;
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-32">
-        <Loader type="dots" />
-      </div>
-    );
+    return <AppLoader />;
   }
 
   if (error) {

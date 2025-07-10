@@ -38,10 +38,10 @@ const taskSchema = z
     reporter_id: z.string().min(1, "Reporter is required"),
     assignee: z.array(z.string()).min(1, "At least one assignee is required"),
     priority: z.string().min(1, "Priority is required"),
-    status: z.string().min(1, "Status is required"),
+    // status: z.string().min(1, "Status is required"),
     start_date: z.string().datetime(),
     due_date: z.string().datetime(),
-    tags: z.array(z.string()),
+    tags: z.union([z.array(z.string()), z.string()]),
     estimated_time: z.number().min(0, "Time must be positive"),
     actual_time_spent: z.number().min(0).optional(),
   })
@@ -98,7 +98,7 @@ const TaskFormDrawer = ({
       assignee: [],
       reporter_id: "",
       priority: "",
-      status: "",
+      // status: "",
       start_date: new Date().toISOString(),
       due_date: new Date().toISOString(),
       tags: [],
@@ -116,7 +116,7 @@ const TaskFormDrawer = ({
           taskDetail.assignees.map((a: TaskEmployee) => a.employee_id) ?? [],
         reporter_id: taskDetail?.reporter?.employee_id || "",
         priority: taskDetail.priority || "",
-        status: taskDetail.status || "",
+        // status: taskDetail.status || "",
         start_date: taskDetail.start_date || new Date().toISOString(),
         due_date: taskDetail.due_date || new Date().toISOString(),
         tags: taskDetail.tags || [],
@@ -144,6 +144,13 @@ const TaskFormDrawer = ({
     try {
       const payload = {
         ...values,
+        tags:
+          typeof values.tags === "string"
+            ? values.tags
+                .split(",")
+                .map((tag) => tag.trim())
+                .filter(Boolean)
+            : values.tags,
         actual_time_spent: values.actual_time_spent ?? 0,
         comments: [],
         attachments: [],
@@ -184,7 +191,7 @@ const TaskFormDrawer = ({
       withCloseButton={false}
     >
       <div className="px-10">
-        <Title order={3} fw={400} c="blue" ta="center" my={20}>
+        <Title order={4} fw={500} c="blue" ta="center" my={14}>
           Add Task
         </Title>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -265,7 +272,7 @@ const TaskFormDrawer = ({
                 )}
               />
 
-              <Controller
+              {/* <Controller
                 name="status"
                 control={control}
                 render={({ field }) => (
@@ -282,7 +289,7 @@ const TaskFormDrawer = ({
                     {...field}
                   />
                 )}
-              />
+              /> */}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -322,7 +329,7 @@ const TaskFormDrawer = ({
               />
             </div>
 
-            <Controller
+            {/* <Controller
               name="tags"
               control={control}
               render={({ field }) => (
@@ -332,6 +339,18 @@ const TaskFormDrawer = ({
                   data={[]}
                   searchable
                   {...field}
+                />
+              )}
+            /> */}
+            <Controller
+              name="tags"
+              control={control}
+              render={({ field }) => (
+                <TextInput
+                  label="Tags (enter comma separated names)"
+                  placeholder="e.g. urgent, backend"
+                  {...field}
+                  error={errors.tags?.message}
                 />
               )}
             />

@@ -1,8 +1,9 @@
-import { Loader, Table } from "@mantine/core";
+import { Table } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import { Overtime } from "../../../../features/api/typesOld";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 interface TableItemProps {
   data: Overtime[];
@@ -18,7 +19,7 @@ interface TableItemProps {
 
 const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
   if (isLoading) {
-    <Loader type="dots" className="self-center" />;
+    <AppLoader />;
   }
   if (error) {
     <ErrorAlert message="Error fetching users" />;

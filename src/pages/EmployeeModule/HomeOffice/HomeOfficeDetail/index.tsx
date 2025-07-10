@@ -1,7 +1,6 @@
 import {
   Button,
   Divider,
-  Loader,
   ScrollArea,
   Text,
   Textarea,
@@ -23,6 +22,7 @@ import { z } from "zod";
 import { DatePickerInput } from "@mantine/dates";
 import { IoCalendar } from "react-icons/io5";
 import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 interface HomeOfficeDetailProps {
   uid: string;
@@ -207,11 +207,7 @@ const HomeOfficeDetail = ({ uid, closeModal }: HomeOfficeDetailProps) => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center">
-        <Loader type="dots" />
-      </div>
-    );
+    return <AppLoader />;
   }
 
   if (error) {

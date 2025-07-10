@@ -6,7 +6,6 @@ import {
   Badge,
   Divider,
   Stack,
-  Loader,
 } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetDepartmentDetailQuery } from "../../../../features/api/departmentSlice";
@@ -20,6 +19,7 @@ import {
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import { IoMdReturnLeft } from "react-icons/io";
 import { getImageUrl } from "../../../../services/utils/getImageUrl";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const DepartmentDetail = () => {
   const { id: uid } = useParams();
@@ -34,7 +34,7 @@ const DepartmentDetail = () => {
   };
 
   if (isLoading) {
-    return <Loader type="dots" />;
+    return <AppLoader />;
   }
 
   if (error) {

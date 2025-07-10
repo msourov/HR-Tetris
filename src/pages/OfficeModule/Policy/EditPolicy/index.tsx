@@ -1,10 +1,10 @@
 import {
   Box,
   Button,
-  Loader,
   Modal,
   Paper,
   Select,
+  Switch,
   Text,
   TextInput,
 } from "@mantine/core";
@@ -23,25 +23,35 @@ import {
 } from "../../../../features/api/policySlice";
 import { modals } from "@mantine/modals";
 import { AllPolicy } from "../../../../features/api/typesOld";
+import { useEditor } from "@tiptap/react";
+import Highlight from "@tiptap/extension-highlight";
+import Link from "@tiptap/extension-link";
+import Subscript from "@tiptap/extension-subscript";
+import Superscript from "@tiptap/extension-superscript";
+import TextAlign from "@tiptap/extension-text-align";
+import Underline from "@tiptap/extension-underline";
+import StarterKit from "@tiptap/starter-kit";
+import { RichTextEditor } from "@mantine/tiptap";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const schema = z.object({
   active: z.boolean(),
   name: z.string().min(2),
-  description: z.string().min(1, { message: "Description is required" }),
+  description: z.string(),
 });
 
 type EditDesignationType = z.infer<typeof schema>;
 
 const ManagePolicy = () => {
-  const [des, setDes] = useState<string>("");
+  const [policy, setPolicy] = useState<string | null>(null);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
   const { data: policies } = useGetPoliciesQuery({
     page: 1,
     limit: 10,
   });
-  const [editPolicy, { isLoading: editDesLoading }] = useEditPolicyMutation();
-  const [deleteDesignation, { isLoading: deleteDesLoading }] =
+  const [editPolicy, { isLoading: editPolLoading }] = useEditPolicyMutation();
+  const [deletePolicy, { isLoading: deletePolLoading }] =
     useDeletePolicyMutation();
   // const toggleModal = () => {
   //   addClose();
@@ -55,7 +65,7 @@ const ManagePolicy = () => {
     : [];
 
   const policyDetail = Array.isArray(policies?.data)
-    ? policies.data.find((item) => item?.uid === des)
+    ? policies.data.find((item) => item?.uid === policy)
     : undefined;
 
   const {
@@ -63,34 +73,72 @@ const ManagePolicy = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
+    watch,
   } = useForm<EditDesignationType>({
     resolver: zodResolver(schema),
+  });
+
+  console.log(errors, "errors");
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Link,
+      Superscript,
+      Subscript,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+    ],
+    onUpdate: ({ editor }) => {
+      setValue("description", editor.getHTML());
+    },
   });
 
   useEffect(() => {
     if (policyDetail) {
       reset({
         name: policyDetail?.name,
+        description: policyDetail?.descriptions ?? "",
         active: policyDetail?.active,
       });
+      editor?.commands.setContent(policyDetail?.descriptions || "");
     }
-  }, [policyDetail, reset]);
+  }, [policyDetail, reset, editor]);
+
+  console.log(policyDetail, "policyDetail");
 
   // const activeStatus = watch("active");
 
-  const text = <Text fw={500}>Select Policy</Text>;
+  const text = (
+    <Text fw={500} mb={4}>
+      Select Policy
+    </Text>
+  );
 
   const onSubmit = async (data: EditDesignationType) => {
+    if (!policy) {
+      notifications.show({
+        title: "Error!",
+        message: "No policy selected",
+        icon: <IconX />,
+        color: "red",
+        autoClose: 3000,
+      });
+      return;
+    }
     const obj = {
-      ...data,
+      uid: policy,
+      name: data.name,
       written_policy: data.description,
-      uid: des,
+      active: data.active,
     };
     try {
       await editPolicy(obj).unwrap();
       notifications.show({
         title: "Success!",
-        message: "Succesfully updated designation",
+        message: "Succesfully updated policy",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
@@ -98,7 +146,7 @@ const ManagePolicy = () => {
     } catch (error) {
       notifications.show({
         title: "Error!",
-        message: "Couldn't update designation",
+        message: "Couldn't update policy",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
@@ -108,8 +156,7 @@ const ManagePolicy = () => {
 
   const handleDelete = async () => {
     try {
-      await deleteDesignation({ id: des }).unwrap();
-      setDes("");
+      await deletePolicy({ id: policy as string }).unwrap();
       notifications.show({
         title: "Success!",
         message: "Designation deleted",
@@ -117,6 +164,7 @@ const ManagePolicy = () => {
         color: "green",
         autoClose: 3000,
       });
+      setPolicy(null);
     } catch (error) {
       notifications.show({
         title: "Error!",
@@ -189,43 +237,96 @@ const ManagePolicy = () => {
       <Select
         label={text}
         data={policyOptions}
-        value={des || ""}
+        value={policy}
         onChange={(value) => {
           if (value) {
-            setDes(value);
+            setPolicy(value);
           } else {
-            setDes("");
+            setPolicy("");
           }
         }}
         mt={8}
       />
-      {des && (
+      {policy && (
         <Paper shadow="sm" p="md" my={16}>
           {policyDetail ? (
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextInput
                 label="Name"
+                mb={10}
                 {...register("name")}
                 error={errors.name?.message as React.ReactNode}
               />
-              {/* <Box className="max-w-20 mt-4">
+              {editor && (
+                <Box mt={20}>
+                  <Text mb={4} fw={500}>
+                    Description
+                  </Text>
+                  <RichTextEditor editor={editor}>
+                    <RichTextEditor.Toolbar sticky stickyOffset={60}>
+                      <RichTextEditor.ControlsGroup>
+                        <RichTextEditor.Bold />
+                        <RichTextEditor.Italic />
+                        <RichTextEditor.Underline />
+                        <RichTextEditor.Strikethrough />
+                        <RichTextEditor.ClearFormatting />
+                        <RichTextEditor.Highlight />
+                        <RichTextEditor.Code />
+                      </RichTextEditor.ControlsGroup>
+                      <RichTextEditor.ControlsGroup>
+                        <RichTextEditor.H1 />
+                        <RichTextEditor.H2 />
+                        <RichTextEditor.H3 />
+                        <RichTextEditor.H4 />
+                      </RichTextEditor.ControlsGroup>
+                      <RichTextEditor.ControlsGroup>
+                        <RichTextEditor.Blockquote />
+                        <RichTextEditor.Hr />
+                        <RichTextEditor.BulletList />
+                        <RichTextEditor.OrderedList />
+                        <RichTextEditor.Subscript />
+                        <RichTextEditor.Superscript />
+                      </RichTextEditor.ControlsGroup>
+                      <RichTextEditor.ControlsGroup>
+                        <RichTextEditor.Link />
+                        <RichTextEditor.Unlink />
+                      </RichTextEditor.ControlsGroup>
+                      <RichTextEditor.ControlsGroup>
+                        <RichTextEditor.AlignLeft />
+                        <RichTextEditor.AlignCenter />
+                        <RichTextEditor.AlignJustify />
+                        <RichTextEditor.AlignRight />
+                      </RichTextEditor.ControlsGroup>
+                      <RichTextEditor.ControlsGroup>
+                        <RichTextEditor.Undo />
+                        <RichTextEditor.Redo />
+                      </RichTextEditor.ControlsGroup>
+                    </RichTextEditor.Toolbar>
+                    <RichTextEditor.Content />
+                  </RichTextEditor>
+                  {errors.description?.message && (
+                    <Text size="xs" c="red" mt={4}>
+                      {errors.description.message}
+                    </Text>
+                  )}
+                </Box>
+              )}
+
+              <Box className="max-w-20 mt-4">
+                <label>Status</label>
                 <Switch
-                  size="lg"
-                  onLabel="Disable"
-                  offLabel="Activate"
-                  color="black"
-                  checked={activeStatus}
+                  size="md"
+                  checked={watch("active")}
                   {...register("active")}
                 />
-              </Box> */}
+              </Box>
 
               <Button
                 type="submit"
                 className="rounded-lg mt-6"
-                bg="black"
-                disabled={editDesLoading}
+                disabled={editPolLoading}
               >
-                {editDesLoading ? <Loader type="dots" size="sm" /> : "Save"}
+                {editPolLoading ? <AppLoader /> : "Save"}
               </Button>
             </form>
           ) : (
@@ -251,14 +352,14 @@ const ManagePolicy = () => {
               <Button
                 color="red"
                 onClick={handleDelete}
-                disabled={deleteDesLoading}
+                disabled={deletePolLoading}
               >
                 Confirm
               </Button>
               <Button
                 color="gray"
                 onClick={closeDelete}
-                disabled={deleteDesLoading}
+                disabled={deletePolLoading}
               >
                 Cancel
               </Button>

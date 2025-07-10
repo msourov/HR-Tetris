@@ -32,7 +32,7 @@ export interface TaskCreatePayload {
   assignee: string[];
   reporter_id: string;
   priority: string;
-  status: string;
+  // status: string;
   start_date: string;
   due_date: string;
   tags: string[];

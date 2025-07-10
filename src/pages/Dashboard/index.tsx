@@ -137,20 +137,21 @@ const Dashboard = () => {
       <div className="w-[70%]">
         <div className="flex flex-col xl:flex-row justify-evenly mb-6 gap-4 rounded-md">
           <Card
-            py={8}
-            pb={10}
             withBorder
-            className="flex-1 min-w-[360px] shadow-lg w-full h-fit 
+            className="flex-1 min-w-[360px] w-full h-fit 
             justify-center gap-1 hover:shadow-md transition-shadow"
           >
             <div className="flex items-center gap-2 mb-1">
-              <IconCalendarStats size={20} className="text-blue-600" />
-              <Text className="text-gray-600 font-semibold">Today's Stats</Text>
+              <IconCalendarStats size={20} className="text-purple-600" />
+              <Text className="text-purple-600 font-semibold text-sm">
+                Today's Stats
+              </Text>
             </div>
+            <Divider mb="sm" />
 
-            <div className="flex flex-col gap-2 w-full items-center">
+            <div className="flex flex-col gap-4 w-full items-center">
               {/* Attendance Info */}
-              <div className="border w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3">
+              <div className=" w-full shadow-md bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3">
                 {/* Header */}
                 <div className="flex items-center gap-2">
                   <IconClockFilled color="#2563eb" size={18} />
@@ -194,7 +195,7 @@ const Dashboard = () => {
               </div>
 
               {/* Employees Info */}
-              <div className="border w-full border-blue-200 shadow-sm bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3">
+              <div className=" w-full shadow-md bg-white hover:shadow-md transition-all duration-300 flex flex-col items-center gap-2 px-3">
                 {/* Header */}
                 <div className="flex items-center gap-2">
                   <IoIosPeople color="#2563eb" size={18} />
@@ -239,20 +240,18 @@ const Dashboard = () => {
             </div>
           </Card>
           <Card
-            py={8}
             withBorder
-            shadow="sm"
-            className="w-full overflow-y-auto pr-2 lg:w-full xl:w-[440px] max-h-[460px] bg-white hover:shadow-md transition-all duration-300"
+            className="w-full pr-2 gap-1 lg:w-full xl:w-[440px] max-h-[480px] bg-white hover:shadow-md transition-all duration-300"
           >
-            <div className="flex items-center gap-2 mb-1 ">
-              <IconCalendarEvent size={20} className="text-blue-600" />
-              <Text className="text-md font-semibold text-gray-700">
+            <div className="flex items-center gap-2 mb-1">
+              <IconCalendarEvent size={20} className="text-purple-600" />
+              <Text className="text-md font-semibold text-purple-600">
                 Upcoming Events
               </Text>
             </div>
-            <Divider mb="sm" />
+            <Divider mb="xs" />
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 overflow-y-auto scrollbar-custom py-2">
               {upcomingEvents.map((event, index) => (
                 <div
                   key={index}

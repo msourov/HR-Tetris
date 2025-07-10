@@ -1,6 +1,7 @@
 import { Button } from "@mantine/core";
 import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
 import { LoanWithGuarantorObj } from "../../../../features/types/inventory";
+import UserImage from "../../../../components/core/UserImage";
 
 interface LoanDetailInterface {
   data: LoanWithGuarantorObj;
@@ -56,15 +57,22 @@ const LoanDetails = ({ data, closeModal }: LoanDetailInterface) => {
       {/* People Section */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Employee Card */}
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <div className="flex items-center gap-4 mb-4">
-            <img
+        <div className="bg-gray-50 flex flex-col p-4 rounded-lg">
+          <div className="flex flex-1 items-center gap-4 mb-4">
+            <div style={{ width: 40, height: 40 }}>
+              <UserImage
+                src={data.employee.employee_image}
+                size={40}
+                className="border"
+              />
+            </div>
+            {/* <img
               src={
                 data.employee.employee_image || data.employee.employee_name[0]
               }
               className="w-12 h-12 rounded-full object-cover border-2 border-white"
               alt="Emp"
-            />
+            /> */}
             <div>
               <h4 className="font-semibold text-gray-800">
                 {data.employee.employee_name}
@@ -77,15 +85,15 @@ const LoanDetails = ({ data, closeModal }: LoanDetailInterface) => {
               </p>
             </div>
           </div>
-          <div className="bg-white p-3 rounded-md text-sm text-gray-500">
-            Admin Approval -{" "}
+          <div className="bg-blue-600 flex justify-between items-center gap-2 p-3 rounded-md text-sm text-gray-200">
+            Admin Approval
             <AppApprovalStatus status={data.is_admin_approve} />
           </div>
         </div>
 
         {/* Guarantor Card */}
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <div className="flex items-center gap-4 mb-4">
+        <div className="bg-blue-50 flex flex-col p-4 rounded-lg">
+          <div className="flex flex-1 items-center gap-4 mb-4">
             <img
               src={data.guarantor.guarantor_image}
               className="w-12 h-12 rounded-full object-cover border-2 border-white"
@@ -103,8 +111,8 @@ const LoanDetails = ({ data, closeModal }: LoanDetailInterface) => {
               </p>
             </div>
           </div>
-          <div className="bg-white p-3 rounded-md text-sm text-gray-500">
-            Guarantor Approval -{" "}
+          <div className="bg-blue-600 flex justify-between items-center gap-2 p-3 rounded-md text-sm text-gray-200">
+            Guarantor Approval
             <AppApprovalStatus status={data.is_guarantor_approve} />
           </div>
         </div>

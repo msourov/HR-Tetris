@@ -413,10 +413,7 @@ const EmployeeDetail = () => {
                             >
                               <div className="flex items-center justify-between">
                                 <div>
-                                  <Text
-                                    size="xs"
-                                    className="font-semibold text-gray-700"
-                                  >
+                                  <Text className="text-xs font-semibold text-gray-700">
                                     {formatLabel(key)}
                                   </Text>
                                   {isApproval && (

@@ -6,7 +6,6 @@ import {
   Badge,
   Divider,
   Stack,
-  Loader,
   Button,
 } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
@@ -21,6 +20,7 @@ import useFormatDate from "../../../../services/utils/useFormatDate";
 import { IoMdReturnLeft } from "react-icons/io";
 import { useGetDesignationDetailQuery } from "../../../../features/api/designationSlice";
 import { getImageUrl } from "../../../../services/utils/getImageUrl";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const DesignationDetail = () => {
   const { id: uid } = useParams();
@@ -36,7 +36,7 @@ const DesignationDetail = () => {
   };
 
   if (isLoading) {
-    return <Loader type="dots" />;
+    return <AppLoader />;
   }
 
   if (error) {

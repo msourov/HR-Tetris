@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import {
   Button,
-  Loader,
   NumberInput,
   Textarea,
   TextInput,
@@ -18,6 +17,7 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { ErrorResponse } from "react-router-dom";
 import { useGetEmployeeHelperQuery } from "../../../../features/api/employeeSlice";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -108,7 +108,7 @@ const EditLoan = ({ uid, closeEdit }: EditLoanProps) => {
   };
 
   if (isLoading || employeesLoading) {
-    return <Loader type="dots" />;
+    return <AppLoader />;
   }
 
   return (

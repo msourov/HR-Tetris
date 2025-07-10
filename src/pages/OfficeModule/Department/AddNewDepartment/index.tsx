@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Loader, Paper, Switch, TextInput } from "@mantine/core";
+import { Button, Paper, Switch, TextInput } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAddDepartmentMutation } from "../../../../features/api/departmentSlice";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const schema = z.object({
   active: z.boolean(),
@@ -80,7 +81,7 @@ const AddNewDepartment: React.FC<AddNewDepartmentProps> = ({ toggleModal }) => {
               disabled={isLoading}
               // bg="black"
             >
-              {isLoading ? <Loader type="dots" size="sm" /> : "Save"}
+              {isLoading ? <AppLoader /> : "Save"}
             </Button>
           </div>
         </form>

@@ -5,35 +5,67 @@ import {
   Text,
   Divider,
   Card,
-  Avatar,
   Paper,
   FileInput,
   Textarea,
 } from "@mantine/core";
 import { IconCheck, IconX, IconPaperclip } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { notifications } from "@mantine/notifications";
 import { Ticket } from "../../../features/types/ticket";
-import {
-  useGetAllTicketsQuery,
-  useResolveTicketMutation,
-} from "../../../features/api/ticketSlice";
+import { useResolveTicketMutation } from "../../../features/api/ticketSlice";
 import useFormatDate from "../../../services/utils/useFormatDate";
 import axios from "axios";
 import { getToken } from "../../../services/utils/getToken";
+import { getImageUrl } from "../../../services/utils/getImageUrl";
+import UserImage from "../../../components/core/UserImage";
 
 interface TicketThreadProps {
   ticket: Ticket;
+  refetchTickets: () => Promise<unknown>;
   onBack: () => void;
 }
 
-const TicketThread = ({ ticket, onBack }: TicketThreadProps) => {
+const TicketThread = ({
+  ticket,
+  refetchTickets,
+  onBack,
+}: TicketThreadProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [newMessage, setNewMessage] = useState("Dummy message");
   const [files, setFiles] = useState<File[]>([]);
   const [resolveTicket] = useResolveTicketMutation();
-  const { refetch } = useGetAllTicketsQuery({ page: 1, limit: 10 });
+  // const { refetch } = useGetAllTicketsQuery({ page: 1, limit: 10 });
   const { formatDate } = useFormatDate();
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [ticket.chat]);
+
+  const getMimeType = (ext: string) => {
+    const map: Record<string, string> = {
+      mp4: "video/mp4",
+      webm: "video/webm",
+      mov: "video/quicktime",
+    };
+    return map[ext.toLowerCase()] || "video/*";
+  };
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [ticket.chat]);
+
+  useEffect(() => {
+    console.log(files);
+  }, [files]);
 
   const token = getToken();
 
@@ -42,7 +74,7 @@ const TicketThread = ({ ticket, onBack }: TicketThreadProps) => {
       setIsSubmitting(true);
       const formData = new FormData();
       formData.append("message", newMessage);
-      files.forEach((file) => formData.append("file", file));
+      files.forEach((file) => formData.append("files", file));
 
       const response = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}tickets/chat/${ticket.uid}`,
@@ -63,7 +95,7 @@ const TicketThread = ({ ticket, onBack }: TicketThreadProps) => {
       });
       setNewMessage("");
       setFiles([]);
-      await refetch();
+      await refetchTickets();
     } catch (error) {
       const message = axios.isAxiosError(error)
         ? error.response?.data?.message || "Failed to send message"
@@ -83,7 +115,7 @@ const TicketThread = ({ ticket, onBack }: TicketThreadProps) => {
   const handleResolve = async () => {
     try {
       await resolveTicket({ uid: ticket.uid });
-      await refetch();
+      await refetchTickets();
       notifications.show({
         title: "Resolved",
         message: "Ticket marked as resolved",
@@ -117,77 +149,105 @@ const TicketThread = ({ ticket, onBack }: TicketThreadProps) => {
           </Button>
         )}
       </Group>
-      <div className="px-4 py-2">
+      <div className="px-4">
         <Text size="lg" fw="bold" className="text-blue-500">
           {ticket.name}
         </Text>
         <Text c="dimmed">Created {formatDate(ticket.create_at)}</Text>
 
         <Divider my="md" />
+        <div
+          ref={containerRef}
+          className="overflow-y-auto max-h-[480px] scrollbar-custom"
+        >
+          <Stack gap="xl">
+            {ticket.chat.map((message, index) => (
+              <>
+                <Card key={index} withBorder className="flex-shrink-0">
+                  <Group align="start" mb="sm">
+                    {/* <Avatar src={message?.user_name} size="md" /> */}
+                    <UserImage
+                      src={getImageUrl(message?.user_id)}
+                      size={30}
+                      className="border"
+                    />
+                    <div>
+                      <Text fw={500}>{message.user_name}</Text>
+                      <Text size="sm" c="dimmed">
+                        {formatDate(message.create_at, true)}
+                      </Text>
+                    </div>
+                  </Group>
 
-        <Stack gap="xl">
-          {ticket.chat.map((message, index) => (
-            <Card key={index} withBorder>
-              <Group align="start" mb="sm">
-                <Avatar src={message?.user_name} size="md" />
-                <div>
-                  <Text fw={500}>{message.user_name}</Text>
-                  <Text size="sm" c="dimmed">
-                    {formatDate(message.create_at)}
-                  </Text>
-                </div>
-              </Group>
+                  <Text className="mb-2">{message.message}</Text>
+                  {message.uploads?.length > 0 && (
+                    <Group gap="sm">
+                      {message.uploads.map((file) => {
+                        // const fileUrl = `https://api.hr-infozilion.pitetris.com/${file.file_path}`;
+                        // const isImage = ["jpg", "jpeg", "png", "gif"].includes(
+                        //   file.file_extension.toLowerCase()
+                        // );
+                        // const isVideo = ["mp4", "webm", "mov"].includes(
+                        //   file.file_extension.toLowerCase()
+                        // );
+                        const fileUrl = `https://api.hr-infozilion.pitetris.com/${file.file_path}`;
+                        const isImage = ["jpg", "jpeg", "png", "gif"].includes(
+                          file.file_extension.toLowerCase()
+                        );
+                        const isVideo = ["mp4", "webm", "mov"].includes(
+                          file.file_extension.toLowerCase()
+                        );
 
-              <Text className="mb-2">{message.message}</Text>
-              {message.uploads?.length > 0 && (
-                <Group gap="sm">
-                  {message.uploads.map((file, i) => {
-                    const fileUrl = `https://api.hr-infozilion.pitetris.com/${file.file_path}`;
-                    const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(
-                      file.file_extension.toLowerCase()
-                    );
-                    const isVideo = ['mp4', 'webm', 'mov'].includes(
-                      file.file_extension.toLowerCase()
-                    );
-
-                    return (
-                      <div key={i}>
-                        {isImage ? (
-                          <img
-                            src={fileUrl}
-                            alt={file.file_name}
-                            style={{ maxWidth: 200, maxHeight: 200 }}
-                            className="rounded-md"
-                          />
-                        ) : isVideo ? (
-                          <video
-                            controls
-                            style={{ maxWidth: 200, maxHeight: 200 }}
-                            className="rounded-md"
-                          >
-                            <source src={fileUrl} type={file.file_type} />
-                            Your browser does not support the video tag.
-                          </video>
-                        ) : (
-                          <Button
-                            variant="outline"
-                            size="xs"
-                            leftSection={<IconPaperclip size={14} />}
-                            component="a"
-                            href={fileUrl}
-                            target="_blank"
-                          >
-                            {file.file_name}
-                          </Button>
-                        )}
-                      </div>
-                    );
-                  })}
-                </Group>
-              )}
-            </Card>
-          ))}
-        </Stack>
+                        return (
+                          <div key={file.file_name}>
+                            {isImage ? (
+                              <img
+                                src={fileUrl}
+                                alt={file.file_name}
+                                style={{ maxWidth: 200, maxHeight: 200 }}
+                                className="rounded-md"
+                              />
+                            ) : isVideo ? (
+                              <div className="flex items-center gap-2">
+                                <video
+                                  controls
+                                  style={{ maxWidth: 200, maxHeight: 200 }}
+                                  className="rounded-md"
+                                >
+                                  <source
+                                    src={fileUrl}
+                                    type={getMimeType(file.file_extension)}
+                                  />
+                                  Your browser does not support the video tag.
+                                </video>
+                                {/* <div className="flex items-center cursor-pointer">
+                                  <IconDownload size={18} color="gray" />
+                                </div> */}
+                              </div>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                size="xs"
+                                leftSection={<IconPaperclip size={14} />}
+                                component="a"
+                                href={fileUrl}
+                                target="_blank"
+                              >
+                                {file.file_name}
+                              </Button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </Group>
+                  )}
+                </Card>
+                {/* <div ref={endRef} /> */}
+              </>
+            ))}
+          </Stack>
+          <div ref={bottomRef} />
+        </div>
 
         {ticket.status === "open" && (
           <Paper withBorder className="p-4 mt-4">
@@ -223,7 +283,6 @@ const TicketThread = ({ ticket, onBack }: TicketThreadProps) => {
           </Paper>
         )}
       </div>
-
     </Stack>
   );
 };

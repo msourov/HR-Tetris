@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Loader,
   Modal,
   Paper,
   Select,
@@ -23,6 +22,7 @@ import {
   useGetDesignationsQuery,
 } from "../../../../features/api/designationSlice";
 import AddNewDesignation from "../AddNewDesignation";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const schema = z.object({
   active: z.boolean(),
@@ -187,7 +187,7 @@ const EditDesignation = () => {
                 disabled={editDesLoading}
                 bg="blue"
               >
-                {editDesLoading ? <Loader type="dots" size="sm" /> : "Save"}
+                {editDesLoading ? <AppLoader /> : "Save"}
               </Button>
             </form>
           ) : (

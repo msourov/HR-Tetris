@@ -1,6 +1,5 @@
 import {
   Button,
-  Loader,
   Modal,
   Paper,
   Select,
@@ -19,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const schema = z.object({
   active: z.boolean(),
@@ -147,14 +147,8 @@ const EditDepartment = () => {
                 error={errors.name?.message as React.ReactNode}
               />
               <div className="max-w-20 mt-4">
-                <Switch
-                  size="lg"
-                  onLabel="Disable"
-                  offLabel="Activate"
-                  color="black"
-                  checked={activeStatus}
-                  {...register("active")}
-                />
+                <label>Status</label>
+                <Switch checked={activeStatus} {...register("active")} />
               </div>
 
               <Button
@@ -163,7 +157,7 @@ const EditDepartment = () => {
                 bg="black"
                 disabled={editDeptLoading}
               >
-                {editDeptLoading ? <Loader type="dots" size="sm" /> : "Save"}
+                {editDeptLoading ? <AppLoader /> : "Save"}
               </Button>
             </form>
           )}

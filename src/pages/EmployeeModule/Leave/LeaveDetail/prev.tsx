@@ -1,5 +1,4 @@
 import {
-  Loader,
   Card,
   Text,
   Group,
@@ -26,6 +25,7 @@ import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
 import useFormatDate from "../../../../services/utils/useFormatDate";
 import { notifications } from "@mantine/notifications";
 import { ErrorResponse } from "react-router-dom";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const LeaveDetail = ({
   uid,
@@ -39,11 +39,7 @@ const LeaveDetail = ({
   const { formatDate } = useFormatDate();
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-32">
-        <Loader type="dots" />
-      </div>
-    );
+    return <AppLoader />;
   }
 
   const handleDeleteLeave = async () => {
@@ -133,10 +129,11 @@ const LeaveDetail = ({
             <Timeline active={1} bulletSize={24} lineWidth={2}>
               <Timeline.Item
                 bullet={<IconUser size={12} />}
-                title={`Created by ${Array.isArray(leaveData.logs)
-                  ? leaveData.logs[0].admin
-                  : leaveData.logs.admin
-                  }`}
+                title={`Created by ${
+                  Array.isArray(leaveData.logs)
+                    ? leaveData.logs[0].admin
+                    : leaveData.logs.admin
+                }`}
               >
                 <Text c="dimmed" size="sm">
                   {Array.isArray(leaveData.logs)

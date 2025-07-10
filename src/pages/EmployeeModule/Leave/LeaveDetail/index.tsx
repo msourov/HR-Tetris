@@ -11,8 +11,6 @@ import {
   Button,
   Divider,
   Timeline,
-  Pill,
-  Loader,
   ScrollArea,
   Grid,
 } from "@mantine/core";
@@ -38,6 +36,7 @@ import {
   useUpdateLeaveMutation,
 } from "../../../../features/api/leaveSlice";
 import { Log } from "../../../../features/types/shared";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const leaveSchema = z
   .object({
@@ -179,11 +178,7 @@ const LeaveDetail = ({
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-32">
-        <Loader type="dots" />
-      </div>
-    );
+    return <AppLoader />;
   }
 
   if (error) return <ErrorAlert message="Error fetching leave detail" />;
@@ -228,9 +223,9 @@ const LeaveDetail = ({
             </Group>
           </Grid.Col>
           <Grid.Col span={{ base: 12, md: 6 }}>
-            <Pill bg="blue" c="white" size="md">
+            <Text className="text-blue-700 font-semibold">
               {leaveData.employee_id}
-            </Pill>
+            </Text>
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 6 }}>
@@ -250,9 +245,27 @@ const LeaveDetail = ({
                 error={errors.leave_type?.message}
               />
             ) : (
-              <Text className="px-3 py-1 border rounded-md">
-                {leaveData.leave_type}
+              <Text className="">{leaveData.leave_type}</Text>
+            )}
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <Group gap="xs">
+              <IconClock size={16} className="text-purple-500" />
+              <Text fw={500} c="dimmed" size="sm">
+                Period
               </Text>
+            </Group>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            {isEditing ? (
+              <TextInput
+                variant="filled"
+                {...register("leave_preiod")}
+                error={errors.leave_preiod?.message}
+              />
+            ) : (
+              <Text>{leaveData.leave_preiod}</Text>
             )}
           </Grid.Col>
 
@@ -284,28 +297,6 @@ const LeaveDetail = ({
             )}
           </Grid.Col>
 
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Group gap="xs">
-              <IconClock size={16} className="text-purple-500" />
-              <Text fw={500} c="dimmed" size="sm">
-                Period
-              </Text>
-            </Group>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            {isEditing ? (
-              <TextInput
-                variant="filled"
-                {...register("leave_preiod")}
-                error={errors.leave_preiod?.message}
-              />
-            ) : (
-              <Pill className="bg-blue-500 text-white">
-                {leaveData.leave_preiod}
-              </Pill>
-            )}
-          </Grid.Col>
-
           <Grid.Col span={12}>
             <Divider
               label={<Text size="sm">Purpose</Text>}
@@ -322,6 +313,7 @@ const LeaveDetail = ({
                 input:
                   "bg-gray-50 read-only:bg-transparent read-only:cursor-text",
               }}
+              className="border bg-gray-50 px-2"
               {...register("purpose")}
               error={errors.purpose?.message}
             />
@@ -343,14 +335,14 @@ const LeaveDetail = ({
           {/* Activity Log */}
           <Grid.Col span={12}>
             <Divider
-              label="Activity Log"
+              label={<Text size="sm">Activity Log</Text>}
               labelPosition="center"
               mb="lg"
               className="w-full"
             />
             <ScrollArea.Autosize
               mah={220}
-              className="pr-4 bg-blue-500 rounded-lg p-4"
+              className="pr-4 bg-gray-50 rounded-lg p-4 border"
             >
               <Timeline active={1} bulletSize={24} lineWidth={2}>
                 {leaveData.logs && (
@@ -361,12 +353,11 @@ const LeaveDetail = ({
                           key={index}
                           bullet={<IconUser size={12} />}
                           title={`${log.admin}`}
-                          className="text-white"
                         >
-                          <Text size="sm" className="text-gray-300">
+                          <Text size="sm" className="text-gray-500">
                             {log.message}
                           </Text>
-                          <Text size="xs" mt={2} c="yellow">
+                          <Text mt={2} c="blue">
                             {formatDate(log.create_at, true)}
                           </Text>
                         </Timeline.Item>
@@ -379,7 +370,7 @@ const LeaveDetail = ({
                         <Text c="dimmed" size="sm">
                           {leaveData.logs.message}
                         </Text>
-                        <Text size="xs" mt={2} c="blue">
+                        <Text size="sm" mt={2} c="blue">
                           {formatDate(leaveData.logs.create_at, true)}
                         </Text>
                       </Timeline.Item>
@@ -413,6 +404,9 @@ const LeaveDetail = ({
                 </>
               ) : (
                 <>
+                  <Button variant="default" onClick={closeModal} size="sm">
+                    Close
+                  </Button>
                   <Button
                     color="red"
                     variant="filled"
@@ -421,9 +415,6 @@ const LeaveDetail = ({
                     loading={deleteLoading}
                   >
                     Delete
-                  </Button>
-                  <Button variant="default" onClick={closeModal} size="sm">
-                    Close
                   </Button>
                 </>
               )}

@@ -3,7 +3,6 @@ import {
   Modal,
   Box,
   SimpleGrid,
-  Loader,
   ScrollArea,
   Divider,
   Tabs,
@@ -186,7 +185,7 @@ const PolicyModal: React.FC<PolicyModalProps> = ({
   return (
     <Modal opened={opened} onClose={onClose} size="80%" withCloseButton={false}>
       {policyDetailLoading ? (
-        <Loader type="dots" />
+        <AppLoader />
       ) : !policyDetail?.data?.descriptions ? (
         <PDFViewer uid={policyDetail?.data?.uid} />
       ) : (

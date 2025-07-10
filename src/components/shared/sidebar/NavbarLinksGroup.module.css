@@ -4,6 +4,7 @@
 .control:focus,
 .control:active {
   /* background-color: var(--mantine-color-dark-7); */
+  outline: none;
   color: #0f2d53;
   transition: background-color 0.3s ease, color 0.3s ease;
 }

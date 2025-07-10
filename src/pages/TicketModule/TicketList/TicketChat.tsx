@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   FileButton,
-  Loader,
   Popover,
   Text,
   TextInput,
@@ -23,6 +22,7 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import ErrorAlert from "../../../components/shared/ErrorAlert";
 import { useDisclosure } from "@mantine/hooks";
+import AppLoader from "../../../components/ui/AppLoader";
 
 interface TicketTypeProp {
   ticket: Ticket;
@@ -61,7 +61,7 @@ const TicketChat: React.FC<TicketTypeProp> = ({ ticket, open }) => {
   //   }
   // };
   if (isLoading) {
-    <Loader type="dots" />;
+    <AppLoader />;
   }
   if (error) {
     <ErrorAlert message="Something went wrong!" />;

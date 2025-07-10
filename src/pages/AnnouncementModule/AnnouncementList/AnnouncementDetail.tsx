@@ -1,6 +1,7 @@
 // AnnouncementDetails.tsx
 import { Button, Card, Pill, Textarea } from "@mantine/core";
 import { Announcement } from "../../../features/types/announcement";
+import AppApprovalStatus from "../../../components/core/AppApprovalStatus";
 
 interface AnnouncementDetailsProps {
   announcement: Announcement;
@@ -70,9 +71,7 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({
         </div>
       ) : (
         <div className="flex justify-end gap-4">
-          <Pill className="bg-green-300 text-green-900 font-bold">
-            Approved
-          </Pill>
+          <AppApprovalStatus status={announcement?.is_approved} />
         </div>
       )}
     </>

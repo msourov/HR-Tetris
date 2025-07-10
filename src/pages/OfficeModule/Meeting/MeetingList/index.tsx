@@ -62,7 +62,7 @@ const getPriorityIcon = (priority: string) => {
     case "high":
       return <IconStarFilled size={14} />;
     case "medium":
-      return <IconStarFilled size={12} />;
+      return <IconStarFilled size={13} />;
     default:
       return <IconStarFilled size={10} />;
   }
@@ -143,7 +143,7 @@ export default function MeetingList() {
   }
 
   return (
-    <div className="px-4 max-w-6xl mx-auto">
+    <div className="px-4 max-w-[95%] lg:max-w-[90%] mx-auto">
       <Group justify="start" mb="md" className="w-fit">
         <Text className="text-gray-600 rounded-md p-2 text-xl">Meetings</Text>
         <Badge variant="light" color="blue" size="md">
@@ -151,7 +151,7 @@ export default function MeetingList() {
         </Badge>
       </Group>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto">
         {meetings?.map((meeting) => (
           <div
             key={meeting.id}
@@ -193,9 +193,9 @@ export default function MeetingList() {
 
               <Group gap="xs" wrap="nowrap">
                 <ThemeIcon variant="light" color="gray" size="sm" radius="xl">
-                  <IconClock size={12} />
+                  <IconClock size={13} />
                 </ThemeIcon>
-                <Text size="xs" fw={500} c="dark">
+                <Text fw={500} c="dark">
                   {formatDate(meeting.meeting_at)}
                 </Text>
                 {/* <Text size="sm" c="dimmed">
@@ -206,14 +206,14 @@ export default function MeetingList() {
               <Group gap="xs" wrap="nowrap">
                 {meeting.meeting_type === "online" ? (
                   <ThemeIcon variant="light" color="blue" size="sm" radius="xl">
-                    <IconVideo size={12} />
+                    <IconVideo size={13} />
                   </ThemeIcon>
                 ) : (
                   <ThemeIcon variant="light" color="teal" size="sm" radius="xl">
-                    <IconMapPin size={12} />
+                    <IconMapPin size={13} />
                   </ThemeIcon>
                 )}
-                <Text size="xs" c="dark">
+                <Text c="dark">
                   {meeting.meeting_type === "online"
                     ? "Online Meeting"
                     : "In-person"}
@@ -222,7 +222,7 @@ export default function MeetingList() {
 
               <Group gap="xs" wrap="nowrap">
                 <ThemeIcon variant="light" color="gray" size="sm" radius="xl">
-                  <IconUsers size={12} />
+                  <IconUsers size={13} />
                 </ThemeIcon>
                 <Group gap={4}>
                   {meeting.meeting_person.slice(0, 3).map((person) => (

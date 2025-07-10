@@ -77,7 +77,7 @@ import ProtectedRoute from "./ProtectedRoutes";
 
 const loader = (
   <div className="flex justify-center items-center">
-    <Loader type="dots" color="blue" size="sm" my={30} />
+    <Loader color="blue" size="sm" my={30} />
   </div>
 );
 

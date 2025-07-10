@@ -1,5 +1,5 @@
 // AnnouncementList.tsx
-import { Card, Loader, Pill, SimpleGrid } from "@mantine/core";
+import { Card, Pill, SimpleGrid } from "@mantine/core";
 import {
   useApproveAnnouncementMutation,
   useGetAllAnnouncementsQuery,
@@ -13,6 +13,7 @@ import AnnouncementDetails from "./AnnouncementDetail";
 import { Announcement } from "../../../features/types/announcement";
 import { Response } from "../../../features/types/shared";
 import AppModal from "../../../components/ui/AppModal";
+import AppLoader from "../../../components/ui/AppLoader";
 
 const AnnouncementList = () => {
   const [value, setValue] = useState("");
@@ -30,7 +31,7 @@ const AnnouncementList = () => {
   } = useGetAllAnnouncementsQuery();
 
   if (isLoading || approveAnnLoading) {
-    return <Loader type="dots" />;
+    return <AppLoader />;
   }
 
   console.log(approveAnnError);

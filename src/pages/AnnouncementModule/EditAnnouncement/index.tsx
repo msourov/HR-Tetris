@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Loader,
   Modal,
   Paper,
   Select,
@@ -22,6 +21,7 @@ import {
   useUpdateAnnouncementMutation,
 } from "../../../features/api/announcementSlice";
 import ErrorAlert from "../../../components/shared/ErrorAlert";
+import AppLoader from "../../../components/ui/AppLoader";
 
 // Define the schema with z.object() and correct fields
 const schema = z.object({
@@ -166,7 +166,7 @@ const EditAnnouncement = () => {
                 bg="black"
                 disabled={editAnmtLoading}
               >
-                {editAnmtLoading ? <Loader type="dots" size="sm" /> : "Save"}
+                {editAnmtLoading ? <AppLoader /> : "Save"}
               </Button>
             </form>
           ) : (

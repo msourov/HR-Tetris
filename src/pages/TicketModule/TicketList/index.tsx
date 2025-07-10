@@ -19,7 +19,10 @@ import useFormatDate from "../../../services/utils/useFormatDate";
 import TicketThread from "./TicketThread";
 
 export default function TicketList() {
-  const { data, isLoading } = useGetAllTicketsQuery({ page: 1, limit: 10 });
+  const { data, isLoading, refetch, error } = useGetAllTicketsQuery({
+    page: 1,
+    limit: 10,
+  });
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [viewArchived, { open: openArchive, close: closeArchive }] =
     useDisclosure(false);
@@ -35,8 +38,10 @@ export default function TicketList() {
       </div>
     );
 
+  console.error(error);
+
   return (
-    <Group align="start" className="gap-4 h-full" wrap="nowrap">
+    <Group align="start" className="gap-4 h-full">
       {/* Ticket Thread List */}
       <Stack className="w-80 flex items-center p-4 " gap="sm" bg="blue">
         <Text size="lg" fw="bold" className=" text-white text-center">
@@ -85,6 +90,7 @@ export default function TicketList() {
         {selectedTicket ? (
           <TicketThread
             ticket={selectedTicket}
+            refetchTickets={refetch}
             onBack={() => setSelectedTicket(null)}
           />
         ) : (

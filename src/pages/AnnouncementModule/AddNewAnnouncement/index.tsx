@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Loader, Paper, Textarea, TextInput } from "@mantine/core";
+import { Button, Paper, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useCreateAnnouncementMutation } from "../../../features/api/announcementSlice";
 import React from "react";
+import AppLoader from "../../../components/ui/AppLoader";
 
 const schema = z.object({
   name: z
@@ -74,7 +75,7 @@ const AddNewAnnouncement: React.FC<AddNewAnnouncement> = ({ toggleModal }) => {
 
   return (
     <>
-      <Paper withBorder shadow="md" radius="md" p="md">
+      <Paper withBorder radius="md" p="md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
             variant="filled"
@@ -100,7 +101,7 @@ const AddNewAnnouncement: React.FC<AddNewAnnouncement> = ({ toggleModal }) => {
             disabled={isLoading}
             bg="black"
           >
-            {isLoading ? <Loader type="dots" size="sm" /> : "Save"}
+            {isLoading ? <AppLoader /> : "Save"}
           </Button>
         </form>
       </Paper>
