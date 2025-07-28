@@ -71,6 +71,7 @@ const DepartmentLayout = () => {
           <Tabs
             radius="xs"
             variant="pills"
+            color="orange"
             value={activeTab}
             onChange={handleTabChange}
           >

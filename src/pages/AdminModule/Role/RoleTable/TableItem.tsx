@@ -65,7 +65,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading, error }) => {
   };
 
   if (loading) {
-    return <CommonSkeleton cols={5} rows={5} />;
+    return <CommonSkeleton cols={4} rows={5} />;
   }
 
   if (error) {

@@ -13,17 +13,16 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { IconMessage } from "@tabler/icons-react";
 import { useState } from "react";
-import { Ticket } from "../../../features/types/ticket";
 import { useGetAllTicketsQuery } from "../../../features/api/ticketSlice";
 import useFormatDate from "../../../services/utils/useFormatDate";
 import TicketThread from "./TicketThread";
 
 export default function TicketList() {
-  const { data, isLoading, refetch, error } = useGetAllTicketsQuery({
+  const { data, isLoading, error } = useGetAllTicketsQuery({
     page: 1,
     limit: 10,
   });
-  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+  const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
   const [viewArchived, { open: openArchive, close: closeArchive }] =
     useDisclosure(false);
   const { formatDate } = useFormatDate();
@@ -52,9 +51,9 @@ export default function TicketList() {
             <List.Item key={ticket.id} className="w-auto">
               <Card
                 // withBorder
-                onClick={() => setSelectedTicket(ticket)}
+                onClick={() => setSelectedTicketId(ticket?.uid)}
                 className={`cursor-pointer w-[300px] ${
-                  selectedTicket?.id === ticket.id ? "border-blue-500" : ""
+                  selectedTicketId === ticket.uid ? "border-blue-500" : ""
                 }`}
               >
                 <Group justify="space-between" className="w-full">
@@ -87,11 +86,10 @@ export default function TicketList() {
 
       {/* Selected Ticket Thread */}
       <Paper className="flex-1 p-4">
-        {selectedTicket ? (
+        {selectedTicketId ? (
           <TicketThread
-            ticket={selectedTicket}
-            refetchTickets={refetch}
-            onBack={() => setSelectedTicket(null)}
+            ticketId={selectedTicketId}
+            onBack={() => setSelectedTicketId(null)}
           />
         ) : (
           <Text c="dimmed" className="text-center">
@@ -120,7 +118,7 @@ export default function TicketList() {
                   color="blue"
                   variant="outline"
                   onClick={() => {
-                    setSelectedTicket(ticket);
+                    setSelectedTicketId(ticket?.uid);
                     closeArchive();
                   }}
                 >

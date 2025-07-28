@@ -19,7 +19,7 @@ interface TableItemProps {
 }
 
 const LoanTableItems = ({ data, isLoading, error }: TableItemProps) => {
-  if (isLoading) return <CommonSkeleton cols={8} rows={5} />;
+  if (isLoading) return <CommonSkeleton cols={9} />;
   console.log(error, "error");
 
   return (

@@ -49,5 +49,5 @@ export interface TicketResolve {
 }
 
 export interface TicketResponse extends PaginatedApiResponse<Ticket[]> {}
-
+export interface TicketDetailResponse extends getDataResponse<Ticket> {}
 export interface TicketResolveResponse extends getDataResponse<TicketResolve> {}

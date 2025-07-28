@@ -235,30 +235,18 @@ const EditRole = ({ id: uid, name, closeModal, roleData }: EditRoleProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <p className="text-gray-500">Select Accesses</p>
         {items}
-        <p className="text-gray-500 mt-6 mb-2">Set Status</p>
+        <p className="text-gray-500 mt-6 mb-2">Status</p>
 
         <div className="max-w-20">
-          <Switch
-            size="md"
-            onLabel="Disable"
-            offLabel="Activate"
-            color="black"
-            checked={activeStatus}
-            {...register("status")}
-          />
+          <Switch size="md" checked={activeStatus} {...register("status")} />
         </div>
         <Group justify="end" align="center" gap="sm" mt="lg">
-          <Button
-            type="submit"
-            bg="black"
-            loading={isLoading}
-            disabled={isLoading}
-          >
+          <Button type="submit" loading={isLoading} disabled={isLoading}>
             Save
           </Button>
           <Button
             variant="outline"
-            color="black"
+            color="gray"
             onClick={closeModal}
             disabled={isLoading}
           >

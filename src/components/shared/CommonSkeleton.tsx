@@ -5,7 +5,7 @@ interface CommonSkeletonProps {
   rows?: number;
 }
 
-const CommonSkeleton: React.FC<CommonSkeletonProps> = ({ cols, rows = 5 }) => {
+const CommonSkeleton: React.FC<CommonSkeletonProps> = ({ cols, rows = 10 }) => {
   return (
     <Table.Tbody>
       {Array.from({ length: rows }).map((_, rowIndex) => (

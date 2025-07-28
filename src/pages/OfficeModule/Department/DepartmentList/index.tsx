@@ -9,7 +9,7 @@ const DepartmentList = () => {
     data: departmentData,
     isLoading,
     error,
-  } = useGetDepartmentsQuery({ page: 1, limit: 10 });
+  } = useGetDepartmentsQuery({ page: 1, limit: 30 });
   const navigate = useNavigate();
 
   if (isLoading) {

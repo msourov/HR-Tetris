@@ -21,6 +21,7 @@ import useFormatDate from "../../../services/utils/useFormatDate";
 import { useDisclosure } from "@mantine/hooks";
 import AppModal from "../../../components/ui/AppModal";
 import { CertificateDetail } from "./CCDetail";
+import dayjs from "dayjs";
 
 export default function CertificateCard({ item }: { item: CompanyCredential }) {
   const { formatDate } = useFormatDate();
@@ -53,11 +54,20 @@ export default function CertificateCard({ item }: { item: CompanyCredential }) {
               {item.active ? "Active" : "Expired"}
             </Badge>
           </Group>
-          <Group gap="xs">
+          <Group gap="0.25rem" className="text-sm">
             <IconCalendar size={18} color="blue" />
-
-            <Text className="text-sm text-gray-700">
-              Expires: {formatDate(item.expire_at)}
+            <Text className="font-semibold text-gray-600">
+              Expires:{" "}
+              <Text
+                span
+                className={`font-semibold ${
+                  dayjs(item?.expire_at).isBefore(dayjs())
+                    ? "text-red-500"
+                    : "text-green-500"
+                }`}
+              >
+                {formatDate(item.expire_at)}
+              </Text>
             </Text>
           </Group>
         </Group>

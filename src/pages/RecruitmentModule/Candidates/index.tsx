@@ -140,7 +140,7 @@ const Candidates = () => {
             <p className="line-clamp-2">{item?.cover_letter}</p>
             <Card.Section>
               <Button
-                className="bg-black hover:bg-gray-700"
+                className="hover:bg-gray-700"
                 size="compact-sm"
                 my={16}
                 onClick={() => navigate(`${item?.uid}/detail`)}

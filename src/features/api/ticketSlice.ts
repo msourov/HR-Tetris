@@ -4,6 +4,7 @@ import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
 import {
   CreateTicketRequest,
+  TicketDetailResponse,
   TicketResolveResponse,
   TicketResponse,
 } from "../types/ticket";
@@ -60,7 +61,7 @@ export const ticketApi = createApi({
           : [{ type: "Ticket", id: "LIST" }],
     }),
 
-    getTicketById: builder.query<TicketResponse, { ticket_id: string }>({
+    getTicketById: builder.query<TicketDetailResponse, { ticket_id: string }>({
       query: ({ ticket_id }) => ({
         url: `tickets/${ticket_id}`,
         method: "GET",
@@ -90,7 +91,10 @@ export const ticketApi = createApi({
         method: "POST",
         body: { message, files },
       }),
-      invalidatesTags: [{ type: "Ticket", id: "LIST" }],
+      invalidatesTags: (result, error, { ticket_id }) => [
+        { type: "Ticket", id: "LIST" },
+        { type: "Ticket", id: ticket_id },
+      ],
     }),
 
     fetchChatFiles: builder.mutation<void, { uid: string; file_name: string }>({

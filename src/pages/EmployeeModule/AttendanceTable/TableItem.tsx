@@ -9,6 +9,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import AttendanceDetail from "./AttendanceDetail";
 import { getImageUrl } from "../../../services/utils/getImageUrl";
+import UserImage from "../../../components/core/UserImage";
 
 interface TableItemProps {
   data: Attendance[];
@@ -32,12 +33,8 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
     open();
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = "/assets/employee_avatar.png";
-  };
-
   if (isLoading) {
-    return <CommonSkeleton cols={7} rows={5} />;
+    return <CommonSkeleton cols={7} />;
   }
   if (error) {
     return <ErrorAlert message="Error fetching attendance logs" />;
@@ -52,15 +49,15 @@ const TableItem: React.FC<TableItemProps> = ({ data, isLoading, error }) => {
         >
           <Table.Td className="w-[5%] pl-[1rem]">{index + 1}</Table.Td>
           <Table.Td className="w-[15%]">
-            <img
-              src={getImageUrl(item.employee_id)}
-              alt={item.employee_name}
-              className="w-10 h-10 rounded-full mr-2 inline-block"
-              onError={handleImageError}
-            />
-            {item.employee_name}
+            <div className="flex items-center gap-2">
+              <UserImage
+                src={getImageUrl(item.employee_id)}
+                size={40}
+                className="border"
+              />
+              <span>{item.employee_name}</span>
+            </div>
           </Table.Td>
-
           <Table.Td className="w-[10%]">{item.employee_id}</Table.Td>
           <Table.Td className="w-[10%]">
             {item.is_attend ? (

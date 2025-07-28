@@ -17,9 +17,10 @@ import AppLoader from "../../../../components/ui/AppLoader";
 
 interface RoleActionProps {
   id: string;
+  name: string;
 }
 
-const UserActions: React.FC<RoleActionProps> = ({ id }) => {
+const UserActions: React.FC<RoleActionProps> = ({ id, name }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [editOpened, { open: openEdit, close: closeEdit }] =
     useDisclosure(false);
@@ -55,9 +56,7 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
   };
 
   if (isLoading) {
-    return (
-      <AppLoader />
-    );
+    return <AppLoader />;
   }
 
   return (
@@ -106,13 +105,16 @@ const UserActions: React.FC<RoleActionProps> = ({ id }) => {
         )}
       </AppModal>
       <AppModal opened={opened} onClose={close} size="md">
-        <p className="text-center">Are you sure you want to delete?</p>
+        <p className="text-center">
+          Are you sure you want to delete user{" "}
+          <span className="text-blue-500">{name}</span>
+        </p>
         <div className="flex gap-2 justify-center mt-4">
           <Button color="red" onClick={DeleteUser}>
-            Confirm
+            Yes
           </Button>
-          <Button color="gray" onClick={close}>
-            Cancel
+          <Button variant="outline" color="gray" onClick={close}>
+            No
           </Button>
         </div>
       </AppModal>

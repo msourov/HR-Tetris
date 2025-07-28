@@ -10,7 +10,7 @@ const DesignationList = () => {
     data: designationData,
     isLoading,
     error,
-  } = useGetDesignationsQuery({ page: 1, limit: 10 });
+  } = useGetDesignationsQuery({ page: 1, limit: 20 });
 
   if (isLoading) {
     <AppLoader />;

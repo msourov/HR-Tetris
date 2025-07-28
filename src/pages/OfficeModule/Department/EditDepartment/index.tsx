@@ -1,11 +1,4 @@
-import {
-  Button,
-  Modal,
-  Paper,
-  Select,
-  Switch,
-  TextInput,
-} from "@mantine/core";
+import { Button, Modal, Paper, Select, Switch, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   useDeleteDepartmentMutation,
@@ -29,9 +22,10 @@ type EditDepartmentType = z.infer<typeof schema>;
 
 const EditDepartment = () => {
   const [dept, setDept] = useState<string | null>(null);
+  const [changesMade, setChangesMade] = useState(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
-  const { data: departments } = useGetDepartmentsQuery({ page: 1, limit: 10 });
+  const { data: departments } = useGetDepartmentsQuery({ page: 1, limit: 30 });
   const [editDepartment, { isLoading: editDeptLoading }] =
     useEditDepartmentMutation();
   const [deleteDepartment, { isLoading: deleteDeptLoading }] =
@@ -70,6 +64,16 @@ const EditDepartment = () => {
     }
   }, [departmentDetail, reset]);
 
+  useEffect(() => {
+    if (!departmentDetail) return;
+
+    const hasChanges =
+      watch("name") !== departmentDetail.name ||
+      watch("active") !== departmentDetail.active;
+
+    setChangesMade(hasChanges);
+  }, [watch("name"), watch("active"), departmentDetail]);
+
   const activeStatus = watch("active");
 
   const text = <p className="font-medium text-gray-600">Select Department</p>;
@@ -89,6 +93,7 @@ const EditDepartment = () => {
         color: "green",
         autoClose: 3000,
       });
+      setChangesMade(false);
     } catch (error) {
       notifications.show({
         title: "Error!",
@@ -127,6 +132,7 @@ const EditDepartment = () => {
   return (
     <div className="my-6">
       <Select
+        searchable
         label={text}
         data={deptOptions}
         value={dept}
@@ -136,6 +142,9 @@ const EditDepartment = () => {
           }
         }}
         mt={8}
+        classNames={{
+          dropdown: "glass-dropdown",
+        }}
       />
       {dept && (
         <Paper shadow="sm" p="md" my={16}>
@@ -150,48 +159,50 @@ const EditDepartment = () => {
                 <label>Status</label>
                 <Switch checked={activeStatus} {...register("active")} />
               </div>
+              <div className="flex items-center justify-between mt-8">
+                <Button
+                  type="submit"
+                  className="rounded-lg"
+                  disabled={editDeptLoading || !changesMade}
+                >
+                  {editDeptLoading ? <AppLoader /> : "Save"}
+                </Button>
 
-              <Button
-                type="submit"
-                className="rounded-lg mt-6"
-                bg="black"
-                disabled={editDeptLoading}
-              >
-                {editDeptLoading ? <AppLoader /> : "Save"}
-              </Button>
+                <Button variant="light" color="red" onClick={openDelete}>
+                  Delete
+                </Button>
+              </div>
             </form>
           )}
         </Paper>
       )}
-      {departmentDetail && (
-        <>
-          <div className="flex justify-end mt-10">
-            <Button variant="light" color="red" onClick={openDelete}>
-              Delete
-            </Button>
-          </div>
-          <Modal
-            opened={deleteOpened}
-            onClose={closeDelete}
-            centered
-            className="text-center"
+
+      <Modal
+        withCloseButton={false}
+        opened={deleteOpened}
+        onClose={closeDelete}
+        centered
+        className="text-center"
+      >
+        <p>Are you sure you want to delete?</p>
+        <div className="flex gap-2 justify-center mt-4">
+          <Button
+            color="red"
+            onClick={handleDelete}
+            disabled={deleteDeptLoading}
           >
-            <p>Are you sure you want to delete?</p>
-            <div className="flex gap-2 justify-center mt-4">
-              <Button
-                color="red"
-                onClick={handleDelete}
-                disabled={deleteDeptLoading}
-              >
-                Confirm
-              </Button>
-              <Button color="gray" onClick={close} disabled={deleteDeptLoading}>
-                Cancel
-              </Button>
-            </div>
-          </Modal>
-        </>
-      )}
+            Yes
+          </Button>
+          <Button
+            variant="outline"
+            color="gray"
+            onClick={close}
+            disabled={deleteDeptLoading}
+          >
+            No
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };

@@ -13,7 +13,6 @@ const UserTable = () => {
     limit,
   });
   const users: User[] = data?.data || [];
-
   return (
     <>
       <Table striped highlightOnHover>

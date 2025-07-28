@@ -79,10 +79,10 @@ const TableItem: React.FC<TableItemProps> = ({
 
           <Table.Td style={{ width: "20%" }}>
             <div
-              className={`px-2 py-1 rounded border text-xs font-medium w-fit ${
+              className={`py-1 rounded text-xs font-semibold w-fit ${
                 item.role_name === "Super Admin"
-                  ? "bg-red-500 text-white border-red-600"
-                  : "bg-gray-500 text-white border-gray-500"
+                  ? "text-purple-700"
+                  : "text-gray-700"
               }`}
             >
               {item?.role_name ? item.role_name : "N/A"}
@@ -98,7 +98,7 @@ const TableItem: React.FC<TableItemProps> = ({
             </Pill>
           </Table.Td>
           <Table.Td style={{ width: "10%", paddingRight: "32px" }}>
-            <UserActions id={item?.uid} />
+            <UserActions id={item?.uid} name={item?.name} />
           </Table.Td>
         </Table.Tr>
       ))}
