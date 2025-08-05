@@ -7,6 +7,7 @@ import OvertimeReviewModal from "../EmployeeModule/Overtime/OvertimeList/ReviewM
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import dayjs from "dayjs";
 import AppLoader from "../../components/ui/AppLoader";
+import useFormatDate from "../../services/utils/useFormatDate";
 
 type OvertimeSectionProps = {
   data: Overtime | Overtime[];
@@ -24,6 +25,8 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
   const [uid, setUid] = useState("");
   const [empId, setEmpId] = useState("");
 
+  const { formatDate } = useFormatDate();
+
   const handleModalOpen = (employee_id: string, uid: string) => {
     open();
     setEmpId(employee_id);
@@ -35,25 +38,25 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
   }
 
   return (
-    <div className="w-full shadow-lg border border-green-300">
-      <ScrollArea type="scroll" style={{ overflowY: "hidden" }}>
+    <div className="w-full border border-gray-200 rounded-lg shadow-sm">
+      <Box className="bg-green-600 text-white rounded-t-lg py-2">
+        <Text fw={600} size="md" ta="center">
+          Overtime Requests
+        </Text>
+      </Box>
+      <ScrollArea.Autosize mah={400} type="scroll">
         <Box className="flex flex-col items-center">
-          <Box w="100%" className="bg-green-100 text-green-800">
-            <Text fw={600} size="md" ta="center" my={6}>
-              Overtime Requests
-            </Text>
-          </Box>
-          <Accordion transitionDuration={200} className="w-full mx-6">
+          <Accordion transitionDuration={200} className="w-full py-1">
             {Array.isArray(data) ? (
               data.length ? (
                 data.map((item, index) => (
                   <Accordion.Item key={index} value={item.purpose}>
                     <Accordion.Control>
                       <Box className="w-full">
-                        <Text>{item.purpose}</Text>
+                        <Text fw={500}>{item.purpose}</Text>
                       </Box>
                     </Accordion.Control>
-                    <Accordion.Panel className="w-full bg-gray-50 border-x-2 border-green-400">
+                    <Accordion.Panel className="w-full bg-gray-100 border-x-2 border-green-400">
                       <Box className="flex justify-between items-start py-2">
                         <Box className="flex flex-col">
                           <Text>{item.employee_name}</Text>
@@ -63,18 +66,14 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
                               dayjs(item?.end_time),
                               "day"
                             )
-                              ? dayjs(item?.start_time).format("DD/MM/YYYY")
-                              : dayjs(item?.start_time).format(
-                                  "DD/MM/YYYY"
-                                )}{" "}
-                            - {dayjs(item?.end_time).format("DD/MM/YYYY")}
-                            {/* {new Date(item?.start_time).toLocaleDateString()} -{" "}
-                            {new Date(item?.end_time).toLocaleDateString()} */}
+                              ? formatDate(item?.start_time)
+                              : formatDate(item?.start_time)}{" "}
+                            - {formatDate(item?.end_time)}
                           </Text>
                         </Box>
                         <Button
                           size="compact-sm"
-                          color="blue"
+                          color="green"
                           variant="light"
                           className="flex-shrink-0 flex-grow-0 ml-6"
                           onClick={() =>
@@ -99,16 +98,15 @@ const OvertimeSection: FC<OvertimeSectionProps> = ({
             ) : null}
           </Accordion>
           <Button
-            variant="outline"
-            c="blue"
-            size="compact-sm"
+            variant="subtle"
+            size="sm"
             my={10}
             onClick={() => navigate("/overtime")}
           >
-            See more
+            View All Overtimes
           </Button>
         </Box>
-      </ScrollArea>
+      </ScrollArea.Autosize>
       <Modal
         opened={opened}
         onClose={close}

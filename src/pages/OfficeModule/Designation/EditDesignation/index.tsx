@@ -9,7 +9,6 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { LuPlusCircle } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -21,7 +20,6 @@ import {
   useEditDesignationMutation,
   useGetDesignationsQuery,
 } from "../../../../features/api/designationSlice";
-import AddNewDesignation from "../AddNewDesignation";
 import AppLoader from "../../../../components/ui/AppLoader";
 
 const schema = z.object({
@@ -33,20 +31,16 @@ type EditDesignationType = z.infer<typeof schema>;
 
 const EditDesignation = () => {
   const [des, setDes] = useState<string | null>(null);
-  const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
   const { data: designations } = useGetDesignationsQuery({
     page: 1,
-    limit: 10,
+    limit: 30,
   });
   const [editDesignation, { isLoading: editDesLoading }] =
     useEditDesignationMutation();
   const [deleteDesignation, { isLoading: deleteDesLoading }] =
     useDeleteDesignationMutation();
-  const toggleModal = () => {
-    addClose();
-  };
 
   const designationOptions = designations?.data.map((item) => ({
     value: item?.uid,
@@ -141,14 +135,6 @@ const EditDesignation = () => {
 
   return (
     <Box className="my-6">
-      <Box className="flex justify-end">
-        <Button leftSection={<LuPlusCircle />} onClick={addOpen}>
-          Add
-        </Button>
-      </Box>
-      <Modal opened={addOpened} onClose={addClose} title="Add Designation">
-        <AddNewDesignation toggleModal={toggleModal} />
-      </Modal>
       <Select
         label={text}
         data={designationOptions}
@@ -161,6 +147,9 @@ const EditDesignation = () => {
           }
         }}
         mt={8}
+        classNames={{
+          dropdown: "glass-dropdown",
+        }}
       />
       {des && (
         <Paper shadow="sm" p="md" my={16}>

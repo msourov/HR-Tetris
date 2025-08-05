@@ -1,13 +1,6 @@
 import { FC, useState } from "react";
 import { Leave } from "../../features/api/typesOld";
-import {
-  Accordion,
-  Box,
-  Button,
-  Modal,
-  ScrollArea,
-  Text,
-} from "@mantine/core";
+import { Accordion, Box, Button, Modal, ScrollArea, Text } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import LeaveReviewModal from "../EmployeeModule/Leave/LeaveList/ReviewModal";
 import { useDisclosure } from "@mantine/hooks";
@@ -37,17 +30,17 @@ const LeaveSection: FC<LeaveSectionProps> = ({ data, loading, error }) => {
   }
 
   return (
-    <div className="w-full shadow-lg border border-red-300">
+    <div className="w-full rounded-lg shadow-sm border border-gray-200">
       <ScrollArea type="scroll" style={{ overflowY: "hidden" }}>
         <Box className="flex flex-col items-center">
-          <Box w="100%" className="bg-red-100 text-red-800 z-10">
-            <Text fw={600} size="md" ta="center" my={6}>
+          <Box w="100%" className="bg-red-600 text-white rounded-t-lg py-2">
+            <Text fw={600} size="md" ta="center">
               Leave Requests
             </Text>
           </Box>
 
           {/* <Divider color="red" w="70%" size="xs" mb={10} /> */}
-          <Accordion transitionDuration={200} className="w-full mx-6">
+          <Accordion transitionDuration={200} className="w-full py-1">
             {Array.isArray(data) ? (
               data.length ? (
                 data.map((item, index) => (
@@ -57,7 +50,7 @@ const LeaveSection: FC<LeaveSectionProps> = ({ data, loading, error }) => {
                         <Text lineClamp={1}>{item.purpose}</Text>
                       </Box>
                     </Accordion.Control>
-                    <Accordion.Panel className="w-full bg-gray-50 border-x-2 border-red-400">
+                    <Accordion.Panel className="w-full bg-gray-100 border-x-2 border-red-400">
                       <Box className="flex justify-between items-start py-2">
                         <Box className="flex flex-col">
                           <Text>{item.employee_name}</Text>

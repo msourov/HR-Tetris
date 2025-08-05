@@ -22,6 +22,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import { useGetAllAnnouncementsQuery } from "../../features/api/announcementSlice";
 
 const LeaveSection = lazy(() => import("./LeaveSection"));
 const OvertimeSection = lazy(() => import("./OvertimeSection"));
@@ -99,6 +100,15 @@ const Dashboard = () => {
     limit: 10,
   });
 
+  const {
+    data: announcementData,
+    isLoading: announcementLoading,
+    error: announcementError,
+  } = useGetAllAnnouncementsQuery({
+    page: 1,
+    limit: 10,
+  });
+
   const pendingLeaves = Array.isArray(leaves?.data)
     ? leaves.data.filter((item: Leave) => item.is_approved === "pending")
     : leaves?.data.is_approved === "pending"
@@ -111,6 +121,10 @@ const Dashboard = () => {
       )
     : overtimeData?.data.is_approved === "pending"
     ? overtimeData?.data
+    : [];
+
+  const pendingAnnouncement = Array.isArray(announcementData?.data)
+    ? announcementData.data.filter((item) => item.is_approved === "pending")
     : [];
 
   const attendanceData = [
@@ -331,7 +345,11 @@ const Dashboard = () => {
         </div>
         <div className="mb-6 w-full bg-white">
           <Suspense fallback={skeleton}>
-            <NoticeSection />
+            <NoticeSection
+              data={pendingAnnouncement ?? []}
+              loading={announcementLoading}
+              error={announcementError as FetchBaseQueryError}
+            />
           </Suspense>
         </div>
       </div>

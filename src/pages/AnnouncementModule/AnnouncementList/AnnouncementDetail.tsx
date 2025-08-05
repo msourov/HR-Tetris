@@ -26,8 +26,8 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({
         </p>
         <Textarea
           autosize
-          minRows={2}
-          maxRows={8}
+          minRows={4}
+          maxRows={12}
           className="font-medium text-md text-gray-600 text-left mb-4 py-4"
         >
           {announcement.descriptions}

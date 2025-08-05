@@ -12,7 +12,13 @@ export const announcementApi = createApi({
   baseQuery: baseQuery,
   tagTypes: [tagTypes.ANNOUNCEMENT],
   endpoints: (builder) => ({
-    GetAllAnnouncements: builder.query<AnnouncementResponse, void>({
+    GetAllAnnouncements: builder.query<
+      AnnouncementResponse,
+      {
+        page: number;
+        limit: number;
+      }
+    >({
       query: () => ({
         url: "announcements/all",
         method: "GET",

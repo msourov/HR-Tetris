@@ -28,7 +28,7 @@ const AnnouncementList = () => {
     data: announcementData,
     isLoading,
     error,
-  } = useGetAllAnnouncementsQuery();
+  } = useGetAllAnnouncementsQuery({ page: 1, limit: 10 });
 
   if (isLoading || approveAnnLoading) {
     return <AppLoader />;
