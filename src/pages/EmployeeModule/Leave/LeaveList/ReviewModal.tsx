@@ -24,24 +24,35 @@ const LeaveReviewModal: React.FC<LeaveReviewModalProps> = ({ close, uid }) => {
   const [approveLeave, { isLoading, error }] = useApproveLeaveMutation();
   const [value, setValue] = useState("");
 
-  const handleApprove = async () => {
+  const handleLeaveAction = async (
+    isApproved: "approved" | "rejected",
+    rejectPurpose = ""
+  ) => {
     try {
       const res = (await approveLeave({
         uid,
-        is_approved: "approved",
-        reject_purpose: "",
+        is_approved: isApproved,
+        reject_purpose: rejectPurpose,
       })) as LeaveApprovalResponse;
+
       console.log(res);
       notifications.show({
         title: "Success!",
-        message: res?.data?.message || "Leave Approved Successfully",
-        icon: <IconCheck />,
+        message:
+          res?.data?.message ||
+          (isApproved === "approved"
+            ? "Leave Approved Successfully"
+            : "Leave Rejected Successfully"),
+        icon: isApproved === "approved" ? <IconCheck /> : <IconBan />,
         color: "green",
         autoClose: 3000,
       });
       close();
     } catch (error) {
-      console.error("Error approving leave:", error);
+      console.error(
+        `Error ${isApproved === "approved" ? "approving" : "rejecting"} leave:`,
+        error
+      );
       notifications.show({
         title: "Error!",
         message: "Couldn't update leave status",
@@ -52,33 +63,61 @@ const LeaveReviewModal: React.FC<LeaveReviewModalProps> = ({ close, uid }) => {
     }
   };
 
-  const handleReject = async () => {
-    try {
-      const res = (await approveLeave({
-        uid,
-        is_approved: "rejected",
-        reject_purpose: value,
-      })) as LeaveApprovalResponse;
-      console.log(res);
-      notifications.show({
-        title: "Success!",
-        message: res?.data?.message || "Leave Rejected Successfully",
-        icon: <IconBan />,
-        color: "green",
-        autoClose: 3000,
-      });
-      close();
-    } catch (error) {
-      console.error("Error rejecting leave:", error);
-      notifications.show({
-        title: "Error!",
-        message: "Couldn't update leave status",
-        icon: <IconX />,
-        color: "red",
-        autoClose: 3000,
-      });
-    }
-  };
+  // const handleApprove = async () => {
+  //   try {
+  //     const res = (await approveLeave({
+  //       uid,
+  //       is_approved: "approved",
+  //       reject_purpose: "",
+  //     })) as LeaveApprovalResponse;
+  //     console.log(res);
+  //     notifications.show({
+  //       title: "Success!",
+  //       message: res?.data?.message || "Leave Approved Successfully",
+  //       icon: <IconCheck />,
+  //       color: "green",
+  //       autoClose: 3000,
+  //     });
+  //     close();
+  //   } catch (error) {
+  //     console.error("Error approving leave:", error);
+  //     notifications.show({
+  //       title: "Error!",
+  //       message: "Couldn't update leave status",
+  //       icon: <IconX />,
+  //       color: "red",
+  //       autoClose: 3000,
+  //     });
+  //   }
+  // };
+
+  // const handleReject = async () => {
+  //   try {
+  //     const res = (await approveLeave({
+  //       uid,
+  //       is_approved: "rejected",
+  //       reject_purpose: value,
+  //     })) as LeaveApprovalResponse;
+  //     console.log(res);
+  //     notifications.show({
+  //       title: "Success!",
+  //       message: res?.data?.message || "Leave Rejected Successfully",
+  //       icon: <IconBan />,
+  //       color: "green",
+  //       autoClose: 3000,
+  //     });
+  //     close();
+  //   } catch (error) {
+  //     console.error("Error rejecting leave:", error);
+  //     notifications.show({
+  //       title: "Error!",
+  //       message: "Couldn't update leave status",
+  //       icon: <IconX />,
+  //       color: "red",
+  //       autoClose: 3000,
+  //     });
+  //   }
+  // };
 
   const getErrorMessage = (
     error: FetchBaseQueryError | SerializedError
@@ -114,7 +153,7 @@ const LeaveReviewModal: React.FC<LeaveReviewModalProps> = ({ close, uid }) => {
           size="compact-md"
           color="green"
           className="text-sm"
-          onClick={handleApprove}
+          onClick={() => handleLeaveAction("approved")}
           disabled={isLoading}
         >
           Approve
@@ -124,7 +163,7 @@ const LeaveReviewModal: React.FC<LeaveReviewModalProps> = ({ close, uid }) => {
           color="red"
           size="compact-md"
           className="text-sm"
-          onClick={handleReject}
+          onClick={() => handleLeaveAction("rejected", value)}
           disabled={isLoading}
         >
           Reject

@@ -86,6 +86,7 @@ const AddNewAnnouncement: React.FC<AddNewAnnouncement> = ({ toggleModal }) => {
           />
           <Textarea
             autosize
+            minRows={4}
             maxRows={20}
             variant="filled"
             placeholder="Enter description"

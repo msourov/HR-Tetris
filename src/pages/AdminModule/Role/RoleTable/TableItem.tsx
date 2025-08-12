@@ -78,12 +78,8 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading, error }) => {
         <Table.Tr key={index}>
           <Table.Td className="w-[25%] pl-4 lg:pl-6">
             <div
-              className={`w-fit border p-1 rounded-full text-xs text-center 
-    ${
-      item.name === "Super Admin"
-        ? "bg-red-500 text-white border-red-600"
-        : "bg-gray-500 text-white border-gray-500"
-    }`}
+              className={`w-fit p-1 font-semibold rounded-full text-sm text-center 
+    ${item.name === "Super Admin" ? "text-purple-800" : "text-gray-700"}`}
             >
               {item?.name}
             </div>

@@ -104,21 +104,13 @@ const CustomCard: React.FC<LeaveData> = ({
             <Button
               onClick={open}
               variant="light"
-              size="compact-sm"
-              w={70}
+              fw={400}
               className="font-thin"
             >
               Review
             </Button>
           )}
-          <Button
-            variant="filled"
-            color="blue"
-            w={70}
-            size="compact-sm"
-            fw={500}
-            onClick={viewOpen}
-          >
+          <Button variant="filled" color="blue" fw={400} onClick={viewOpen}>
             View
           </Button>
         </div>

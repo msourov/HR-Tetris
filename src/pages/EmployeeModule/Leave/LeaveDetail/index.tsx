@@ -12,7 +12,6 @@ import {
   Divider,
   Timeline,
   ScrollArea,
-  Grid,
 } from "@mantine/core";
 import {
   IconUser,
@@ -74,7 +73,6 @@ const LeaveDetail = ({
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm<{
@@ -186,25 +184,28 @@ const LeaveDetail = ({
   if (!leaveData) return <ErrorAlert message="No leave data found" />;
 
   return (
-    <Card radius="md" p="lg" className="max-w-2xl mx-auto">
-      <h1 className="text-xl font-bold text-orange-400 text-center">
+    <Card
+      radius="md"
+      p="lg"
+      className="max-w-2xl mx-auto shadow-lg border border-gray-200 bg-white"
+    >
+      <h1 className="text-xl font-bold text-orange-500 text-center mb-4">
         Leave Request
       </h1>
-      <Group justify="space-between" mb="md">
-        <div>
-          <Text c="dimmed" fz="sm">
-            Created: {formatDate(leaveData.create_at)}
-          </Text>
-        </div>
+
+      <Group mb="md" className="flex justify-between">
+        <Text size="sm" c="dimmed">
+          Created: {formatDate(leaveData.create_at)}
+        </Text>
         <Group>
           <AppApprovalStatus status={leaveData?.is_approved} />
           {leaveData?.is_approved === "pending" && (
             <Button
-              variant="subtle"
-              color="yellow"
-              leftSection={<IconEdit size={18} />}
-              onClick={() => setIsEditing((prev) => !prev)}
-              className="p-0"
+              variant="light"
+              size="xs"
+              color="orange"
+              leftSection={<IconEdit size={16} />}
+              onClick={() => setIsEditing(!isEditing)}
             >
               Edit
             </Button>
@@ -213,51 +214,41 @@ const LeaveDetail = ({
       </Group>
 
       <form onSubmit={handleSubmit(handleEditSubmit)}>
-        <Grid gutter="sm">
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Group gap="xs">
-              <IconUser size={16} className="text-blue-500" />
-              <Text fw={500} c="dimmed" size="sm">
-                EID
-              </Text>
-            </Group>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Text className="text-blue-700 font-semibold">
+        <div className="space-y-4">
+          {/* EID */}
+          <Group gap="xs">
+            <IconUser size={16} className="text-blue-500" />
+            <Text size="sm" c="dimmed">
+              EID:
+            </Text>
+            <Text className="font-semibold text-blue-700">
               {leaveData.employee_id}
             </Text>
-          </Grid.Col>
+          </Group>
 
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Group gap="xs">
-              <IconInfoCircle size={16} className="text-green-500" />
-              <Text fw={500} c="dimmed" size="sm">
-                Type
-              </Text>
-            </Group>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
+          {/* Leave Type */}
+          <Group gap="xs">
+            <IconInfoCircle size={16} className="text-green-500" />
+            <Text size="sm" c="dimmed">
+              Type:
+            </Text>
             {isEditing ? (
               <TextInput
                 variant="filled"
-                value={watch("leave_type") || ""}
                 {...register("leave_type")}
                 error={errors.leave_type?.message}
               />
             ) : (
-              <Text className="">{leaveData.leave_type}</Text>
+              <Text>{leaveData.leave_type}</Text>
             )}
-          </Grid.Col>
+          </Group>
 
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Group gap="xs">
-              <IconClock size={16} className="text-purple-500" />
-              <Text fw={500} c="dimmed" size="sm">
-                Period
-              </Text>
-            </Group>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
+          {/* Period */}
+          <Group gap="xs">
+            <IconClock size={16} className="text-purple-500" />
+            <Text size="sm" c="dimmed">
+              Period:
+            </Text>
             {isEditing ? (
               <TextInput
                 variant="filled"
@@ -267,17 +258,14 @@ const LeaveDetail = ({
             ) : (
               <Text>{leaveData.leave_preiod}</Text>
             )}
-          </Grid.Col>
+          </Group>
 
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Group gap="xs">
-              <IconCalendar size={16} className="text-blue-500" />
-              <Text fw={500} c="dimmed" size="sm">
-                Dates
-              </Text>
-            </Group>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
+          {/* Dates */}
+          <Group gap="xs">
+            <IconCalendar size={16} className="text-blue-500" />
+            <Text size="sm" c="dimmed">
+              Dates:
+            </Text>
             {isEditing ? (
               <DatePickerInput
                 type="range"
@@ -290,137 +278,114 @@ const LeaveDetail = ({
                 }
               />
             ) : (
-              <Text className="py-1 rounded-md font-mono text-blue-800">
-                {formatDate(leaveData.leave_start_date)} -{" "}
+              <Text className="font-mono text-blue-800">
+                {formatDate(leaveData.leave_start_date)} –{" "}
                 {formatDate(leaveData.leave_end_date)}
               </Text>
             )}
-          </Grid.Col>
+          </Group>
 
-          <Grid.Col span={12}>
-            <Divider
-              label={<Text size="sm">Purpose</Text>}
-              labelPosition="center"
-              mb="sm"
-            />
-            <Textarea
-              autosize
-              minRows={3}
-              maxRows={6}
-              readOnly={!isEditing}
-              variant={isEditing ? "filled" : "unstyled"}
-              classNames={{
-                input:
-                  "bg-gray-50 read-only:bg-transparent read-only:cursor-text",
-              }}
-              className="border bg-gray-50 px-2"
-              {...register("purpose")}
-              error={errors.purpose?.message}
-            />
-          </Grid.Col>
+          {/* Purpose */}
+          <Divider label="Purpose" labelPosition="center" />
+          <Textarea
+            autosize
+            minRows={3}
+            maxRows={6}
+            readOnly={!isEditing}
+            variant={isEditing ? "filled" : "unstyled"}
+            className="bg-gray-50 border rounded-md p-2"
+            {...register("purpose")}
+            error={errors.purpose?.message}
+          />
 
+          {/* Rejection Reason */}
           {leaveData.is_approved === "rejected" && (
-            <Grid.Col span={12}>
-              <div className="p-3 bg-red-50 rounded-md border border-red-100">
-                <Text fw={500} size="sm" c="red" mb="xs">
-                  Rejection Reason
-                </Text>
-                <Text className="px-3 py-2 bg-white rounded-md">
-                  {leaveData.reject_purpose}
-                </Text>
-              </div>
-            </Grid.Col>
+            <div className="p-3 bg-red-50 rounded-md border border-red-200">
+              <Text fw={500} size="sm" c="red" mb="xs">
+                Rejection Reason
+              </Text>
+              <Text className="bg-white rounded-md p-2">
+                {leaveData.reject_purpose}
+              </Text>
+            </div>
           )}
 
           {/* Activity Log */}
-          <Grid.Col span={12}>
-            <Divider
-              label={<Text size="sm">Activity Log</Text>}
-              labelPosition="center"
-              mb="lg"
-              className="w-full"
-            />
-            <ScrollArea.Autosize
-              mah={220}
-              className="pr-4 bg-gray-50 rounded-lg p-4 border"
-            >
-              <Timeline active={1} bulletSize={24} lineWidth={2}>
-                {leaveData.logs && (
-                  <>
-                    {Array.isArray(leaveData.logs) ? (
-                      leaveData.logs.map((log: Log, index: number) => (
-                        <Timeline.Item
-                          key={index}
-                          bullet={<IconUser size={12} />}
-                          title={`${log.admin}`}
-                        >
-                          <Text size="sm" className="text-gray-500">
-                            {log.message}
-                          </Text>
-                          <Text mt={2} c="blue">
-                            {formatDate(log.create_at, true)}
-                          </Text>
-                        </Timeline.Item>
-                      ))
-                    ) : (
-                      <Timeline.Item
-                        bullet={<IconUser size={12} />}
-                        title={`${leaveData.logs.admin}`}
-                      >
-                        <Text c="dimmed" size="sm">
-                          {leaveData.logs.message}
-                        </Text>
-                        <Text size="sm" mt={2} c="blue">
-                          {formatDate(leaveData.logs.create_at, true)}
-                        </Text>
-                      </Timeline.Item>
-                    )}
-                  </>
-                )}
-              </Timeline>
-            </ScrollArea.Autosize>
-          </Grid.Col>
+          <Divider label="Activity Log" labelPosition="center" />
+          <ScrollArea.Autosize
+            mah={220}
+            className="bg-gray-50 rounded-lg p-4 border"
+          >
+            <Timeline active={1} bulletSize={24} lineWidth={2}>
+              {Array.isArray(leaveData.logs) ? (
+                leaveData.logs.map((log: Log, index: number) => (
+                  <Timeline.Item
+                    key={index}
+                    bullet={<IconUser size={12} />}
+                    title={log.admin}
+                  >
+                    <Text size="sm" c="dimmed">
+                      {log.message}
+                    </Text>
+                    <Text mt={2} c="blue">
+                      {formatDate(log.create_at, true)}
+                    </Text>
+                  </Timeline.Item>
+                ))
+              ) : (
+                <Timeline.Item
+                  bullet={<IconUser size={12} />}
+                  title={leaveData.logs.admin}
+                >
+                  <Text size="sm" c="dimmed">
+                    {leaveData.logs.message}
+                  </Text>
+                  <Text mt={2} c="blue">
+                    {formatDate(leaveData.logs.create_at, true)}
+                  </Text>
+                </Timeline.Item>
+              )}
+            </Timeline>
+          </ScrollArea.Autosize>
 
           {/* Actions */}
-          <Grid.Col span={12} mt="lg">
-            <Group justify="flex-end" gap="sm">
-              {isEditing ? (
-                <>
-                  <Button
-                    variant="default"
-                    onClick={() => setIsEditing(false)}
-                    size="sm"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    color="blue"
-                    loading={updateLoading}
-                    size="sm"
-                  >
-                    Save Changes
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button variant="default" onClick={closeModal} size="sm">
-                    Close
-                  </Button>
-                  <Button
-                    color="red"
-                    variant="filled"
-                    onClick={handleDeleteLeave}
-                    size="sm"
-                    loading={deleteLoading}
-                  >
-                    Delete
-                  </Button>
-                </>
-              )}
-            </Group>
-          </Grid.Col>
-        </Grid>
+          <Group justify="right" mt="lg">
+            {isEditing ? (
+              <>
+                <Button
+                  variant="default"
+                  onClick={() => setIsEditing(false)}
+                  size="sm"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  color="blue"
+                  loading={updateLoading}
+                  size="sm"
+                >
+                  Save Changes
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="default" onClick={closeModal} size="sm">
+                  Close
+                </Button>
+                <Button
+                  color="red"
+                  variant="filled"
+                  onClick={handleDeleteLeave}
+                  size="sm"
+                  loading={deleteLoading}
+                >
+                  Delete
+                </Button>
+              </>
+            )}
+          </Group>
+        </div>
       </form>
     </Card>
   );

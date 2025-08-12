@@ -1,23 +1,47 @@
-import { FC, useState } from "react";
-import { Leave } from "../../features/api/typesOld";
-import { Accordion, Box, Button, Modal, ScrollArea, Text } from "@mantine/core";
+import { useState } from "react";
+import {
+  Accordion,
+  Box,
+  Button,
+  Group,
+  Modal,
+  ScrollArea,
+  Text,
+} from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import LeaveReviewModal from "../EmployeeModule/Leave/LeaveList/ReviewModal";
 import { useDisclosure } from "@mantine/hooks";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import AppLoader from "../../components/ui/AppLoader";
+import { useAllLeaveQuery } from "../../features/api/leaveSlice";
+import { Leave } from "../../features/types/leave";
+import { IconCalendar, IconUser } from "@tabler/icons-react";
 
-type LeaveSectionProps = {
-  data: Leave | Leave[];
-  loading: boolean;
-  error: FetchBaseQueryError;
-};
+// type LeaveSectionProps = {
+//   data: Leave | Leave[];
+//   loading: boolean;
+//   error: FetchBaseQueryError;
+// };
 
-const LeaveSection: FC<LeaveSectionProps> = ({ data, loading, error }) => {
+const LeaveSection = () => {
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
   const [uid, setUid] = useState("");
   const [empId, setEmpId] = useState("");
+  const {
+    data,
+    isLoading,
+    error,
+    // refetch: leaveRefetch,
+  } = useAllLeaveQuery({
+    page: 1,
+    limit: 10,
+  });
+
+  const pendingLeaves = Array.isArray(data?.data)
+    ? data.data.filter((item: Leave) => item.is_approved === "pending")
+    : data?.data.is_approved === "pending"
+    ? data?.data
+    : [];
 
   const handleModalOpen = (employee_id: string, uid: string) => {
     open();
@@ -41,65 +65,80 @@ const LeaveSection: FC<LeaveSectionProps> = ({ data, loading, error }) => {
 
           {/* <Divider color="red" w="70%" size="xs" mb={10} /> */}
           <Accordion transitionDuration={200} className="w-full py-1">
-            {Array.isArray(data) ? (
-              data.length ? (
-                data.map((item, index) => (
+            {Array.isArray(pendingLeaves) ? (
+              pendingLeaves.length ? (
+                pendingLeaves.map((item, index) => (
                   <Accordion.Item key={index} value={item.purpose}>
                     <Accordion.Control>
-                      <Box className="w-1/2">
-                        <Text lineClamp={1}>{item.purpose}</Text>
+                      <Box className="w-full">
+                        <Text lineClamp={1} fw={500}>
+                          {item.purpose}
+                        </Text>
                       </Box>
                     </Accordion.Control>
-                    <Accordion.Panel className="w-full bg-gray-100 border-x-2 border-red-400">
-                      <Box className="flex justify-between items-start py-2">
-                        <Box className="flex flex-col">
-                          <Text>{item.employee_name}</Text>
-                          <Text c="dimmed">{item.purpose}</Text>
-                          <Text c="blue" mt={10} className="opacity-65">
-                            {new Date(
-                              item?.leave_start_date
-                            ).toLocaleDateString()}{" "}
-                            -{" "}
-                            {new Date(
-                              item?.leave_end_date
-                            ).toLocaleDateString()}
-                          </Text>
-                        </Box>
+                    <Accordion.Panel className="py-2 border-x-2 border-[#8d8d4f] bg-gray-100">
+                      {/* Employee Name */}
+                      <Group mb="sm" gap="xs">
+                        <IconUser size={16} className="text-gray-500" />
+                        <Text size="sm" c="dimmed">
+                          {item.employee_name}
+                        </Text>
+                      </Group>
+
+                      {/* Leave Dates */}
+                      <Group mb="sm" gap="xs">
+                        <IconCalendar size={16} className="text-gray-500" />
+                        <Text size="sm" c="dimmed">
+                          {new Date(item.leave_start_date).toLocaleDateString()}{" "}
+                          – {new Date(item.leave_end_date).toLocaleDateString()}
+                        </Text>
+                      </Group>
+
+                      {/* Purpose */}
+                      <Text
+                        size="sm"
+                        className="bg-gray-50 p-3 max-h-[220px] overflow-y-auto scrollbar-custom border rounded"
+                      >
+                        {item.purpose}
+                      </Text>
+
+                      {/* Review Button */}
+                      <Group justify="flex-end" mt="md">
                         <Button
-                          size="compact-sm"
-                          color="blue"
+                          size="xs"
                           variant="light"
-                          className="flex-shrink-0 flex-grow-0 ml-2"
+                          color="orange"
                           onClick={() =>
-                            handleModalOpen(item?.employee_id, item?.uid)
+                            handleModalOpen(item.employee_id, item.uid)
                           }
                         >
                           Review
                         </Button>
-                      </Box>
+                      </Group>
                     </Accordion.Panel>
                   </Accordion.Item>
                 ))
-              ) : loading ? (
+              ) : isLoading ? (
                 <Box className="flex justify-center items-center">
                   <AppLoader />
                 </Box>
               ) : (
                 <Text c="dimmed" ta="center" my={10}>
-                  No data available
+                  No pending data found
                 </Text>
               )
             ) : null}
           </Accordion>
-          <Button
-            variant="outline"
-            c="blue"
-            size="compact-sm"
-            my={10}
-            onClick={() => navigate("/leave")}
-          >
-            See more
-          </Button>
+
+          <Box className="flex justify-center pb-2">
+            <Button
+              variant="subtle"
+              size="sm"
+              onClick={() => navigate("/leave")}
+            >
+              View All Leaves
+            </Button>
+          </Box>
         </Box>
       </ScrollArea>
       <Modal

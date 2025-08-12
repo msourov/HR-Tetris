@@ -3,11 +3,8 @@ import { Card, Divider, Skeleton, Text, Badge } from "@mantine/core";
 import { LineChart } from "@mantine/charts";
 import { biaxialData } from "./DummyData";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { Leave, Overtime } from "../../features/api/typesOld";
-import { useAllLeaveQuery } from "../../features/api/leaveSlice";
 import { lazy, Suspense } from "react";
 import { IoIosPeople } from "react-icons/io";
-import { useGetAllOvertimeQuery } from "../../features/api/overtimeSlice";
 import {
   IconCalendarEvent,
   IconCalendarStats,
@@ -82,23 +79,6 @@ const Dashboard = () => {
     // isLoading: dashboardLoading,
     error: dashboardError,
   } = useGetDashboardResponseQuery();
-  const {
-    data: leaves,
-    isLoading: leavesLoading,
-    error: leavesError,
-    // refetch: leaveRefetch,
-  } = useAllLeaveQuery({
-    page: 1,
-    limit: 10,
-  });
-  const {
-    data: overtimeData,
-    isLoading: overtimeLoading,
-    error: overtimeError,
-  } = useGetAllOvertimeQuery({
-    page: 1,
-    limit: 10,
-  });
 
   const {
     data: announcementData,
@@ -108,20 +88,6 @@ const Dashboard = () => {
     page: 1,
     limit: 10,
   });
-
-  const pendingLeaves = Array.isArray(leaves?.data)
-    ? leaves.data.filter((item: Leave) => item.is_approved === "pending")
-    : leaves?.data.is_approved === "pending"
-    ? leaves?.data
-    : [];
-
-  const pendingOvertime = Array.isArray(overtimeData?.data)
-    ? overtimeData.data.filter(
-        (item: Overtime) => item.is_approved === "pending"
-      )
-    : overtimeData?.data.is_approved === "pending"
-    ? overtimeData?.data
-    : [];
 
   const pendingAnnouncement = Array.isArray(announcementData?.data)
     ? announcementData.data.filter((item) => item.is_approved === "pending")
@@ -326,21 +292,13 @@ const Dashboard = () => {
         <div className="mb-6 w-full bg-white">
           {/* {leaves && Array.isArray(leaves?.data) && leaves?.data.length > 0 && ( */}
           <Suspense fallback={skeleton}>
-            <LeaveSection
-              data={pendingLeaves ?? []}
-              loading={leavesLoading}
-              error={leavesError as FetchBaseQueryError}
-            />
+            <LeaveSection />
           </Suspense>
           {/* )} */}
         </div>
         <div className="mb-6 w-full bg-white">
           <Suspense fallback={skeleton}>
-            <OvertimeSection
-              data={pendingOvertime ?? []}
-              loading={overtimeLoading}
-              error={overtimeError as FetchBaseQueryError}
-            />
+            <OvertimeSection />
           </Suspense>
         </div>
         <div className="mb-6 w-full bg-white">

@@ -338,7 +338,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "announcement",
+            path: "announcements",
             element: (
               <Suspense fallback={loader}>
                 <AnnouncementLayout />

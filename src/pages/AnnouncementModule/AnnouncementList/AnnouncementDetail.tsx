@@ -1,7 +1,19 @@
 // AnnouncementDetails.tsx
-import { Button, Card, Pill, Textarea } from "@mantine/core";
+import {
+  Avatar,
+  Button,
+  Card,
+  Divider,
+  Group,
+  Text,
+  Textarea,
+} from "@mantine/core";
 import { Announcement } from "../../../features/types/announcement";
 import AppApprovalStatus from "../../../components/core/AppApprovalStatus";
+import { IconClipboardText, IconTrash, IconUser } from "@tabler/icons-react";
+import dayjs from "dayjs";
+import { useDeleteAnnouncementMutation } from "../../../features/api/announcementSlice";
+import { notifications } from "@mantine/notifications";
 
 interface AnnouncementDetailsProps {
   announcement: Announcement;
@@ -18,63 +30,171 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({
   handleApproveAnnouncement,
   handleRejectAnnouncement,
 }) => {
+  const [deleteAnnouncement, { isLoading: isDeleting }] =
+    useDeleteAnnouncementMutation();
+  const formatDate = (dateString: string) => {
+    return dayjs(dateString).format("DD MMM YYYY, hh:mm A");
+  };
+
+  const handleDeleteAnnouncement = async (uid: string) => {
+    try {
+      const res = await deleteAnnouncement({ uid }).unwrap();
+      notifications.show({
+        title: "Deleted!",
+        message: res?.message || "Announcement deleted successfully.",
+        icon: <IconTrash size={18} />,
+        color: "red",
+      });
+
+      // Optional: Redirect or reload list after delete
+      // navigate("/announcements"); // or trigger refetch from parent
+    } catch (err) {
+      console.error("Delete failed:", err);
+      notifications.show({
+        title: "Error",
+        message: "Failed to delete announcement.",
+        icon: <IconTrash size={18} />,
+        color: "red",
+      });
+    }
+  };
+
   return (
-    <>
-      <Card className="p-0">
-        <p className="font-medium text-xl text-center mb-4 text-[#212922]">
-          {announcement.name}
-        </p>
-        <Textarea
-          autosize
-          minRows={4}
-          maxRows={12}
-          className="font-medium text-md text-gray-600 text-left mb-4 py-4"
+    <div className="space-y-6">
+      <Card
+        withBorder
+        shadow="sm"
+        radius="md"
+        className="border border-gray-200"
+      >
+        <Group justify="space-between" align="flex-start" mb="md">
+          <div>
+            <Text size="xl" fw={700} className="text-gray-800">
+              {announcement.name}
+            </Text>
+            <AppApprovalStatus status={announcement.is_approved} />
+          </div>
+
+          <div className="flex flex-col items-end">
+            <Text size="sm" c="dimmed">
+              Created: {formatDate(announcement.create_at)}
+            </Text>
+            <Text size="sm" c="dimmed">
+              Updated: {formatDate(announcement.update_at)}
+            </Text>
+          </div>
+        </Group>
+
+        <Divider my="sm" />
+
+        <Group mb="md">
+          <IconClipboardText size={18} className="text-gray-500" />
+          <Text size="md" fw={500} className="text-gray-700">
+            Description
+          </Text>
+        </Group>
+
+        <Text
+          className="bg-gray-50 p-4 rounded-lg text-gray-700 min-h-[120px] max-h-[250px] overflow-y-auto scrollbar-custom"
+          size="sm"
         >
           {announcement.descriptions}
-        </Textarea>
-        <p className="text-left text-sm text-gray-500">
-          Created by{" "}
-          <span className="text-blue-600">{announcement.creator_name}</span>
-        </p>
-        <p>
-          <Pill size="md" className="text-gray-500 my-4">
-            {announcement.department_name}
-          </Pill>
-        </p>
-      </Card>
-      {announcement.is_approved === "pending" && (
-        <Textarea
-          variant="filled"
-          placeholder="Reason for rejection"
-          className="w-[95%] mb-6 mx-auto"
-          mb={20}
-          value={value}
-          onChange={(event) => setValue(event.currentTarget.value)}
-        />
-      )}
-      {announcement.is_approved === "pending" ? (
-        <div className="flex justify-end gap-4">
-          <Button
-            variant="filled"
-            bg="blue"
-            onClick={() => handleApproveAnnouncement(announcement.uid)}
-          >
-            Approve
-          </Button>
+        </Text>
+
+        <Divider my="md" />
+        <Text size="sm" c="dimmed" mb="sm">
+          Created By
+        </Text>
+        <Group justify="space-between">
+          <div className="flex flex-col gap-2">
+            <Group>
+              <Avatar color="blue" radius="xl" size="sm">
+                <IconUser size={24} />
+              </Avatar>
+              <div>
+                <Text size="sm" fw={500}>
+                  {announcement.creator_name}
+                </Text>
+
+                <Text size="sm" c="dimmed">
+                  {announcement.department_name}
+                </Text>
+              </div>
+            </Group>
+          </div>
+
           <Button
             variant="light"
             color="red"
-            onClick={() => handleRejectAnnouncement(announcement.uid)}
+            onClick={() => handleDeleteAnnouncement(announcement.uid)}
+            leftSection={<IconTrash size={16} />}
+            loading={isDeleting}
           >
-            Reject
+            Delete
           </Button>
-        </div>
-      ) : (
-        <div className="flex justify-end gap-4">
-          <AppApprovalStatus status={announcement?.is_approved} />
-        </div>
+        </Group>
+      </Card>
+
+      {announcement.is_approved === "pending" && (
+        <Card withBorder radius="md" className="border-blue-100 bg-blue-50">
+          <Text size="md" fw={500} mb="sm" className="text-gray-700">
+            Review Action
+          </Text>
+
+          <Textarea
+            label="Reason for rejection (optional)"
+            description="Required if rejecting this announcement"
+            placeholder="Provide specific feedback..."
+            variant="filled"
+            value={value}
+            onChange={(event) => setValue(event.currentTarget.value)}
+            minRows={3}
+            className="mb-4"
+          />
+
+          <Group justify="flex-end" mt="md">
+            <Button
+              variant="light"
+              color="red"
+              onClick={() => handleDeleteAnnouncement(announcement.uid)}
+              leftSection={<IconTrash size={16} />}
+              loading={isDeleting}
+            >
+              Delete
+            </Button>
+            <Group>
+              <Button
+                variant="outline"
+                color="red"
+                onClick={() => handleRejectAnnouncement(announcement.uid)}
+                disabled={!value}
+                className="border-red-300"
+              >
+                Reject
+              </Button>
+              <Button
+                variant="filled"
+                color="teal"
+                onClick={() => handleApproveAnnouncement(announcement.uid)}
+              >
+                Approve
+              </Button>
+            </Group>
+          </Group>
+        </Card>
       )}
-    </>
+
+      {/* {announcement.is_approved !== "pending" && (
+        <Card withBorder radius="md" className="border-gray-200">
+          <Text size="lg" fw={500} mb="sm" className="text-center">
+            Announcement Status
+          </Text>
+          <div className="flex justify-center">
+            <AppApprovalStatus status={announcement.is_approved} />
+          </div>
+        </Card>
+      )} */}
+    </div>
   );
 };
 

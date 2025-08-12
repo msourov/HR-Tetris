@@ -1,12 +1,4 @@
-import {
-  Card,
-  Group,
-  Paper,
-  Text,
-  Badge,
-  Divider,
-  Stack,
-} from "@mantine/core";
+import { Card, Group, Paper, Text, Badge, Divider, Stack } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetDepartmentDetailQuery } from "../../../../features/api/departmentSlice";
 import {
@@ -81,18 +73,18 @@ const DepartmentDetail = () => {
             </Text>
           </Group>
 
-          <Group gap="xs">
+          {/* <Group gap="xs">
             <Text size="sm" c="dimmed">
               Company ID:
             </Text>
             <Text size="sm" className="font-mono">
               {departmentDetail?.company_id}
             </Text>
-          </Group>
+          </Group> */}
 
           <Group gap="xs">
             <Text size="sm" c="dimmed">
-              Created At:
+              Created:
             </Text>
             <Text size="sm">{formatDate(departmentDetail?.create_at)}</Text>
           </Group>

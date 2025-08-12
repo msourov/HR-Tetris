@@ -195,7 +195,7 @@ const initialSidebarData = [
     items: [
       {
         label: "Announcement Portal",
-        link: "/announcement",
+        link: "/announcements",
       },
     ],
   },
