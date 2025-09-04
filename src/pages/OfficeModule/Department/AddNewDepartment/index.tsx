@@ -59,12 +59,12 @@ const AddNewDepartment: React.FC<AddNewDepartmentProps> = ({ toggleModal }) => {
       <Paper radius="md" p="md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
-            label="Name"
+            label={<p className="text-gray-500">Name</p>}
             {...register("name")}
             error={errors.name?.message as React.ReactNode}
           />
           <div className="max-w-20 mt-2">
-            <label className="text-sm">Status</label>
+            <label className="text-sm text-gray-500">Status</label>
             <Switch
               size="sm"
               color="blue"

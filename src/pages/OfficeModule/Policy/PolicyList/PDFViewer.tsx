@@ -15,7 +15,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ uid }) => {
     const getFile = async () => {
       try {
         const response = await axios.get(
-          `https://api.hr-infozilion.pitetris.com/v1/mak/policy/show/file/${uid}`,
+          `${import.meta.env.VITE_APP_BASE_URL}policy/show/file/${uid}`,
           {
             responseType: "blob", // Fetching the file as a Blob
           }

@@ -35,7 +35,7 @@ const CandidateDetail = () => {
 
   const downloadCV = async () => {
     const response = await axios.get(
-      `https://api.hr-infozilion.pitetris.com/v1/mak/recruitment/show/file/${uid}`,
+      `${import.meta.env.VITE_APP_BASE_URL}recruitment/show/file/${uid}`,
       {
         responseType: "blob",
       }

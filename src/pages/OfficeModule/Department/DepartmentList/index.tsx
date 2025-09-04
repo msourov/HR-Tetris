@@ -21,7 +21,7 @@ const DepartmentList = () => {
   return (
     <div className="mt-6">
       <SimpleGrid
-        cols={{ sm: 2, md: 4, xl: 5 }}
+        cols={{ base: 1, sm: 2, md: 4, xl: 5 }}
         spacing={{ base: 10, sm: "xl" }}
         verticalSpacing={{ base: "md", sm: "xl" }}
       >

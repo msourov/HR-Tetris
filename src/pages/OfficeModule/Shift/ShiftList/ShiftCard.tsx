@@ -1,4 +1,4 @@
-import { Text, Badge } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { IconClock, IconCalendar, IconZzz } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -31,15 +31,22 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
       {/* Header Section */}
       <div className="flex flex-col gap-2 mb-4">
         <div className="flex justify-between items-start">
-          <Text className="text-gray-800 text-lg font-thin">{shift.name}</Text>
-          <Badge
+          <Text className="text-gray-700 text-lg font-semibold">
+            {shift.name}
+          </Text>
+          {/* <Badge
             color={shift.active ? "green" : "gray"}
             variant="light"
             radius="sm"
             size="sm"
           >
             {shift.active ? "Active" : "Inactive"}
-          </Badge>
+          </Badge> */}
+          <div
+            className={`w-[7px] h-[7px] rounded-full ${
+              shift?.active ? "bg-green-500" : "bg-gray-700"
+            }`}
+          ></div>
         </div>
 
         {shift.descriptions && (
@@ -100,7 +107,7 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
             <IconZzz size={18} className="font-thin text-gray-400" />
             <div>
               <Text className="text-gray-600">
-                <span className="text-xs font-thin">Weekend:</span>
+                <span className="text-xs">Weekend:</span>
                 <span className="ml-1 font-medium text-gray-700">
                   {shift.off_day.join(", ")}
                 </span>
@@ -119,15 +126,13 @@ const ShiftCard = ({ shift }: ShiftCardProps) => {
           </Text>
         </div>
 
-        <Badge
-          variant="outline"
-          radius="sm"
-          className={`border-blue-100 bg-blue-50 ${
+        <div
+          className={`border-blue-100 px-1 rounded-lg bg-blue-50 ${
             shift?.regular && "text-amber-600 bg-amber-200"
           }`}
         >
           {shift.regular ? "Regular Shift" : "Temporary Shift"}
-        </Badge>
+        </div>
       </div>
     </CardGlass>
   );

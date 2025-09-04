@@ -40,7 +40,7 @@ const Login = () => {
     setLoading(true);
     try {
       const loginCheckRes = await fetch(
-        "https://api.hr-infozilion.pitetris.com/v1/mak/role-user/login-check",
+        `${import.meta.env.VITE_APP_BASE_URL}role-user/login-check`,
         {
           method: "POST",
           headers: {
@@ -52,9 +52,9 @@ const Login = () => {
 
       if (loginCheckRes.ok) {
         const sendOtpRes = await fetch(
-          `https://api.hr-infozilion.pitetris.com/v1/mak/otp/signin?mobile=${encodeURIComponent(
-            data.mobile
-          )}`,
+          `${
+            import.meta.env.VITE_APP_BASE_URL
+          }otp/signin?mobile=${encodeURIComponent(data.mobile)}`,
           {
             method: "POST",
             headers: {

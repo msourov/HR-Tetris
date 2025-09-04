@@ -1,5 +1,5 @@
 // AnnouncementList.tsx
-import { Card, Pill, SimpleGrid } from "@mantine/core";
+import { Button, Card, Pill, SimpleGrid, Text } from "@mantine/core";
 import {
   useApproveAnnouncementMutation,
   useGetAllAnnouncementsQuery,
@@ -17,6 +17,8 @@ import AppLoader from "../../../components/ui/AppLoader";
 
 const AnnouncementList = () => {
   const [value, setValue] = useState("");
+  const [limit, setLimit] = useState(15);
+  const [limitMsg, setLimitMsg] = useState("");
   const [selectedAnnouncement, setSelectedAnnouncement] =
     useState<Announcement | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
@@ -24,18 +26,31 @@ const AnnouncementList = () => {
     approveAnnouncement,
     { isLoading: approveAnnLoading, error: approveAnnError },
   ] = useApproveAnnouncementMutation();
+  const page = 1;
   const {
     data: announcementData,
     isLoading,
     error,
-  } = useGetAllAnnouncementsQuery({ page: 1, limit: 10 });
+    refetch,
+  } = useGetAllAnnouncementsQuery({ page: page, limit: limit });
 
   if (isLoading || approveAnnLoading) {
     return <AppLoader />;
   }
 
   console.log(approveAnnError);
-  console.log(error);
+
+  const handlePagination = async () => {
+    if (
+      announcementData?.pagination?.total_records &&
+      limit >= (announcementData?.pagination?.total_records ?? 0)
+    ) {
+      setLimitMsg("No more announcements found");
+      return;
+    }
+    setLimit((prev) => prev + 10);
+    refetch();
+  };
 
   const handleApproveAnnouncement = async (uid: string) => {
     try {
@@ -149,6 +164,24 @@ const AnnouncementList = () => {
           </Card>
         ))}
       </SimpleGrid>
+      {error && (
+        <p className="text-red-500 text-sm mt-4 text-center">
+          Failed to load announcements. Please try again.
+        </p>
+      )}
+      <div className="flex justify-center  mt-6">
+        {limitMsg === "" ? (
+          <Button
+            variant="subtle"
+            className="mx-auto "
+            onClick={handlePagination}
+          >
+            Load more
+          </Button>
+        ) : (
+          <Text>{limitMsg}</Text>
+        )}
+      </div>
       {selectedAnnouncement && (
         <AppModal
           opened={opened}
@@ -160,6 +193,7 @@ const AnnouncementList = () => {
             announcement={selectedAnnouncement}
             value={value}
             setValue={setValue}
+            closeModal={close}
             handleApproveAnnouncement={handleApproveAnnouncement}
             handleRejectAnnouncement={handleRejectAnnouncement}
           />

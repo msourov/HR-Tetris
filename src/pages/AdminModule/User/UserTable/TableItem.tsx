@@ -82,7 +82,7 @@ const TableItem: React.FC<TableItemProps> = ({
               className={`py-1 rounded text-xs font-semibold w-fit ${
                 item.role_name === "Super Admin"
                   ? "text-purple-700"
-                  : "text-gray-700"
+                  : (item.role_name === "Role not found" ? "text-red-600" :"text-gray-700")
               }`}
             >
               {item?.role_name ? item.role_name : "N/A"}

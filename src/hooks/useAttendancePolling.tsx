@@ -9,7 +9,7 @@ export const useAttendancePolling = () => {
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
-        await axios.get("https://api.hr-infozilion.pitetris.com/attendance");
+        await axios.get(`${import.meta.env.VITE_APP_BASE_URL}attendance`);
         console.log("Attendance updated");
       } catch (error) {
         console.error("Failed to fetch attendance", error);

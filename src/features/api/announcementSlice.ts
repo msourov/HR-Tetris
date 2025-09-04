@@ -19,8 +19,8 @@ export const announcementApi = createApi({
         limit: number;
       }
     >({
-      query: () => ({
-        url: "announcements/all",
+      query: ({ page, limit }) => ({
+        url: `announcements/all?page=${page}&limit=${limit}`,
         method: "GET",
       }),
       providesTags: (result) =>

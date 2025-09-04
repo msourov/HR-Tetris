@@ -35,7 +35,7 @@ const AnnouncementLayout = () => {
 
   const iconStyle = { width: rem(12), height: rem(12) };
   return (
-    <div className="w-[95%] h-[calc(90vh-80px)] flex flex-col my-8 mx-auto rounded-lg drop-shadow-lg py-6 px-4">
+    <div className="w-[95%] h-[calc(90vh-80px)] flex flex-col lg:my-6 mx-auto rounded-lg drop-shadow-lg py-6 px-4">
       <div className="flex justify-end md:mr-8">
         <Button
           leftSection={<LuPlusCircle />}

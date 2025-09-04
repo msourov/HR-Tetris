@@ -39,7 +39,10 @@ const EditAnnouncement = () => {
   const [anmt, setAnmt] = useState<string>("");
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
-  const { data: announcements } = useGetAllAnnouncementsQuery();
+  const { data: announcements } = useGetAllAnnouncementsQuery({
+    page: 1,
+    limit: 10,
+  });
   const [updateAnnouncement, { isLoading: editAnmtLoading }] =
     useUpdateAnnouncementMutation();
   const [deleteAnnouncement, { isLoading: deleteAnmtLoading }] =

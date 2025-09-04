@@ -5,6 +5,7 @@ import {
   Card,
   Divider,
   Group,
+  Modal,
   Text,
   Textarea,
 } from "@mantine/core";
@@ -14,11 +15,13 @@ import { IconClipboardText, IconTrash, IconUser } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useDeleteAnnouncementMutation } from "../../../features/api/announcementSlice";
 import { notifications } from "@mantine/notifications";
+import { useDisclosure } from "@mantine/hooks";
 
 interface AnnouncementDetailsProps {
   announcement: Announcement;
   value: string;
   setValue: (value: string) => void;
+  closeModal: () => void;
   handleApproveAnnouncement: (uid: string) => void;
   handleRejectAnnouncement: (uid: string) => void;
 }
@@ -27,11 +30,15 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({
   announcement,
   value,
   setValue,
+  closeModal,
   handleApproveAnnouncement,
   handleRejectAnnouncement,
 }) => {
+  const [deleteOpened, { open: openDelete, close: closeDelete }] =
+    useDisclosure(false);
   const [deleteAnnouncement, { isLoading: isDeleting }] =
     useDeleteAnnouncementMutation();
+
   const formatDate = (dateString: string) => {
     return dayjs(dateString).format("DD MMM YYYY, hh:mm A");
   };
@@ -45,9 +52,8 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({
         icon: <IconTrash size={18} />,
         color: "red",
       });
-
-      // Optional: Redirect or reload list after delete
-      // navigate("/announcements"); // or trigger refetch from parent
+      closeDelete();
+      closeModal()
     } catch (err) {
       console.error("Delete failed:", err);
       notifications.show({
@@ -122,16 +128,6 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({
               </div>
             </Group>
           </div>
-
-          <Button
-            variant="light"
-            color="red"
-            onClick={() => handleDeleteAnnouncement(announcement.uid)}
-            leftSection={<IconTrash size={16} />}
-            loading={isDeleting}
-          >
-            Delete
-          </Button>
         </Group>
       </Card>
 
@@ -153,15 +149,6 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({
           />
 
           <Group justify="flex-end" mt="md">
-            <Button
-              variant="light"
-              color="red"
-              onClick={() => handleDeleteAnnouncement(announcement.uid)}
-              leftSection={<IconTrash size={16} />}
-              loading={isDeleting}
-            >
-              Delete
-            </Button>
             <Group>
               <Button
                 variant="outline"
@@ -183,6 +170,47 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({
           </Group>
         </Card>
       )}
+      <Button
+        variant="light"
+        color="red"
+        onClick={openDelete}
+        leftSection={<IconTrash size={16} />}
+        loading={isDeleting}
+        className="w-full"
+      >
+        Delete
+      </Button>
+      <Modal
+        opened={deleteOpened}
+        onClose={closeDelete}
+        withCloseButton={false}
+        centered
+      >
+        <div className="space-y-4 text-center">
+          <p className="text-gray-600">
+            Are you sure you want to delete announcement:{" "}
+            <span className="font-semibold">{announcement.name}</span>?
+          </p>
+          <div className="flex gap-3 justify-center">
+            <Button
+              color="red"
+              onClick={() => handleDeleteAnnouncement(announcement.uid)}
+              loading={isDeleting}
+              className="px-6"
+            >
+              Delete
+            </Button>
+            <Button
+              variant="outline"
+              color="gray"
+              onClick={closeDelete}
+              className="px-6"
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      </Modal>
 
       {/* {announcement.is_approved !== "pending" && (
         <Card withBorder radius="md" className="border-gray-200">

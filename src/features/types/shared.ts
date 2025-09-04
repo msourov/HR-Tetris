@@ -8,6 +8,12 @@ export interface getDataResponse<T> {
   status_code: number;
   success: boolean;
   data: T;
+  pagination: {
+    page: number;
+    page_size: number;
+    total_pages: number;
+    total_records: number;
+  };
 }
 
 interface Pagination {

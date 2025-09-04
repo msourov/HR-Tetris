@@ -178,14 +178,14 @@ const TicketThread = ({ ticketId, onBack }: TicketThreadProps) => {
                     {message.uploads?.length > 0 && (
                       <Group gap="sm">
                         {message.uploads.map((file) => {
-                          // const fileUrl = `https://api.hr-infozilion.pitetris.com/${file.file_path}`;
+                          // const fileUrl = `http://103.209.43.45:8000/${file.file_path}`;
                           // const isImage = ["jpg", "jpeg", "png", "gif"].includes(
                           //   file.file_extension.toLowerCase()
                           // );
                           // const isVideo = ["mp4", "webm", "mov"].includes(
                           //   file.file_extension.toLowerCase()
                           // );
-                          const fileUrl = `https://api.hr-infozilion.pitetris.com/${file.file_path}`;
+                          const fileUrl = `http://103.209.43.45:8000/${file.file_path}`;
                           const isImage = [
                             "jpg",
                             "jpeg",

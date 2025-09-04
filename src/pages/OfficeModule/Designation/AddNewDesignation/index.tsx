@@ -58,31 +58,31 @@ const AddNewDesignation: React.FC<AddNewDesignationProps> = ({
 
   return (
     <>
-      <Paper withBorder shadow="md" radius="md" p="md">
+      <Paper withBorder radius="md" p="md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
-            label="Name"
+            label={<p className="text-gray-500">Name</p>}
             {...register("name")}
             error={errors.name?.message as React.ReactNode}
           />
-          <Box className="max-w-20 mt-4">
+          <Box className="max-w-20 mt-2">
+            <label className="text-sm text-gray-500">Status</label>
             <Switch
               defaultChecked={true}
-              size="md"
+              size="sm"
               color="blue"
               checked={activeStatus}
               {...register("active")}
             />
           </Box>
-
-          <Button
-            type="submit"
-            className="rounded-lg mt-6"
-            bg="black"
-            disabled={isLoading}
-          >
-            {isLoading ? <AppLoader /> : "Save"}
-          </Button>
+          <Box className="mt-6 space-x-2 flex justify-end">
+            <Button variant="outline" onClick={toggleModal}>
+              Cancel
+            </Button>
+            <Button type="submit" className="rounded-lg" disabled={isLoading}>
+              {isLoading ? <AppLoader /> : "Save"}
+            </Button>
+          </Box>
         </form>
       </Paper>
     </>

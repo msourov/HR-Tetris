@@ -48,7 +48,7 @@ const PolicyList = () => {
     if (selectedUid) {
       axios
         .get(
-          `https://api.hr-infozilion.pitetris.com/v1/mak/policy/show/file/${selectedUid}`,
+          `${import.meta.env.VITE_APP_BASE_URL}policy/show/file/${selectedUid}`,
           {
             responseType: "blob",
           }

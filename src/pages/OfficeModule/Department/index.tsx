@@ -2,7 +2,7 @@ import { Button, rem, Tabs } from "@mantine/core";
 import { IconList, IconSettings } from "@tabler/icons-react";
 import { Outlet, useNavigate, useLocation, matchPath } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { LuPlusCircle } from "react-icons/lu";
+import { LuPlus } from "react-icons/lu";
 import { useDisclosure } from "@mantine/hooks";
 import AppModal from "../../../components/ui/AppModal";
 import AddNewDepartment from "./AddNewDepartment";
@@ -47,13 +47,13 @@ const DepartmentLayout = () => {
           <div className="flex justify-between md:mr-8 mb-6">
             <button
               onClick={() => navigate(-1)}
-              className="flex items-center shadow-md bg-white justify-center gap-1 border border-white/20 text-gray-600 hover:bg-gray-200 rounded py-[4px] text-xs w-[65px]"
+              className="flex items-center justify-center gap-1 border border-white/20 hover:bg-gray-200 rounded w-[70px]"
             >
               <IoMdReturnLeft size={16} color="gray" />
               Back
             </button>
             <Button
-              leftSection={<LuPlusCircle />}
+              leftSection={<LuPlus size={18} />}
               variant="filled"
               onClick={addOpen}
             >

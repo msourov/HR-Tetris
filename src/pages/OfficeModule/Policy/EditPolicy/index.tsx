@@ -9,7 +9,6 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { LuPlusCircle } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -21,7 +20,6 @@ import {
   useEditPolicyMutation,
   useGetPoliciesQuery,
 } from "../../../../features/api/policySlice";
-import { modals } from "@mantine/modals";
 import { AllPolicy } from "../../../../features/api/typesOld";
 import { useEditor } from "@tiptap/react";
 import Highlight from "@tiptap/extension-highlight";
@@ -193,39 +191,8 @@ const ManagePolicy = () => {
   //   });
   // };
 
-  const handleAddButtonClick = () => {
-    modals.openContextModal({
-      modal: "demonstration",
-      centered: true,
-      innerProps: {
-        // modalBody:
-        //   "This modal was defined in ModalsProvider, you can open it anywhere in you app with useModals hook",
-      },
-    });
-  };
-
   return (
     <Box className="my-6">
-      <Box className="flex justify-end">
-        {/* <Button
-          leftSection={<LuPlusCircle />}
-          color="black"
-          variant="filled"
-          // mt={-24}
-          onClick={addOpen}
-        >
-          Add
-        </Button> */}
-        <Button
-          leftSection={<LuPlusCircle />}
-          color="black"
-          variant="filled"
-          onClick={handleAddButtonClick}
-          bg="orange"
-        >
-          Add
-        </Button>
-      </Box>
       {/* <Modal
         opened={addOpened}
         onClose={addClose}

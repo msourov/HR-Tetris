@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  FileButton,
-  Paper,
-  Text,
-  TextInput,
-} from "@mantine/core";
+import { Box, Button, FileButton, Paper, Text, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { z } from "zod";
 import { notifications } from "@mantine/notifications";
@@ -63,9 +56,9 @@ const UploadPolicyFile = ({ context, id }: UploadPolicyFileProps) => {
       //   upload_file: file,
       // }).unwrap();
       const response = await axios.post(
-        `https://api.hr-infozilion.pitetris.com/v1/mak/policy/create-file?name=${encodeURIComponent(
-          data.name
-        )}`,
+        `${
+          import.meta.env.VITE_APP_BASE_URL
+        }policy/create-file?name=${encodeURIComponent(data.name)}`,
         formData,
         {
           headers: {
@@ -120,7 +113,7 @@ const UploadPolicyFile = ({ context, id }: UploadPolicyFileProps) => {
   };
 
   return (
-    <Paper withBorder shadow="md" radius="md" p="md">
+    <Paper withBorder radius="md" p="md">
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           label="Name"
@@ -134,7 +127,8 @@ const UploadPolicyFile = ({ context, id }: UploadPolicyFileProps) => {
           >
             {(props) => (
               <Button
-                variant="outline"
+                color="black"
+                variant="light"
                 {...props}
                 leftSection={<MdOutlineFileUpload size={20} />}
               >
@@ -148,14 +142,12 @@ const UploadPolicyFile = ({ context, id }: UploadPolicyFileProps) => {
             </Text>
           )}
         </Box>
-        <Button
-          type="submit"
-          className="rounded-lg mt-6"
-          bg="black"
-          disabled={isLoading}
-        >
-          {isLoading ? <AppLoader /> : "Save"}
-        </Button>
+        <Box className="mt-6 flex justify-end gap-2">
+          <Button variant="outline">Cancel</Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? <AppLoader /> : "Save"}
+          </Button>
+        </Box>
       </form>
     </Paper>
   );

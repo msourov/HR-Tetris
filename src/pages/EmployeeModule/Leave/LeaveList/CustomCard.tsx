@@ -1,10 +1,11 @@
-import { Card, Pill, Button, Modal } from "@mantine/core";
+import { Card, Pill, Button, Modal, Group, ActionIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import LeaveReviewModal from "./ReviewModal";
 import AppApprovalStatus from "../../../../components/core/AppApprovalStatus";
 import dayjs from "dayjs";
 import LeaveDetail from "../LeaveDetail";
 import { getImageUrl } from "../../../../services/utils/getImageUrl";
+import { IconEye, IconTrash } from "@tabler/icons-react";
 
 interface LeaveData {
   employee_id: string;
@@ -110,10 +111,32 @@ const CustomCard: React.FC<LeaveData> = ({
               Review
             </Button>
           )}
-          <Button variant="filled" color="blue" fw={400} onClick={viewOpen}>
+          {/* <Button variant="filled" color="blue" fw={400} onClick={viewOpen}>
             View
-          </Button>
+          </Button> */}
         </div>
+        <Group mt="xs" gap="xs">
+          {/* View icon */}
+          <ActionIcon
+            variant="light"
+            size="lg"
+            onClick={viewOpen}
+            aria-label="View details"
+          >
+            <IconEye size={18} />
+          </ActionIcon>
+
+          {/* Delete icon */}
+          <ActionIcon
+            variant="light"
+            size="lg"
+            color="red"
+            // onClick={openConfirm}
+            aria-label="Delete leave"
+          >
+            <IconTrash size={18} />
+          </ActionIcon>
+        </Group>
       </div>
       {/* View Leave Model */}
       <Modal
