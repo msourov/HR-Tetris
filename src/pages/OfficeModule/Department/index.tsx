@@ -6,7 +6,7 @@ import { LuPlus } from "react-icons/lu";
 import { useDisclosure } from "@mantine/hooks";
 import AppModal from "../../../components/ui/AppModal";
 import AddNewDepartment from "./AddNewDepartment";
-import { IoMdReturnLeft } from "react-icons/io";
+import AppPageHeader from "../../../components/core/AppPageHeader";
 
 const DepartmentLayout = () => {
   const navigate = useNavigate();
@@ -39,25 +39,24 @@ const DepartmentLayout = () => {
   const isDetailPage = matchPath("/departments/:id/detail", location.pathname);
 
   return (
-    <div className="w-[95%] h-[calc(90vh-80px)] flex flex-col my-6 mx-auto rounded-lg drop-shadow-lg py-6 px-4">
+    <div className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto rounded-lg drop-shadow-lg">
       {isDetailPage ? (
         <Outlet />
       ) : (
         <>
-          <div className="flex justify-between md:mr-8 mb-6">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center justify-center gap-1 border border-white/20 hover:bg-gray-200 rounded w-[70px]"
-            >
-              <IoMdReturnLeft size={16} color="gray" />
-              Back
-            </button>
+          <div className="flex justify-between">
+            <AppPageHeader
+              Heading="Department"
+              Breadcrumb={{ module: "Office Management", page: "Department" }}
+              ShowAddButton={false}
+            />
             <Button
               leftSection={<LuPlus size={18} />}
               variant="filled"
               onClick={addOpen}
+              className="my-10"
             >
-              Add
+              Add Department
             </Button>
           </div>
           <AppModal
@@ -70,7 +69,6 @@ const DepartmentLayout = () => {
           </AppModal>
           <Tabs
             radius="xs"
-            variant="pills"
             color="orange"
             value={activeTab}
             onChange={handleTabChange}

@@ -46,7 +46,7 @@ const AcronymDetails = () => {
   };
 
   return (
-    <div className="p-4 bg-gray-100 rounded-lg border">
+    <div className="p-4 bg-white border">
       {/* <h3 className="text-lg font-semibold mb-4">Acronym Definitions</h3> */}
       <div className="grid grid-cols-1 gap-2">
         {Object.entries(acronymMap).map(([acronym, fullName]) => (
@@ -85,13 +85,13 @@ const RoleTable: React.FC = () => {
   const roles: Role[] = data?.data || [];
   console.log(error, "error");
   return (
-    <div className="flex flex-col xl:flex-row gap-8 xl:gap-4 py-8 px-4">
-      <div className="flex-1 border">
+    <div className="flex flex-col xl:flex-row gap-8 xl:gap-4">
+      <div className="flex-1 border bg-white">
         <Table striped highlightOnHover>
           <TableHeading />
           <TableItem data={roles} loading={isLoading} error={error} />
         </Table>
-        <div className="px-4 pt-8 pb-4 flex justify-end">
+        <div className="px-4 pt-8 pb-4 flex justify-end items-end">
           <Pagination
             total={data?.pagination?.total_pages ?? 0}
             value={page}

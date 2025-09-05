@@ -2,11 +2,11 @@ import { Box, Button, rem, Tabs } from "@mantine/core";
 import { IconList, IconSettings } from "@tabler/icons-react";
 import { Outlet, useNavigate, useLocation, matchPath } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { IoMdReturnLeft } from "react-icons/io";
 import { LuPlus } from "react-icons/lu";
 import { useDisclosure } from "@mantine/hooks";
 import AppModal from "../../../components/ui/AppModal";
 import AddNewDesignation from "./AddNewDesignation";
+import AppPageHeader from "../../../components/core/AppPageHeader";
 
 const DesignationLayout = () => {
   const navigate = useNavigate();
@@ -39,27 +39,27 @@ const DesignationLayout = () => {
   const isDetailPage = matchPath("/designations/:id/detail", location.pathname);
 
   return (
-    <Box className="w-[95%] h-[calc(90vh-80px)] flex flex-col my-6 mx-auto rounded-lg drop-shadow-lg py-6 px-4">
+    <Box className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto rounded-lg drop-shadow-lg">
       {isDetailPage ? (
         <Outlet />
       ) : (
         <>
-          <div className="flex justify-between md:mr-8 mb-6">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center justify-center gap-1 border border-white/20 hover:bg-gray-200 rounded w-[70px]"
-            >
-              <IoMdReturnLeft size={14} color="black" />
-              Back
-            </button>
+          <div className="flex justify-between">
+            <AppPageHeader
+              Heading="Designation"
+              Breadcrumb={{ module: "Admin Management", page: "Designation" }}
+              ShowAddButton={false}
+            />
             <Button
               leftSection={<LuPlus size={18} />}
               variant="filled"
               onClick={addOpen}
+              className="my-10"
             >
-              Add
+              Add Designation
             </Button>
           </div>
+
           <AppModal
             opened={addOpened}
             onClose={addClose}
@@ -70,7 +70,7 @@ const DesignationLayout = () => {
           </AppModal>
           <Tabs
             radius="xs"
-            variant="pills"
+            // variant="pills"
             color="orange"
             value={activeTab}
             onChange={handleTabChange}

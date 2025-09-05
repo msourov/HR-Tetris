@@ -1,5 +1,5 @@
 import { Card, Group, Paper, Text, Badge, Divider, Stack } from "@mantine/core";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetDepartmentDetailQuery } from "../../../../features/api/departmentSlice";
 import {
   IconAlertCircle,
@@ -9,15 +9,14 @@ import {
   IconUser,
 } from "@tabler/icons-react";
 import useFormatDate from "../../../../services/utils/useFormatDate";
-import { IoMdReturnLeft } from "react-icons/io";
 import { getImageUrl } from "../../../../services/utils/getImageUrl";
 import AppLoader from "../../../../components/ui/AppLoader";
+import AppPageHeader from "../../../../components/core/AppPageHeader";
 
 const DepartmentDetail = () => {
   const { id: uid } = useParams();
   const { formatDate } = useFormatDate();
   const { data, isLoading, error } = useGetDepartmentDetailQuery({ uid });
-  const navigate = useNavigate();
 
   const departmentDetail = data?.data;
 
@@ -35,14 +34,8 @@ const DepartmentDetail = () => {
 
   return (
     <>
-      <button
-        onClick={() => navigate(-1)}
-        className="flex items-center shadow-md bg-white justify-center gap-1 border border-white/20 text-gray-600 hover:bg-gray-200 rounded py-[4px] text-xs w-[65px]"
-      >
-        <IoMdReturnLeft size={16} color="gray" />
-        Back
-      </button>
-      <Card withBorder radius="md" p="lg" className="bg-white my-6">
+      <AppPageHeader />
+      <Card withBorder radius="md" p="lg" className="bg-white my-4">
         <Group justify="space-between" align="center">
           <Group gap="sm">
             <IconBuilding size={24} className="text-blue-600" />

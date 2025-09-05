@@ -1,0 +1,34 @@
+.policy-content {
+  line-height: 1.6;
+}
+
+.policy-content h1,
+.policy-content h2,
+.policy-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.policy-content p {
+  margin-bottom: 1rem;
+}
+
+.policy-content ul,
+.policy-content ol {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+.policy-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.policy-content table,
+.policy-content th,
+.policy-content td {
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem;
+}

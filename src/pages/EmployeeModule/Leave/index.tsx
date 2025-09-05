@@ -68,14 +68,15 @@ const Leave = () => {
   });
 
   const { data, isLoading, error, refetch } = useAllLeaveQuery(searchParams);
-  const [createLeave, { isLoading: isCreating }] = useCreateLeaveMutation();
+  const [createLeave, { isLoading: isCreating, error: createLeaveError }] =
+    useCreateLeaveMutation();
   const { data: employees } = useGetEmployeeHelperQuery();
 
   const employeeOptions = Array.isArray(employees?.data)
     ? employees?.data.map((item) => ({
-      label: item?.name,
-      value: item?.employee_id,
-    }))
+        label: item?.name,
+        value: item?.employee_id,
+      }))
     : [];
 
   if (isLoading)
@@ -100,6 +101,8 @@ const Leave = () => {
     refetch();
   };
 
+  console.log(createLeaveError, "createLeaveError");
+
   const onSubmit = async (data: FormData) => {
     const payload = {
       leave_type: data.leave_type,
@@ -123,12 +126,12 @@ const Leave = () => {
       modalClose();
       refetch();
     } catch (error) {
-      console.error("Failed to create overtime:", error);
+      console.error("Failed to create leave:", error);
       notifications.show({
         title: "Error!",
         message:
           (error as ErrorResponse)?.data?.detail ||
-          "An error occurred while creating the ticket",
+          "Couldn't create leave. Please try again.",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,

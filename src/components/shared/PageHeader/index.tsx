@@ -12,6 +12,7 @@ type PageHeaderProps = {
     page: string;
   };
   ShowAddButton?: boolean;
+  showBackButton?: boolean;
 };
 
 const PageHeader: React.FC<PageHeaderProps> = ({
@@ -19,15 +20,16 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   Heading,
   Breadcrumb,
   ShowAddButton,
+  showBackButton,
 }) => {
   const navigate = useNavigate();
   const route = Heading?.toLowerCase();
 
   return (
     <Box
-      w={"100%"}
-      px={"2.25rem"}
-      className="flex justify-between items-center mb-2 py-3"
+      // w={"100%"}
+      // px={"5%"}
+      className="flex justify-between items-center my-8"
     >
       <div className="space-y-4">
         {Breadcrumb && (
@@ -44,19 +46,20 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           </Group>
         )}
 
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center shadow-md bg-white justify-center gap-1 border border-white/20 text-gray-600 hover:bg-gray-200 rounded py-[4px] text-xs w-[65px] my-6"
-        >
-          <IoMdReturnLeft size={16} color="gray" />
-          Back
-        </button>
+        {showBackButton && (
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center justify-center gap-1 border border-white/20 hover:bg-gray-200 rounded py-[4px] w-[65px] my-6"
+          >
+            <IoMdReturnLeft size={16} color="gray" />
+            Back
+          </button>
+        )}
       </div>
       {ShowAddButton && (
         <Button
           variant="filled"
-          color="white"
-          c="blue"
+          color="blue"
           size="sm"
           className="shadow-md text-sm hover:shadow-lg border-blue-300"
           leftSection={Operation === "Add" && <IconPlus size={16} />}

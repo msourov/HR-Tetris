@@ -1,88 +1,157 @@
-import { Button, Modal, Text } from "@mantine/core";
-import { AllPolicy } from "../../../../features/api/typesOld";
-import { IconDownload } from "@tabler/icons-react";
+import {
+  ActionIcon,
+  Badge,
+  Button,
+  Card,
+  Group,
+  Menu,
+  Modal,
+  Text,
+} from "@mantine/core";
+import {
+  IconCheck,
+  IconDotsVertical,
+  IconDownload,
+  IconEye,
+  IconFileText,
+  IconX,
+} from "@tabler/icons-react";
 import dayjs from "dayjs";
-import CardGlass from "../../../../components/ui/CardGlass";
 import { useDisclosure } from "@mantine/hooks";
 import PolicyReviewModal from "./PolicyReviewModal";
+import { AllPolicy } from "../../../../features/types/policy";
 
 interface PolicyCardProps {
   item: AllPolicy;
-  onClick: (id: string) => void;
-  isFile: boolean; // New prop to determine if it's a file or text policy
+  onView: (id: string) => void;
+  onDownload: (id: string) => void;
+  getFileIcon: (fileName: string) => React.ReactNode; // New prop to determine if it's a file or text policy
 }
 
-const PolicyCard: React.FC<PolicyCardProps> = ({ item, onClick, isFile }) => {
+const PolicyCard: React.FC<PolicyCardProps> = ({
+  item,
+  onView,
+  onDownload,
+  getFileIcon,
+}) => {
+  const isFile = !item.descriptions;
+  const date = dayjs(item.create_at).format("MMM D, YYYY");
   const [opened, { open, close }] = useDisclosure(false);
 
+  // Strip HTML tags for preview
+  const plainTextDescription = item.descriptions
+    ? item.descriptions.replace(/<[^>]*>/g, "")
+    : "";
+
   return (
-    <CardGlass
-      className={`flex flex-col px-4 py-4 h-full ${
-        isFile ? "w-[200px]" : "w-[340px]"
-      }`}
-      key={item?.id}
-    >
-      <div className="flex justify-between items-center">
-        <Text className="max-w-[75%] font-bold text-green-900 leading-6 truncate">
-          {item?.name}
-        </Text>
-        <Button
-          variant="light"
-          size="compact-sm"
-          className="text-xs"
-          onClick={open}
-        >
-          Review
-        </Button>
-      </div>
-
-      <Text
-        size="sm"
-        className="leading-6 my-4 text-gray-500 line-clamp-3 flex-grow"
+    <>
+      <Card
+        withBorder
+        shadow="sm"
+        radius="md"
+        className="h-full flex flex-col hover:shadow-md transition-shadow"
       >
-        {item?.descriptions?.length > 300 ? (
-          <span
-            dangerouslySetInnerHTML={{
-              __html: `${item?.descriptions.substring(0, 300)}...`,
-            }}
-          />
-        ) : (
-          <span dangerouslySetInnerHTML={{ __html: item?.descriptions }} />
-        )}
-      </Text>
+        {/* Header section with icon and badge */}
+        <Card.Section p="md" className="bg-gray-50 border-b">
+          <Group justify="space-between" align="center">
+            <Group gap="sm">
+              {isFile ? (
+                getFileIcon(item.name)
+              ) : (
+                <IconFileText size={20} className="text-blue-600" />
+              )}
+              <Text fw={600} size="sm" className="max-w-[70%] truncate">
+                {item.name}
+              </Text>
+            </Group>
+            <Badge color={isFile ? "blue" : "green"} variant="light" size="sm">
+              {isFile ? "File" : "Text"}
+            </Badge>
+          </Group>
+        </Card.Section>
 
-      <Text size="xs" color="dimmed" my={10}>
-        Created:{" "}
-        <span className="text-amber-600 text-sm font-mono">
-          {dayjs(item?.create_at).format("MMM D, YYYY h:mm A")}
-        </span>
-      </Text>
+        {/* Content section */}
+        <div className="flex flex-col flex-grow py-2">
+          <Text
+            size="sm"
+            lineClamp={4}
+            className="mb-4 text-gray-500 leading-relaxed"
+          >
+            {isFile
+              ? "Click download to access this policy document"
+              : plainTextDescription}
+          </Text>
 
-      {isFile ? (
-        <Button
-          mx="auto"
-          mt={4}
-          variant="light"
-          radius="md"
-          onClick={() => onClick(item?.uid)}
-          className="w-full"
-        >
-          <IconDownload className="size-6 animate-bounce transition-all duration-300 ease-in-out hover:scale-110" />
-        </Button>
-      ) : (
-        <Button
-          w="100%"
-          mt={4}
-          onClick={() => onClick(item?.uid)}
-          className="mt-auto"
-        >
-          See More
-        </Button>
-      )}
-      <Modal opened={opened} onClose={close}>
-        <PolicyReviewModal uid={item?.uid} close={close} />
+          <Text size="xs" className="text-gray-600 font-semibold mt-auto">
+            {date}
+          </Text>
+        </div>
+
+        {/* Action buttons section */}
+        <Card.Section p="md" className="border-t">
+          <Group gap="xs" justify="space-between">
+            <div className="flex-1">
+              {isFile ? (
+                <Button
+                  variant="light"
+                  color="blue"
+                  size="sm"
+                  fullWidth
+                  leftSection={<IconDownload size={16} />}
+                  onClick={() => onDownload(item.uid)}
+                >
+                  Download
+                </Button>
+              ) : (
+                <Button
+                  variant="light"
+                  color="green"
+                  size="sm"
+                  fullWidth
+                  leftSection={<IconEye size={16} />}
+                  onClick={() => onView(item.uid)}
+                >
+                  View
+                </Button>
+              )}
+            </div>
+
+            <Menu withinPortal shadow="sm">
+              <Menu.Target>
+                <ActionIcon variant="subtle" color="gray" size="lg">
+                  <IconDotsVertical size={16} />
+                </ActionIcon>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                <Menu.Item
+                  leftSection={<IconCheck size={14} color="green" />}
+                  onClick={open}
+                >
+                  Approve
+                </Menu.Item>
+                <Menu.Item
+                  leftSection={<IconX size={14} color="red" />}
+                  onClick={open}
+                >
+                  Reject
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
+        </Card.Section>
+      </Card>
+
+      {/* Review modal */}
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={`Review Policy: ${item.name}`}
+        size="lg"
+      >
+        <PolicyReviewModal uid={item.uid} close={close} />
       </Modal>
-    </CardGlass>
+    </>
   );
 };
 

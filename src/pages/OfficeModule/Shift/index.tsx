@@ -2,6 +2,7 @@ import { Box, rem, Tabs } from "@mantine/core";
 import { IconList, IconSettings } from "@tabler/icons-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import AppPageHeader from "../../../components/core/AppPageHeader";
 
 const ShiftLayout = () => {
   const navigate = useNavigate();
@@ -27,11 +28,24 @@ const ShiftLayout = () => {
 
   const iconStyle = { width: rem(12), height: rem(12) };
   return (
-    <Box className="w-[95%] my-8 mx-auto bg-white rounded-lg drop-shadow-lg py-6 px-10">
-      <Tabs radius="xs" value={activeTab} onChange={handleTabChange}>
+    <Box className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto rounded-lg drop-shadow-lg">
+      <div className="flex justify-between">
+        <AppPageHeader
+          Heading="Shift"
+          Breadcrumb={{ module: "Office Management", page: "Shift" }}
+          ShowAddButton={false}
+        />
+       
+      </div>
+      <Tabs
+        radius="xs"
+        value={activeTab}
+        onChange={handleTabChange}
+        color="orange"
+      >
         <Tabs.List>
           <Tabs.Tab value="list" leftSection={<IconList style={iconStyle} />}>
-            List
+            Shifts
           </Tabs.Tab>
           <Tabs.Tab
             value="manage"

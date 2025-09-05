@@ -19,6 +19,7 @@ import AppLoader from "../../../components/ui/AppLoader";
 import HolidayModal from "./HolidayModal";
 import HolidayApproval from "./HolidayApproval";
 import { notifications } from "@mantine/notifications";
+import AppPageHeader from "../../../components/core/AppPageHeader";
 
 interface CalendarEvent extends EventInput {
   id: string;
@@ -147,14 +148,21 @@ const HolidayCalendar = () => {
   if (isError) return <div>Error loading holidays</div>;
 
   return (
-    <Box p="md">
+    <Box className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto rounded-lg drop-shadow-lg">
+      <div className="flex justify-between">
+        <AppPageHeader
+          Heading="Holiday"
+          Breadcrumb={{ module: "Office Management", page: "Holiday" }}
+          ShowAddButton={false}
+        />
+      </div>
       <Tabs
         value={activeTab}
         onChange={setActiveTab}
         defaultValue="calendar"
         variant="default"
-        className="mx-10"
-        color="blue"
+        // className="mx-10"
+        color="orange"
       >
         <Tabs.List mb="md">
           <Tabs.Tab value="calendar">Calendar</Tabs.Tab>

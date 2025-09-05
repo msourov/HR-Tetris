@@ -1,12 +1,10 @@
 import {
   Text,
-  Modal,
   Box,
   SimpleGrid,
-  ScrollArea,
-  Divider,
-  Tabs,
-  Button,
+  Card,
+  Group,
+  SegmentedControl,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import {
@@ -14,25 +12,26 @@ import {
   useGetPolicyDetailQuery,
 } from "../../../../features/api/policySlice";
 import "../../../../styles.css";
-import PDFViewer from "./PDFViewer";
-import { AllPolicy } from "../../../../features/api/typesOld";
-import PolicyCard from "./PolicyCard";
+// import { AllPolicy } from "../../../../features/api/typesOld";
+// import PolicyCard from "./PolicyCard";
 import axios from "axios";
-import { IoTextSharp } from "react-icons/io5";
-import { FaRegFileAlt } from "react-icons/fa";
 import AppLoader from "../../../../components/ui/AppLoader";
-
-interface PolicyModalProps {
-  opened: boolean;
-  onClose: () => void;
-  policyDetail: { data?: AllPolicy } | null;
-  policyDetailLoading: boolean;
-}
+import {
+  IconFile,
+  IconFileText,
+  IconFileTypeDoc,
+  IconFileTypePdf,
+} from "@tabler/icons-react";
+import PolicyCard from "./PolicyCard";
+import { AllPolicy } from "../../../../features/types/policy";
+import PolicyDetail from "../PolicyDetail";
 
 const PolicyList = () => {
+  const [viewMode, setViewMode] = useState<"all" | "text" | "file">("all");
   const [opened, setOpened] = useState(false);
   const [selectedUid, setSelectedUid] = useState<string | null>(null);
   const [policyUid, setPolicyUid] = useState("");
+
   const {
     data: policies,
     isLoading: allPolicyLoading,
@@ -75,7 +74,7 @@ const PolicyList = () => {
 
   if (policies) {
     Array.isArray(policies.data) &&
-      policies.data?.map((policy) =>
+      policies.data?.forEach((policy) =>
         policy.descriptions
           ? policyTexts.push(policy)
           : policyFiles.push(policy)
@@ -98,65 +97,62 @@ const PolicyList = () => {
     setSelectedUid(uid);
   };
 
-  return (
-    <Box className="mt-6">
-      <Divider
-        label={
-          <Text className="font-semibold text-lg text-gray-500">Policies</Text>
-        }
-        labelPosition="center"
-        className="my-6"
-      />
-      <Tabs variant="outline" defaultValue="text">
-        <Tabs.List className="mb-6">
-          <Tabs.Tab value="text" leftSection={<IoTextSharp />}>
-            Text
-          </Tabs.Tab>
-          <Tabs.Tab value="file" leftSection={<FaRegFileAlt />}>
-            Files
-          </Tabs.Tab>
-        </Tabs.List>
-        <Tabs.Panel value="text" className="p-6">
-          <SimpleGrid
-            cols={{ base: 1, sm: 2, md: 2, xl: 3 }}
-            spacing={{ base: 10, sm: "xl" }}
-            verticalSpacing={{ base: "md", sm: "xl" }}
-          >
-            {policyTexts?.map((item) => (
-              <div key={item?.id} className="flex justify-center w-fit">
-                <PolicyCard
-                  item={item}
-                  onClick={handlePolicyDetail}
-                  isFile={false}
-                />
-              </div>
-            ))}
-          </SimpleGrid>
-        </Tabs.Panel>
-        <Tabs.Panel value="file" className="p-6">
-          <SimpleGrid
-            cols={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-            spacing={{ base: 10, sm: "xl" }}
-            verticalSpacing={{ base: "md", sm: "xl" }}
-            style={{ justifyItems: "flex-start" }}
-          >
-            {policyFiles?.map((item) => (
-              <div
-                key={item?.id}
-                style={{ display: "flex", justifyContent: "flex-start" }}
-              >
-                <PolicyCard
-                  item={item}
-                  onClick={handleDownload}
-                  isFile={true}
-                />
-              </div>
-            ))}
-          </SimpleGrid>
-        </Tabs.Panel>
-      </Tabs>
+  const getFileIcon = (fileName: string) => {
+    if (fileName?.includes(".pdf"))
+      return <IconFileTypePdf size={20} color="#E62B2B" />;
+    if (fileName?.includes(".doc") || fileName?.includes(".docx"))
+      return <IconFileTypeDoc size={20} color="#2B5BE6" />;
+    return <IconFile size={20} />;
+  };
 
-      <PolicyModal
+  // Filter policies based on view mode
+  const filteredPolicies =
+    viewMode === "all"
+      ? [...policyTexts, ...policyFiles]
+      : viewMode === "text"
+      ? policyTexts
+      : policyFiles;
+
+  return (
+    <Box className="mt-4">
+      <Group justify="end" mb="lg">
+        <SegmentedControl
+          // color="violet"
+          // bg={"white"}
+          value={viewMode}
+          onChange={(value) => setViewMode(value as "all" | "text" | "file")}
+          data={[
+            { label: "All Policies", value: "all" },
+            { label: "Text Policies", value: "text" },
+            { label: "File Policies", value: "file" },
+          ]}
+          size="sm"
+        />
+      </Group>
+
+      <SimpleGrid
+        cols={{ base: 1, sm: 2, md: 3, xl: viewMode === "file" ? 4 : 3 }}
+        spacing="lg"
+      >
+        {filteredPolicies.map((item) => (
+          <PolicyCard
+            key={item.id}
+            item={item}
+            onView={handlePolicyDetail}
+            onDownload={handleDownload}
+            getFileIcon={getFileIcon}
+          />
+        ))}
+      </SimpleGrid>
+
+      {filteredPolicies.length === 0 && (
+        <Card withBorder className="text-center py-10">
+          <IconFileText size={40} className="mx-auto text-gray-400 mb-4" />
+          <Text c="dimmed">No policies found</Text>
+        </Card>
+      )}
+
+      <PolicyDetail
         opened={opened}
         onClose={() => setOpened(false)}
         policyDetail={
@@ -175,55 +171,3 @@ const PolicyList = () => {
 };
 
 export default PolicyList;
-
-const PolicyModal: React.FC<PolicyModalProps> = ({
-  opened,
-  onClose,
-  policyDetail,
-  policyDetailLoading,
-}) => {
-  return (
-    <Modal opened={opened} onClose={onClose} size="80%" withCloseButton={false}>
-      {policyDetailLoading ? (
-        <AppLoader />
-      ) : !policyDetail?.data?.descriptions ? (
-        <PDFViewer uid={policyDetail?.data?.uid} />
-      ) : (
-        <ScrollArea className="lg:px-10 sm:px-6 lg:max-h-[60vh] sm:h-[80vh]">
-          <Divider
-            my="xs"
-            label={
-              <p className="text-lg text-blue-400">
-                {policyDetail?.data?.name}
-              </p>
-            }
-            labelPosition="center"
-          />
-          <div
-            dangerouslySetInnerHTML={{
-              __html:
-                policyDetail?.data?.descriptions || "No description available",
-            }}
-            className="description-content bg-gray-100 p-4 mt-4"
-          />
-          <Text
-            size="sm"
-            color="white"
-            className="mt-6 bg-gray-400 w-fit px-4 py-1 rounded-md"
-          >
-            {policyDetail?.data?.logs?.message} by{" "}
-            {policyDetail?.data?.logs?.admin} on{" "}
-            {policyDetail?.data?.logs?.create_at
-              ? new Date(policyDetail.data.logs.create_at).toLocaleDateString()
-              : "Date not available"}
-          </Text>
-        </ScrollArea>
-      )}
-      <div className="flex justify-end mr-10">
-        <Button variant="outline" color="blue" onClick={onClose}>
-          Close
-        </Button>
-      </div>
-    </Modal>
-  );
-};

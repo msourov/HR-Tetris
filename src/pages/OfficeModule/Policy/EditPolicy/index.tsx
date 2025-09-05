@@ -157,7 +157,7 @@ const ManagePolicy = () => {
       await deletePolicy({ id: policy as string }).unwrap();
       notifications.show({
         title: "Success!",
-        message: "Designation deleted",
+        message: "Policy successfully deleted.",
         icon: <IconCheck />,
         color: "green",
         autoClose: 3000,
@@ -166,7 +166,7 @@ const ManagePolicy = () => {
     } catch (error) {
       notifications.show({
         title: "Error!",
-        message: "Couldn't delete designation",
+        message: "Couldn't delete policy. Please try again.",
         icon: <IconX />,
         color: "red",
         autoClose: 3000,
@@ -176,31 +176,8 @@ const ManagePolicy = () => {
     }
   };
 
-  // const handleFirstModalConfirm = () => {
-  //   console.log("modal clicked");
-  //   modals.openConfirmModal({
-  //     title: "This is the second modal",
-  //     labels: { confirm: "Close modal", cancel: "Back" },
-  //     closeOnConfirm: false,
-  //     children: (
-  //       <Text size="sm">
-  //         When this modal is closed, the state will revert to the first modal.
-  //       </Text>
-  //     ),
-  //     onConfirm: () => modals.closeAll(),
-  //   });
-  // };
-
   return (
     <Box className="my-6">
-      {/* <Modal
-        opened={addOpened}
-        onClose={addClose}
-        title="Add Policy"
-        size={"80%"}
-      >
-        <AddPolicy toggleModal={toggleModal} />
-      </Modal> */}
       <Select
         label={text}
         data={policyOptions}
@@ -219,15 +196,15 @@ const ManagePolicy = () => {
           {policyDetail ? (
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextInput
-                label="Name"
+                label={<p className="text-gray-600">Title</p>}
                 mb={10}
                 {...register("name")}
                 error={errors.name?.message as React.ReactNode}
               />
               {editor && (
                 <Box mt={20}>
-                  <Text mb={4} fw={500}>
-                    Description
+                  <Text mb={4} fw={500} className="text-gray-600">
+                    Content
                   </Text>
                   <RichTextEditor editor={editor}>
                     <RichTextEditor.Toolbar sticky stickyOffset={60}>
@@ -279,22 +256,22 @@ const ManagePolicy = () => {
                 </Box>
               )}
 
-              <Box className="max-w-20 mt-4">
-                <label>Status</label>
+              <Box className="mt-4">
+                <label className="text-gray-600">Status</label>
                 <Switch
-                  size="md"
+                  size="sm"
                   checked={watch("active")}
                   {...register("active")}
                 />
               </Box>
-
-              <Button
-                type="submit"
-                className="rounded-lg mt-6"
-                disabled={editPolLoading}
-              >
-                {editPolLoading ? <AppLoader /> : "Save"}
-              </Button>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" color="gray">
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={editPolLoading}>
+                  {editPolLoading ? <AppLoader /> : "Save"}
+                </Button>
+              </div>
             </form>
           ) : (
             <Text className="text-center">Error loading data</Text>
@@ -314,7 +291,7 @@ const ManagePolicy = () => {
             centered
             className="text-center"
           >
-            <Text>Are you sure you want to delete?</Text>
+            <Text>Are you sure you want to delete this policy?</Text>
             <Box className="flex gap-2 justify-center mt-4">
               <Button
                 color="red"
@@ -324,6 +301,7 @@ const ManagePolicy = () => {
                 Confirm
               </Button>
               <Button
+                variant="outline"
                 color="gray"
                 onClick={closeDelete}
                 disabled={deletePolLoading}
