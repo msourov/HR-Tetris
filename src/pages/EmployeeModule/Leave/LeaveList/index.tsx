@@ -19,7 +19,7 @@ const LeaveList = () => {
     start_time: undefined as string | undefined,
     end_time: undefined as string | undefined,
   });
-  const { data, isLoading, error, refetch } = useAllLeaveQuery(searchParams);
+  const { data, isLoading, error, refetch, isFetching } = useAllLeaveQuery(searchParams);
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
 
@@ -135,7 +135,7 @@ const LeaveList = () => {
                 </motion.div>
               ))
             ) : (
-              <NoDataMessage message="leave" onRefresh={refetch} />
+              <NoDataMessage message="leave" onRefresh={refetch} loading={isFetching}/>
             )}
           </div>
         </ScrollArea>

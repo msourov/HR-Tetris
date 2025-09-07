@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 type PageHeaderProps = {
   Operation?: string;
+  action: string;
   Heading?: string;
   Breadcrumb?: {
     module: string;
@@ -17,6 +18,7 @@ type PageHeaderProps = {
 
 const PageHeader: React.FC<PageHeaderProps> = ({
   Operation = "Add",
+  action,
   Heading,
   Breadcrumb,
   ShowAddButton,
@@ -25,12 +27,10 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   const navigate = useNavigate();
   const route = Heading?.toLowerCase();
 
+  console.log(action);
+
   return (
-    <Box
-      // w={"100%"}
-      // px={"5%"}
-      className="flex justify-between items-center my-8"
-    >
+    <Box className="flex justify-between items-center my-8">
       <div className="space-y-4">
         {Breadcrumb && (
           <Group gap={4} align="center" className="drop-shadow-lg">
@@ -43,6 +43,14 @@ const PageHeader: React.FC<PageHeaderProps> = ({
             <Text span size="md" color="dimmed">
               {Breadcrumb.page}
             </Text>
+            {action !== "" && (
+              <>
+                <IconChevronRight size={16} color="gray" />
+                <Text span size="md" color="dimmed">
+                  {action[0].toUpperCase() + action.slice(1)}
+                </Text>
+              </>
+            )}
           </Group>
         )}
 
@@ -56,7 +64,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           </button>
         )}
       </div>
-      {ShowAddButton && (
+      {ShowAddButton && !showBackButton && (
         <Button
           variant="filled"
           color="blue"

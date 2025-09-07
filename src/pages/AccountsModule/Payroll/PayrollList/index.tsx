@@ -5,58 +5,31 @@ import {
   Container,
   Title,
   useMantineTheme,
-  Modal,
-  Button,
-  TextInput,
   Paper,
   Badge,
   SimpleGrid,
-  Select,
   Pagination,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconCurrencyTaka,
-  IconCalendar,
-  IconPlus,
-  IconId,
-} from "@tabler/icons-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  useAddPayrollMutation,
-  useGetPayrollsQuery,
-} from "../../../../features/api/payrollSlice";
+import { IconCurrencyTaka, IconCalendar, IconId } from "@tabler/icons-react";
+import { useGetPayrollsQuery } from "../../../../features/api/payrollSlice";
 import { useState } from "react";
 import { PayrollRecord } from "../../../../features/types/payroll";
 import { getImageUrl } from "../../../../services/utils/getImageUrl";
-import { useGetEmployeeHelperQuery } from "../../../../features/api/employeeSlice";
 import AppLoader from "../../../../components/ui/AppLoader";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
 import CardGlass from "../../../../components/ui/CardGlass";
 import AppModal from "../../../../components/ui/AppModal";
-
-const createSchema = z.object({
-  employee_id: z.string().min(1, "Employee ID is required"),
-  salary: z.number().min(1, "Salary must be greater than 0"),
-});
-
-type CreatePayroll = z.infer<typeof createSchema>;
+import NoDataMessage from "../../../../components/ui/NoDataMessage";
 
 const PayrollList = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
-  const { data, isLoading, isFetching, error } = useGetPayrollsQuery({
+  const { data, isLoading, isFetching, error, refetch } = useGetPayrollsQuery({
     page,
     limit,
   });
-  const { data: employees } = useGetEmployeeHelperQuery();
-  const [addPayroll, { isLoading: isAdding }] = useAddPayrollMutation();
-
   const [detailOpened, { open: openDetail, close: closeDetail }] =
-    useDisclosure(false);
-  const [createOpened, { open: openCreate, close: closeCreate }] =
     useDisclosure(false);
   const [selectedPayroll, setSelectedPayroll] = useState<PayrollRecord | null>(
     null
@@ -64,31 +37,6 @@ const PayrollList = () => {
   const theme = useMantineTheme();
 
   const payrolls = data?.data || [];
-
-  const employeeOptions = Array.isArray(employees?.data)
-    ? employees?.data.map((item) => ({
-        label: item?.name,
-        value: item?.employee_id,
-      }))
-    : [];
-
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CreatePayroll>({
-    resolver: zodResolver(createSchema),
-  });
-
-  const onSubmit = async (data: CreatePayroll) => {
-    try {
-      await addPayroll(data).unwrap();
-      closeCreate();
-    } catch (error) {
-      console.error("Failed to create payroll:", error);
-    }
-  };
 
   const handleViewDetail = (payroll: PayrollRecord) => {
     setSelectedPayroll(payroll);
@@ -123,16 +71,6 @@ const PayrollList = () => {
 
   return (
     <Container size="xl" py="xl" mx={40}>
-      <Group justify="end" mb="xl">
-        <Button
-          leftSection={<IconPlus size={18} />}
-          onClick={openCreate}
-          color="blue"
-        >
-          Create Payroll
-        </Button>
-      </Group>
-
       <Stack gap="sm">
         {payrolls && payrolls.length > 0 ? (
           payrolls?.map((item) => (
@@ -191,9 +129,7 @@ const PayrollList = () => {
             </CardGlass>
           ))
         ) : (
-          <Text c="dimmed" ta="center" mt="xl">
-            No payroll records found.
-          </Text>
+          <NoDataMessage onRefresh={refetch} loading={isFetching} />
         )}
       </Stack>
       <div className="px-4 pt-8 pb-4 float-right">
@@ -308,44 +244,6 @@ const PayrollList = () => {
           </Stack>
         )}
       </AppModal>
-
-      {/* Create Modal */}
-      <Modal
-        opened={createOpened}
-        onClose={closeCreate}
-        title="Create New Payroll"
-        size="md"
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack>
-            <Select
-              variant="filled"
-              label="Employee"
-              placeholder="Select an employee"
-              data={employeeOptions}
-              {...register("employee_id")}
-              onChange={(value) => setValue("employee_id", value || "")}
-              error={errors.employee_id?.message}
-              required
-            />
-            <TextInput
-              label="Salary"
-              type="number"
-              {...register("salary", { valueAsNumber: true })}
-              error={errors.salary?.message}
-              rightSection={<IconCurrencyTaka size={18} />}
-            />
-            <Group justify="end" mt="md">
-              <Button variant="default" onClick={closeCreate}>
-                Cancel
-              </Button>
-              <Button type="submit" loading={isAdding}>
-                Create
-              </Button>
-            </Group>
-          </Stack>
-        </form>
-      </Modal>
     </Container>
   );
 };

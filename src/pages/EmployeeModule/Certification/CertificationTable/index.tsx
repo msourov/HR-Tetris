@@ -13,6 +13,7 @@ const CertificationTable = () => {
     isLoading,
     error,
     refetch,
+    isFetching,
   } = useGetCertificationsQuery({
     page,
     limit,
@@ -20,7 +21,7 @@ const CertificationTable = () => {
 
   if (!isLoading && certifications?.data?.length === 0) {
     return (
-      <NoDataMessage message="certifications" onRefresh={() => refetch()} />
+      <NoDataMessage message="certifications" onRefresh={() => refetch()} loading={isFetching}/>
     );
   }
 
@@ -44,6 +45,7 @@ const CertificationTable = () => {
           boundaries={1}
           color="blue"
           onChange={setPage}
+          disabled={isFetching}
         />
       </div>
     </>

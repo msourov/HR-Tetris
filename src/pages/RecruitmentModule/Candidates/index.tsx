@@ -11,11 +11,17 @@ import { useGetCandidatesQuery } from "../../../features/api/recruitmentSlice";
 import { IoFilter } from "react-icons/io5";
 import { useState } from "react";
 import AppApprovalStatus from "../../../components/core/AppApprovalStatus";
-import { IoMdReturnLeft } from "react-icons/io";
 import AppLoader from "../../../components/ui/AppLoader";
+import NoDataMessage from "../../../components/ui/NoDataMessage";
 
 const Candidates = () => {
-  const { data: allCandidates, isLoading, error } = useGetCandidatesQuery();
+  const {
+    data: allCandidates,
+    isLoading,
+    error,
+    refetch,
+    isFetching,
+  } = useGetCandidatesQuery();
   const [opened, setOpened] = useState(false);
   const [value, setValue] = useState<string | null>(
     sessionStorage.getItem("filtered_department")
@@ -47,13 +53,6 @@ const Candidates = () => {
   }
   return (
     <>
-      <button
-        onClick={() => navigate(-1)}
-        className="flex items-center shadow-md bg-white justify-center gap-1 border border-white/20 text-gray-600 hover:bg-gray-200 rounded py-[4px] text-xs w-[65px]"
-      >
-        <IoMdReturnLeft size={16} color="gray" />
-        Back
-      </button>
       <div className="flex justify-end">
         <Popover
           opened={opened}
@@ -69,9 +68,9 @@ const Candidates = () => {
               size="compact-sm"
               bg="none"
               c="black"
-              variant="outline"
               mt={-24}
               mb={16}
+              className="shadow-md border border-white"
               onClick={() => setOpened((o) => !o)}
             >
               Filter
@@ -110,47 +109,55 @@ const Candidates = () => {
         </Popover>
       </div>
 
-      <SimpleGrid
-        cols={{ base: 1, sm: 2, md: 3, xl: 4 }}
-        spacing={{ base: 10, sm: "xl" }}
-        verticalSpacing={{ base: "md", sm: "xl" }}
-      >
-        {filteredData?.map((item) => (
-          <Card
-            shadow="sm"
-            // padding="xl"
-            component="a"
-            withBorder
-            maw={350}
-            className="text-center bg-transparent flex-auto p-4 max-w-full overflow-hidden py-6"
-          >
-            <p className="text-lg font-medium truncate">{item?.name}</p>
-            <p className="text-sm truncate mb-2">{item?.email}</p>
-            <p className="text-sm text-gray-500 mb-4">{item?.department}</p>
-            <Divider />
-            <Card.Section className="flex py-4 px-2 justify-between">
-              <p className="text-sm">
-                Applied:{" "}
-                <span className="text-blue-500">
-                  {item?.create_at.substring(0, 10)}
-                </span>
-              </p>
-              <AppApprovalStatus status={item?.state} />
-            </Card.Section>
-            <p className="line-clamp-2">{item?.cover_letter}</p>
-            <Card.Section>
-              <Button
-                className="hover:bg-gray-700"
-                size="compact-sm"
-                my={16}
-                onClick={() => navigate(`${item?.uid}/detail`)}
-              >
-                Show Details
-              </Button>
-            </Card.Section>
-          </Card>
-        ))}
-      </SimpleGrid>
+      {Array.isArray(filteredData) && filteredData.length > 0 ? (
+        <SimpleGrid
+          cols={{ base: 1, sm: 2, md: 3, xl: 4 }}
+          spacing={{ base: 10, sm: "xl" }}
+          verticalSpacing={{ base: "md", sm: "xl" }}
+        >
+          {filteredData?.map((item) => (
+            <Card
+              shadow="sm"
+              // padding="xl"
+              component="a"
+              withBorder
+              maw={350}
+              className="text-center bg-transparent flex-auto p-4 max-w-full overflow-hidden py-6"
+            >
+              <p className="text-lg font-medium truncate">{item?.name}</p>
+              <p className="text-sm truncate mb-2">{item?.email}</p>
+              <p className="text-sm text-gray-500 mb-4">{item?.department}</p>
+              <Divider />
+              <Card.Section className="flex py-4 px-2 justify-between">
+                <p className="text-sm">
+                  Applied:{" "}
+                  <span className="text-blue-500">
+                    {item?.create_at.substring(0, 10)}
+                  </span>
+                </p>
+                <AppApprovalStatus status={item?.state} />
+              </Card.Section>
+              <p className="line-clamp-2">{item?.cover_letter}</p>
+              <Card.Section>
+                <Button
+                  className="hover:bg-gray-700"
+                  size="compact-sm"
+                  my={16}
+                  onClick={() => navigate(`${item?.uid}/detail`)}
+                >
+                  Show Details
+                </Button>
+              </Card.Section>
+            </Card>
+          ))}
+        </SimpleGrid>
+      ) : (
+        <NoDataMessage
+          message="leave"
+          onRefresh={refetch}
+          loading={isFetching}
+        />
+      )}
     </>
   );
 };

@@ -14,6 +14,7 @@ import { Announcement } from "../../../features/types/announcement";
 import { Response } from "../../../features/types/shared";
 import AppModal from "../../../components/ui/AppModal";
 import AppLoader from "../../../components/ui/AppLoader";
+import NoDataMessage from "../../../components/ui/NoDataMessage";
 
 const AnnouncementList = () => {
   const [value, setValue] = useState("");
@@ -27,12 +28,8 @@ const AnnouncementList = () => {
     { isLoading: approveAnnLoading, error: approveAnnError },
   ] = useApproveAnnouncementMutation();
   const page = 1;
-  const {
-    data: announcementData,
-    isLoading,
-    error,
-    refetch,
-  } = useGetAllAnnouncementsQuery({ page: page, limit: limit });
+  const { data, isLoading, error, refetch, isFetching } =
+    useGetAllAnnouncementsQuery({ page: page, limit: limit });
 
   if (isLoading || approveAnnLoading) {
     return <AppLoader />;
@@ -42,8 +39,8 @@ const AnnouncementList = () => {
 
   const handlePagination = async () => {
     if (
-      announcementData?.pagination?.total_records &&
-      limit >= (announcementData?.pagination?.total_records ?? 0)
+      data?.pagination?.total_records &&
+      limit >= (data?.pagination?.total_records ?? 0)
     ) {
       setLimitMsg("No more announcements found");
       return;
@@ -51,6 +48,8 @@ const AnnouncementList = () => {
     setLimit((prev) => prev + 10);
     refetch();
   };
+
+  const announcementData = data?.data;
 
   const handleApproveAnnouncement = async (uid: string) => {
     try {
@@ -117,13 +116,13 @@ const AnnouncementList = () => {
   };
 
   return (
-    <div className="mt-6 py-6">
+    <div className="mt-6">
       <SimpleGrid
         cols={{ sm: 2, md: 2, xl: 3 }}
         spacing={{ base: 10, sm: "xl" }}
         verticalSpacing={{ base: "md", sm: "xl" }}
       >
-        {announcementData?.data?.map((announcement) => (
+        {announcementData?.map((announcement) => (
           <Card
             component="a"
             withBorder
@@ -169,19 +168,28 @@ const AnnouncementList = () => {
           Failed to load announcements. Please try again.
         </p>
       )}
-      <div className="flex justify-center  mt-6">
-        {limitMsg === "" ? (
-          <Button
-            variant="subtle"
-            className="mx-auto "
-            onClick={handlePagination}
-          >
-            Load more
-          </Button>
-        ) : (
-          <Text>{limitMsg}</Text>
-        )}
-      </div>
+      {Array.isArray(announcementData) && announcementData.length > 0 ? (
+        <div className="flex justify-center mt-6">
+          {limitMsg === "" ? (
+            <Button
+              variant="subtle"
+              className="mx-auto "
+              onClick={handlePagination}
+            >
+              Load more
+            </Button>
+          ) : (
+            <Text>{limitMsg}</Text>
+          )}
+        </div>
+      ) : (
+        <NoDataMessage
+          message="annoucements"
+          onRefresh={refetch}
+          loading={isFetching}
+        />
+      )}
+
       {selectedAnnouncement && (
         <AppModal
           opened={opened}

@@ -1,32 +1,34 @@
-import { Box, Button, Modal } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import LoanTable from "./LoanTable";
 import CreateLoan from "./AddLoan";
+import AppPageHeader from "../../../components/core/AppPageHeader";
+import { LuPlus } from "react-icons/lu";
 
 const Loan = () => {
   const [opened, { open, close }] = useDisclosure(false);
   return (
-    <div>
-      <Box w={"100%"} px={"2.25rem"} className="flex justify-end py-4 my-2">
+    <div className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto rounded-lg drop-shadow-lg">
+      <div className="flex justify-between">
+        <AppPageHeader
+          Heading="Issued Equipment"
+          Breadcrumb={{
+            module: "Inventory Management",
+            page: "Issued Equipment",
+          }}
+          ShowAddButton={false}
+        />
         <Button
           variant="filled"
-          color="white"
-          c="blue"
-          size="sm"
-          className="shadow-md text-sm hover:bg-blue-100 hover:text-white border-blue-300"
-          leftSection={<IconPlus size={16} />}
+          leftSection={<LuPlus size={18} />}
           onClick={open}
+          className="my-10"
         >
           Add Loan
         </Button>
-      </Box>
-
-      <div className="flex flex-col">
-        <div className="w-[95%] mb-8 mx-auto max-h-fit bg-white flex-1 overflow-auto">
-          <LoanTable />
-        </div>
       </div>
+
+      <LoanTable />
       <Modal
         opened={opened}
         onClose={close}

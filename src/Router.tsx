@@ -77,7 +77,6 @@ import InventoryLayout from "./pages/InventoryModule";
 import RoleTable from "./pages/AdminModule/Role/RoleTable";
 import ProtectedRoute from "./ProtectedRoutes";
 
-
 const loader = (
   <div className="flex justify-center items-center">
     <Loader color="blue" size="sm" my={30} />
@@ -211,7 +210,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "shift",
+            path: "shifts",
             element: (
               <Suspense fallback={loader}>
                 <ShiftLayout />
@@ -285,7 +284,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "attendance",
+            path: "attendances",
             element: (
               <Suspense fallback={loader}>
                 <AttendanceLayout />
@@ -296,22 +295,10 @@ export const router = createBrowserRouter([
                 index: true,
                 element: <AttendanceTable />,
               },
-              {
-                path: "add-employee",
-                element: <AddEmployee />,
-              },
-              {
-                path: ":uid/edit-employee",
-                element: <EditEmployee />,
-              },
-              {
-                path: ":uid/detail",
-                element: <EmployeeDetail />,
-              },
             ],
           },
           {
-            path: "overtime",
+            path: "overtimes",
             element: (
               <Suspense fallback={loader}>
                 <Overtime />
@@ -325,7 +312,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "leave",
+            path: "leaves",
             element: (
               <Suspense fallback={loader}>
                 <Leave />
@@ -401,7 +388,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "home-office",
+            path: "home-offices",
             element: (
               <Suspense fallback={loader}>
                 <HomeOfficeLayout />
@@ -431,7 +418,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "category",
+            path: "categories",
             element: (
               <Suspense fallback={loader}>
                 <CategoryLayout />
@@ -465,7 +452,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "ticket",
+            path: "tickets",
             element: (
               <Suspense fallback={loader}>
                 <TicketLayout />
@@ -531,7 +518,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "certification-and-license",
+            path: "credentials",
             element: (
               <Suspense fallback={loader}>
                 <CompanyCredentialLayout />
@@ -556,7 +543,6 @@ export const router = createBrowserRouter([
                 index: true,
                 element: <PayrollList />,
               },
-              {},
             ],
           },
           {

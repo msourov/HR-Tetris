@@ -1,19 +1,21 @@
-import { Button, Modal, rem, Tabs } from "@mantine/core";
+import { Button, rem, Tabs } from "@mantine/core";
 import { IconList, IconSettings } from "@tabler/icons-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { LuPlusCircle } from "react-icons/lu";
+import { LuPlus } from "react-icons/lu";
 import AddNewAnnouncement from "./AddNewAnnouncement";
 import { useDisclosure } from "@mantine/hooks";
+import AppPageHeader from "../../components/core/AppPageHeader";
+import AppModal from "../../components/ui/AppModal";
 
 const AnnouncementLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>("list");
-  const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
+  const [addOpened, { open, close }] = useDisclosure(false);
 
   const toggleModal = () => {
-    addClose();
+    close();
   };
 
   useEffect(() => {
@@ -33,33 +35,50 @@ const AnnouncementLayout = () => {
     }
   };
 
+  const path = location.pathname.split("/");
+  const disableAdd = ["add", "edit", "create", "detail"].includes(
+    path[path.length - 1].split("-")[0]
+  );
+
+  console.log(disableAdd, "disableAdd");
+
   const iconStyle = { width: rem(12), height: rem(12) };
   return (
-    <div className="w-[95%] h-[calc(90vh-80px)] flex flex-col lg:my-6 mx-auto rounded-lg drop-shadow-lg py-6 px-4">
-      <div className="flex justify-end md:mr-8">
-        <Button
-          leftSection={<LuPlusCircle />}
-          variant="filled"
-          onClick={addOpen}
-        >
-          Add
-        </Button>
+    <div className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto rounded-lg drop-shadow-lg">
+      <div className="flex justify-between">
+        <AppPageHeader
+          Heading="Announcements"
+          Breadcrumb={{
+            module: "Announcement Management",
+            page: "Announcements",
+          }}
+          ShowAddButton={false}
+        />
+        {!disableAdd && (
+          <Button
+            leftSection={<LuPlus size={18} />}
+            variant="filled"
+            onClick={open}
+            className="my-10"
+          >
+            Create Announcement
+          </Button>
+        )}
       </div>
-      <Modal
+      <AppModal
         opened={addOpened}
-        onClose={addClose}
+        onClose={close}
         size="xl"
         title="Create Announcement"
       >
         <AddNewAnnouncement toggleModal={toggleModal} />
-      </Modal>
+      </AppModal>
       <Tabs
         variant="pills"
         radius="xs"
         value={activeTab}
         onChange={handleTabChange}
         orientation="horizontal"
-        className=" px-2 lg:px-4 h-full flex flex-col"
       >
         <Tabs.List className="shrink-0">
           <Tabs.Tab value="list" leftSection={<IconList style={iconStyle} />}>
@@ -73,10 +92,10 @@ const AnnouncementLayout = () => {
           </Tabs.Tab>
         </Tabs.List>
         <div className="flex-1 overflow-y-auto min-h-0">
-          <Tabs.Panel value="list" className="px-4 lg:px-6 lg:m-4 h-[90%]">
+          <Tabs.Panel value="list">
             <Outlet />
           </Tabs.Panel>
-          <Tabs.Panel value="manage" className="px-4 lg:px-6">
+          <Tabs.Panel value="manage">
             <Outlet />
           </Tabs.Panel>
         </div>

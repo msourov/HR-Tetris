@@ -3,15 +3,17 @@ import { useGetAllHomeOfficesQuery } from "../../../../features/api/homeOfficeSl
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
 import { useState } from "react";
+import NoDataMessage from "../../../../components/ui/NoDataMessage";
 
 const HomeOfficeTable = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  const { data, isLoading, error } = useGetAllHomeOfficesQuery({
-    page,
-    limit,
-  });
+  const { data, isLoading, error, refetch, isFetching } =
+    useGetAllHomeOfficesQuery({
+      page,
+      limit,
+    });
 
   const HomeOfficeData = data?.data
     ? Array.isArray(data.data)
@@ -21,24 +23,35 @@ const HomeOfficeTable = () => {
 
   return (
     <>
-      <Table>
-        <TableHeading />
-        <TableItem
-          data={HomeOfficeData || []}
-          isLoading={isLoading}
-          error={error}
+      {HomeOfficeData?.length > 0 ? (
+        <>
+          <Table>
+            <TableHeading />
+            <TableItem
+              data={HomeOfficeData || []}
+              isLoading={isLoading}
+              error={error}
+            />
+          </Table>
+          <div className="px-4 pt-8 pb-4 float-right">
+            <Pagination
+              value={data?.pagination.page ?? 1}
+              total={data?.pagination.total_pages ?? 1}
+              siblings={1}
+              boundaries={1}
+              color="blue"
+              onChange={setPage}
+              disabled={isFetching}
+            />
+          </div>
+        </>
+      ) : (
+        <NoDataMessage
+          message="Data"
+          onRefresh={refetch}
+          loading={isFetching}
         />
-      </Table>
-      <div className="px-4 pt-8 pb-4 float-right">
-        <Pagination
-          value={data?.pagination.page ?? 1}
-          total={data?.pagination.total_pages ?? 1}
-          siblings={1}
-          boundaries={1}
-          color="blue"
-          onChange={setPage}
-        />
-      </div>
+      )}
     </>
   );
 };

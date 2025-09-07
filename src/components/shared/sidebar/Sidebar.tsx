@@ -106,7 +106,7 @@ const initialSidebarData = [
       },
       {
         label: "Shift & Schedule",
-        link: "/shift",
+        link: "/shifts",
       },
       {
         label: "Meetings",
@@ -130,27 +130,27 @@ const initialSidebarData = [
       },
       {
         label: "Attendance",
-        link: "/attendance",
+        link: "/attendances",
       },
       {
         label: "Leave",
-        link: "/leave",
+        link: "/leaves",
+      },
+      {
+        label: "Overtime",
+        link: "/overtimes",
       },
       {
         label: "Certification",
         link: "/certifications",
       },
       {
-        label: "Overtime",
-        link: "/overtime",
-      },
-      {
         label: "Home Office",
-        link: "/home-office",
+        link: "/home-offices",
       },
       {
         label: "Category",
-        link: "/category",
+        link: "/categories",
       },
     ],
   },
@@ -206,7 +206,7 @@ const initialSidebarData = [
     items: [
       {
         label: "Ticket Portal",
-        link: "/ticket",
+        link: "/tickets",
       },
     ],
   },
@@ -228,7 +228,7 @@ const initialSidebarData = [
     items: [
       {
         label: "Certification and License",
-        link: "/certification-and-license",
+        link: "/credentials",
       },
     ],
   },

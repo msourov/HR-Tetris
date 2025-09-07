@@ -23,7 +23,7 @@ const OvertimeList = () => {
     end_time: undefined as string | undefined,
   });
 
-  const { data, isLoading, error, refetch } =
+  const { data, isLoading, error, refetch, isFetching } =
     useGetAllOvertimeQuery(searchParams);
 
   const handleSearch = () => {
@@ -147,7 +147,11 @@ const OvertimeList = () => {
                 </motion.div>
               ))
             ) : (
-              <NoDataMessage message="overtime" onRefresh={refetch} />
+              <NoDataMessage
+                message="overtime"
+                onRefresh={refetch}
+                loading={isFetching}
+              />
             )}
           </Box>
           <div className="pointer-events-none absolute bottom-0 left-0 w-full h-8 z-10 bg-gradient-to-t from-white to-transparent" />

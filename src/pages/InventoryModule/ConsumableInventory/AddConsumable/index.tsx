@@ -130,13 +130,7 @@ const AddConsumable = ({ closeModal }: AddConsumableProps) => {
   };
 
   return (
-    <Paper
-      withBorder
-      shadow="sm"
-      p="md"
-      radius="md"
-      className="max-w-2xl mx-auto"
-    >
+    <Paper p="md" radius="md" className="max-w-2xl mx-auto">
       {serverError && (
         <Alert
           icon={<IconInfoCircle size="1rem" />}
@@ -260,7 +254,7 @@ const AddConsumable = ({ closeModal }: AddConsumableProps) => {
           )}
         />
 
-        <Group justify="right" mt="xl">
+        <Group justify="right" mt="lg">
           <Button
             variant="default"
             onClick={closeModal}

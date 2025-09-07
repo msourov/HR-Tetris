@@ -4,6 +4,7 @@ import TableItem from "./TableItem";
 import { useGetAllTangiblesQuery } from "../../../../features/api/tangibleInventorySlice";
 import { useEffect, useState } from "react";
 import { Tangible } from "../../../../features/types/inventory";
+import NoDataMessage from "../../../../components/ui/NoDataMessage";
 
 const TangibleTable = () => {
   const [page, setPage] = useState(1);
@@ -17,10 +18,11 @@ const TangibleTable = () => {
   const [sortBy, setSortBy] = useState<"date" | "price">("date");
   const [sortedTangibles, setSortedTangibles] = useState<Tangible[]>([]);
 
-  const { data, isLoading, error } = useGetAllTangiblesQuery({
-    page,
-    limit,
-  });
+  const { data, isLoading, error, refetch, isFetching } =
+    useGetAllTangiblesQuery({
+      page,
+      limit,
+    });
 
   const handleDateOrderChange = () => {
     setSortBy("date");
@@ -54,23 +56,37 @@ const TangibleTable = () => {
 
   return (
     <>
-      <Table striped highlightOnHover>
-        <TableHeading
-          changeDateOrder={handleDateOrderChange}
-          changePriceOrder={handleChangePriceOrder}
+      {sortedTangibles.length > 0 ? (
+        <>
+          <Table striped highlightOnHover>
+            <TableHeading
+              changeDateOrder={handleDateOrderChange}
+              changePriceOrder={handleChangePriceOrder}
+            />
+            <TableItem
+              data={sortedTangibles}
+              isLoading={isLoading}
+              error={error}
+            />
+          </Table>
+          <div className="px-4 pt-8 pb-4 float-right">
+            <Pagination
+              value={data?.pagination.page ?? 1}
+              total={data?.pagination.total_pages ?? 1}
+              siblings={1}
+              boundaries={1}
+              color="blue"
+              onChange={setPage}
+            />
+          </div>
+        </>
+      ) : (
+        <NoDataMessage
+          message="data"
+          onRefresh={refetch}
+          loading={isFetching}
         />
-        <TableItem data={sortedTangibles} isLoading={isLoading} error={error} />
-      </Table>
-      <div className="px-4 pt-8 pb-4 float-right">
-        <Pagination
-          value={data?.pagination.page ?? 1}
-          total={data?.pagination.total_pages ?? 1}
-          siblings={1}
-          boundaries={1}
-          color="blue"
-          onChange={setPage}
-        />
-      </div>
+      )}
     </>
   );
 };

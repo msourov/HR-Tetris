@@ -3,38 +3,50 @@ import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
 import { useGetAllConsumablesQuery } from "../../../../features/api/consumableInventorySlice";
 import { useState } from "react";
+import NoDataMessage from "../../../../components/ui/NoDataMessage";
 
 const ConsumableTable = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  const { data, isLoading, error } = useGetAllConsumablesQuery({
-    page,
-    limit,
-  });
+  const { data, isLoading, error, refetch, isFetching } =
+    useGetAllConsumablesQuery({
+      page,
+      limit,
+    });
 
   return (
     <>
-      <Table striped highlightOnHover>
-        <TableHeading />
-        <TableItem
-          page={data?.pagination?.page ?? 1}
-          limit={data?.pagination?.page_size ?? 10}
-          data={data?.data || []}
-          isLoading={isLoading}
-          error={error}
+      {Array.isArray(data?.data) && data?.data.length > 0 ? (
+        <>
+          <Table striped highlightOnHover>
+            <TableHeading />
+            <TableItem
+              page={data?.pagination?.page ?? 1}
+              limit={data?.pagination?.page_size ?? 10}
+              data={data?.data || []}
+              isLoading={isLoading}
+              error={error}
+            />
+          </Table>
+          <div className="px-4 pt-8 pb-4 float-right">
+            <Pagination
+              value={data?.pagination.page ?? 1}
+              total={data?.pagination.total_pages ?? 1}
+              siblings={1}
+              boundaries={1}
+              color="blue"
+              onChange={setPage}
+            />
+          </div>
+        </>
+      ) : (
+        <NoDataMessage
+          message="data"
+          onRefresh={refetch}
+          loading={isFetching}
         />
-      </Table>
-      <div className="px-4 pt-8 pb-4 float-right">
-        <Pagination
-          value={data?.pagination.page ?? 1}
-          total={data?.pagination.total_pages ?? 1}
-          siblings={1}
-          boundaries={1}
-          color="blue"
-          onChange={setPage}
-        />
-      </div>
+      )}
     </>
   );
 };

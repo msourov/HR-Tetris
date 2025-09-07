@@ -90,7 +90,7 @@ const CreateLoan = ({ closeModal }: CreateLoanProps) => {
   }
 
   return (
-    <Paper withBorder radius="md" p="md">
+    <Paper radius="md" p="md">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <TextInput
           label="Name"
@@ -175,7 +175,10 @@ const CreateLoan = ({ closeModal }: CreateLoanProps) => {
           {...register("category")}
           error={errors.category?.message}
         />
-        <Group justify="right" mt="md">
+        <Group justify="right" mt="lg">
+          <Button variant="outline" color="gray" onClick={closeModal}>
+            Cancel
+          </Button>
           <Button type="submit">Create Loan</Button>
         </Group>
       </form>

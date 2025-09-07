@@ -75,7 +75,7 @@ const AddNewAnnouncement: React.FC<AddNewAnnouncement> = ({ toggleModal }) => {
 
   return (
     <>
-      <Paper withBorder radius="md" p="md">
+      <Paper radius="md" px="md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
             variant="filled"
@@ -96,14 +96,19 @@ const AddNewAnnouncement: React.FC<AddNewAnnouncement> = ({ toggleModal }) => {
             error={errors.descriptions?.message as React.ReactNode}
           />
 
-          <Button
-            type="submit"
-            className="rounded-lg mt-6"
-            disabled={isLoading}
-            bg="black"
-          >
-            {isLoading ? <AppLoader /> : "Save"}
-          </Button>
+          <div className="flex justify-end items-center gap-2 my-6">
+            <Button
+              variant="outline"
+              color="gray"
+              disabled={isLoading}
+              onClick={toggleModal}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? <AppLoader /> : "Save"}
+            </Button>
+          </div>
         </form>
       </Paper>
     </>

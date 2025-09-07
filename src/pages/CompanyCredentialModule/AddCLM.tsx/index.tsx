@@ -145,11 +145,10 @@ const CreateCredentialModal = () => {
       <Modal
         opened={opened}
         onClose={close}
-        title="Create New Credential"
         size="lg"
         centered
       >
-        <Paper withBorder shadow="md" radius="md" p="md">
+        <Paper radius="md" px="md">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid gutter="md">
               <Grid.Col span={12}>
@@ -201,6 +200,7 @@ const CreateCredentialModal = () => {
               <Grid.Col span={12}>
                 <Switch
                   label="Active"
+                  labelPosition="left"
                   checked={activeStatus}
                   {...register("active")}
                 />
@@ -279,7 +279,7 @@ const CreateCredentialModal = () => {
               </Grid.Col>
 
               <Grid.Col span={12}>
-                <Group justify="flex-end" mt="md">
+                <Group justify="flex-end" my="md">
                   <Button variant="default" onClick={close}>
                     Cancel
                   </Button>

@@ -19,15 +19,14 @@ const AppPageHeader: React.FC<PageHeaderProps> = ({
 }) => {
   const location = useLocation();
   const path = location.pathname.split("/");
-  const showBackButton = [
-    "add",
-    "edit",
-    "detail",
-  ].includes(path[path.length - 1].split("-")[0]);
-
+  const showBackButton = ["add", "edit", "create", "detail"].includes(
+    path[path.length - 1].split("-")[0]
+  );
+  console.log(path);
   return (
     <PageHeader
       Operation={Operation}
+      action={path?.length > 2 ? path[path.length - 1] : ""}
       Heading={Heading}
       Breadcrumb={Breadcrumb}
       ShowAddButton={ShowAddButton}

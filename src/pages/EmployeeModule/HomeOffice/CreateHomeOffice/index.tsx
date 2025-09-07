@@ -34,6 +34,7 @@ const CreateHomeOffice = () => {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(homeOfficeSchema),
@@ -87,7 +88,7 @@ const CreateHomeOffice = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 rounded-lg border my-10">
+    <div className="w-[80%] bg-white lg:w-[50%] mx-auto p-6 border my-10">
       <h1 className="text-xl font-semibold text-orange-400 mb-6 text-center">
         Apply for Home Office
       </h1>
@@ -142,16 +143,25 @@ const CreateHomeOffice = () => {
           required
         />
 
-        {/* Submit Button */}
-        <Button
-          type="submit"
-          variant="filled"
-          color="blue"
-          fullWidth
-          loading={isLoading}
-        >
-          Submit
-        </Button>
+        <div className="space-y-2">
+          <Button
+            type="submit"
+            variant="filled"
+            color="blue"
+            fullWidth
+            loading={isLoading}
+          >
+            Submit
+          </Button>
+          <Button
+            variant="outline"
+            fullWidth
+            color="gray"
+            onClick={() => reset()}
+          >
+            Cancel
+          </Button>
+        </div>
       </form>
     </div>
   );
