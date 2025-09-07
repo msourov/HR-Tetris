@@ -11,7 +11,6 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { LuPlusCircle } from "react-icons/lu";
 import { useState, useEffect } from "react";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
@@ -24,7 +23,6 @@ import {
   useEditShiftMutation,
   useGetShiftsQuery,
 } from "../../../../features/api/shiftSlice";
-import AddShift from "../AddShift";
 import { ErrorResponse } from "react-router-dom";
 
 const schema = z
@@ -61,13 +59,8 @@ const EditShift = () => {
   const [editShift, { isLoading: shiftEditLoading }] = useEditShiftMutation();
   const [deleteShift, { isLoading: deleteShiftLoading }] =
     useDeleteShiftMutation();
-  const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
-  const [deleteOpened, { open: openDelete, close: closeDelete }] =
+    const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
-
-  const toggleModal = () => {
-    addClose();
-  };
 
   const {
     register,
@@ -147,10 +140,11 @@ const EditShift = () => {
 
     try {
       const response = await editShift(formattedData).unwrap();
-      if (response.status_code === 200) {
+      console.log(response)
+      if (response.status_code === 201) {
         notifications.show({
           title: "Success!",
-          message: "Shift updated successfully",
+          message: response.message || "Shift updated successfully",
           icon: <IconCheck />,
           color: "green",
           autoClose: 3000,
@@ -214,20 +208,6 @@ const EditShift = () => {
 
   return (
     <Box className="my-6">
-      <Box className="flex justify-end">
-        <Button
-          leftSection={<LuPlusCircle />}
-          color="black"
-          bg="orange"
-          variant="filled"
-          onClick={addOpen}
-        >
-          Add
-        </Button>
-      </Box>
-      <Modal opened={addOpened} onClose={addClose} size="80%">
-        <AddShift toggleModal={toggleModal} />
-      </Modal>
       <Select
         label={<Text fw={500}>Select Shift</Text>}
         data={shiftOptions}

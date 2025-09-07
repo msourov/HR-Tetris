@@ -22,15 +22,25 @@ const theme = createTheme({
   primaryColor: "blue",
   fontSizes: {
     xs: "10px",
-    sm: "13px", // default size
+    sm: "13px",
     md: "13px",
     lg: "14px",
     xl: "16px",
   },
   components: {
+    // Global label styling for all form components
+    InputWrapper: {
+      styles: {
+        label: {
+          color: "#6B7280 !important", // gray-500
+          fontSize: "0.75rem",
+          fontWeight: 400,
+        },
+      },
+    },
     Text: {
       defaultProps: {
-        size: "sm", // 12px
+        size: "sm",
       },
     },
     Input: {
@@ -53,6 +63,9 @@ const theme = createTheme({
         size: "sm",
       },
     },
+    Switch: {
+      // No need for label styles here as they're handled by InputWrapper
+    },
     Button: {
       defaultProps: {
         radius: "md",
@@ -65,7 +78,6 @@ const theme = createTheme({
           fontWeight: 500,
           fontSize: "12px",
           transition: "all 0.2s ease",
-          // Add any other global styles here
         },
       },
     },

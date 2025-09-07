@@ -1,15 +1,15 @@
 import { Modal, Pill, Table } from "@mantine/core";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
-import ErrorAlert from "../../../components/shared/ErrorAlert";
-import CommonSkeleton from "../../../components/shared/CommonSkeleton";
-import { Attendance } from "../../../features/types/attendance";
-import useFormatDate from "../../../services/utils/useFormatDate";
+import ErrorAlert from "../../../../components/shared/ErrorAlert";
+import CommonSkeleton from "../../../../components/shared/CommonSkeleton";
+import { Attendance } from "../../../../features/types/attendance";
+import useFormatDate from "../../../../services/utils/useFormatDate";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import AttendanceDetail from "./AttendanceDetail";
-import { getImageUrl } from "../../../services/utils/getImageUrl";
-import UserImage from "../../../components/core/UserImage";
+import { getImageUrl } from "../../../../services/utils/getImageUrl";
+import UserImage from "../../../../components/core/UserImage";
 
 interface TableItemProps {
   data: Attendance[];

@@ -42,11 +42,11 @@ const EmplyeeTable = () => {
 
   return (
     <div className="space-y-2 w-full">
-      <div className="mt-2 mb-4 flex justify-start mx-6 gap-4">
+      <div className="mb-6 flex justify-start gap-4">
         <div className="w-[50%]">
           <TextInput
             label={
-              <p className="text-gray-500 font-thin">
+              <p className="text-gray-500">
                 Search employees by Name, EID, Phone or Email
               </p>
             }
@@ -63,7 +63,7 @@ const EmplyeeTable = () => {
 
         <div className="w-[30%]">
           <Select
-            label={<p className="text-gray-500 font-thin">Filter by Shift</p>}
+            label={<p className="text-gray-500">Filter by Shift</p>}
             placeholder="All Shifts"
             value={selectedShift}
             onChange={(value) => {

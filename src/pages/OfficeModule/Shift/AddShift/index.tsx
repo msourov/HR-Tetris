@@ -16,19 +16,36 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 import { useCreateShiftMutation } from "../../../../features/api/shiftSlice";
 import { ErrorResponse } from "react-router-dom";
 
-const schema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Name should have at least 2 characters" }),
-  active: z.boolean(),
-  regular: z.boolean(),
-  descriptions: z.string().optional(),
-  day_start_time: z.string().nonempty("Start time is required"),
-  day_end_time: z.string().nonempty("End time is required"),
-  off_day: z.array(z.string()),
-  start_time: z.date({ invalid_type_error: "Start date is required" }),
-  end_time: z.date({ invalid_type_error: "End date is required" }),
-});
+const schema = z
+  .object({
+    name: z
+      .string()
+      .min(2, { message: "Name should have at least 2 characters" }),
+    active: z.boolean(),
+    regular: z.boolean(),
+    descriptions: z.string().optional(),
+    day_start_time: z.string().nonempty("Start time is required"),
+    day_end_time: z.string().nonempty("End time is required"),
+    off_day: z.array(z.string()),
+    start_time: z.date({ invalid_type_error: "Start date is required" }),
+    end_time: z.date({ invalid_type_error: "End date is required" }),
+  })
+  .refine(
+    (data) => {
+      const [sh, sm] = data.day_start_time.split(":").map(Number);
+      const [eh, em] = data.day_end_time.split(":").map(Number);
+
+      const start = sh * 60 + sm;
+      const end = eh * 60 + em;
+
+      // valid if end > start (same day) OR end < start (overnight shift)
+      return end !== start; // allow both same-day and overnight but not identical
+    },
+    {
+      message: "End time cannot be same as start time",
+      path: ["day_end_time"],
+    }
+  );
 
 type AddShiftType = z.infer<typeof schema>;
 

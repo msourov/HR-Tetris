@@ -22,7 +22,7 @@ const TaskTable = ({
   const [selectedPriority, setSelectedPriority] = useState<string | null>(null);
 
   return (
-    <Card withBorder radius="md" className="p-4">
+    <Card withBorder radius="md" className="p-4 my-6">
       <div className="flex gap-4 mt-2 mb-6">
         <Select
           placeholder="Filter by priority"

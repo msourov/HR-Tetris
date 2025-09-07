@@ -1,13 +1,21 @@
-import { Box, rem, Tabs } from "@mantine/core";
+import { Box, Button, Modal, rem, Tabs } from "@mantine/core";
 import { IconList, IconSettings } from "@tabler/icons-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import AppPageHeader from "../../../components/core/AppPageHeader";
+import { LuPlus } from "react-icons/lu";
+import AddShift from "./AddShift";
+import { useDisclosure } from "@mantine/hooks";
 
 const ShiftLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<string | null>("list");
+  const [addOpened, { open: addOpen, close: addClose }] = useDisclosure(false);
+
+  const toggleModal = () => {
+    addClose();
+  };
 
   useEffect(() => {
     if (location.pathname.includes("edit")) {
@@ -28,15 +36,25 @@ const ShiftLayout = () => {
 
   const iconStyle = { width: rem(12), height: rem(12) };
   return (
-    <Box className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto rounded-lg drop-shadow-lg">
+    <Box className="w-[95%] lg:w-[90%] flex flex-col mx-auto rounded-lg drop-shadow-lg"> {/* removed h-[calc(90vh-80px)] */}
       <div className="flex justify-between">
         <AppPageHeader
           Heading="Shift"
           Breadcrumb={{ module: "Office Management", page: "Shift" }}
           ShowAddButton={false}
         />
-       
+        <Button
+          leftSection={<LuPlus />}
+          variant="filled"
+          onClick={addOpen}
+          className="my-10"
+        >
+          Add Shift
+        </Button>
       </div>
+      <Modal opened={addOpened} onClose={addClose} size="80%">
+        <AddShift toggleModal={toggleModal} />
+      </Modal>
       <Tabs
         radius="xs"
         value={activeTab}

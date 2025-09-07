@@ -7,8 +7,11 @@ const TaskCards = ({ tasks }: { tasks: TaskResponse[] }) => {
   const { highPriority, mediumPriority, lowPriority } = splitByPriority(tasks);
 
   return (
-    <div className="mx-8">
+    <div className="my-6">
       {/* Displays tasks in three columns based on priority */}
+      <p className="text-center mb-6 font-semibold text-gray-500">
+        Tasks are grouped by priority
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-4">
         {/* Low Priority Column */}
         <Card
@@ -21,7 +24,7 @@ const TaskCards = ({ tasks }: { tasks: TaskResponse[] }) => {
               size="sm"
               className="text-center font-semibold text-green-800"
             >
-              Low Priority
+              Low
             </Text>
           </Card.Section>
           <div className="space-y-4 p-4 overflow-y-auto flex-1">
@@ -42,7 +45,7 @@ const TaskCards = ({ tasks }: { tasks: TaskResponse[] }) => {
               size="sm"
               className="text-center font-semibold text-yellow-800"
             >
-              Medium Priority
+              Medium
             </Text>
           </Card.Section>
           <div className="space-y-4 p-4 overflow-y-auto">
@@ -60,7 +63,7 @@ const TaskCards = ({ tasks }: { tasks: TaskResponse[] }) => {
         >
           <Card.Section className="bg-red-100 p-2">
             <Text size="sm" className="text-center font-semibold text-red-800">
-              High Priority
+              High
             </Text>
           </Card.Section>
           <div className="space-y-4 p-4 overflow-y-auto">

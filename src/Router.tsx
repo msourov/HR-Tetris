@@ -9,6 +9,7 @@ import {
   AnnouncementLayout,
   AnnouncementList,
   AppLayout,
+  AttendanceLayout,
   AttendanceTable,
   CandidateDetail,
   Candidates,
@@ -42,6 +43,7 @@ import {
   HomeOfficeLayout,
   HomeOfficeTable,
   Leave,
+  LeaveList,
   Loan,
   Login,
   ManagePolicy,
@@ -49,9 +51,9 @@ import {
   MeetingList,
   OtpPage,
   Overtime,
+  OvertimeList,
   PayrollLayout,
   PayrollList,
-  PolicyDetail,
   PolicyLayout,
   PolicyList,
   Recruitment,
@@ -74,6 +76,7 @@ import PublicRoute from "./PublicRoute";
 import InventoryLayout from "./pages/InventoryModule";
 import RoleTable from "./pages/AdminModule/Role/RoleTable";
 import ProtectedRoute from "./ProtectedRoutes";
+
 
 const loader = (
   <div className="flex justify-center items-center">
@@ -179,16 +182,6 @@ export const router = createBrowserRouter([
                 path: "edit",
                 element: <EditDepartment />,
               },
-              // {
-              //   path: "add-department",
-              //   element: (
-              //     <AddNewDepartment
-              //       toggleModal={function (): void {
-              //         throw new Error("Function not implemented.");
-              //       }}
-              //     />
-              //   ),
-              // },
               {
                 path: ":id/detail",
                 element: <DepartmentDetail />,
@@ -255,10 +248,6 @@ export const router = createBrowserRouter([
                 path: "edit",
                 element: <ManagePolicy />,
               },
-              {
-                path: ":policyName/detail",
-                element: <PolicyDetail />,
-              },
             ],
           },
           {
@@ -299,7 +288,7 @@ export const router = createBrowserRouter([
             path: "attendance",
             element: (
               <Suspense fallback={loader}>
-                <EmployeeLayout />
+                <AttendanceLayout />
               </Suspense>
             ),
             children: [
@@ -328,6 +317,12 @@ export const router = createBrowserRouter([
                 <Overtime />
               </Suspense>
             ),
+            children: [
+              {
+                index: true,
+                element: <OvertimeList />,
+              },
+            ],
           },
           {
             path: "leave",
@@ -336,6 +331,12 @@ export const router = createBrowserRouter([
                 <Leave />
               </Suspense>
             ),
+            children: [
+              {
+                index: true,
+                element: <LeaveList />,
+              },
+            ],
           },
           {
             path: "announcements",

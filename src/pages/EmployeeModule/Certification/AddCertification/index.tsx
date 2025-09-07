@@ -172,20 +172,18 @@ const AddCertification = () => {
           error={errors.apply_date?.message as React.ReactNode}
           mt={8}
         />
-
-        <Button
-          type="submit"
-          size="sm"
-          className="rounded-lg my-6 float-right"
-          disabled={isLoading}
-          bg="black"
-        >
-          {!isLoading ? (
-            "Save"
-          ) : (
-            <Loader color="rgba(255, 255, 255, 1)" size={20} />
-          )}
-        </Button>
+        <div className="flex justify-end gap-2 items-center mt-6">
+          <Button variant="outline" color="gray">
+            Cancel
+          </Button>
+          <Button type="submit" size="sm" disabled={isLoading}>
+            {!isLoading ? (
+              "Save"
+            ) : (
+              <Loader color="rgba(255, 255, 255, 1)" size={20} />
+            )}
+          </Button>
+        </div>
       </form>
     </Paper>
   );

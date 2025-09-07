@@ -7,15 +7,16 @@ import {
   Grid,
   Divider,
 } from "@mantine/core";
-import useFormatDate from "../../../services/utils/useFormatDate";
-import { useGetAttendanceDetailQuery } from "../../../features/api/attendanceSlice";
+
 import {
   IconAlertCircle,
   IconClock,
   IconHome,
   IconMapPin,
 } from "@tabler/icons-react";
-import AppLoader from "../../../components/ui/AppLoader";
+import useFormatDate from "../../../../services/utils/useFormatDate";
+import { useGetAttendanceDetailQuery } from "../../../../features/api/attendanceSlice";
+import AppLoader from "../../../../components/ui/AppLoader";
 
 const AttendanceDetail = ({ uid }: { uid: string }) => {
   const { formatDate } = useFormatDate();

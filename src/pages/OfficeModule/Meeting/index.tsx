@@ -9,8 +9,8 @@ const MeetingLayout = () => {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
-    <div>
-      <div className="flex justify-between items-center mr-16">
+    <div className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto rounded-lg drop-shadow-lg">
+      <div className="flex justify-between items-center ">
         <div className="relative">
           <AppPageHeader
             Heading="Meeting"
@@ -31,8 +31,8 @@ const MeetingLayout = () => {
 
       <MeetingList />
 
-      <AppModal opened={opened} onClose={close} withCloseButton={false}>
-        <AddMeeting close={close}/>
+      <AppModal size="xl" opened={opened} onClose={close} withCloseButton={false}>
+        <AddMeeting close={close} />
       </AppModal>
     </div>
   );

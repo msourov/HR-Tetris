@@ -143,10 +143,10 @@ export default function MeetingList() {
   }
 
   return (
-    <div className="px-4 max-w-[95%] lg:max-w-[90%] mx-auto">
+    <div>
       <Group justify="start" mb="md" className="w-fit">
         <Text className="text-gray-600 rounded-md p-2 text-xl">Meetings</Text>
-        <Badge variant="light" color="blue" size="md">
+        <Badge variant="light" color="blue" size="md" className="font-medium">
           {meetings?.length || 0} meetings scheduled
         </Badge>
       </Group>

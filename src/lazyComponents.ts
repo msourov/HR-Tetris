@@ -90,12 +90,21 @@ export const EditEmployee = lazy(
 export const EmployeeDetail = lazy(
   () => import("./pages/EmployeeModule/Employee/EmplyeeDetail")
 );
-
+export const AttendanceLayout = lazy(
+  () => import("./pages/EmployeeModule/Attendance")
+);
 export const AttendanceTable = lazy(
-  () => import("./pages/EmployeeModule/AttendanceTable")
+  () => import("./pages/EmployeeModule/Attendance/AttendanceTable")
 );
 export const Overtime = lazy(() => import("./pages/EmployeeModule/Overtime"));
+export const OvertimeList = lazy(
+  () => import("./pages/EmployeeModule/Overtime/OvertimeList")
+);
+
 export const Leave = lazy(() => import("./pages/EmployeeModule/Leave"));
+export const LeaveList = lazy(
+  () => import("./pages/EmployeeModule/Leave/LeaveList")
+);
 export const TicketLayout = lazy(() => import("./pages/TicketModule"));
 export const TicketList = lazy(
   () => import("./pages/TicketModule/TicketList/index.tsx")

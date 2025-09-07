@@ -225,7 +225,7 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
   }
 
   return (
-    <Paper withBorder radius="md" p="xl" className="max-w-3xl mx-auto">
+    <Paper radius="md" p="lg" className="max-w-3xl mx-auto">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           {/* Name Field */}
@@ -358,7 +358,7 @@ const MeetingForm = ({ close, meetingId }: MeetingFormProps) => {
           <Button
             variant="outline"
             size="compact-md"
-            color="black"
+            color="gray"
             onClick={close}
           >
             Cancel

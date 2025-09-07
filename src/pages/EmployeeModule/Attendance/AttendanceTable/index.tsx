@@ -1,7 +1,7 @@
 import { Pagination, Table, TextInput } from "@mantine/core";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
-import { useGetAllAttendanceQuery } from "../../../features/api/attendanceSlice";
+import { useGetAllAttendanceQuery } from "../../../../features/api/attendanceSlice";
 import { useState } from "react";
 import { DateInput } from "@mantine/dates";
 // import AppPageHeader from "../../../components/core/AppPageHeader";
@@ -27,17 +27,13 @@ const AttendanceTable = () => {
   };
   return (
     <>
-      <div className="mb-4 p-4 bg-white rounded-lg">
+      <div className="mb-4 rounded-lg">
         <form
           onSubmit={handleSearch}
-          className="grid grid-cols-1 md:grid-cols-4 gap-4"
+          className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6"
         >
           <TextInput
-            label={
-              <p className="text-gray-500 font-thin">
-                Search employees by Name
-              </p>
-            }
+            label={<p className="text-gray-500">Search employees by Name</p>}
             placeholder="Enter Name"
             value={searchParams.employee_name}
             onChange={(e) =>
@@ -53,7 +49,7 @@ const AttendanceTable = () => {
             onChange={(date) => setSearchParams({...searchParams, attended_date: date ? date.toISOString() : ''})}
           /> */}
           <DateInput
-            label={<p className="text-gray-500 font-thin">Start Date</p>}
+            label={<p className="text-gray-500">Start Date</p>}
             placeholder="Enter Start Date"
             value={
               searchParams.start_date ? new Date(searchParams.start_date) : null
@@ -66,7 +62,7 @@ const AttendanceTable = () => {
             }
           />
           <DateInput
-            label={<p className="text-gray-500 font-thin">End Date</p>}
+            label={<p className="text-gray-500">End Date</p>}
             placeholder="Enter End Date"
             value={
               searchParams.end_date ? new Date(searchParams.end_date) : null

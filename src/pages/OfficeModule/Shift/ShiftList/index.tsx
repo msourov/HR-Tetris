@@ -1,8 +1,7 @@
-import { SimpleGrid, Flex, Divider } from "@mantine/core";
+import { SimpleGrid } from "@mantine/core";
 import { useGetShiftsQuery } from "../../../../features/api/shiftSlice";
 import ShiftCard from "./ShiftCard";
 import ErrorAlert from "../../../../components/shared/ErrorAlert";
-import { IconClock } from "@tabler/icons-react";
 import AppLoader from "../../../../components/ui/AppLoader";
 
 const ShiftList = () => {
@@ -17,19 +16,7 @@ const ShiftList = () => {
   }
 
   return (
-    <div className="mb-10">
-      <Divider
-        label={
-          <Flex align="center" gap="sm" className="items-center my-8">
-            <IconClock size={20} className="text-blue-500" />
-            <span className="uppercase tracking-wide text-sm text-gray-600">
-              Work Shifts
-            </span>
-          </Flex>
-        }
-        labelPosition="center"
-      />
-
+    <div className="my-8">
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
         {data?.data.map((shift) => (
           <ShiftCard key={shift.uid} shift={shift} />

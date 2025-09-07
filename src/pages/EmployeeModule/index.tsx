@@ -3,13 +3,12 @@ import AppPageHeader from "../../components/core/AppPageHeader";
 
 const EmployeeLayout = () => {
   return (
-    <div className="flex flex-col">
+    <div className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto rounded-lg drop-shadow-lg">
       <AppPageHeader
         Heading="Employee"
-        Breadcrumb={{ module: "Employee Management", page: "List" }}
+        Breadcrumb={{ module: "Employee Management", page: "Employee" }}
       />
-      <div className="w-[95%] mb-8 mx-auto max-h-fit bg-white rounded-lg drop-shadow-lg flex-1 overflow-auto">
-        {/* {data && <RoleTable data={data.data} />} */}
+      <div>
         <Outlet />
       </div>
     </div>
