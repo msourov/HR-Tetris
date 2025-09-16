@@ -22,7 +22,7 @@ const theme = createTheme({
   primaryColor: "blue",
   fontSizes: {
     xs: "10px",
-    sm: "13px",
+    sm: "12px",
     md: "13px",
     lg: "14px",
     xl: "16px",

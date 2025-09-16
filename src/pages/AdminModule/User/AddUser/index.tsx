@@ -58,6 +58,7 @@ const AddUser = () => {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<AddUserRequest>({
     resolver: zodResolver(schema),
@@ -130,13 +131,12 @@ const AddUser = () => {
           error={errors.role?.message as React.ReactNode}
           mt={4}
         />
-        <Box className="max-w-20 mt-1">
-          <label className="text-sm font-medium" htmlFor="active-switch">
-            Set Status
-          </label>
+        <Box className="max-w-20 mt-2">
           <Switch
+            label="Status"
+            labelPosition="left"
             id="active-switch"
-            size="md"
+            size="sm"
             color="dark"
             {...register("active")}
             checked={activeValue}
@@ -150,19 +150,27 @@ const AddUser = () => {
           error={errors.password?.message as React.ReactNode}
           mt={8}
         />
-
-        <Button
-          type="submit"
-          className="rounded-lg mt-6"
-          disabled={isLoading}
-          bg="black"
-        >
-          {!isLoading ? (
-            "Save"
-          ) : (
-            <Loader color="rgba(255, 255, 255, 1)" size={20} />
-          )}
-        </Button>
+        <div className="flex items-center justify-end gap-2 mt-6">
+          <Button
+            variant="outline"
+            color="gray"
+            onClick={() => reset()}
+            disabled={isLoading}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            className="rounded-lg"
+            disabled={isLoading}
+          >
+            {!isLoading ? (
+              "Save"
+            ) : (
+              <Loader color="rgba(255, 255, 255, 1)" size={20} />
+            )}
+          </Button>
+        </div>
       </form>
     </Paper>
   );

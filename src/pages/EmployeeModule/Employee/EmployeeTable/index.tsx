@@ -81,7 +81,7 @@ const EmplyeeTable = () => {
         </div>
       </div>
 
-      <Table striped highlightOnHover>
+      <Table striped highlightOnHover withTableBorder withRowBorders>
         <TableHeading />
         <TableItem
           page={employees?.pagination?.page ?? 1}

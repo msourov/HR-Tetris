@@ -30,7 +30,7 @@ const TableItem: React.FC<TableItemProps> = ({
   limit,
 }) => {
   if (isLoading) {
-    return <CommonSkeleton cols={9} rows={10} />;
+    return <CommonSkeleton cols={9} rows={5} />;
   }
   if (error) {
     return <ErrorAlert message="Error fetching users" />;

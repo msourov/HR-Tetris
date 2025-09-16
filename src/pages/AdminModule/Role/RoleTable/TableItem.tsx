@@ -78,7 +78,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading, error }) => {
         <Table.Tr key={index}>
           <Table.Td className="w-[25%] pl-4 lg:pl-6">
             <div
-              className={`w-fit p-1 font-semibold rounded-full text-sm text-center 
+              className={`w-fit text-sm p-1 rounded-full text-center 
     ${item.name === "Super Admin" ? "text-purple-800" : "text-gray-700"}`}
             >
               {item?.name}
@@ -95,6 +95,7 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading, error }) => {
                           colors[shortName as keyof ColorMap] || "#ccc",
                         color: "white",
                       }}
+                      className="text-[10px]"
                     >
                       {shortName}
                     </Pill>
@@ -104,7 +105,11 @@ const TableItem: React.FC<TableItemProps> = ({ data, loading, error }) => {
             </Pill.Group>
           </Table.Td>
           <Table.Td className="w-[15%]">
-            <Pill className={item?.active ? "pill-active" : "pill-inactive"}>
+            <Pill
+              className={`${
+                item?.active ? "pill-active" : "pill-inactive"
+              } text-[10px]`}
+            >
               {item?.active ? "Active" : "Inactive"}
             </Pill>
           </Table.Td>

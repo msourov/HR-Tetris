@@ -6,7 +6,7 @@ export interface AllPolicy {
   id: number;
   active: boolean;
   descriptions: string;
-  is_approve: boolean | null;
+  is_approved: string | null;
   logs: Logs;
   create_at: string;
   update_at: string | null;

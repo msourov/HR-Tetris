@@ -1,9 +1,9 @@
 import { Pagination, Table } from "@mantine/core";
 import TableHeading from "./TableHeading";
 import TableItem from "./TableItem";
-import { User } from "../../../../features/api/typesOld";
 import { useGetUsersQuery } from "../../../../features/api/userSlice";
 import { useState } from "react";
+import { User } from "../../../../features/types/user";
 
 const UserTable = () => {
   const [page, setPage] = useState(1);
@@ -14,8 +14,8 @@ const UserTable = () => {
   });
   const users: User[] = data?.data || [];
   return (
-    <>
-      <Table striped highlightOnHover>
+    <div className="bg-white">
+      <Table striped highlightOnHover withTableBorder>
         <TableHeading />
         <TableItem
           page={data?.pagination?.page ?? 1}
@@ -34,7 +34,7 @@ const UserTable = () => {
           disabled={isFetching}
         />
       </div>
-    </>
+    </div>
   );
 };
 

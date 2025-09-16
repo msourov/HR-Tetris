@@ -190,8 +190,8 @@ const AddRole = () => {
   ));
 
   return (
-    <Paper withBorder shadow="md" radius="md" p="md">
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <Paper withBorder shadow="md" radius="md" p="lg">
+      <form onSubmit={handleSubmit(onSubmit)} className="">
         <p className="text-gray-500">Role Name</p>
         <TextInput
           // label="Role Name"
@@ -202,7 +202,7 @@ const AddRole = () => {
         />
         <p className="text-gray-500">Select Accesses</p>
         {items}
-        <p className="mt-6 mb-2 text-gray-500">Set Status</p>
+        <p className="mt-6 mb-2 text-gray-500">Status</p>
         <div className="max-w-20">
           <Switch
             checked={true}
@@ -211,10 +211,11 @@ const AddRole = () => {
             {...register("status")}
           />
         </div>
-
-        <Button type="submit" className="rounded-lg mt-6" bg="orange">
-          Create
-        </Button>
+        <div className="flex justify-end items-center gap-2">
+          <Button type="submit" className="rounded-lg mt-6">
+            Create
+          </Button>
+        </div>
       </form>
     </Paper>
   );

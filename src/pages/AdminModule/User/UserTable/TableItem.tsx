@@ -70,7 +70,7 @@ const TableItem: React.FC<TableItemProps> = ({
           <Table.Td style={{ width: "25%" }}>
             <a
               href={`tel:${item.mobile}`}
-              className="inline-flex items-center gap-2 p-1 rounded-md bg-blue-50 text-blue-700 text-sm font-medium hover:bg-blue-100 transition"
+              className="inline-flex items-center gap-2 p-1 rounded-md bg-blue-50 text-blue-700 font-medium hover:bg-blue-100 transition"
             >
               <IconPhone size={16} className="text-blue-500" />
               {item.mobile}
@@ -92,7 +92,7 @@ const TableItem: React.FC<TableItemProps> = ({
             <Pill
               className={`${
                 item.active ? "pill-active" : "pill-inactive"
-              } text-xs`}
+              } text-[10px]`}
             >
               {item.active ? "Active" : "Inactive"}
             </Pill>

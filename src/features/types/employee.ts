@@ -207,7 +207,7 @@ interface EmergencyContact {
 //   is_image: boolean;
 // }
 
-interface DocumentExtensions {
+export interface DocumentExtensions {
   cv: string | null;
   nid: string | null;
   tin: string | null;

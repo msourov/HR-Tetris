@@ -12,8 +12,6 @@ import {
   useGetPolicyDetailQuery,
 } from "../../../../features/api/policySlice";
 import "../../../../styles.css";
-// import { AllPolicy } from "../../../../features/api/typesOld";
-// import PolicyCard from "./PolicyCard";
 import axios from "axios";
 import AppLoader from "../../../../components/ui/AppLoader";
 import {

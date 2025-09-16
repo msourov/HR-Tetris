@@ -1,21 +1,5 @@
-import {
-  ActionIcon,
-  Badge,
-  Button,
-  Card,
-  Group,
-  Menu,
-  Modal,
-  Text,
-} from "@mantine/core";
-import {
-  IconCheck,
-  IconDotsVertical,
-  IconDownload,
-  IconEye,
-  IconFileText,
-  IconX,
-} from "@tabler/icons-react";
+import { Badge, Button, Card, Group, Modal, Text } from "@mantine/core";
+import { IconDownload, IconEye, IconFileText } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useDisclosure } from "@mantine/hooks";
 import PolicyReviewModal from "./PolicyReviewModal";
@@ -116,7 +100,25 @@ const PolicyCard: React.FC<PolicyCardProps> = ({
               )}
             </div>
 
-            <Menu withinPortal shadow="sm">
+            {/* <img src="/assets/review_icon.png" className="w-4 h-4" /> */}
+            {item?.is_approved === null ? (
+              <button
+                onClick={open}
+                className="rounded-lg text-blue-500  hover:shadow-md hover:bg-blue-50 p-1 "
+              >
+                Review
+              </button>
+            ) : (
+              <p
+                className={`text-[11px] ${
+                  item?.is_approved ? "text-green-400" : "text-red-500"
+                }`}
+              >
+                {item?.is_approved.toUpperCase()}
+              </p>
+            )}
+
+            {/* <Menu withinPortal shadow="sm">
               <Menu.Target>
                 <ActionIcon variant="subtle" color="gray" size="lg">
                   <IconDotsVertical size={16} />
@@ -137,7 +139,7 @@ const PolicyCard: React.FC<PolicyCardProps> = ({
                   Reject
                 </Menu.Item>
               </Menu.Dropdown>
-            </Menu>
+            </Menu> */}
           </Group>
         </Card.Section>
       </Card>

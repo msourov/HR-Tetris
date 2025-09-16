@@ -7,6 +7,8 @@ import {
   Box,
   SimpleGrid,
   Divider,
+  FileInput,
+  Select,
 } from "@mantine/core";
 import { useForm, UseFormWatch } from "react-hook-form";
 import { z } from "zod";
@@ -14,7 +16,7 @@ import { randomId, useListState } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { ErrorResponse, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CreateEmployeeProps,
   EmployeeFormProps,
@@ -27,11 +29,14 @@ import {
 } from "../../../../features/api/employeeSlice";
 import useOptions from "../../../../services/utils/getOptions";
 import {
+  DocumentExtensions,
   EmployeeAccess,
   UnifiedEmployeePayload,
 } from "../../../../features/types/employee";
 import Tab1Fields from "../AddEmployee/Tab1Fields";
 import Tab2Fields from "../AddEmployee/Tab2Fields";
+import axios from "axios";
+import { DocumentList } from "../EmpDocument";
 
 const getSchema = (type: string) =>
   z.object({
@@ -73,6 +78,21 @@ const getSchema = (type: string) =>
     ),
   });
 
+const documentOptions = [
+  { value: "cv", label: "CV" },
+  { value: "nid", label: "NID" },
+  { value: "tin", label: "TIN" },
+  { value: "birth_certificate", label: "Birth Certificate" },
+  { value: "academic", label: "Academic" },
+  { value: "passport", label: "Passport" },
+  { value: "joining_letter", label: "Joining Letter" },
+  { value: "noc", label: "NOC" },
+  { value: "professional", label: "Professional" },
+  { value: "non_disclosure_agreement", label: "Non-disclosure Agreement" },
+  { value: "utility", label: "Utility Bill" },
+  { value: "image", label: "Image" },
+];
+
 export type FormData = {
   name: string;
   phone: string;
@@ -104,6 +124,9 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
 }) => {
   const schema = getSchema(type);
   const { uid } = useParams();
+  const [documentType, setDocumentType] = useState<string | null>("");
+  const [file, setFile] = useState<File | null>(null);
+  const [employeeDoc, setEmployeeDoc] = useState<DocumentExtensions | undefined>();
   const [values, handlers] = useListState(initialPermissionValues);
   const [createEmployee, { isLoading: createLoading }] =
     useCreateEmployeeMutation();
@@ -117,6 +140,12 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   } = useOptions();
 
   const editFormData = data?.data;
+  
+  console.log(editFormData?.document_extensions, "editFormData");
+
+  useEffect(() => {
+    setEmployeeDoc(editFormData?.document_extensions)
+  }, [editFormData])
 
   const navigate = useNavigate();
 
@@ -292,9 +321,73 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       }
     />
   ));
-  const getTabName = (tab: number) => {
-    const tabs = ["Personal Information", "Work Information", "Authority"];
-    return tabs[tab - 1];
+  // const getTabName = (tab: number) => {
+  //   const tabs = ["Personal Information", "Work Information", "Authority"];
+  //   return tabs[tab - 1];
+  // };
+
+  const handleDocumentUpload = async () => {
+    const eId = draftValues.employee_id || editFormData?.work?.employee_id;
+    console.log(eId, "eId");
+    if (!eId) {
+      notifications.show({
+        title: "Error!",
+        message: "Please select an employee",
+        icon: <IconX />,
+        color: "red",
+      });
+      return;
+    }
+    if (!documentType) {
+      notifications.show({
+        title: "Error!",
+        message: "Please select a document type",
+        icon: <IconX />,
+        color: "red",
+      });
+    }
+    if (!file) {
+      notifications.show({
+        title: "Error!",
+        message: "Please select a file to upload",
+        icon: <IconX />,
+        color: "red",
+      });
+    }
+    try {
+      const formData = new FormData();
+      formData.append("employee_id", eId);
+      const dType = "is_" + documentType;
+      formData.append(dType, "true");
+      if (file instanceof File) {
+        formData.append("upload_file", file, file.name);
+      }
+      const result = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}employee/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setDocumentType(null);
+      setFile(null);
+      notifications.show({
+        title: "Success!",
+        message: result.data.message || "Document uploaded successfully",
+        icon: <IconCheck />,
+        color: "green",
+      });
+    } catch (error) {
+      console.error("Failed to upload document", error);
+      notifications.show({
+        title: "Error!",
+        message: "Failed to upload document",
+        icon: <IconX />,
+        color: "red",
+      });
+    }
   };
 
   const onSubmit = async (data: CreateEmployeeProps) => {
@@ -377,13 +470,13 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   return (
     <Paper radius="md" px="lg" className="mx-auto flex flex-col">
       <Box className="flex-1 flex flex-col">
-        <Text
+        {/* <Text
           component="h1"
           size="xl"
           className="drop-shadow-2xl font-bold mb-4"
         >
           {getTabName(parseInt(tab))}
-        </Text>
+        </Text> */}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="min-h-[350px] flex flex-col gap-6 justify-between"
@@ -414,49 +507,110 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
             </SimpleGrid>
             {tab === "3" && (
               <>
-                <Text c="dimmed">Assign Access</Text>
+                <Text c="dimmed" size="lg">
+                  Assign Access
+                </Text>
                 <Divider w={"50%"} mx={"auto"} mb={"1rem"} />
                 <SimpleGrid cols={2} spacing="xs">
                   {items}
                 </SimpleGrid>
               </>
             )}
-          </Box>
+            {tab === "4" && (
+              <div className="flex flex-col">
+                <Text c="dimmed" size="lg">
+                  Upload Employee Documents
+                </Text>
+                <Divider w={"50%"} mx={"auto"} mb={"1rem"} />
 
-          <Box className="p-4 w-full bg-white flex justify-end gap-4">
-            <Button
-              variant="outline"
-              color="blue"
-              className="rounded-lg"
-              disabled={tab === "1"}
-              onClick={() => (tab !== "1" ? handleTab("decrease") : null)}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="filled"
-              color="blue"
-              className={`rounded-lg ${
-                tab === "3"
-                  ? "bg-orange-500 text-white hover:bg-orange-400"
-                  : ""
-              } `}
-              disabled={createLoading || editLoading}
-              onClick={() => {
-                saveDraft();
-                if (tab === "3") {
-                  console.log("triggering submit");
-                  handleSubmit(onSubmit)();
-                } else {
-                  handleTab("increase");
-                }
-              }}
-            >
-              {`${
-                tab === "3" ? (type === "add" ? "Create" : "Update") : "Next"
-              }`}
-            </Button>
+                <div className="flex flex-grow flex-col gap-2">
+                  {/* Select Document Type */}
+                  <Select
+                    label="Document Type"
+                    placeholder="Select document type"
+                    data={documentOptions}
+                    value={documentType}
+                    onChange={(value) => setDocumentType(value || "")}
+                  />
+
+                  {/* File Input */}
+                  {documentType && (
+                    <FileInput
+                      label={`Upload ${documentType}`}
+                      placeholder="Choose file"
+                      accept="image/*,.pdf,.doc,.docx"
+                      value={file}
+                      onChange={(value) => setFile(value || null)}
+                      disabled={createLoading || editLoading}
+                    />
+                  )}
+                  
+                </div>
+                <div className="flex gap-2 flex-col mt-6">
+                  <Button
+                    fullWidth
+                    onClick={handleDocumentUpload}
+                    disabled={
+                      createLoading || editLoading || !documentType || !file
+                    }
+                    className="mt-auto"
+                  >
+                    Upload
+                  </Button>
+                  <Button
+                    fullWidth
+                    variant="outline"
+                    color="gray"
+                    onClick={() => {
+                      setDocumentType("");
+                      setFile(null);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <DocumentList
+                  employeeId={draftValues.employee_id || editFormData?.work?.employee_id || ""}
+                    documents={employeeDoc}
+                  />
+                </div>
+              </div>
+            )}
           </Box>
+          {tab !== "4" && (
+            <Box className="p-4 w-full bg-white flex justify-end gap-4">
+              <Button
+                variant="outline"
+                color="gray"
+                className="rounded-lg"
+                disabled={tab === "1"}
+                onClick={() => (tab !== "1" ? handleTab("decrease") : null)}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="filled"
+                color="blue"
+                className={`rounded-lg ${
+                  tab === "3"
+                    ? "bg-orange-500 text-white hover:bg-orange-400"
+                    : ""
+                } `}
+                disabled={createLoading || editLoading}
+                onClick={() => {
+                  saveDraft();
+                  if (tab === "3") {
+                    handleSubmit(onSubmit)();
+                  } else {
+                    handleTab("increase");
+                  }
+                }}
+              >
+                {`${
+                  tab === "3" ? (type === "add" ? "Create" : "Update") : "Next"
+                }`}
+              </Button>
+            </Box>
+          )}
         </form>
       </Box>
     </Paper>

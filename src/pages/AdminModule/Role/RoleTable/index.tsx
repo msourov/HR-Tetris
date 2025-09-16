@@ -52,7 +52,7 @@ const AcronymDetails = () => {
         {Object.entries(acronymMap).map(([acronym, fullName]) => (
           <div
             key={acronym}
-            className="flex items-center gap-2 border-b p-1 text-sm"
+            className="flex items-center gap-2 border-b p-1"
             style={{
               borderBottomColor: colors[acronym as keyof ColorMap],
             }}
@@ -87,7 +87,7 @@ const RoleTable: React.FC = () => {
   return (
     <div className="flex flex-col xl:flex-row gap-8 xl:gap-4">
       <div className="flex-1 border bg-white">
-        <Table striped highlightOnHover>
+        <Table striped highlightOnHover withTableBorder>
           <TableHeading />
           <TableItem data={roles} loading={isLoading} error={error} />
         </Table>

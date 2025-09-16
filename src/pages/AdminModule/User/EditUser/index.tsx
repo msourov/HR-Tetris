@@ -213,6 +213,7 @@ const EditUser = ({ id, closeModal, userData }: EditUserProps) => {
                 Change Password
               </Text>
               <IconArrowDown
+                size={18}
                 className={`transition-transform duration-300 ${
                   showPasswordFields ? "rotate-180" : ""
                 }`}
@@ -261,7 +262,7 @@ const EditUser = ({ id, closeModal, userData }: EditUserProps) => {
                         </Button>
                         <Button
                           variant="outline"
-                          color="black"
+                          color="gray"
                           size="compact-md"
                           onClick={() => setShowPasswordFields((prev) => !prev)}
                           disabled={isChangingPassword}
@@ -278,19 +279,23 @@ const EditUser = ({ id, closeModal, userData }: EditUserProps) => {
           </Grid.Col>
         </Grid>
 
-        <Group justify="flex-end" mt="xl">
-          <Button variant="outline" onClick={closeModal} disabled={isLoading}>
+        <div className="flex items-center justify-end gap-2 my-2">
+          <Button
+            variant="outline"
+            color="gray"
+            onClick={closeModal}
+            disabled={isLoading}
+          >
             Cancel
           </Button>
           <Button
             type="submit"
-            color="dark"
             leftSection={isLoading ? <Loader size="xs" /> : null}
             disabled={isLoading}
           >
             {isLoading ? "Saving..." : "Save Changes"}
           </Button>
-        </Group>
+        </div>
       </form>
     </Paper>
   );

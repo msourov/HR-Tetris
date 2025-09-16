@@ -22,8 +22,8 @@ const Tab2Fields: React.FC<Tab2FieldsProps> = ({
   shiftOptions,
   employeeOptions,
 }) => {
-  console.log("executives", JSON.stringify(watch("executives"), undefined, 2));
-  console.log("employeeOptions", JSON.stringify(employeeOptions, undefined, 2));
+  // console.log("executives", JSON.stringify(watch("executives"), undefined, 2));
+  // console.log("employeeOptions", JSON.stringify(employeeOptions, undefined, 2));
 
   return (
     <>

@@ -3,17 +3,12 @@ import AppPageHeader from "../../../components/core/AppPageHeader";
 
 const User: React.FC = () => {
   return (
-    <div className="flex flex-col">
-      <div className="w-[95%] mx-auto">
-        <AppPageHeader
-          Heading="User"
-          Breadcrumb={{ module: "Admin Management", page: "User" }}
-        />
-      </div>
-
-      <div className="w-[95%] mb-20 mx-auto max-h-fit bg-white drop-shadow-lg flex-1 overflow-auto">
-        <Outlet />
-      </div>
+    <div className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto rounded-lg">
+      <AppPageHeader
+        Heading="User"
+        Breadcrumb={{ module: "Admin Management", page: "User" }}
+      />
+      <Outlet />
     </div>
   );
 };

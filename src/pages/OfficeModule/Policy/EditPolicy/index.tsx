@@ -20,7 +20,6 @@ import {
   useEditPolicyMutation,
   useGetPoliciesQuery,
 } from "../../../../features/api/policySlice";
-import { AllPolicy } from "../../../../features/api/typesOld";
 import { useEditor } from "@tiptap/react";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
@@ -31,6 +30,7 @@ import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
 import { RichTextEditor } from "@mantine/tiptap";
 import AppLoader from "../../../../components/ui/AppLoader";
+import { AllPolicy } from "../../../../features/types/policy";
 
 const schema = z.object({
   active: z.boolean(),

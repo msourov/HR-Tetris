@@ -32,6 +32,7 @@ const EditEmployee = () => {
           <Tabs.Tab value="1">Personal Information</Tabs.Tab>
           <Tabs.Tab value="2">Work Information</Tabs.Tab>
           <Tabs.Tab value="3">Authority</Tabs.Tab>
+          <Tabs.Tab value="4">Documents</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value={activeTab} className="ml-4">
           <Box className="flex-1 mx-6">
