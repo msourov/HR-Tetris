@@ -84,7 +84,7 @@ const Tab1Fields: React.FC<Tab1FieldsProps> = ({
         <TextInput
           variant="filled"
           label="Employee ID"
-          placeholder="EMP12345"
+          placeholder="E123"
           {...register("employee_id")}
           error={errors && (errors.employee_id?.message as string)}
         />

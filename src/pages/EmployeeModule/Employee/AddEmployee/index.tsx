@@ -146,7 +146,7 @@ const initialPermissionValues = [
   {
     label: "Holiday Approval",
     name: "holiday_approve_management",
-    checked: true,
+    checked: false,
     key: randomId(),
   },
 ];

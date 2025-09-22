@@ -80,17 +80,18 @@ const EmplyeeTable = () => {
           />
         </div>
       </div>
-
-      <Table striped highlightOnHover withTableBorder withRowBorders>
-        <TableHeading />
-        <TableItem
-          page={employees?.pagination?.page ?? 1}
-          limit={employees?.pagination?.page_size ?? 10}
-          data={paginatedData || []}
-          isLoading={isLoading || isFetching}
-          error={error}
-        />
-      </Table>
+      <div className="overflow-x-auto w-full">
+        <Table striped highlightOnHover withTableBorder withRowBorders>
+          <TableHeading /> 
+          <TableItem
+            page={employees?.pagination?.page ?? 1}
+            limit={employees?.pagination?.page_size ?? 10}
+            data={paginatedData || []}
+            isLoading={isLoading || isFetching}
+            error={error}
+          />
+        </Table>
+      </div>
 
       {employees?.pagination?.total_pages != 0 && (
         <div className="px-4 pt-8 pb-4 float-right">
