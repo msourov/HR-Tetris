@@ -68,7 +68,10 @@ const LeaveSection = () => {
             {Array.isArray(pendingLeaves) ? (
               pendingLeaves.length ? (
                 pendingLeaves.map((item, index) => (
-                  <Accordion.Item key={index} value={item.purpose}>
+                  <Accordion.Item
+                    key={item?.uid}
+                    value={`${index}-${item.purpose}`}
+                  >
                     <Accordion.Control>
                       <Box className="w-full">
                         <Text lineClamp={1} fw={500}>

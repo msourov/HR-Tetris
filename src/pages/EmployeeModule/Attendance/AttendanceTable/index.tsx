@@ -7,6 +7,8 @@ import { DateInput } from "@mantine/dates";
 // import AppPageHeader from "../../../components/core/AppPageHeader";
 
 const AttendanceTable = () => {
+  const [page, setPage] = useState(1);
+  const limit = 10;
   const [searchParams, setSearchParams] = useState({
     employee_name: "",
     attended_date: "",
@@ -18,11 +20,12 @@ const AttendanceTable = () => {
     data: attendance,
     isLoading,
     error,
-  } = useGetAllAttendanceQuery(searchParams);
+    isFetching,
+  } = useGetAllAttendanceQuery({ page, limit, searchParams });
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Trigger new search with current params
+    setPage(1);
     setSearchParams({ ...searchParams });
   };
   return (
@@ -79,7 +82,7 @@ const AttendanceTable = () => {
           </Button> */}
         </form>
       </div>
-      <Table striped highlightOnHover>
+      <Table striped highlightOnHover withTableBorder>
         <TableHeading />
         <TableItem
           data={attendance?.data || []}
@@ -87,9 +90,29 @@ const AttendanceTable = () => {
           error={error}
         />
       </Table>
-      <div className="px-4 pt-8 pb-4 float-right">
-        <Pagination total={4} color="rgb(33, 41, 34)" />
-      </div>
+      {attendance?.pagination?.total_pages != 0 && (
+        <div className="px-4 pt-8 pb-4 float-right">
+          <Pagination
+            total={attendance?.pagination?.total_pages ?? 0}
+            value={page}
+            onChange={setPage}
+            color="rgb(33, 41, 34)"
+            disabled={isFetching}
+          />
+        </div>
+      )}
+
+      {/* {employees?.pagination?.total_pages != 0 && (
+        <div className="px-4 pt-8 pb-4 float-right">
+          <Pagination
+            total={employees?.pagination?.total_pages ?? 0}
+            value={page}
+            onChange={setPage}
+            color="blue"
+            disabled={isFetching}
+          />
+        </div>
+      )} */}
     </>
   );
 };

@@ -42,7 +42,7 @@ export default function TicketList() {
   return (
     <Group align="start" className="gap-4 h-full">
       {/* Ticket Thread List */}
-      <Stack className="w-80 flex items-center p-4 " gap="sm" bg="blue">
+      <Stack className="w-80 flex items-center p-4" gap="sm" bg="blue">
         <Text size="lg" fw="bold" className=" text-white text-center">
           Open Tickets
         </Text>

@@ -20,4 +20,11 @@ export interface Attendance {
   end_attended_time: string;
 }
 
+export interface searchParamsType {
+  employee_name: string;
+  attended_date: string;
+  start_date: string;
+  end_date: string;
+}
+
 export type AttendanceResponse = getDataResponse<Attendance[]>;

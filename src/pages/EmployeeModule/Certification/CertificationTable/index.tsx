@@ -27,7 +27,7 @@ const CertificationTable = () => {
 
   return (
     <>
-      <Table>
+      <Table striped highlightOnHover withTableBorder>
         <TableHeading />
         <TableItem
           page={certifications?.pagination?.page ?? 1}

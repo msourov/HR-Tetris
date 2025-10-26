@@ -6,7 +6,7 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
-import { FormData } from "../EmployeeForm";
+import { FormData } from ".";
 
 interface Tab1FieldsProps {
   watch: UseFormWatch<FormData>;

@@ -19,7 +19,7 @@ const LoanTable = () => {
     <>
       {Array.isArray(data?.data) && data?.data.length > 0 ? (
         <>
-          <Table striped highlightOnHover>
+          <Table striped withTableBorder highlightOnHover>
             <LoanTableHeading />
             <LoanTableItems
               data={(data?.data as LoanWithGuarantorObj[]) || []}

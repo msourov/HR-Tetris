@@ -152,11 +152,7 @@ const Candidates = () => {
           ))}
         </SimpleGrid>
       ) : (
-        <NoDataMessage
-          message="leave"
-          onRefresh={refetch}
-          loading={isFetching}
-        />
+        <NoDataMessage onRefresh={refetch} loading={isFetching} />
       )}
     </>
   );

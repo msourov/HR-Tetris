@@ -25,7 +25,7 @@ const HomeOfficeTable = () => {
     <>
       {HomeOfficeData?.length > 0 ? (
         <>
-          <Table>
+          <Table striped highlightOnHover withTableBorder>
             <TableHeading />
             <TableItem
               data={HomeOfficeData || []}

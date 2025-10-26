@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseQuery from "./baseApi";
 import { tagTypes } from "./tags";
-import { AttendanceResponse } from "../types/attendance";
+import { AttendanceResponse, searchParamsType } from "../types/attendance";
 
 export const attendanceApi = createApi({
   reducerPath: "attendanceApi",
@@ -10,22 +10,22 @@ export const attendanceApi = createApi({
   endpoints: (builder) => ({
     getAllAttendance: builder.query<
       AttendanceResponse,
-      {
-        employee_name?: string;
-        attended_date?: string;
-        start_date?: string;
-        end_date?: string;
-      }
-    >({
-      query: (params) => {
-        const queryParams: Record<string, string> = {};
+      { page: number; limit: number; searchParams: searchParamsType }
+>({
+  query: ({ page, limit, searchParams }) => {
+    const queryParams: Record<string, string | number> = {
+      page,
+      limit,
+    };
 
-        if (params.employee_name)
-          queryParams.employee_name = params.employee_name;
-        if (params.attended_date)
-          queryParams.attended_date = params.attended_date;
-        if (params.start_date) queryParams.start_date = params.start_date;
-        if (params.end_date) queryParams.end_date = params.end_date;
+        if (searchParams?.employee_name)
+      queryParams.employee_name = searchParams.employee_name;
+    if (searchParams?.attended_date)
+      queryParams.attended_date = searchParams.attended_date;
+    if (searchParams?.start_date)
+      queryParams.start_date = searchParams.start_date;
+    if (searchParams?.end_date)
+      queryParams.end_date = searchParams.end_date;
 
         return {
           url: "attendance/all",

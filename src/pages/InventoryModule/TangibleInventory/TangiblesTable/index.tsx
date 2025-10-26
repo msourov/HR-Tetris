@@ -58,7 +58,7 @@ const TangibleTable = () => {
     <>
       {sortedTangibles.length > 0 ? (
         <>
-          <Table striped highlightOnHover>
+          <Table striped withTableBorder highlightOnHover>
             <TableHeading
               changeDateOrder={handleDateOrderChange}
               changePriceOrder={handleChangePriceOrder}

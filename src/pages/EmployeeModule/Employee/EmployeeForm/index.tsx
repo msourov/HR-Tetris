@@ -1,12 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Paper,
-  Button,
-  Checkbox,
-  Text,
-  Box,
-  SimpleGrid,
-} from "@mantine/core";
+import { Paper, Button, Checkbox, Text, Box, SimpleGrid } from "@mantine/core";
 import { useForm, UseFormWatch } from "react-hook-form";
 import { z } from "zod";
 import { randomId, useListState } from "@mantine/hooks";
@@ -29,14 +22,16 @@ import {
   EmployeeAccess,
   UnifiedEmployeePayload,
 } from "../../../../features/types/employee";
-import Tab1Fields from "../AddEmployee/Tab1Fields";
-import Tab2Fields from "../AddEmployee/Tab2Fields";
+import Tab1Fields from "./Tab1Fields";
 import AddDocument from "../EmpDocument/AddDocument";
+import Tab2Fields from "./Tab2Fields";
 
 const getSchema = (type: string) =>
   z.object({
     name: z.string().min(1, "Name is required"),
-    phone: z.string().regex(/^01[0-9]{9}$/, "Invalid Bangladeshi phone number"),
+    phone: z
+      .string()
+      .regex(/^01[3-9]\d{8}$/, "Invalid Bangladeshi phone number"),
     email: z.string().email("Invalid email address"),
     bod: z.string(),
     marital_status: z.enum(["Married", "Single"]),
@@ -275,12 +270,18 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     }, {} as { [key: string]: string });
   };
 
-  const handleCheckboxChange = (index: number, checked: boolean) => {
-    handlers.setItemProp(index, "checked", checked);
-    const updatedPermissions = getValues("permissions").map(
-      (permission: Permissions, i: number) =>
-        i === index ? { ...permission, checked } : permission
+  const handleCheckboxChange = (key: string, checked: boolean) => {
+    // Update Mantine useListState
+    handlers.setState((current) =>
+      current.map((item) => (item.key === key ? { ...item, checked } : item))
     );
+
+    // Update React Hook Form field
+    const updatedPermissions = getValues("permissions").map(
+      (permission: Permissions) =>
+        permission.key === key ? { ...permission, checked } : permission
+    );
+
     setValue("permissions", updatedPermissions);
   };
 
@@ -428,7 +429,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
                           !v.name.includes("_approve_") &&
                           !v.name.includes("_admin_")
                       )
-                      .map((value, index) => (
+                      .map((value) => (
                         <Checkbox
                           mt="xs"
                           label={value.label}
@@ -437,7 +438,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
                           checked={value.checked}
                           onChange={(event) =>
                             handleCheckboxChange(
-                              index,
+                              value.key,
                               event.currentTarget.checked
                             )
                           }
@@ -456,7 +457,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
                           v.name.includes("_approve_") ||
                           v.name.includes("_admin_")
                       )
-                      .map((value, index) => (
+                      .map((value) => (
                         <Checkbox
                           mt="xs"
                           label={value.label}
@@ -465,7 +466,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
                           checked={value.checked}
                           onChange={(event) =>
                             handleCheckboxChange(
-                              index,
+                              value.key,
                               event.currentTarget.checked
                             )
                           }

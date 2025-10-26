@@ -8,7 +8,7 @@ import { LuPlus } from "react-icons/lu";
 const Consumables = () => {
   const [opened, { open, close }] = useDisclosure(false);
   return (
-    <div className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto rounded-lg drop-shadow-lg">
+    <div className="w-[95%] lg:w-[90%] h-[calc(90vh-80px)] flex flex-col mx-auto">
       <div className="flex justify-between">
         <AppPageHeader
           Heading="Consumable"
