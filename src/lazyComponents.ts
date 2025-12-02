@@ -193,3 +193,4 @@ export const MeetingList = lazy(
 
 // Office / Task
 export const Task = lazy(() => import("./pages/OfficeModule/Task/index.tsx"));
+export const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy/index.tsx"));

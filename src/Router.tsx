@@ -56,6 +56,7 @@ import {
   PayrollList,
   PolicyLayout,
   PolicyList,
+  PrivacyPolicy,
   Recruitment,
   Role,
   ShiftLayout,
@@ -591,6 +592,10 @@ export const router = createBrowserRouter([
         element: <OtpPage />,
       },
     ],
+  },
+  {
+    path: "privacy-policy",
+    element: <PrivacyPolicy />,
   },
   {
     path: "*",
